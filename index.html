@@ -1,0 +1,580 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Simulador de Gestão de Remuneração - Brasil Cosmopolita S.A.</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&display=swap" rel="stylesheet">
+    <style>
+        body { font-family: 'Inter', sans-serif; background-color: #fcfaf7; color: #334155; }
+        .chart-container { position: relative; width: 100%; max-width: 650px; margin-left: auto; margin-right: auto; height: 350px; max-height: 400px; }
+        .glass-card { background: rgba(255, 255, 255, 0.8); backdrop-filter: blur(10px); border: 1px solid rgba(226, 232, 240, 0.8); }
+        .nav-link.active { border-bottom: 2px solid #d97706; color: #d97706; font-weight: 600; }
+        input[type="range"] { accent-color: #d97706; }
+    </style>
+</head>
+<body class="min-h-screen">
+
+<nav class="sticky top-0 z-50 bg-white/90 border-b border-slate-200 px-6 py-4">
+    <div class="max-w-6xl mx-auto flex flex-col md:flex-row justify-between items-center gap-4">
+        <div class="flex items-center gap-2">
+            <div class="w-8 h-8 bg-amber-600 rounded flex items-center justify-center text-white font-bold">BC</div>
+            <h1 class="text-xl font-bold tracking-tight">Brasil Cosmopolita <span class="text-amber-600">S.A.</span></h1>
+        </div>
+        <div class="flex gap-4 md:gap-6 text-sm flex-wrap justify-center">
+            <button onclick="showSection('inicio')" id="nav-inicio" class="nav-link active py-1">Início</button>
+            <button onclick="showSection('caso1')" id="nav-caso1" class="nav-link py-1">Avaliação de Cargos</button>
+            <button onclick="showSection('caso2')" id="nav-caso2" class="nav-link py-1">Estratégia de Incentivos</button>
+            <button onclick="showSection('relatorio')" id="nav-relatorio" class="nav-link py-1 bg-amber-50 px-3 rounded-full hover:bg-amber-100 transition-all text-amber-700 font-semibold border border-amber-200">Relatório & Exportação</button>
+        </div>
+    </div>
+</nav>
+
+<main class="max-w-6xl mx-auto p-6">
+
+    <!-- SEÇÃO: INÍCIO -->
+    <section id="section-inicio" class="space-y-8">
+        <div class="bg-gradient-to-r from-amber-50 to-orange-50 p-8 rounded-2xl border border-amber-100 shadow-sm">
+            <h2 class="text-3xl font-bold text-slate-800 mb-4">O Desafio da Remuneração</h2>
+            <p class="text-lg text-slate-600 leading-relaxed max-w-3xl">
+                Bem-vindo ao comitê de consultoria interna. Com base nas teorias de <strong>Idalberto Chiavenato</strong>, este simulador ajudará a resolver as iniquidades salariais da Brasil Cosmopolita S.A., permitindo que você justifique suas decisões e gere um relatório de parecer técnico pronto para entrega.
+            </p>
+        </div>
+
+        <div class="grid md:grid-cols-3 gap-6">
+            <div class="glass-card p-6 rounded-xl shadow-sm">
+                <div class="text-amber-600 text-2xl mb-2">📊</div>
+                <h3 class="font-bold mb-2">Equidade Interna</h3>
+                <p class="text-sm text-slate-500">Garantir que cargos com complexidades similares recebam salários justos dentro da organização através do Método de Avaliação por Pontos (MAP).</p>
+            </div>
+            <div class="glass-card p-6 rounded-xl shadow-sm">
+                <div class="text-amber-600 text-2xl mb-2">📈</div>
+                <h3 class="font-bold mb-2">Equidade Externa</h3>
+                <p class="text-sm text-slate-500">Alinhar a estrutura salarial com as práticas de mercado da região para evitar a perda de talentos estratégicos.</p>
+            </div>
+            <div class="glass-card p-6 rounded-xl shadow-sm">
+                <div class="text-amber-600 text-2xl mb-2">💡</div>
+                <h3 class="font-bold mb-2">Remuneração Total</h3>
+                <p class="text-sm text-slate-500">Integrar Salário Fixo, Incentivos Financeiros e Recompensas Não-Financeiras para criar um mix motivacional sustentável e justo.</p>
+            </div>
+        </div>
+
+        <div class="bg-blue-50 border border-blue-100 p-6 rounded-xl flex flex-col md:flex-row items-center justify-between gap-4">
+            <div class="space-y-1">
+                <h4 class="font-bold text-blue-950">Pronto para começar seu estudo de caso?</h4>
+                <p class="text-sm text-blue-800">Navegue pelas abas, use os simuladores visuais e escreva os seus pareceres técnicos para compilar seu portfólio.</p>
+            </div>
+            <button onclick="showSection('caso1')" class="bg-amber-600 hover:bg-amber-700 text-white font-semibold py-2 px-6 rounded-lg transition-all shadow-md shrink-0">Iniciar Consultoria</button>
+        </div>
+    </section>
+
+    <!-- SEÇÃO: CASO 1 - AVALIAÇÃO DE CARGOS -->
+    <section id="section-caso1" class="hidden space-y-8">
+        <div class="border-l-4 border-amber-500 pl-6">
+            <h2 class="text-2xl font-bold text-slate-800">Caso 1: O Quebra-Cabeça Salarial</h2>
+            <p class="text-slate-600 mt-2">Nesta etapa, utilizaremos o <strong>Método de Avaliação por Pontos (MAP)</strong>. O objetivo é calcular o valor relativo de cada cargo baseando-se em fatores mentais, responsabilidade e condições de trabalho.</p>
+        </div>
+
+        <div class="grid lg:grid-cols-2 gap-8">
+            <div class="glass-card p-6 rounded-2xl shadow-sm">
+                <h3 class="text-lg font-semibold mb-4 flex items-center gap-2">
+                    🛠️ Calculadora de Pontuação (MAP)
+                </h3>
+                
+                <div class="space-y-6">
+                    <div>
+                        <label class="block text-sm font-medium text-slate-700 mb-2">Fator 1: Requisitos Mentais (40%)</label>
+                        <select id="fator1" onchange="calculateMAP()" class="w-full p-2 bg-white border border-slate-200 rounded-md">
+                            <option value="40">Grau 1 (Mínimo) - 40 pts (Ex: Auxiliar)</option>
+                            <option value="80">Grau 2 - 80 pts</option>
+                            <option value="120">Grau 3 - 120 pts</option>
+                            <option value="160">Grau 4 (Máximo) - 160 pts (Ex: Técnico Senior)</option>
+                        </select>
+                    </div>
+                    <div>
+                        <label class="block text-sm font-medium text-slate-700 mb-2">Fator 2: Resp. por Equipamento (35%)</label>
+                        <select id="fator2" onchange="calculateMAP()" class="w-full p-2 bg-white border border-slate-200 rounded-md">
+                            <option value="35">Grau 1 (Mínimo) - 35 pts</option>
+                            <option value="70">Grau 2 - 70 pts</option>
+                            <option value="105">Grau 3 - 105 pts</option>
+                            <option value="140">Grau 4 (Máximo) - 140 pts</option>
+                        </select>
+                    </div>
+                    <div>
+                        <label class="block text-sm font-medium text-slate-700 mb-2">Fator 3: Condições de Trabalho (25%)</label>
+                        <select id="fator3" onchange="calculateMAP()" class="w-full p-2 bg-white border border-slate-200 rounded-md">
+                            <option value="25">Grau 1 (Mínimo) - 25 pts</option>
+                            <option value="50">Grau 2 - 50 pts</option>
+                            <option value="75">Grau 3 - 75 pts</option>
+                            <option value="100">Grau 4 (Máximo) - 100 pts</option>
+                        </select>
+                    </div>
+
+                    <div class="bg-amber-50 p-4 rounded-lg border border-amber-200 mt-4">
+                        <div class="flex justify-between items-center mb-2">
+                            <span class="text-sm font-semibold text-amber-800 uppercase tracking-wider">Pontuação Total (X):</span>
+                            <span id="result-pontos" class="text-2xl font-bold text-amber-900">0 pts</span>
+                        </div>
+                        <div class="flex justify-between items-center">
+                            <span class="text-sm font-semibold text-amber-800 uppercase tracking-wider">Salário de Mercado (Y):</span>
+                            <span id="result-salario" class="text-2xl font-bold text-amber-900">R$ 0,00</span>
+                        </div>
+                        <p class="text-[10px] text-amber-700 mt-2 italic">Fórmula Aplicada: Y = 4X + 800</p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="glass-card p-6 rounded-2xl shadow-sm">
+                <h3 class="text-lg font-semibold mb-4">Visualização da Equação Linear</h3>
+                <div class="chart-container">
+                    <canvas id="marketChart"></canvas>
+                </div>
+            </div>
+        </div>
+
+        <div class="glass-card p-8 rounded-2xl">
+            <h3 class="text-xl font-bold mb-4">Simulador de Perda Inflacionária</h3>
+            <p class="text-sm text-slate-500 mb-6">A inflação corrói o salário real. Arraste o slider para ver o impacto de um IPCA acumulado sobre o poder de compra real do colaborador operando na empresa.</p>
+            
+            <div class="grid md:grid-cols-2 gap-8 items-center">
+                <div class="space-y-6">
+                    <div>
+                        <label class="block text-sm font-medium mb-2">Inflação Acumulada (IPCA): <span id="label-ipca" class="font-bold text-amber-600">10%</span></label>
+                        <input type="range" id="input-ipca" min="0" max="30" value="10" step="0.5" oninput="calculateInflation()" class="w-full">
+                    </div>
+                    <div class="p-4 bg-slate-50 rounded-lg border border-slate-200">
+                        <p class="text-sm text-slate-600">Salário Nominal Sob Análise: <strong>R$ 1.800,00</strong></p>
+                        <p class="text-lg font-bold text-slate-800 mt-2">Salário Real Atualizado: <span id="val-sal-real" class="text-red-600">R$ 1.636,36</span></p>
+                    </div>
+                </div>
+                <div class="bg-blue-50 p-4 rounded-lg text-sm text-blue-800 leading-relaxed border border-blue-100">
+                    <strong>Nota Teórica (Chiavenato):</strong> Sem políticas claras de reajuste periódico, a inflação causa o rebaixamento indireto da remuneração real, forçando talentos a buscarem equidade externa na concorrência.
+                </div>
+            </div>
+        </div>
+
+        <div class="bg-amber-50/60 p-6 rounded-2xl border border-amber-200 shadow-sm">
+            <h3 class="text-lg font-bold text-amber-900 mb-2">✍️ Parecer do Consultor: Diagnóstico de Cargos & Equidade</h3>
+            <p class="text-xs text-slate-500 mb-4">Responda aqui com base nos dados obtidos: Qual a pontuação correta (X) do Ajustador e do Operador? Qual deve ser o salário justo (Y) de cada um para sanar a iniquidade salarial interna e externa? Qual foi o impacto da inflação de 10% analisado?</p>
+            <textarea id="parecer-caso1" rows="5" class="w-full p-4 rounded-xl border border-slate-200 focus:ring-2 focus:ring-amber-500 focus:border-amber-500 shadow-inner bg-white text-sm" placeholder="Ex: O Ajustador Técnico obteve X=305 pontos, indicando que seu salário de mercado deve ser R$ 2.020,00..."></textarea>
+        </div>
+    </section>
+
+    <!-- SEÇÃO: CASO 2 - ESTRATÉGIA DE INCENTIVOS -->
+    <section id="section-caso2" class="hidden space-y-8">
+        <div class="border-l-4 border-amber-500 pl-6">
+            <h2 class="text-2xl font-bold text-slate-800">Caso 2: O Dilema da Produtividade</h2>
+            <p class="text-slate-600 mt-2">A transição da remuneração fixa para a <strong>Remuneração Total (RT)</strong>. O desafio é criar um mix que motive sem destruir a cooperação interna e o clima organizacional.</p>
+        </div>
+
+        <div class="grid lg:grid-cols-2 gap-8">
+            <div class="glass-card p-6 rounded-2xl shadow-sm">
+                <h3 class="text-lg font-semibold mb-6">Ajuste o Mix Salarial (RT)</h3>
+                
+                <div class="space-y-8">
+                    <div>
+                        <div class="flex justify-between mb-2">
+                            <label class="text-sm font-medium">Salário Fixo (SF)</label>
+                            <span id="pct-sf" class="text-sm font-bold">50%</span>
+                        </div>
+                        <input type="range" id="range-sf" min="30" max="80" value="50" oninput="updateMix()" class="w-full">
+                        <p class="text-[11px] text-slate-400 mt-1">Base de segurança e estabilidade (fator higiênico).</p>
+                    </div>
+
+                    <div>
+                        <div class="flex justify-between mb-2">
+                            <label class="text-sm font-medium text-amber-600">Incentivos Financeiros (IF)</label>
+                            <span id="pct-if" class="text-sm font-bold text-amber-600">40%</span>
+                        </div>
+                        <input type="range" id="range-if" min="10" max="60" value="40" oninput="updateMix()" class="w-full">
+                        <p class="text-[11px] text-slate-400 mt-1">Comissões, Bônus e PLR estruturada.</p>
+                    </div>
+
+                    <div>
+                        <div class="flex justify-between mb-2">
+                            <label class="text-sm font-medium text-emerald-600">Recompensas Não-Financeiras (NF)</label>
+                            <span id="pct-nf" class="text-sm font-bold text-emerald-600">10%</span>
+                        </div>
+                        <p class="text-[11px] text-slate-400 mt-1">Planos de carreira, autonomia, clima e reconhecimento.</p>
+                    </div>
+                </div>
+
+                <div class="mt-8 p-4 bg-amber-50 rounded-lg text-xs text-amber-800 border border-amber-100">
+                    <strong>Análise de Alerta (Chiavenato):</strong> Sistemas baseados em comissões excessivas de faturamento geram estresse extremo, focam unicamente no curto prazo e podem corroer o engajamento de equipe.
+                </div>
+            </div>
+
+            <div class="glass-card p-6 rounded-2xl shadow-sm flex flex-col items-center">
+                <h3 class="text-lg font-semibold mb-4">Composição Sugerida</h3>
+                <div class="chart-container">
+                    <canvas id="mixChart"></canvas>
+                </div>
+            </div>
+        </div>
+
+        <div class="bg-white border border-slate-200 rounded-2xl overflow-hidden shadow-sm">
+            <div class="bg-slate-800 p-4 text-white font-bold text-sm">Sugestões de Recompensas Não-Financeiras (NF) de Baixo Custo</div>
+            <div class="grid md:grid-cols-3 divide-y md:divide-y-0 md:divide-x divide-slate-100">
+                <div class="p-6 hover:bg-slate-50 transition-colors">
+                    <div class="text-2xl mb-2">🚀</div>
+                    <h4 class="font-bold text-slate-700 mb-1 text-sm">Empowerment</h4>
+                    <p class="text-xs text-slate-500 leading-relaxed">Delegação autêntica em projetos para aumentar o senso de contribuição e autoeficácia.</p>
+                </div>
+                <div class="p-6 hover:bg-slate-50 transition-colors">
+                    <div class="text-2xl mb-2">🏠</div>
+                    <h4 class="font-bold text-slate-700 mb-1 text-sm">Modelos Flexíveis</h4>
+                    <p class="text-xs text-slate-500 leading-relaxed">Dias híbridos baseados em entregas planejadas, preservando o balanço pessoal.</p>
+                </div>
+                <div class="p-6 hover:bg-slate-50 transition-colors">
+                    <div class="text-2xl mb-2">🏆</div>
+                    <h4 class="font-bold text-slate-700 mb-1 text-sm">Programas Meritocráticos</h4>
+                    <p class="text-xs text-slate-500 leading-relaxed">Feedbacks contínuos, reconhecimento transparente do desempenho e apoio mútuo.</p>
+                </div>
+            </div>
+        </div>
+
+        <div class="bg-amber-50/60 p-6 rounded-2xl border border-amber-200 shadow-sm">
+            <h3 class="text-lg font-bold text-amber-900 mb-2">✍️ Parecer do Consultor: Arquitetura de Incentivos e Remuneração Total</h3>
+            <p class="text-xs text-slate-500 mb-4">Faça a análise crítica da proposta de comissão individual pura e descreva o mix ideal sugerido. Justifique o seu balanceamento entre segurança e recompensa de alto desempenho.</p>
+            <textarea id="parecer-caso2" rows="5" class="w-full p-4 rounded-xl border border-slate-200 focus:ring-2 focus:ring-amber-500 focus:border-amber-500 shadow-inner bg-white text-sm" placeholder="Ex: A comissão individual pura proposta pelo Diretor Comercial cria conflitos, portanto sugerimos um mix de 55% SF, 35% IF e 10% NF..."></textarea>
+        </div>
+    </section>
+
+    <!-- SEÇÃO: RELATÓRIO & EXPORTAÇÃO -->
+    <section id="section-relatorio" class="hidden space-y-8">
+        <div class="border-l-4 border-amber-500 pl-6">
+            <h2 class="text-2xl font-bold text-slate-800">Relatório Consolidado de Consultoria</h2>
+            <p class="text-slate-600 mt-2">Revise abaixo todos os parâmetros simulados e seus pareceres teóricos antes de realizar a exportação final.</p>
+        </div>
+
+        <div class="grid lg:grid-cols-3 gap-8">
+            <div class="lg:col-span-2 space-y-6">
+                <!-- Visualização do Documento -->
+                <div id="preview-documento" class="bg-white p-8 rounded-2xl border border-slate-200 shadow-md space-y-6 max-h-[600px] overflow-y-auto font-mono text-xs text-slate-800 leading-relaxed">
+                    <!-- O conteúdo formatado do relatório será injetado dinamicamente via JS -->
+                    Carregando visualização...
+                </div>
+            </div>
+
+            <!-- Painel Lateral de Controle e Ações -->
+            <div class="space-y-6">
+                <div class="glass-card p-6 rounded-2xl shadow-sm space-y-4">
+                    <h3 class="font-bold text-slate-800">Ações de Entrega</h3>
+                    <p class="text-xs text-slate-500 leading-relaxed">
+                        Você pode baixar o relatório em formato de texto para sua máquina ou copiar todo o conteúdo para colar no seu AVA ou documento do Word.
+                    </p>
+
+                    <button onclick="exportarTxt()" class="w-full bg-slate-900 hover:bg-slate-800 text-white font-bold py-3 px-4 rounded-xl flex items-center justify-center gap-2 transition-all shadow-md">
+                        📥 Baixar Arquivo (.txt)
+                    </button>
+
+                    <button onclick="copiarRelatorio()" class="w-full bg-amber-600 hover:bg-amber-700 text-white font-bold py-3 px-4 rounded-xl flex items-center justify-center gap-2 transition-all shadow-md">
+                        📋 Copiar para Área de Transferência
+                    </button>
+
+                    <div id="toast-copiado" class="hidden text-center bg-emerald-100 text-emerald-800 p-2 rounded-lg text-xs font-semibold animate-pulse border border-emerald-200">
+                        ✓ Copiado com sucesso para o Clipboard!
+                    </div>
+                </div>
+
+                <div class="bg-slate-100 p-4 rounded-xl border border-slate-200">
+                    <h4 class="text-xs font-bold text-slate-700 uppercase mb-2">Instruções de Postagem</h4>
+                    <ul class="text-[11px] text-slate-500 space-y-1 list-disc list-inside">
+                        <li>Certifique-se de preencher os dois pareceres.</li>
+                        <li>Verifique os cálculos e simulações.</li>
+                        <li>Clique em "Baixar Arquivo" para salvar uma cópia física.</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </section>
+
+</main>
+
+<footer class="max-w-6xl mx-auto p-8 text-center text-slate-400 text-sm border-t border-slate-100 mt-12">
+    <p>© 2026 Brasil Cosmopolita S.A. - Simulação de Atividade Pedagógica Baseada em Idalberto Chiavenato.</p>
+</footer>
+
+<script>
+    // Estado Global da Aplicação
+    let marketChartInstance = null;
+    let mixChartInstance = null;
+
+    // Configurações do simulador MAP
+    let f1_val = 40, f2_val = 35, f3_val = 25;
+    let mapPoints = 100, calculatedSalary = 1200;
+    let selectedIpca = 10;
+    
+    // Configurações do mix salarial
+    let sf_pct = 50, if_pct = 40, nf_pct = 10;
+
+    // Navegação entre Seções
+    function showSection(sectionId) {
+        document.querySelectorAll('section').forEach(s => s.classList.add('hidden'));
+        document.getElementById('section-' + sectionId).classList.remove('hidden');
+        
+        document.querySelectorAll('.nav-link').forEach(l => l.classList.remove('active'));
+        document.getElementById('nav-' + sectionId).classList.add('active');
+
+        if (sectionId === 'caso1') {
+            setTimeout(initMarketChart, 50);
+        }
+        if (sectionId === 'caso2') {
+            setTimeout(initMixChart, 50);
+        }
+        if (sectionId === 'relatorio') {
+            renderizarRelatorioPreview();
+        }
+    }
+
+    // Caso 1: Cálculos MAP
+    function calculateMAP() {
+        f1_val = parseInt(document.getElementById('fator1').value);
+        f2_val = parseInt(document.getElementById('fator2').value);
+        f3_val = parseInt(document.getElementById('fator3').value);
+        
+        mapPoints = f1_val + f2_val + f3_val;
+        calculatedSalary = 4 * mapPoints + 800;
+
+        document.getElementById('result-pontos').innerText = mapPoints + ' pts';
+        document.getElementById('result-salario').innerText = 'R$ ' + calculatedSalary.toLocaleString('pt-BR', {minimumFractionDigits: 2});
+        
+        updateChartPoint(mapPoints, calculatedSalary);
+    }
+
+    function initMarketChart() {
+        const canvas = document.getElementById('marketChart');
+        if (!canvas) return;
+        const ctx = canvas.getContext('2d');
+        if (marketChartInstance) return;
+
+        // Dados base da equação Y = 4X + 800
+        const dataPoints = [
+            {x: 100, y: 1200},
+            {x: 200, y: 1600},
+            {x: 300, y: 2000},
+            {x: 400, y: 2400}
+        ];
+
+        marketChartInstance = new Chart(ctx, {
+            type: 'line',
+            data: {
+                datasets: [{
+                    label: 'Curva de Mercado',
+                    data: dataPoints,
+                    borderColor: '#94a3b8',
+                    borderDash: [5, 5],
+                    fill: false,
+                    pointRadius: 0
+                }, {
+                    label: 'Simulação de Cargo',
+                    data: [{x: mapPoints, y: calculatedSalary}],
+                    backgroundColor: '#d97706',
+                    borderColor: '#b45309',
+                    pointRadius: 8,
+                    type: 'scatter'
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                scales: {
+                    x: { type: 'linear', position: 'bottom', title: { display: true, text: 'Pontos (X)' } },
+                    y: { title: { display: true, text: 'Salário R$ (Y)' } }
+                },
+                plugins: {
+                    tooltip: {
+                        callbacks: {
+                            label: function(context) {
+                                return `X: ${context.parsed.x} pts | Y: R$ ${context.parsed.y}`;
+                            }
+                        }
+                    }
+                }
+            }
+        });
+        calculateMAP();
+    }
+
+    function updateChartPoint(x, y) {
+        if (!marketChartInstance) return;
+        marketChartInstance.data.datasets[1].data = [{x: x, y: y}];
+        marketChartInstance.update();
+    }
+
+    function calculateInflation() {
+        selectedIpca = parseFloat(document.getElementById('input-ipca').value);
+        document.getElementById('label-ipca').innerText = selectedIpca + '%';
+        
+        const salNominal = 1800;
+        const taxa = selectedIpca / 100;
+        const salReal = salNominal / (1 + taxa);
+        
+        document.getElementById('val-sal-real').innerText = 'R$ ' + salReal.toLocaleString('pt-BR', {minimumFractionDigits: 2});
+    }
+
+    // Caso 2: Remuneração Total
+    function updateMix() {
+        let sf = parseInt(document.getElementById('range-sf').value);
+        let if_val = parseInt(document.getElementById('range-if').value);
+        
+        let nf = 100 - (sf + if_val);
+        
+        // Se NF ficar negativo, ajusta de forma dinâmica os outros sliders
+        if (nf < 5) {
+            nf = 5;
+            if (sf > if_val) sf = 100 - if_val - nf;
+            else if_val = 100 - sf - nf;
+        }
+
+        sf_pct = sf;
+        if_pct = if_val;
+        nf_pct = nf;
+
+        document.getElementById('pct-sf').innerText = sf_pct + '%';
+        document.getElementById('pct-if').innerText = if_pct + '%';
+        document.getElementById('pct-nf').innerText = nf_pct + '%';
+
+        updateMixChart(sf_pct, if_pct, nf_pct);
+    }
+
+    function initMixChart() {
+        const canvas = document.getElementById('mixChart');
+        if (!canvas) return;
+        const ctx = canvas.getContext('2d');
+        if (mixChartInstance) return;
+
+        mixChartInstance = new Chart(ctx, {
+            type: 'doughnut',
+            data: {
+                labels: ['Salário Fixo', 'Incentivos Fin.', 'Recompensas Não-Fin.'],
+                datasets: [{
+                    data: [sf_pct, if_pct, nf_pct],
+                    backgroundColor: ['#334155', '#d97706', '#10b981'],
+                    hoverOffset: 10,
+                    borderWidth: 0
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                plugins: {
+                    legend: { position: 'bottom', labels: { boxWidth: 12, padding: 20 } }
+                },
+                cutout: '70%'
+            }
+        });
+    }
+
+    function updateMixChart(sf, if_val, nf) {
+        if (!mixChartInstance) return;
+        mixChartInstance.data.datasets[0].data = [sf, if_val, nf];
+        mixChartInstance.update();
+    }
+
+    // Compilação do Conteúdo em Texto Estruturado
+    function compilarTextoRelatorio() {
+        const p1 = document.getElementById('parecer-caso1').value || "Não preenchido pelo aluno.";
+        const p2 = document.getElementById('parecer-caso2').value || "Não preenchido pelo aluno.";
+
+        return `========================================================================
+     BRASIL COSMOPOLITA S.A. - RELATÓRIO DE CONSULTORIA DE RH
+========================================================================
+Relatório Acadêmico de Remuneração e Benefícios (Base: Chiavenato)
+Data de Geração: ${new Date().toLocaleDateString('pt-BR')} ${new Date().toLocaleTimeString('pt-BR')}
+------------------------------------------------------------------------
+
+1. CASO 1: AVALIAÇÃO DE CARGOS & PODER DE COMPRA
+- Configuração Simulada no MAP (Método de Avaliação por Pontos):
+  * Grau Requisitos Mentais (F1): ${f1_val} pts
+  * Grau Responsabilidade Equipamentos (F2): ${f2_val} pts
+  * Grau Condições de Trabalho (F3): ${f3_val} pts
+  * Pontuação de Cargo Calculada (X): ${mapPoints} pontos
+  * Salário Justo de Mercado Proposto (Y): R$ ${calculatedSalary.toLocaleString('pt-BR', {minimumFractionDigits: 2})}
+  
+- Simulação de Impacto Inflacionário:
+  * Salário Nominal Avaliado: R$ 1.800,00
+  * IPCA Escolhido para Cenário: ${selectedIpca}%
+  * Salário Real Resultante: R$ ${(1800 / (1 + selectedIpca / 100)).toLocaleString('pt-BR', {minimumFractionDigits: 2})}
+
+PARECER TÉCNICO SOBRE EQUIDADE E INFLAÇÃO:
+${p1}
+
+------------------------------------------------------------------------
+
+2. CASO 2: ESTRATÉGIA DE REMUNERAÇÃO TOTAL (RT)
+- Mix Estruturado de Remuneração Proposto:
+  * Salário Fixo (SF): ${sf_pct}%
+  * Incentivos Financeiros (IF): ${if_pct}%
+  * Recompensas Não-Financeiras (NF): ${nf_pct}%
+
+PARECER TÉCNICO SOBRE O DILEMA DA PRODUTIVIDADE:
+${p2}
+
+========================================================================
+                 FIM DO PARECER TÉCNICO DE CONSULTORIA
+========================================================================`;
+    }
+
+    function renderizarRelatorioPreview() {
+        const previewEl = document.getElementById('preview-documento');
+        if (!previewEl) return;
+        const textoCompilado = compilarTextoRelatorio();
+        previewEl.innerHTML = `<pre class="whitespace-pre-wrap break-words">${textoCompilado}</pre>`;
+    }
+
+    // Download de arquivo TXT
+    function exportarTxt() {
+        const texto = compilarTextoRelatorio();
+        const blob = new Blob([texto], { type: 'text/plain;charset=utf-8' });
+        const link = document.createElement('a');
+        link.href = URL.createObjectURL(blob);
+        link.download = `Relatorio_Consultoria_RH_BrasilCosmopolita.txt`;
+        document.body.appendChild(link);
+        link.click();
+        document.body.removeChild(link);
+    }
+
+    // Copiar para área de transferência com suporte robusto para iFrame
+    function copiarRelatorio() {
+        const texto = compilarTextoRelatorio();
+        
+        // Método seguro para ambientes de iframe/sandboxed
+        const tempTextarea = document.createElement('textarea');
+        tempTextarea.value = texto;
+        tempTextarea.style.position = 'fixed'; // Evita o scroll
+        tempTextarea.style.opacity = '0';
+        document.body.appendChild(tempTextarea);
+        tempTextarea.select();
+        
+        try {
+            const success = document.execCommand('copy');
+            if (success) {
+                mostrarToast();
+            } else {
+                alert("Erro ao copiar. Por favor, selecione o texto e copie manualmente.");
+            }
+        } catch (err) {
+            console.error("Falha ao copiar método tradicional: ", err);
+        }
+        
+        document.body.removeChild(tempTextarea);
+    }
+
+    function mostrarToast() {
+        const toast = document.getElementById('toast-copiado');
+        toast.classList.remove('hidden');
+        setTimeout(() => {
+            toast.classList.add('hidden');
+        }, 3000);
+    }
+
+    // Inicialização da Aplicação
+    window.onload = () => {
+        // Inicializa com a tela inicial carregada
+    };
+</script>
+</body>
+</html>

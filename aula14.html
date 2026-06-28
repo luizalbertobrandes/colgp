@@ -1,0 +1,167 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Gestão de Pessoas: Benefícios e QVT</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&display=swap');
+        body { font-family: 'Inter', sans-serif; background-color: #fcfaf7; color: #3d3d3d; }
+        .chart-container { position: relative; width: 100%; max-width: 600px; margin: auto; height: 350px; }
+        .tab-active { border-bottom: 3px solid #b45309; color: #b45309; font-weight: 700; }
+        .glass-card { background: rgba(255, 255, 255, 0.7); backdrop-filter: blur(10px); border: 1px solid rgba(217, 119, 6, 0.1); }
+        .benefit-card:hover { transform: translateY(-5px); transition: all 0.3s ease; }
+        input[type="range"] { accent-color: #b45309; }
+    </style>
+</head>
+<body class="min-h-screen">
+
+    <nav class="bg-white shadow-sm sticky top-0 z-50">
+        <div class="max-w-6xl mx-auto px-4">
+            <div class="flex justify-between items-center h-16">
+                <div class="flex flex-col">
+                    <span class="text-xs font-bold text-amber-700 tracking-widest uppercase">EEB Colombo Machado Sales</span>
+                    <span class="text-lg font-semibold text-gray-800">Gestão de Pessoas</span>
+                </div>
+                <div class="hidden md:flex space-x-8">
+                    <button onclick="showTab('inicio')" id="btn-inicio" class="tab-link tab-active py-5 px-1 text-sm">Início</button>
+                    <button onclick="showTab('aula7')" id="btn-aula7" class="tab-link py-5 px-1 text-sm text-gray-500 hover:text-amber-700 transition">Aula 7</button>
+                    <button onclick="showTab('aula8')" id="btn-aula8" class="tab-link py-5 px-1 text-sm text-gray-500 hover:text-amber-700 transition">Aula 8</button>
+                    <button onclick="showTab('atividades')" id="btn-atividades" class="tab-link py-5 px-1 text-sm text-gray-500 hover:text-amber-700 transition">Atividades</button>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <main class="max-w-6xl mx-auto px-4 py-8">
+        
+        <section id="section-inicio" class="tab-content">
+            <div class="bg-amber-50 rounded-2xl p-8 mb-8 border border-amber-100">
+                <h1 class="text-3xl font-bold text-amber-900 mb-4">Fundamentos da Gestão de Pessoas</h1>
+                <p class="text-gray-700 leading-relaxed max-w-3xl">Ambiente interativo para as aulas do Prof. Luiz Alberto Brandes.</p>
+            </div>
+
+            <div class="prose max-w-4xl text-gray-700 space-y-6">
+                <h3 class="text-2xl font-bold text-gray-900">1. A Evolução do RH</h3>
+                <p>A Gestão de Pessoas (GP) deixou de ser apenas um "Departamento de Pessoal" burocrático — focado em folha de pagamento e controles de ponto — para se tornar um <strong>braço estratégico</strong>. Hoje, o capital humano é visto como o principal ativo competitivo das organizações.</p>
+                
+                <h3 class="text-2xl font-bold text-gray-900">2. Pilares Estratégicos</h3>
+                <ul class="list-disc pl-5 space-y-2">
+                    <li><strong>Agregação:</strong> Quem deve trabalhar na organização? (Recrutamento e Seleção).</li>
+                    <li><strong>Aplicação:</strong> Como saber o que as pessoas farão? (Desenho de cargos, análise e descrição).</li>
+                    <li><strong>Compensação:</strong> Como motivar e incentivar as pessoas? (Remuneração, Benefícios).</li>
+                    <li><strong>Desenvolvimento:</strong> Como preparar as pessoas? (Treinamento, Gestão de Competências).</li>
+                    <li><strong>Manutenção:</strong> Como reter as pessoas? (Higiene, Segurança, Qualidade de Vida).</li>
+                </ul>
+
+                <div class="bg-white p-6 rounded-lg shadow-sm border-l-4 border-amber-500">
+                    <h4 class="font-bold text-gray-800">Conceito Chave: O Contrato Psicológico</h4>
+                    <p class="text-sm italic">É o conjunto de expectativas, obrigações e promessas não escritas entre empregador e empregado. O sucesso de uma gestão está na capacidade de alinhar essas expectativas às necessidades organizacionais.</p>
+                </div>
+            </div>
+        </section>
+
+        <section id="section-aula7" class="tab-content hidden">
+            <div class="mb-10">
+                <h2 class="text-2xl font-bold text-gray-800 mb-2">Aula 7: Benefícios Sociais</h2>
+                <p class="text-gray-600 mb-6">Classificação, leis e cálculos aplicados aos benefícios.</p>
+            </div>
+
+            <div class="grid lg:grid-cols-3 gap-6 mb-12">
+                <div class="benefit-card bg-white p-6 rounded-xl shadow-sm border-t-4 border-amber-600">
+                    <h4 class="font-bold text-amber-800 mb-2">Exigibilidade Legal</h4>
+                    <ul class="text-xs text-gray-600 space-y-3">
+                        <li><strong class="text-gray-800">Férias (CLT Art. 129):</strong> Valor = Salário mensal + 1/3.</li>
+                        <li><strong class="text-gray-800">13º Salário (Lei 4.090/62):</strong> Valor = Salário / 12 * meses trabalhados.</li>
+                        <li><strong class="text-gray-800">FGTS (Lei 8.036/90):</strong> Depósito mensal de 8% sobre a remuneração bruta.</li>
+                        <li><strong class="text-gray-800">INSS (Lei 8.212/91):</strong> Alíquotas progressivas sobre o salário de contribuição.</li>
+                    </ul>
+                </div>
+                <div class="benefit-card bg-white p-6 rounded-xl shadow-sm border-t-4 border-amber-400">
+                    <h4 class="font-bold text-amber-700 mb-2">Espontâneos (Serviços)</h4>
+                    <ul class="text-xs text-gray-600 space-y-3">
+                        <li><strong class="text-gray-800">Auxílio-Educação (Lei 9.249/95):</strong> Não integra o salário (não incide FGTS/INSS).</li>
+                        <li><strong class="text-gray-800">Convênios (Médico/Odonto):</strong> Valores negociados em contrato. Possível coparticipação.</li>
+                    </ul>
+                </div>
+                <div class="benefit-card bg-white p-6 rounded-xl shadow-sm border-t-4 border-gray-400">
+                    <h4 class="font-bold text-gray-700 mb-2">Financeiros / Seguros</h4>
+                    <ul class="text-xs text-gray-600 space-y-3">
+                        <li><strong class="text-gray-800">PLR (Lei 10.101/00):</strong> Acordada entre empresa e sindicato/comissão. Cálculo baseado em metas.</li>
+                        <li><strong class="text-gray-800">Previdência Privada:</strong> Contribuição facultativa definida pelo plano (PGBL/VGBL).</li>
+                    </ul>
+                </div>
+            </div>
+        </section>
+
+        <section id="section-aula8" class="tab-content hidden">
+            <h2 class="text-2xl font-bold text-gray-800 mb-6">Aula 8: Qualidade de Vida no Trabalho (QVT) e Resultados</h2>
+            <div class="space-y-6">
+                <div class="bg-white p-6 rounded-xl shadow-sm border-l-4 border-amber-600">
+                    <h3 class="font-bold text-amber-900 mb-2">Objetivos dos Benefícios</h3>
+                    <div class="grid md:grid-cols-2 gap-4 text-sm text-gray-700">
+                        <div><strong class="text-amber-800">Econômicos:</strong> Aumento da produtividade, redução de rotatividade (turnover) e otimização da carga tributária.</div>
+                        <div><strong class="text-amber-800">Sociais:</strong> Bem-estar físico e mental, melhoria no clima organizacional e apoio à sustentabilidade familiar.</div>
+                    </div>
+                </div>
+                <div class="bg-white p-6 rounded-xl shadow-sm border-l-4 border-blue-600">
+                    <h3 class="font-bold text-blue-900 mb-2">Modelos de QVT e Retenção</h3>
+                    <p class="text-sm text-gray-700 mb-2">Os serviços sociais funcionam como ferramentas de retenção de talentos:</p>
+                    <ul class="text-sm text-gray-600 list-disc pl-5 space-y-1">
+                        <li><strong>Modelo de Walton:</strong> Baseado em 8 critérios (compensação, condições, uso de capacidades, crescimento, integração, constitucionalismo, espaço de vida e relevância social).</li>
+                        <li><strong>Impacto na Retenção:</strong> A QVT fortalece o "contrato psicológico", aumentando o engajamento e a lealdade organizacional.</li>
+                    </ul>
+                </div>
+                <div class="bg-gray-50 p-6 rounded-xl border border-gray-200">
+                    <h3 class="font-bold text-gray-800 mb-4 text-center">Dashboard de Indicadores (Walton)</h3>
+                    <div class="chart-container"><canvas id="waltonChart"></canvas></div>
+                </div>
+            </div>
+        </section>
+
+        <section id="section-atividades" class="tab-content hidden">
+            <h2 class="text-2xl font-bold text-gray-800 mb-6">Atividades Práticas de Fixação</h2>
+            <div class="grid md:grid-cols-2 gap-6">
+                <div class="bg-white p-6 rounded-xl border border-amber-200 shadow-sm">
+                    <h4 class="font-bold text-amber-900 mb-2">1. Simulação: Mesa de Negociação</h4>
+                    <p class="text-sm text-gray-600">Divida a turma em dois grupos (Empresa e Sindicato) para debater uma proposta de PLR baseada em metas de sustentabilidade.</p>
+                </div>
+                <div class="bg-white p-6 rounded-xl border border-amber-200 shadow-sm">
+                    <h4 class="font-bold text-amber-900 mb-2">2. Diagnóstico: Consultor de QVT</h4>
+                    <p class="text-sm text-gray-600">Escolha uma empresa real e aplique o Modelo de Walton (8 critérios) para avaliar a possível satisfação dos colaboradores.</p>
+                </div>
+                <div class="bg-white p-6 rounded-xl border border-amber-200 shadow-sm">
+                    <h4 class="font-bold text-amber-900 mb-2">3. Hackathon de Benefícios</h4>
+                    <p class="text-sm text-gray-600">Crie um "pacote de benefícios" inovador para uma startup com orçamento limitado, focando em retenção de jovens talentos.</p>
+                </div>
+                <div class="bg-white p-6 rounded-xl border border-amber-200 shadow-sm">
+                    <h4 class="font-bold text-amber-900 mb-2">4. Debate: Contrato Psicológico</h4>
+                    <p class="text-sm text-gray-600">Discussão em grupo sobre como as expectativas não escritas impactam o turnover em tempos de home office.</p>
+                </div>
+                <div class="bg-white p-6 rounded-xl border border-amber-200 shadow-sm">
+                    <h4 class="font-bold text-amber-900 mb-2">5. Mapa de Vida: O que move você?</h4>
+                    <p class="text-sm text-gray-600">Cada aluno elenca os 3 benefícios que mais valorizaria em seu primeiro emprego e justifica à luz da teoria de Maslow.</p>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <script>
+        function showTab(tabName) {
+            document.querySelectorAll('.tab-content').forEach(el => el.classList.add('hidden'));
+            document.getElementById('section-' + tabName).classList.remove('hidden');
+            document.querySelectorAll('.tab-link').forEach(el => el.classList.remove('tab-active'));
+            document.getElementById('btn-' + tabName).classList.add('tab-active');
+            if(tabName === 'aula8') renderChart();
+        }
+        let waltonChart;
+        function renderChart() {
+            const ctx = document.getElementById('waltonChart').getContext('2d');
+            if(waltonChart) waltonChart.destroy();
+            waltonChart = new Chart(ctx, { type: 'radar', data: { labels: ['Compensação', 'Condições', 'Uso Capacidades', 'Crescimento', 'Integração', 'Constitucionalismo', 'Espaço Vida', 'Relevância'], datasets: [{ data: [9, 8, 7, 9, 8, 6, 10, 7], backgroundColor: 'rgba(180, 83, 9, 0.2)', borderColor: 'rgba(180, 83, 9, 0.8)' }] }, options: { responsive: true, maintainAspectRatio: false } });
+        }
+    </script>
+</body>
+</html>

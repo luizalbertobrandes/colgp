@@ -72,6 +72,9 @@
                     <button onclick="switchTab('dashboard')" class="tab-btn px-4 py-2 rounded-lg text-sm font-medium transition-colors bg-brand-50 text-brand-700" id="tab-dashboard">
                         <i class="fa-solid fa-graduation-cap mr-1.5"></i> Planos de Aula
                     </button>
+                    <button onclick="switchTab('comparativo')" class="tab-btn px-4 py-2 rounded-lg text-sm font-medium transition-colors text-slate-600 hover:text-slate-900 hover:bg-slate-100" id="tab-comparativo">
+                        <i class="fa-solid fa-table-columns mr-1.5"></i> Quadro Comparativo
+                    </button>
                     <button onclick="switchTab('jogo')" class="tab-btn px-4 py-2 rounded-lg text-sm font-medium transition-colors text-slate-600 hover:text-slate-900 hover:bg-slate-100" id="tab-jogo">
                         <i class="fa-solid fa-gamepad mr-1.5"></i> Desafio Classificação
                     </button>
@@ -93,6 +96,9 @@
         <div id="mobile-menu" class="hidden md:hidden border-t border-slate-200 bg-white px-4 py-2 space-y-1 shadow-inner">
             <button onclick="switchTab('dashboard'); toggleMobileMenu();" class="w-full text-left px-4 py-2.5 rounded-lg text-sm font-medium block bg-brand-50 text-brand-700">
                 <i class="fa-solid fa-graduation-cap mr-2"></i> Planos de Aula
+            </button>
+            <button onclick="switchTab('comparativo'); toggleMobileMenu();" class="w-full text-left px-4 py-2.5 rounded-lg text-sm font-medium block text-slate-600 hover:bg-slate-50">
+                <i class="fa-solid fa-table-columns mr-2"></i> Quadro Comparativo
             </button>
             <button onclick="switchTab('jogo'); toggleMobileMenu();" class="w-full text-left px-4 py-2.5 rounded-lg text-sm font-medium block text-slate-600 hover:bg-slate-50">
                 <i class="fa-solid fa-gamepad mr-2"></i> Desafio Classificação
@@ -293,6 +299,208 @@
                         </div>
                     </div>
                 </div>
+            </div>
+        </div>
+
+        <!-- Tab: QUADRO COMPARATIVO INTERATIVO -->
+        <div id="panel-comparativo" class="tab-panel hidden space-y-6">
+            <div class="bg-white rounded-2xl border border-slate-200 shadow-sm p-5 sm:p-8 max-w-6xl mx-auto">
+                <div class="flex flex-col md:flex-row md:items-center justify-between gap-4 border-b border-slate-100 pb-5 mb-6">
+                    <div class="flex items-center gap-3">
+                        <span class="p-2.5 bg-brand-50 text-brand-600 rounded-xl shadow-sm"><i class="fa-solid fa-table-columns text-xl"></i></span>
+                        <div>
+                            <h2 class="text-xl font-bold text-slate-900">Quadro Comparativo de Modelos</h2>
+                            <p class="text-xs text-slate-500">Compare de forma aprofundada as três abordagens teóricas consagradas por Chiavenato.</p>
+                        </div>
+                    </div>
+                    <!-- Interatividade de destaque de colunas -->
+                    <div class="flex flex-wrap items-center gap-2">
+                        <span class="text-xs font-bold text-slate-400 uppercase tracking-wider mr-1">Filtro de Destaque:</span>
+                        <button onclick="highlightColumn('all')" id="btn-col-all" class="px-3 py-1 bg-brand-600 text-white rounded-lg text-xs font-bold transition-all border border-brand-500">Todos</button>
+                        <button onclick="highlightColumn('classico')" id="btn-col-classico" class="px-3 py-1 bg-slate-100 text-slate-600 hover:bg-slate-200 rounded-lg text-xs font-bold transition-all border border-slate-200">Clássico</button>
+                        <button onclick="highlightColumn('humanistico')" id="btn-col-humanistico" class="px-3 py-1 bg-slate-100 text-slate-600 hover:bg-slate-200 rounded-lg text-xs font-bold transition-all border border-slate-200">Humanístico</button>
+                        <button onclick="highlightColumn('contingencial')" id="btn-col-contingencial" class="px-3 py-1 bg-slate-100 text-slate-600 hover:bg-slate-200 rounded-lg text-xs font-bold transition-all border border-slate-200">Contingencial</button>
+                    </div>
+                </div>
+
+                <!-- Desktop Table View (Hidden on very small screens, responsive scroll on medium) -->
+                <div class="hidden md:block overflow-x-auto border border-slate-200 rounded-xl shadow-sm">
+                    <table class="w-full text-left border-collapse">
+                        <thead>
+                            <tr class="bg-slate-100 border-b border-slate-200">
+                                <th class="p-4 text-xs font-bold text-slate-500 uppercase tracking-wider w-1/4">Dimensão de Análise</th>
+                                <th id="th-classico" class="p-4 text-xs font-bold text-slate-800 uppercase tracking-wider w-1/4 bg-slate-50/50">Modelo Clássico</th>
+                                <th id="th-humanistico" class="p-4 text-xs font-bold text-slate-800 uppercase tracking-wider w-1/4">Modelo Humanístico</th>
+                                <th id="th-contingencial" class="p-4 text-xs font-bold text-slate-800 uppercase tracking-wider w-1/4">Modelo Contingencial</th>
+                            </tr>
+                        </thead>
+                        <tbody class="divide-y divide-slate-100 text-xs">
+                            <!-- Foco Principal -->
+                            <tr class="hover:bg-slate-50/50 transition-colors">
+                                <td class="p-4 font-bold text-slate-700 bg-slate-50/30">Ênfase & Foco</td>
+                                <td class="p-4 text-slate-600 col-classico font-medium">Na tarefa, na simplificação e na eficiência das máquinas.</td>
+                                <td class="p-4 text-slate-600 col-humanistico">Nas pessoas, nas relações sociais e no contexto de grupo.</td>
+                                <td class="p-4 text-slate-600 col-contingencial font-semibold text-brand-900">Na adaptabilidade, nas tarefas e nas necessidades do ocupante.</td>
+                            </tr>
+                            <!-- Concepção do Homem -->
+                            <tr class="hover:bg-slate-50/50 transition-colors">
+                                <td class="p-4 font-bold text-slate-700 bg-slate-50/30">Concepção do Homem</td>
+                                <td class="p-4 text-slate-600 col-classico font-medium text-red-700"><strong>Homo Economicus</strong><br>(Movido puramente por dinheiro)</td>
+                                <td class="p-4 text-slate-600 col-humanistico text-indigo-800"><strong>Homo Socialis</strong><br>(Movido por aceitação/status social)</td>
+                                <td class="p-4 text-slate-600 col-contingencial text-emerald-800 font-semibold"><strong>Homem Complexo</strong><br>(Movido por autorealização e autonomia)</td>
+                            </tr>
+                            <!-- Liderança e Supervisão -->
+                            <tr class="hover:bg-slate-50/50 transition-colors">
+                                <td class="p-4 font-bold text-slate-700 bg-slate-50/30">Liderança / Supervisão</td>
+                                <td class="p-4 text-slate-600 col-classico">Autocrática, centralizadora e estritamente fiscalizadora.</td>
+                                <td class="p-4 text-slate-600 col-humanistico">Democrática, amigável, orientada ao bem-estar da equipe.</td>
+                                <td class="p-4 text-slate-600 col-contingencial font-medium">Liderança situacional, facilitadora, focada no desenvolvimento.</td>
+                            </tr>
+                            <!-- Desenho do Cargo -->
+                            <tr class="hover:bg-slate-50/50 transition-colors">
+                                <td class="p-4 font-bold text-slate-700 bg-slate-50/30">Estrutura do Trabalho</td>
+                                <td class="p-4 text-slate-600 col-classico">Cargos rígidos, especializados, repetitivos e imutáveis.</td>
+                                <td class="p-4 text-slate-600 col-humanistico">Cargos fixos, porém com incentivo à integração e rotação de times.</td>
+                                <td class="p-4 text-slate-600 col-contingencial font-medium">Flexível, dinâmico, enriquecido (horizontal/vertical) e polivalente.</td>
+                            </tr>
+                            <!-- Comunicação -->
+                            <tr class="hover:bg-slate-50/50 transition-colors">
+                                <td class="p-4 font-bold text-slate-700 bg-slate-50/30">Comunicação</td>
+                                <td class="p-4 text-slate-600 col-classico">Estritamente vertical descendente (de cima para baixo).</td>
+                                <td class="p-4 text-slate-600 col-humanistico">Vertical e horizontal, com forte fluxo informal interno.</td>
+                                <td class="p-4 text-slate-600 col-contingencial font-medium">Multidirecional, aberta e orientada à resolução de problemas rápidos.</td>
+                            </tr>
+                            <!-- Variabilidade / Resposta -->
+                            <tr class="hover:bg-slate-50/50 transition-colors">
+                                <td class="p-4 font-bold text-slate-700 bg-slate-50/30">Resposta a Mudanças</td>
+                                <td class="p-4 text-slate-600 col-classico">Baixa/Nula. Processo resistente a inovações repentinas.</td>
+                                <td class="p-4 text-slate-600 col-humanistico">Moderada. O grupo tende a amortecer ou resistir coletivamente.</td>
+                                <td class="p-4 text-slate-600 col-contingencial font-medium text-emerald-700">Altíssima. Projetado para adaptação veloz em ambientes incertos.</td>
+                            </tr>
+                            <!-- Principais Vantagens -->
+                            <tr class="hover:bg-slate-50/50 transition-colors">
+                                <td class="p-4 font-bold text-slate-700 bg-slate-50/30">Pontos Fortes</td>
+                                <td class="p-4 text-slate-600 col-classico bg-red-50/20 text-red-900">
+                                    • Alta previsibilidade de custos<br>
+                                    • Treinamento muito simples<br>
+                                    • Baixos requisitos de contratação
+                                </td>
+                                <td class="p-4 text-slate-600 col-humanistico bg-indigo-50/20 text-indigo-900">
+                                    • Clima organizacional harmonioso<br>
+                                    • Redução drástica de atritos interpessoais<br>
+                                    • Maior lealdade à equipe
+                                </td>
+                                <td class="p-4 text-slate-600 col-contingencial bg-emerald-50/20 text-emerald-900">
+                                    • Engajamento intrínseco elevado<br>
+                                    • Inovação contínua nas pontas<br>
+                                    • Máxima agilidade de mercado
+                                </td>
+                            </tr>
+                            <!-- Principais Fraquezas -->
+                            <tr class="hover:bg-slate-50/50 transition-colors">
+                                <td class="p-4 font-bold text-slate-700 bg-slate-50/30">Pontos Fracos</td>
+                                <td class="p-4 text-slate-600 col-classico text-red-800">
+                                    • Alienação e desmotivação profunda<br>
+                                    • Elevado absenteísmo/rotatividade<br>
+                                    • Trabalho engessado
+                                </td>
+                                <td class="p-4 text-slate-600 col-humanistico text-indigo-800">
+                                    • Conteúdo do trabalho ignorado<br>
+                                    • Baixo impacto real na eficiência operacional<br>
+                                    • Dependência extrema de harmonia
+                                </td>
+                                <td class="p-4 text-slate-600 col-contingencial text-emerald-800">
+                                    • Requer contratação especializada<br>
+                                    • Maior complexidade de coordenação<br>
+                                    • Demanda constante por feedbacks
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+
+                <!-- Mobile View Cards (Hidden on Medium and Up) -->
+                <div class="block md:hidden space-y-4">
+                    <!-- Clássico Card -->
+                    <div class="border border-slate-200 rounded-xl p-4 bg-slate-50">
+                        <span class="px-2 py-0.5 bg-red-100 text-red-800 text-[10px] font-bold rounded">Modelo Clássico</span>
+                        <div class="mt-3 space-y-2 text-xs">
+                            <p><strong>Foco:</strong> Tarefas simples, rotineiras e de eficiência mecânica.</p>
+                            <p><strong>Visão do Indivíduo:</strong> Homo Economicus (motivado financeiramente).</p>
+                            <p><strong>Liderança:</strong> Autocrática e focada na vigilância rígida.</p>
+                            <p><strong>Limitação:</strong> Desmotivação crônica, tédio e alta rotatividade de pessoal.</p>
+                        </div>
+                    </div>
+                    <!-- Humanístico Card -->
+                    <div class="border border-slate-200 rounded-xl p-4 bg-indigo-50/20">
+                        <span class="px-2 py-0.5 bg-indigo-100 text-indigo-800 text-[10px] font-bold rounded">Modelo Humanístico</span>
+                        <div class="mt-3 space-y-2 text-xs">
+                            <p><strong>Foco:</strong> Condições sociais, integração com a equipe e bem-estar.</p>
+                            <p><strong>Visão do Indivíduo:</strong> Homo Socialis (necessita de pertencimento).</p>
+                            <p><strong>Liderança:</strong> Democrática, focada em liderança informal.</p>
+                            <p><strong>Limitação:</strong> Minimiza a importância do conteúdo intrínseco do trabalho.</p>
+                        </div>
+                    </div>
+                    <!-- Contingencial Card -->
+                    <div class="border border-slate-200 rounded-xl p-4 bg-emerald-50/20">
+                        <span class="px-2 py-0.5 bg-emerald-100 text-emerald-800 text-[10px] font-bold rounded">Modelo Contingencial</span>
+                        <div class="mt-3 space-y-2 text-xs">
+                            <p><strong>Foco:</strong> Adaptabilidade, tarefas dinâmicas e polivalência profissional.</p>
+                            <p><strong>Visão do Indivíduo:</strong> Homem Complexo (busca desafios e crescimento).</p>
+                            <p><strong>Liderança:</strong> Situacional e facilitadora de novos processos.</p>
+                            <p><strong>Limitação:</strong> Alta exigência cognitiva e investimento inicial em treinamento.</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Interactive Scenario Simulator (Pedagogical Dynamic) -->
+                <div class="mt-8 bg-slate-950 text-white rounded-2xl p-5 sm:p-6 relative overflow-hidden">
+                    <div class="absolute inset-0 bg-gradient-to-r from-brand-900/30 to-slate-950 z-0"></div>
+                    <div class="relative z-10 space-y-4">
+                        <div class="flex items-center gap-2">
+                            <span class="bg-brand-500/20 text-brand-300 border border-brand-500/30 px-2.5 py-0.5 rounded-full text-[11px] font-bold uppercase tracking-wider">Desafio Didático Interativo</span>
+                            <h3 class="font-bold text-slate-100 text-sm">Cenários Práticos de Mercado</h3>
+                        </div>
+                        <p class="text-xs text-slate-300 leading-relaxed max-w-2xl">
+                            Selecione uma situação-problema comum do dia a dia das empresas e descubra como cada modelo de desenho de cargo resolve (ou piora) o desafio:
+                        </p>
+
+                        <div class="flex flex-col sm:flex-row gap-3 items-stretch sm:items-center">
+                            <select id="sim-scenario" onchange="runScenarioSimulation()" class="bg-slate-900 border border-slate-700 text-slate-100 rounded-lg text-xs p-2.5 focus:outline-none focus:ring-2 focus:ring-brand-500 shrink-0">
+                                <option value="tecnologia">Cenário 1: Chegada de nova tecnologia disruptiva</option>
+                                <option value="absenteismo">Cenário 2: Surtos frequentes de absenteísmo</option>
+                                <option value="inovacao">Cenário 3: Demanda de clientes por inovação rápida</option>
+                            </select>
+                            <div class="flex items-center gap-2">
+                                <span class="text-slate-500 hidden sm:inline"><i class="fa-solid fa-angles-right text-xs"></i></span>
+                                <span class="text-xs font-semibold text-brand-300" id="sim-headline">Como os modelos reagem:</span>
+                            </div>
+                        </div>
+
+                        <!-- Results of Simulation -->
+                        <div class="grid grid-cols-1 md:grid-cols-3 gap-4 pt-2">
+                            <div class="bg-slate-900/80 border border-slate-800 p-3 rounded-xl">
+                                <span class="text-[10px] font-bold text-red-400 block uppercase">Reação: Clássico</span>
+                                <p id="sim-classico-text" class="text-[11px] text-slate-400 mt-1 leading-relaxed">
+                                    Resistência inicial forte. A tecnologia exige redesenho de cada microtarefa por especialistas externos de engenharia industrial.
+                                </p>
+                            </div>
+                            <div class="bg-slate-900/80 border border-slate-800 p-3 rounded-xl">
+                                <span class="text-[10px] font-bold text-indigo-400 block uppercase">Reação: Humanístico</span>
+                                <p id="sim-humanistico-text" class="text-[11px] text-slate-400 mt-1 leading-relaxed">
+                                    Os grupos se unem para debater a mudança. O clima social é mantido, mas há risco de atrasar o cronograma para evitar atritos.
+                                </p>
+                            </div>
+                            <div class="bg-slate-900/80 border border-slate-800 p-3 rounded-xl border-emerald-500/20 bg-emerald-950/10">
+                                <span class="text-[10px] font-bold text-emerald-400 block uppercase flex items-center gap-1">Reação: Contingencial <i class="fa-solid fa-circle-check text-xs"></i></span>
+                                <p id="sim-contingencial-text" class="text-[11px] text-slate-300 mt-1 leading-relaxed">
+                                    Os próprios funcionários absorvem e implementam a ferramenta com facilidade e automotivação através da polivalência de cargos.
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
             </div>
         </div>
 
@@ -621,6 +829,67 @@
             } else {
                 menu.classList.add('hidden');
                 icon.className = "fa-solid fa-bars text-xl";
+            }
+        }
+
+        // --- Highlight Comparative Column Logic ---
+        function highlightColumn(target) {
+            // Reset background classes
+            document.querySelectorAll('.col-classico, .col-humanistico, .col-contingencial').forEach(el => {
+                el.classList.remove('bg-amber-50/25', 'bg-indigo-50/25', 'bg-emerald-50/25', 'font-semibold', 'scale-100');
+            });
+            document.querySelectorAll('#th-classico, #th-humanistico, #th-contingencial').forEach(el => {
+                el.classList.remove('bg-amber-50/60', 'bg-indigo-50/60', 'bg-emerald-50/60', 'text-brand-900', 'border-b-2', 'border-brand-500');
+            });
+            
+            // Reset buttons styling
+            document.querySelectorAll('#btn-col-all, #btn-col-classico, #btn-col-humanistico, #btn-col-contingencial').forEach(btn => {
+                btn.className = "px-3 py-1 bg-slate-100 text-slate-600 hover:bg-slate-200 rounded-lg text-xs font-bold transition-all border border-slate-200";
+            });
+
+            if (target === 'all') {
+                document.getElementById('btn-col-all').className = "px-3 py-1 bg-brand-600 text-white rounded-lg text-xs font-bold transition-all border border-brand-500";
+                showToast("Visualização padrão redefinida para todos os modelos!");
+            } else if (target === 'classico') {
+                document.getElementById('btn-col-classico').className = "px-3 py-1 bg-amber-600 text-white rounded-lg text-xs font-bold transition-all border border-amber-500";
+                document.querySelectorAll('.col-classico').forEach(el => el.classList.add('bg-amber-50/25', 'font-medium'));
+                document.getElementById('th-classico').classList.add('bg-amber-50/60', 'text-brand-900', 'border-b-2', 'border-brand-500');
+                showToast("Modelo Clássico destacado!");
+            } else if (target === 'humanistico') {
+                document.getElementById('btn-col-humanistico').className = "px-3 py-1 bg-indigo-600 text-white rounded-lg text-xs font-bold transition-all border border-indigo-500";
+                document.querySelectorAll('.col-humanistico').forEach(el => el.classList.add('bg-indigo-50/25', 'font-medium'));
+                document.getElementById('th-humanistico').classList.add('bg-indigo-50/60', 'text-brand-900', 'border-b-2', 'border-brand-500');
+                showToast("Modelo Humanístico destacado!");
+            } else if (target === 'contingencial') {
+                document.getElementById('btn-col-contingencial').className = "px-3 py-1 bg-emerald-600 text-white rounded-lg text-xs font-bold transition-all border border-emerald-500";
+                document.querySelectorAll('.col-contingencial').forEach(el => el.classList.add('bg-emerald-50/25', 'font-medium'));
+                document.getElementById('th-contingencial').classList.add('bg-emerald-50/60', 'text-brand-900', 'border-b-2', 'border-brand-500');
+                showToast("Modelo Contingencial destacado!");
+            }
+        }
+
+        // --- Scenario Simulation Logic ---
+        function runScenarioSimulation() {
+            const scenario = document.getElementById('sim-scenario').value;
+            const simClassico = document.getElementById('sim-classico-text');
+            const simHumanistico = document.getElementById('sim-humanistico-text');
+            const simContingencial = document.getElementById('sim-contingencial-text');
+
+            if (scenario === 'tecnologia') {
+                simClassico.innerHTML = "Resistência inicial forte. A nova tecnologia exige o redesenho minucioso de cada tarefa operacional por analistas de métodos externos.";
+                simHumanistico.innerHTML = "A equipe se reúne em discussões sociais antes de aceitar. O clima de amizade ameniza o impacto, mas a transição produtiva é lenta.";
+                simContingencial.innerHTML = "Transição natural rápida. Como os cargos são focados em polivalência e autodesenvolvimento, os próprios ocupantes lideram e inovam com a ferramenta.";
+                showToast("Simulador atualizado: Mudança Tecnológica.");
+            } else if (scenario === 'absenteismo') {
+                simClassico.innerHTML = "Piora crônica. Diante de cargos vazios, a linha de produção para. A repetição extrema gera tédio e o funcionário se desliga com facilidade.";
+                simHumanistico.innerHTML = "A coesão do grupo ajuda a contornar ausências pontuais por camaradagem, mas não ataca a real causa estrutural da falta de interesse nas tarefas diárias.";
+                simContingencial.innerHTML = "Controle dinâmico. A alta variedade de habilidades permite que colegas cubram o posto de forma flexível e enriquecida, mantendo o engajamento geral.";
+                showToast("Simulador atualizado: Surtos de Absenteísmo.");
+            } else if (scenario === 'inovacao') {
+                simClassico.innerHTML = "Falha severa. A ultra-especialização clássica pune severamente qualquer iniciativa fora do padrão rígido estabelecido pela chefia.";
+                simHumanistico.innerHTML = "Discussões amigáveis em grupo são geradas, mas a falta de clareza e o foco exclusivo no clima organizacional adiam as decisões necessárias de mercado.";
+                simContingencial.innerHTML = "Sucesso garantido. Os trabalhadores, dotados de alta autonomia e feedback direto, criam e validam melhorias de mercado em tempo real nas pontas.";
+                showToast("Simulador atualizado: Demanda por Inovação.");
             }
         }
 

@@ -1,0 +1,364 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Panorama de Recrutamento SC - 2026</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <!-- Firebase SDK -->
+    <script type="module">
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-app.js";
+        import { getAuth, signInAnonymously, signInWithCustomToken, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-auth.js";
+        import { getFirestore, collection, addDoc, onSnapshot, query, doc, deleteDoc } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-firestore.js";
+
+        const firebaseConfig = JSON.parse(__firebase_config);
+        const app = initializeApp(firebaseConfig);
+        const auth = getAuth(app);
+        const db = getFirestore(app);
+        const appId = typeof __app_id !== 'undefined' ? __app_id : 'default-app-id';
+
+        let currentUser = null;
+
+        const initAuth = async () => {
+            try {
+                if (typeof __initial_auth_token !== 'undefined' && __initial_auth_token) {
+                    await signInWithCustomToken(auth, __initial_auth_token);
+                } else {
+                    await signInAnonymously(auth);
+                }
+            } catch (error) { console.error("Erro auth:", error); }
+        };
+
+        onAuthStateChanged(auth, (user) => {
+            currentUser = user;
+            if (user) setupRealtimeListeners();
+        });
+
+        initAuth();
+
+        function setupRealtimeListeners() {
+            if (!currentUser) return;
+            const vagasRef = collection(db, 'artifacts', appId, 'public', 'data', 'vagas');
+            const candsRef = collection(db, 'artifacts', appId, 'public', 'data', 'candidaturas');
+
+            onSnapshot(vagasRef, (snapshot) => {
+                const vagas = snapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }));
+                updateVagasUI(vagas);
+            }, (error) => console.error(error));
+
+            onSnapshot(candsRef, (snapshot) => {
+                const cands = snapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }));
+                updateCandsUI(cands);
+            }, (error) => console.error(error));
+        }
+
+        window.submitVaga = async function() {
+            if (!currentUser) return;
+            const aluno = document.getElementById('studentName').value.trim();
+            if (!aluno) { showToast("Informe seu nome.", "error"); return; }
+            const novaVaga = {
+                aluno: aluno,
+                titulo: document.getElementById('jobTitle').value,
+                cbo: document.getElementById('jobCbo').value,
+                tipo: document.querySelector('input[name="recType"]:checked').value,
+                habilidades: window.currentSkills,
+                createdAt: Date.now()
+            };
+            try {
+                await addDoc(collection(db, 'artifacts', appId, 'public', 'data', 'vagas'), novaVaga);
+                showToast("Vaga enviada!", "success");
+            } catch (e) { showToast("Erro ao salvar.", "error"); }
+        };
+
+        window.submitCandidatura = async function() {
+            if (!currentUser) return;
+            const candName = document.getElementById('candidateName').value.trim();
+            if (!candName) return;
+            try {
+                await addDoc(collection(db, 'artifacts', appId, 'public', 'data', 'candidaturas'), {
+                    candidato: candName,
+                    vaga: document.getElementById('jobTitle').value,
+                    createdAt: Date.now()
+                });
+                showToast("Currículo enviado!", "success");
+                document.getElementById('candidateName').value = '';
+            } catch (e) { showToast("Erro.", "error"); }
+        };
+    </script>
+
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;800&display=swap');
+        body { font-family: 'Inter', sans-serif; background-color: #f8fafc; }
+        .tab-active { border-bottom: 4px solid #10B981; color: #10B981 !important; }
+        .card-shadow { box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.1), 0 8px 10px -6px rgba(0, 0, 0, 0.1); }
+    </style>
+</head>
+<body class="text-slate-800 antialiased">
+
+    <!-- Navegação -->
+    <nav class="sticky top-0 z-50 bg-slate-900 text-white shadow-md no-print">
+        <div class="max-w-7xl mx-auto px-4">
+            <div class="flex items-center justify-between h-16">
+                <div class="flex items-center gap-2 font-bold text-xl uppercase tracking-tighter">
+                    <span class="text-emerald-400">❖</span> Gestão de Pessoas SC
+                </div>
+                <div class="flex gap-4">
+                    <button onclick="switchTab('dashboard')" id="nav-dashboard" class="px-2 py-2 text-sm font-bold tab-active">Infográfico</button>
+                    <button onclick="switchTab('app')" id="nav-app" class="px-2 py-2 text-sm font-bold text-slate-400">Laboratório</button>
+                    <button onclick="switchTab('teacher')" id="nav-teacher" class="px-2 py-2 text-sm font-bold text-amber-400">Relatório Global</button>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <!-- ABA 1: INFOGRÁFICO (INFORMAÇÕES PRINCIPAIS) -->
+    <div id="tab-dashboard" class="no-print pb-20">
+        <header class="bg-gradient-to-br from-slate-900 to-blue-900 text-white py-20 px-4 text-center">
+            <h1 class="text-5xl font-extrabold mb-4">O Novo Papel do RH <span class="text-emerald-400">2026</span></h1>
+            <p class="max-w-2xl mx-auto text-blue-100 text-lg">Baseado na obra de Idalberto Chiavenato e nas tendências do mercado catarinense de tecnologia e indústria.</p>
+        </header>
+
+        <main class="max-w-7xl mx-auto px-4 -mt-10 space-y-12">
+            <!-- Citações e Conceitos -->
+            <section class="grid grid-cols-1 md:grid-cols-3 gap-6">
+                <div class="bg-white p-8 rounded-2xl card-shadow border-t-4 border-emerald-500">
+                    <p class="text-slate-400 text-xs font-bold uppercase mb-2">Conceito Chiavenato</p>
+                    <p class="text-slate-700 italic">"As pessoas não são recursos que a organização consome... Elas são os parceiros que produzem a inteligência do negócio."</p>
+                </div>
+                <div class="bg-white p-8 rounded-2xl card-shadow border-t-4 border-blue-500">
+                    <p class="text-slate-400 text-xs font-bold uppercase mb-2">Desafio 2026</p>
+                    <p class="text-slate-700 font-medium">O RH Catarinense foca agora em <strong>Soft Skills</strong> e <strong>Adaptação Tecnológica</strong> frente à IA Generativa.</p>
+                </div>
+                <div class="bg-white p-8 rounded-2xl card-shadow border-t-4 border-amber-500">
+                    <p class="text-slate-400 text-xs font-bold uppercase mb-2">Atividade em Grupo</p>
+                    <p class="text-slate-700">Utilize o Laboratório para criar uma vaga real baseada em empresas de SC (Ex: WEG, Engie ou Softplan).</p>
+                </div>
+            </section>
+
+            <!-- Recrutamento Interno vs Externo -->
+            <section class="bg-white rounded-3xl p-10 card-shadow">
+                <h2 class="text-3xl font-black mb-8 border-b pb-4">Estratégias de Suprimento</h2>
+                <div class="grid grid-cols-1 lg:grid-cols-2 gap-12">
+                    <div>
+                        <h3 class="text-xl font-bold text-blue-600 mb-4">🏠 Recrutamento Interno</h3>
+                        <p class="text-sm text-slate-600 mb-4">Ocorre quando a empresa tenta preencher a vaga através do remanejamento de seus próprios funcionários.</p>
+                        <div class="bg-blue-50 p-4 rounded-xl">
+                            <ul class="text-sm space-y-2">
+                                <li>✅ <strong>Vantagem:</strong> Custo quase zero e aproveitamento imediato do treinamento já investido.</li>
+                                <li>❌ <strong>Risco:</strong> Pode gerar "Princípio de Peter" (promover alguém até sua incompetência).</li>
+                            </ul>
+                        </div>
+                    </div>
+                    <div>
+                        <h3 class="text-xl font-bold text-emerald-600 mb-4">🌐 Recrutamento Externo</h3>
+                        <p class="text-sm text-slate-600 mb-4">Busca candidatos no Mercado de Recursos Humanos (MRH) fora da organização.</p>
+                        <div class="bg-emerald-50 p-4 rounded-xl">
+                            <ul class="text-sm space-y-2">
+                                <li>✅ <strong>Vantagem:</strong> Introduz "sangue novo", novas ideias e experiências de outros setores.</li>
+                                <li>❌ <strong>Risco:</strong> Maior tempo de integração (onboarding) e custo de anúncio/headhunters.</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Atividades Práticas -->
+            <section class="grid grid-cols-1 md:grid-cols-2 gap-8">
+                <div class="bg-slate-900 text-white p-8 rounded-3xl">
+                    <h3 class="text-2xl font-bold mb-4 text-emerald-400">Atividade 01: O Anúncio Perfeito</h3>
+                    <p class="text-slate-300 mb-6">Acesse a aba <strong>Laboratório</strong> e crie uma vaga para "Analista de Dados".</p>
+                    <ol class="text-sm space-y-3 list-decimal ml-4 text-slate-400">
+                        <li>Defina se o recrutamento será Interno ou Externo.</li>
+                        <li>Escolha o CBO correto (Consulte a Classificação Brasileira).</li>
+                        <li>Adicione pelo menos 4 competências fundamentais.</li>
+                    </ol>
+                </div>
+                <div class="bg-white border-2 border-dashed border-slate-300 p-8 rounded-3xl">
+                    <h3 class="text-2xl font-bold mb-4 text-blue-600">Atividade 02: Simulação de Mercado</h3>
+                    <p class="text-slate-600 mb-6">Peça para um colega enviar um currículo fictício para a vaga que você criou.</p>
+                    <ul class="text-sm space-y-3 text-slate-500">
+                        <li>• Observe como o nome do candidato aparece no <strong>Relatório Global</strong>.</li>
+                        <li>• Analise se as competências exigidas batem com o perfil do candidato.</li>
+                    </ul>
+                </div>
+            </section>
+
+            <!-- Exemplos Reais SC -->
+            <section class="text-center">
+                <h2 class="text-2xl font-bold mb-6">Casos de Sucesso em SC</h2>
+                <div class="flex flex-wrap justify-center gap-4">
+                    <span class="px-6 py-3 bg-white rounded-full shadow-sm text-sm font-bold border">Indústria: Tupy (Joinville)</span>
+                    <span class="px-6 py-3 bg-white rounded-full shadow-sm text-sm font-bold border">Tech: Acate (Florianópolis)</span>
+                    <span class="px-6 py-3 bg-white rounded-full shadow-sm text-sm font-bold border">Têxtil: Karsten (Blumenau)</span>
+                </div>
+            </section>
+        </main>
+    </div>
+
+    <!-- ABA 2: LABORATÓRIO (MANTIDA IGUAL) -->
+    <div id="tab-app" class="hidden no-print max-w-7xl mx-auto px-4 py-12">
+        <div class="bg-white rounded-3xl shadow-2xl overflow-hidden grid grid-cols-1 lg:grid-cols-2 border">
+            <div class="p-8 bg-slate-50 border-r">
+                <h2 class="text-2xl font-bold mb-6">📝 Criar Anúncio de Vaga</h2>
+                <div class="space-y-5">
+                    <input type="text" id="studentName" placeholder="Seu Nome (Estudante)" class="w-full p-3 rounded-lg border border-slate-200 outline-none focus:ring-2 ring-blue-500">
+                    
+                    <div class="grid grid-cols-2 gap-2">
+                        <label class="cursor-pointer border p-3 rounded-xl text-center has-[:checked]:bg-blue-600 has-[:checked]:text-white transition-all">
+                            <input type="radio" name="recType" value="interno" class="hidden" onchange="updatePreview()"> Interno
+                        </label>
+                        <label class="cursor-pointer border p-3 rounded-xl text-center has-[:checked]:bg-emerald-600 has-[:checked]:text-white transition-all">
+                            <input type="radio" name="recType" value="externo" class="hidden" checked onchange="updatePreview()"> Externo
+                        </label>
+                    </div>
+
+                    <input type="text" id="jobTitle" value="Desenvolvedor FullStack" class="w-full p-3 rounded-lg border" oninput="updatePreview()">
+                    
+                    <select id="jobCbo" class="w-full p-3 rounded-lg border" onchange="updatePreview()">
+                        <option value="2124-05">2124-05 - Analista de Sistemas</option>
+                        <option value="2524-05">2524-05 - Profissional de RH</option>
+                        <option value="1421-05">1421-05 - Gerente Administrativo</option>
+                    </select>
+
+                    <div class="flex gap-2">
+                        <input type="text" id="skillInput" placeholder="Skill (ex: React)" class="flex-1 p-3 border rounded-lg">
+                        <button onclick="addSkill()" class="bg-slate-900 text-white px-6 rounded-lg font-bold">+</button>
+                    </div>
+                    <div id="skillsContainer" class="flex flex-wrap gap-2"></div>
+
+                    <button id="btnSubmitVaga" onclick="submitVaga()" class="w-full bg-slate-900 text-white py-4 rounded-xl font-bold hover:bg-black transition-all">Publicar no Mural da Turma</button>
+                </div>
+            </div>
+
+            <div class="p-8 bg-slate-100 flex flex-col items-center justify-center">
+                <div id="adPreview" class="bg-white w-full max-w-sm rounded-2xl p-8 border-t-[12px] border-emerald-500 shadow-2xl">
+                    <span id="badgePreview" class="bg-emerald-100 text-emerald-800 text-[10px] font-black px-3 py-1 rounded-full">EXTERNO</span>
+                    <h3 id="titlePreview" class="text-2xl font-black mt-4 text-slate-900 leading-tight">Desenvolvedor FullStack</h3>
+                    <p id="cboPreview" class="text-slate-400 text-xs font-bold mt-1">CBO 2124-05</p>
+                    <div id="skillsPreview" class="flex flex-wrap gap-1 mt-6"></div>
+                    
+                    <div class="mt-10 pt-8 border-t border-slate-100">
+                        <p class="text-[10px] text-slate-400 mb-3 uppercase font-black tracking-widest">Inscrição de Teste</p>
+                        <input type="text" id="candidateName" placeholder="Nome do Candidato" class="w-full p-3 border border-slate-200 rounded-lg text-sm mb-3">
+                        <button onclick="submitCandidatura()" class="w-full bg-blue-600 text-white py-3 rounded-lg font-bold text-xs hover:bg-blue-700">Enviar Candidatura Simulada</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- ABA 3: PAINEL PROFESSOR (MANTIDA IGUAL) -->
+    <div id="tab-teacher" class="hidden max-w-7xl mx-auto px-4 py-12">
+        <div class="flex justify-between items-end mb-10">
+            <div>
+                <h2 class="text-4xl font-black text-slate-900">Mural <span class="text-amber-500">Global</span></h2>
+                <p class="text-slate-500">Visualização de todos os alunos conectados.</p>
+            </div>
+            <button onclick="window.print()" class="bg-white border-2 border-slate-900 text-slate-900 px-6 py-2 rounded-xl font-bold hover:bg-slate-900 hover:text-white transition-all">Imprimir Relatório</button>
+        </div>
+        
+        <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
+            <div class="bg-white p-6 rounded-3xl border shadow-sm h-[600px] flex flex-col">
+                <h3 class="font-black text-lg mb-4 flex items-center justify-between">Vagas Ativas <span id="countVagas" class="text-blue-600 bg-blue-50 px-3 py-1 rounded-full text-xs">0</span></h3>
+                <div id="teacherVagasList" class="flex-1 overflow-y-auto space-y-4 pr-2"></div>
+            </div>
+            <div class="bg-white p-6 rounded-3xl border shadow-sm h-[600px] flex flex-col">
+                <h3 class="font-black text-lg mb-4 flex items-center justify-between">Candidaturas <span id="countCands" class="text-emerald-600 bg-emerald-50 px-3 py-1 rounded-full text-xs">0</span></h3>
+                <div id="teacherCandidatosList" class="flex-1 overflow-y-auto space-y-4 pr-2"></div>
+            </div>
+        </div>
+    </div>
+
+    <div id="toast" class="fixed bottom-5 right-5 hidden px-6 py-3 rounded-lg text-white font-bold shadow-2xl z-[100]"></div>
+
+    <script>
+        window.currentSkills = ["JavaScript", "Node.js"];
+        
+        function switchTab(tabId) {
+            ['dashboard', 'app', 'teacher'].forEach(id => {
+                document.getElementById(`tab-${id}`).classList.add('hidden');
+                document.getElementById(`nav-${id}`).classList.remove('tab-active');
+                document.getElementById(`nav-${id}`).classList.add('text-slate-400');
+            });
+            document.getElementById(`tab-${tabId}`).classList.remove('hidden');
+            document.getElementById(`nav-${tabId}`).classList.add('tab-active');
+            document.getElementById(`nav-${tabId}`).classList.remove('text-slate-400');
+        }
+
+        function addSkill() {
+            const val = document.getElementById('skillInput').value.trim();
+            if(val) {
+                window.currentSkills.push(val);
+                document.getElementById('skillInput').value = '';
+                renderSkills();
+                updatePreview();
+            }
+        }
+
+        function renderSkills() {
+            const cont = document.getElementById('skillsContainer');
+            const prev = document.getElementById('skillsPreview');
+            cont.innerHTML = ''; prev.innerHTML = '';
+            window.currentSkills.forEach((s, i) => {
+                cont.innerHTML += `<span class="bg-blue-100 text-blue-700 px-3 py-1 rounded-full text-xs font-bold flex items-center gap-2">${s} <button onclick="removeSkill(${i})">×</button></span>`;
+                prev.innerHTML += `<span class="bg-slate-100 text-[10px] px-2 py-1 rounded font-black border border-slate-200 uppercase">${s}</span>`;
+            });
+        }
+
+        function removeSkill(i) {
+            window.currentSkills.splice(i, 1);
+            renderSkills();
+            updatePreview();
+        }
+
+        function updatePreview() {
+            const title = document.getElementById('jobTitle').value;
+            const cbo = document.getElementById('jobCbo').value;
+            const type = document.querySelector('input[name="recType"]:checked').value;
+            document.getElementById('titlePreview').innerText = title;
+            document.getElementById('cboPreview').innerText = `CBO ${cbo}`;
+            const badge = document.getElementById('badgePreview');
+            badge.innerText = type.toUpperCase();
+            const isInterno = type === 'interno';
+            badge.className = isInterno ? 'bg-blue-100 text-blue-800 text-[10px] font-black px-3 py-1 rounded-full' : 'bg-emerald-100 text-emerald-800 text-[10px] font-black px-3 py-1 rounded-full';
+            document.getElementById('adPreview').style.borderTopColor = isInterno ? '#3b82f6' : '#10b981';
+        }
+
+        function updateVagasUI(vagas) {
+            document.getElementById('countVagas').innerText = vagas.length;
+            const list = document.getElementById('teacherVagasList');
+            list.innerHTML = vagas.sort((a,b) => b.createdAt - a.createdAt).map(v => `
+                <div class="p-4 bg-slate-50 rounded-2xl border border-slate-100">
+                    <div class="flex justify-between items-start">
+                        <span class="font-black text-slate-800">${v.titulo}</span>
+                        <span class="text-[9px] font-black uppercase text-slate-400">${v.tipo}</span>
+                    </div>
+                    <p class="text-xs text-blue-600 font-bold mt-1">Estudante: ${v.aluno}</p>
+                </div>
+            `).join('');
+        }
+
+        function updateCandsUI(cands) {
+            document.getElementById('countCands').innerText = cands.length;
+            const list = document.getElementById('teacherCandidatosList');
+            list.innerHTML = cands.sort((a,b) => b.createdAt - a.createdAt).map(c => `
+                <div class="p-4 bg-white border-l-4 border-amber-400 shadow-sm rounded-r-xl">
+                    <p class="text-sm font-black text-slate-800">${c.candidato}</p>
+                    <p class="text-[10px] text-slate-500 uppercase font-bold">Vaga: ${c.vaga}</p>
+                </div>
+            `).join('');
+        }
+
+        function showToast(msg, type) {
+            const t = document.getElementById('toast');
+            t.innerText = msg;
+            t.className = `fixed bottom-5 right-5 px-6 py-3 rounded-lg text-white font-bold shadow-2xl z-[100] ${type === 'success' ? 'bg-emerald-600' : 'bg-rose-600'}`;
+            t.classList.remove('hidden');
+            setTimeout(() => t.classList.add('hidden'), 3000);
+        }
+
+        window.onload = () => { renderSkills(); updatePreview(); };
+    </script>
+</body>
+</html>

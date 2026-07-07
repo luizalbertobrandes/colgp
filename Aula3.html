@@ -1,0 +1,396 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>O Desenho de Cargos na Prática - Teoria & WorkLab</title>
+<script src="https://cdn.tailwindcss.com"></script>
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<style>
+body {
+    background-color: #f8fafc;
+    font-family: 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+}
+.chart-container {
+    position: relative;
+    width: 100%;
+    max-width: 600px;
+    margin-left: auto;
+    margin-right: auto;
+    height: 350px;
+    max-height: 400px;
+}
+.glass-card {
+    background: rgba(255, 255, 255, 0.95);
+    backdrop-filter: blur(10px);
+    box-shadow: 0 10px 25px rgba(30, 58, 138, 0.05);
+    border: 1px solid rgba(226, 232, 240, 0.8);
+}
+.tab-active {
+    border-bottom: 4px solid #3b82f6;
+    color: #1e3a8a;
+}
+.quote-card {
+    border-left: 4px solid #f59e0b;
+    background: #fffcf5;
+    font-style: italic;
+}
+.step-dot {
+    height: 12px;
+    width: 12px;
+    background-color: #3b82f6;
+    border-radius: 50%;
+    display: inline-block;
+    margin-right: 10px;
+}
+</style>
+<script>
+tailwind.config = {
+    theme: {
+        extend: {
+            colors: {
+                primary: '#1e3a8a',
+                secondary: '#3b82f6',
+                accent: '#f59e0b',
+                success: '#10b981',
+                dark: '#0f172a',
+                light: '#f1f5f9'
+            }
+        }
+    }
+}
+</script>
+</head>
+<body class="text-slate-700 antialiased">
+
+<nav class="sticky top-0 z-50 bg-white border-b border-slate-200 shadow-sm">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div class="flex justify-between h-16 items-center">
+            <div class="flex items-center gap-2">
+                <span class="text-2xl">🎯</span>
+                <span class="font-bold text-primary text-lg md:text-xl">Gestão de Pessoas SC</span>
+            </div>
+            <div class="flex space-x-4 md:space-x-8">
+                <button onclick="switchTab('teoria')" id="btn-teoria" class="tab-active py-5 px-2 font-bold transition-all">Teoria</button>
+                <button onclick="switchTab('worklab')" id="btn-worklab" class="py-5 px-2 font-bold text-slate-400 hover:text-primary transition-all">WorkLab</button>
+            </div>
+        </div>
+    </div>
+</nav>
+
+<div id="teoria-content">
+    <header class="relative bg-primary overflow-hidden pb-16 pt-20">
+        <div class="absolute inset-0 opacity-10" style="background-image: radial-gradient(#ffffff 2px, transparent 2px); background-size: 30px 30px;"></div>
+        <div class="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
+            <span class="inline-block py-1 px-3 rounded-full bg-secondary text-white text-sm font-semibold tracking-wider mb-4">MÓDULO TEÓRICO AMPLIADO</span>
+            <h1 class="text-4xl md:text-6xl font-extrabold text-white mb-6 tracking-tight">O Desenho de Cargos <br><span class="text-accent">na Prática</span></h1>
+            <p class="mt-4 max-w-2xl text-lg md:text-xl text-blue-100 mx-auto">
+                Estratégias para humanizar o trabalho administrativo e potencializar resultados organizacionais.
+            </p>
+        </div>
+    </header>
+
+    <main class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12 -mt-10 relative z-10">
+        
+        <!-- Seção de Citação e Conceito -->
+        <section class="mb-12">
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+                <div class="md:col-span-2 glass-card rounded-2xl p-8">
+                    <h2 class="text-2xl font-bold text-primary mb-4">O que é Desenho de Cargos?</h2>
+                    <p class="text-slate-600 leading-relaxed">
+                        É a especificação do conteúdo, dos métodos de trabalho e das relações com os demais cargos, no sentido de satisfazer os requisitos tecnológicos, organizacionais e sociais, bem como os requisitos pessoais do ocupante.
+                    </p>
+                    <div class="mt-6 p-4 quote-card rounded-r-lg">
+                        <p class="text-slate-800">"Desenhar um cargo significa definir quatro condições básicas: o conteúdo do cargo, os métodos e processos de trabalho, a responsabilidade e a autoridade."</p>
+                        <footer class="text-xs mt-2 font-bold">— Idalberto Chiavenato</footer>
+                    </div>
+                </div>
+                <div class="bg-secondary text-white rounded-2xl p-8 flex flex-col justify-center">
+                    <h3 class="text-xl font-bold mb-4 italic">Exemplo Prático:</h3>
+                    <p class="text-sm opacity-90">Em vez de apenas "Arquivar Documentos", um cargo bem desenhado envolve: <strong>Analisar</strong> a relevância da informação, <strong>Digitalizar</strong> para acesso rápido e <strong>Gerir</strong> o ciclo de vida do dado.</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- Seção das 5 Dimensões -->
+        <section class="mb-20">
+            <div class="glass-card rounded-2xl p-6 md:p-10">
+                <div class="text-center mb-10">
+                    <h2 class="text-3xl font-bold text-dark mb-4">As 5 Dimensões Psicológicas</h2>
+                    <p class="text-slate-500 max-w-3xl mx-auto">Segundo o Modelo Contingencial de Hackman e Oldham.</p>
+                </div>
+                <div class="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
+                    <div class="space-y-4">
+                        <div class="group p-4 rounded-xl hover:bg-blue-50 transition-all border-l-4 border-secondary bg-white shadow-sm">
+                            <h3 class="font-bold text-dark group-hover:text-primary">1. Variedade de Habilidades</h3>
+                            <p class="text-sm text-slate-600">Desafios que exigem diferentes conhecimentos. <i>Ex: Atendimento + Planilhas + Redação.</i></p>
+                        </div>
+                        <div class="group p-4 rounded-xl hover:bg-blue-50 transition-all border-l-4 border-secondary bg-white shadow-sm">
+                            <h3 class="font-bold text-dark group-hover:text-primary">2. Identidade da Tarefa</h3>
+                            <p class="text-sm text-slate-600">Ver o trabalho do início ao fim. <i>Ex: Abrir, processar e finalizar um processo de compra.</i></p>
+                        </div>
+                        <div class="group p-4 rounded-xl hover:bg-blue-50 transition-all border-l-4 border-secondary bg-white shadow-sm">
+                            <h3 class="font-bold text-dark group-hover:text-primary">3. Significado da Tarefa</h3>
+                            <p class="text-sm text-slate-600">Sentir que o trabalho importa para os outros. <i>Ex: Saber que seu relatório ajuda na decisão estratégica.</i></p>
+                        </div>
+                        <div class="group p-4 rounded-xl hover:bg-blue-50 transition-all border-l-4 border-secondary bg-white shadow-sm">
+                            <h3 class="font-bold text-dark group-hover:text-primary">4. Autonomia</h3>
+                            <p class="text-sm text-slate-600">Poder de decisão sobre horários e métodos. <i>Ex: Definir a ordem das prioridades do dia.</i></p>
+                        </div>
+                        <div class="group p-4 rounded-xl hover:bg-blue-50 transition-all border-l-4 border-secondary bg-white shadow-sm">
+                            <h3 class="font-bold text-dark group-hover:text-primary">5. Feedback</h3>
+                            <p class="text-sm text-slate-600">Saber se o trabalho está bom sem precisar perguntar. <i>Ex: Metas visíveis em dashboards.</i></p>
+                        </div>
+                    </div>
+                    <div class="bg-white p-6 rounded-2xl shadow-inner border border-slate-100">
+                        <div class="chart-container">
+                            <canvas id="radarChart"></canvas>
+                        </div>
+                        <p class="text-[10px] text-center text-slate-400 mt-4 uppercase tracking-widest">Comparativo de Perfil de Cargo</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Infográfico: Enriquecimento -->
+        <section class="mb-20">
+            <h2 class="text-center text-2xl font-bold mb-8 text-primary">Estratégias de Redesenho</h2>
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+                <div class="glass-card rounded-2xl p-8 border-t-4 border-secondary relative overflow-hidden">
+                    <div class="absolute top-0 right-0 p-4 opacity-10 text-6xl">↔️</div>
+                    <h3 class="text-2xl font-bold mb-4">Enriquecimento Horizontal</h3>
+                    <p class="text-slate-600 mb-6 text-sm">Adição de tarefas de mesma complexidade. Combate a fadiga repetitiva.</p>
+                    <ul class="text-xs space-y-2 text-slate-500 mb-6">
+                        <li><span class="step-dot"></span>Rotação de cargos (Job Rotation)</li>
+                        <li><span class="step-dot"></span>Ampliação de tarefas (Job Enlargement)</li>
+                    </ul>
+                    <div class="bg-slate-50 p-4 rounded-lg text-center font-bold text-secondary italic">"Reduz a monotonia e amplia a visão"</div>
+                </div>
+                <div class="glass-card rounded-2xl p-8 border-t-4 border-accent relative overflow-hidden">
+                    <div class="absolute top-0 right-0 p-4 opacity-10 text-6xl">↕️</div>
+                    <h3 class="text-2xl font-bold mb-4">Enriquecimento Vertical</h3>
+                    <p class="text-slate-600 mb-6 text-sm">Adição de responsabilidades de planejamento, controle e autoavaliação.</p>
+                    <ul class="text-xs space-y-2 text-slate-500 mb-6">
+                        <li><span class="step-dot"></span>Participação em decisões</li>
+                        <li><span class="step-dot"></span>Gestão do próprio tempo</li>
+                    </ul>
+                    <div class="bg-slate-50 p-4 rounded-lg text-center font-bold text-accent italic">"Aumenta a motivação e a autoridade"</div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Métricas e Resultados -->
+        <section class="mb-10">
+            <div class="glass-card rounded-2xl p-6 md:p-10">
+                <h2 class="text-center text-3xl font-bold mb-4">A Lógica do Impacto</h2>
+                <p class="text-center text-slate-500 mb-10">O que acontece quando redesenhamos corretamente?</p>
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-12">
+                    <div class="bg-white p-4 rounded-xl shadow-sm border border-slate-50">
+                        <h4 class="text-center font-bold text-xs uppercase text-slate-400 mb-4">Ganhos de Eficiência (%)</h4>
+                        <div class="chart-container"><canvas id="barChart"></canvas></div>
+                    </div>
+                    <div class="bg-white p-4 rounded-xl shadow-sm border border-slate-50">
+                        <h4 class="text-center font-bold text-xs uppercase text-slate-400 mb-4">Fatores de Retenção de Talentos</h4>
+                        <div class="chart-container"><canvas id="doughnutChart"></canvas></div>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+</div>
+
+<div id="worklab-content" class="hidden">
+    <!-- ABA WORKLAB: MANTIDA INTEGRALMENTE CONFORME VERSÃO ANTERIOR -->
+    <header class="bg-dark pb-16 pt-20">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
+            <span class="inline-block py-1 px-3 rounded-full bg-accent text-dark text-sm font-bold tracking-wider mb-4">LABORATÓRIO DE CRIATIVIDADE</span>
+            <h1 class="text-4xl md:text-6xl font-extrabold text-white mb-6">WorkLab <span class="text-secondary">Prático</span></h1>
+            <p class="mt-4 max-w-2xl text-lg text-slate-400 mx-auto">
+                10 desafios intelectuais para aplicar o raciocínio administrativo no redesenho de cargos.
+            </p>
+        </div>
+    </header>
+
+    <main class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+            
+            <div class="bg-white p-6 rounded-xl shadow-md border-l-4 border-secondary">
+                <div class="text-secondary text-2xl mb-2 font-bold">01</div>
+                <h3 class="font-bold text-lg mb-2">A Cura do Carimbo</h3>
+                <p class="text-sm text-slate-600">Um auxiliar administrativo carimba 500 documentos por dia. Como aplicar <strong>Identidade da Tarefa</strong> sem mudar o volume de trabalho?</p>
+            </div>
+
+            <div class="bg-white p-6 rounded-xl shadow-md border-l-4 border-accent">
+                <div class="text-accent text-2xl mb-2 font-bold">02</div>
+                <h3 class="font-bold text-lg mb-2">O Enigma da Autonomia</h3>
+                <p class="text-sm text-slate-600">Liste 3 pequenas decisões que um recepcionista poderia tomar sozinho para aumentar sua <strong>Autonomia</strong> sem risco financeiro para a empresa.</p>
+            </div>
+
+            <div class="bg-white p-6 rounded-xl shadow-md border-l-4 border-success">
+                <div class="text-success text-2xl mb-2 font-bold">03</div>
+                <h3 class="font-bold text-lg mb-2">Significado no Arquivo</h3>
+                <p class="text-sm text-slate-600">Como explicar o <strong>Significado da Tarefa</strong> para alguém que organiza notas fiscais antigas há 10 anos? Crie um argumento motivador.</p>
+            </div>
+
+            <div class="bg-white p-6 rounded-xl shadow-md border-l-4 border-primary">
+                <div class="text-primary text-2xl mb-2 font-bold">04</div>
+                <h3 class="font-bold text-lg mb-2">Rotação de Talentos</h3>
+                <p class="text-sm text-slate-600">Desenhe um plano de <strong>Enriquecimento Horizontal</strong> para uma equipe de 3 pessoas: uma faz faturamento, outra compras e outra estoque.</p>
+            </div>
+
+            <div class="bg-white p-6 rounded-xl shadow-md border-l-4 border-secondary">
+                <div class="text-secondary text-2xl mb-2 font-bold">05</div>
+                <h3 class="font-bold text-lg mb-2">Feedback Invisível</h3>
+                <p class="text-sm text-slate-600">O cargo de digitador não tem contato com clientes. Como o próprio sistema ou processo poderia dar <strong>Feedback</strong> imediato de qualidade?</p>
+            </div>
+
+            <div class="bg-white p-6 rounded-xl shadow-md border-l-4 border-accent">
+                <div class="text-accent text-2xl mb-2 font-bold">06</div>
+                <h3 class="font-bold text-lg mb-2">Verticalização do Auxiliar</h3>
+                <p class="text-sm text-slate-600">Um estagiário faz apenas relatórios. Qual tarefa de <strong>Planejamento</strong> você daria a ele para tornar o cargo Verticalmente Enriquecido?</p>
+            </div>
+
+            <div class="bg-white p-6 rounded-xl shadow-md border-l-4 border-success">
+                <div class="text-success text-2xl mb-2 font-bold">07</div>
+                <h3 class="font-bold text-lg mb-2">A Variedade Útil</h3>
+                <p class="text-sm text-slate-600">Diferencie: dar "mais do mesmo" de dar "variedade real". Use o exemplo de um cargo de Operador de Caixa de Supermercado.</p>
+            </div>
+
+            <div class="bg-white p-6 rounded-xl shadow-md border-l-4 border-primary">
+                <div class="text-primary text-2xl mb-2 font-bold">08</div>
+                <h3 class="font-bold text-lg mb-2">O Filtro das 5 Dimensões</h3>
+                <p class="text-sm text-slate-600">Analise o cargo de Professor. Qual das 5 dimensões costuma ser a mais alta? E qual costuma ser o maior desafio de manter alta?</p>
+            </div>
+
+            <div class="bg-white p-6 rounded-xl shadow-md border-l-4 border-secondary">
+                <div class="text-secondary text-2xl mb-2 font-bold">09</div>
+                <h3 class="font-bold text-lg mb-2">Redesenhando o Tédio</h3>
+                <p class="text-sm text-slate-600">Crie um novo nome de cargo e uma nova descrição para um "Office-boy" visando aumentar seu <strong>Significado</strong> e <strong>Identidade</strong>.</p>
+            </div>
+
+            <div class="bg-white p-6 rounded-xl shadow-md border-l-4 border-accent">
+                <div class="text-accent text-2xl mb-2 font-bold">10</div>
+                <h3 class="font-bold text-lg mb-2">Dilema do Gestor</h3>
+                <p class="text-sm text-slate-600">Um funcionário recusa o enriquecimento vertical por medo de responsabilidade. Como convencê-lo usando apenas os benefícios psicológicos?</p>
+            </div>
+        </div>
+    </main>
+</div>
+
+<footer class="bg-dark text-slate-500 py-10 border-t border-slate-800 text-center">
+    <div class="max-w-7xl mx-auto px-4">
+        <p class="font-bold text-white">Gestão de Pessoas - Desenho de Cargos</p>
+        <p class="text-sm mt-2">Curso Técnico em Administração - Santa Catarina</p>
+    </div>
+</footer>
+
+<script>
+function switchTab(tab) {
+    const teoriaContent = document.getElementById('teoria-content');
+    const worklabContent = document.getElementById('worklab-content');
+    const btnTeoria = document.getElementById('btn-teoria');
+    const btnWorklab = document.getElementById('btn-worklab');
+
+    if (tab === 'teoria') {
+        teoriaContent.classList.remove('hidden');
+        worklabContent.classList.add('hidden');
+        btnTeoria.className = 'tab-active py-5 px-2 font-bold transition-all';
+        btnWorklab.className = 'py-5 px-2 font-bold text-slate-400 hover:text-primary transition-all';
+    } else {
+        teoriaContent.classList.add('hidden');
+        worklabContent.classList.remove('hidden');
+        btnWorklab.className = 'tab-active py-5 px-2 font-bold transition-all';
+        btnTeoria.className = 'py-5 px-2 font-bold text-slate-400 hover:text-primary transition-all';
+    }
+}
+
+function wrapLabel(label) {
+    if (label.length <= 16) return label;
+    const words = label.split(' ');
+    let lines = [];
+    let currentLine = '';
+    words.forEach(word => {
+        if ((currentLine + word).length > 16) {
+            lines.push(currentLine.trim());
+            currentLine = word + ' ';
+        } else {
+            currentLine += word + ' ';
+        }
+    });
+    if (currentLine.trim().length > 0) lines.push(currentLine.trim());
+    return lines;
+}
+
+const tooltipConfig = {
+    callbacks: {
+        title: function(tooltipItems) {
+            const item = tooltipItems[0];
+            let label = item.chart.data.labels[item.dataIndex];
+            return Array.isArray(label) ? label.join(' ') : label;
+        }
+    }
+};
+
+const radarCtx = document.getElementById('radarChart').getContext('2d');
+new Chart(radarCtx, {
+    type: 'radar',
+    data: {
+        labels: ['Variedade', 'Identidade', 'Significado', 'Autonomia', 'Feedback'].map(wrapLabel),
+        datasets: [{
+            label: 'Cargo Burocrático',
+            data: [20, 30, 40, 10, 20],
+            backgroundColor: 'rgba(148, 163, 184, 0.2)',
+            borderColor: 'rgba(148, 163, 184, 1)',
+            borderWidth: 2
+        }, {
+            label: 'Cargo Enriquecido',
+            data: [85, 80, 90, 75, 85],
+            backgroundColor: 'rgba(59, 130, 246, 0.4)',
+            borderColor: 'rgba(30, 58, 138, 1)',
+            borderWidth: 2
+        }]
+    },
+    options: {
+        responsive: true,
+        maintainAspectRatio: false,
+        plugins: { tooltip: tooltipConfig, legend: { position: 'bottom' } },
+        scales: { r: { ticks: { display: false }, min: 0, max: 100 } }
+    }
+});
+
+const barCtx = document.getElementById('barChart').getContext('2d');
+new Chart(barCtx, {
+    type: 'bar',
+    data: {
+        labels: ['Produtividade', 'Satisfação', 'Turnover', 'Erros'].map(wrapLabel),
+        datasets: [
+            { label: 'Tradicional', data: [45, 30, 85, 70], backgroundColor: '#cbd5e1' },
+            { label: 'Redesenhado', data: [85, 90, 25, 15], backgroundColor: '#10b981' }
+        ]
+    },
+    options: {
+        responsive: true,
+        maintainAspectRatio: false,
+        plugins: { tooltip: tooltipConfig, legend: { position: 'bottom' } }
+    }
+});
+
+const doughnutCtx = document.getElementById('doughnutChart').getContext('2d');
+new Chart(doughnutCtx, {
+    type: 'doughnut',
+    data: {
+        labels: ['Autonomia', 'Significado', 'Variedade', 'Reconhecimento', 'Salário'].map(wrapLabel),
+        datasets: [{
+            data: [35, 25, 20, 15, 5],
+            backgroundColor: ['#f59e0b', '#3b82f6', '#8b5cf6', '#10b981', '#94a3b8']
+        }]
+    },
+    options: {
+        responsive: true,
+        maintainAspectRatio: false,
+        plugins: { tooltip: tooltipConfig, legend: { position: 'right' } }
+    }
+});
+</script>
+</body>
+</html>

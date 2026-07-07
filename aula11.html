@@ -1,0 +1,795 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Estratégia de Onboarding: Do Manual ao Welcome Kit</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700;800&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #f8fafc;
+            color: #1e293b;
+        }
+        .chart-container {
+            position: relative;
+            width: 100%;
+            max-width: 650px;
+            margin-left: auto;
+            margin-right: auto;
+            height: 350px;
+            max-height: 400px;
+        }
+        .glass-card {
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(226, 232, 240, 0.8);
+        }
+        .gradient-bg {
+            background: linear-gradient(135deg, #6366f1 0%, #a855f7 100%);
+        }
+        .step-node {
+            width: 40px;
+            height: 40px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 50%;
+            font-weight: bold;
+            color: white;
+            background: #6366f1;
+            z-index: 10;
+        }
+        .step-line {
+            position: absolute;
+            top: 20px;
+            left: 50%;
+            width: 2px;
+            height: 100%;
+            background: #e2e8f0;
+            z-index: 1;
+        }
+        /* Estilos adicionais para as abas interativas */
+        .tab-btn.active {
+            border-bottom-color: #6366f1;
+            color: #6366f1;
+            font-weight: 700;
+        }
+    </style>
+</head>
+<body class="antialiased">
+
+    <header class="gradient-bg text-white py-16 px-6 text-center shadow-lg">
+        <div class="max-w-4xl mx-auto">
+            <h1 class="text-4xl md:text-6xl font-extrabold mb-4 tracking-tight">O Poder da Integração</h1>
+            <p class="text-xl opacity-90 font-light">Transformando Recém-Contratados em Talentos Engajados através do Onboarding Estratégico.</p>
+        </div>
+    </header>
+
+    <!-- Barra de Navegação de Abas -->
+    <div class="bg-white border-b border-gray-200 sticky top-0 z-50 shadow-sm">
+        <div class="max-w-7xl mx-auto px-4">
+            <div class="flex space-x-8 justify-center">
+                <button id="btn-infografico" onclick="switchTab('infografico')" class="tab-btn active py-4 px-2 border-b-2 border-transparent text-sm md:text-base font-semibold text-gray-500 hover:text-indigo-600 transition-all duration-300">
+                    📊 Infográfico Estratégico
+                </button>
+                <button id="btn-atividade" onclick="switchTab('atividade')" class="tab-btn py-4 px-2 border-b-2 border-transparent text-sm md:text-base font-semibold text-gray-500 hover:text-indigo-600 transition-all duration-300">
+                    🛠️ Atividade Prática (Empresa X)
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- ABA 1: CONTEÚDO ORIGINAL DO INFOGRÁFICO -->
+    <div id="tab-content-infografico" class="tab-pane">
+        <main class="max-w-7xl mx-auto px-4 py-12">
+            
+            <section class="mb-20">
+                <div class="max-w-3xl mx-auto text-center mb-12">
+                    <h2 class="text-3xl font-bold text-gray-800 mb-4">A Anatomia de um Manual Eficiente</h2>
+                    <p class="text-lg text-gray-600">O Manual do Colaborador não é apenas um livro de regras; é o mapa cultural da organização. Para o Técnico em Administração, ele representa a espinha dorsal do compliance e da comunicação interna, garantindo que todos falem a mesma língua desde o primeiro dia.</p>
+                </div>
+                
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-12 items-center">
+                    <div class="chart-container">
+                        <canvas id="manualPillarsChart"></canvas>
+                    </div>
+                    <div class="space-y-6">
+                        <div class="glass-card p-6 rounded-xl shadow-sm border-l-4 border-indigo-500">
+                            <h3 class="font-bold text-indigo-600 uppercase text-sm tracking-wider">01. Identidade</h3>
+                            <p class="text-gray-700">Missão, visão e valores que humanizam a marca e geram conexão emocional imediata.</p>
+                        </div>
+                        <div class="glass-card p-6 rounded-xl shadow-sm border-l-4 border-rose-500">
+                            <h3 class="font-bold text-rose-600 uppercase text-sm tracking-wider">02. Procedimentos</h3>
+                            <p class="text-gray-700">Regras de jornada, comunicação e conduta que estabelecem as fronteiras do comportamento esperado.</p>
+                        </div>
+                        <div class="glass-card p-6 rounded-xl shadow-sm border-l-4 border-emerald-500">
+                            <h3 class="font-bold text-emerald-600 uppercase text-sm tracking-wider">03. Valorização</h3>
+                            <p class="text-gray-700">Políticas de benefícios e plano de carreira que comunicam como o talento é recompensado.</p>
+                        </div>
+                        <div class="glass-card p-6 rounded-xl shadow-sm border-l-4 border-amber-500">
+                            <h3 class="font-bold text-amber-600 uppercase text-sm tracking-wider">04. Proteção</h3>
+                            <p class="text-gray-700">Normas de segurança (NR-17) e saúde ocupacional para a preservação da integridade física.</p>
+                        </div>
+                    </div>
+                </div>
+                <p class="mt-8 text-center text-sm text-gray-500 font-medium italic">O gráfico acima demonstra a distribuição equitativa de importância entre os pilares para uma aculturação 360°.</p>
+            </section>
+
+            <section class="mb-20 py-12 bg-gray-50 rounded-3xl px-6">
+                <div class="max-w-3xl mx-auto text-center mb-16">
+                    <h2 class="text-3xl font-bold text-gray-800 mb-4">Fluxo de Experiência do Colaborador</h2>
+                    <p class="text-lg text-gray-600">A jornada de integração é uma sequência lógica de eventos desenhados para reduzir a ansiedade e aumentar a produtividade operacional.</p>
+                </div>
+
+                <div class="relative max-w-lg mx-auto">
+                    <div class="step-line"></div>
+                    
+                    <div class="relative flex items-center mb-12">
+                        <div class="step-node">1</div>
+                        <div class="ml-8 glass-card p-4 rounded-lg shadow-sm flex-1">
+                            <h4 class="font-bold text-gray-800">Preparação de RH</h4>
+                            <p class="text-sm text-gray-600">Configuração de acessos, hardware e documentação legal.</p>
+                        </div>
+                    </div>
+
+                    <div class="relative flex items-center mb-12">
+                        <div class="step-node">2</div>
+                        <div class="ml-8 glass-card p-4 rounded-lg shadow-sm flex-1">
+                            <h4 class="font-bold text-gray-800">Recepção e Welcome Kit</h4>
+                            <p class="text-sm text-gray-600">O primeiro contato físico e emocional com a cultura da empresa.</p>
+                        </div>
+                    </div>
+
+                    <div class="relative flex items-center mb-12">
+                        <div class="step-node">3</div>
+                        <div class="ml-8 glass-card p-4 rounded-lg shadow-sm flex-1">
+                            <h4 class="font-bold text-gray-800">Imersão no Manual</h4>
+                            <p class="text-sm text-gray-600">Alinhamento de expectativas, normas e benefícios.</p>
+                        </div>
+                    </div>
+
+                    <div class="relative flex items-center">
+                        <div class="step-node">4</div>
+                        <div class="ml-8 glass-card p-4 rounded-lg shadow-sm flex-1">
+                            <h4 class="font-bold text-gray-800">Integração Setorial</h4>
+                            <p class="text-sm text-gray-600">Treinamento específico no posto de trabalho administrativo.</p>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <section class="mb-20">
+                <div class="max-w-3xl mx-auto text-center mb-12">
+                    <h2 class="text-3xl font-bold text-gray-800 mb-4">Estratégia do Welcome Kit</h2>
+                    <p class="text-lg text-gray-600">Um kit de boas-vindas não é um presente, é uma ferramenta de trabalho. Cada item deve possuir uma justificativa técnica que suporte a rotina do Técnico em Administração.</p>
+                </div>
+
+                <div class="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
+                    <div class="space-y-4">
+                        <h3 class="text-xl font-bold text-gray-700 mb-6">Equilíbrio de Impacto do Kit</h3>
+                        <p class="text-gray-600 mb-6">Visualizamos abaixo como os 10 itens propostos se distribuem entre necessidades básicas de trabalho, saúde do colaborador e fortalecimento do contrato psicológico.</p>
+                        <div class="chart-container">
+                            <canvas id="kitStrategyChart"></canvas>
+                        </div>
+                    </div>
+                    <div class="chart-container">
+                        <canvas id="kitItemsBarChart"></canvas>
+                    </div>
+                </div>
+                
+                <div class="grid grid-cols-2 md:grid-cols-5 gap-4 mt-12">
+                    <div class="text-center p-4 rounded-xl bg-white shadow-sm">
+                        <span class="text-3xl block mb-2">📋</span>
+                        <span class="text-xs font-bold text-gray-500 uppercase">Manual</span>
+                    </div>
+                    <div class="text-center p-4 rounded-xl bg-white shadow-sm">
+                        <span class="text-3xl block mb-2">🪪</span>
+                        <span class="text-xs font-bold text-gray-500 uppercase">Crachá</span>
+                    </div>
+                    <div class="text-center p-4 rounded-xl bg-white shadow-sm">
+                        <span class="text-3xl block mb-2">📓</span>
+                        <span class="text-xs font-bold text-gray-500 uppercase">Planner</span>
+                    </div>
+                    <div class="text-center p-4 rounded-xl bg-white shadow-sm">
+                        <span class="text-3xl block mb-2">💧</span>
+                        <span class="text-xs font-bold text-gray-500 uppercase">Squeeze</span>
+                    </div>
+                    <div class="text-center p-4 rounded-xl bg-white shadow-sm">
+                        <span class="text-3xl block mb-2">🖱️</span>
+                        <span class="text-xs font-bold text-gray-500 uppercase">Ergo Pad</span>
+                    </div>
+                    <div class="text-center p-4 rounded-xl bg-white shadow-sm">
+                        <span class="text-3xl block mb-2">🎧</span>
+                        <span class="text-xs font-bold text-gray-500 uppercase">Headset</span>
+                    </div>
+                    <div class="text-center p-4 rounded-xl bg-white shadow-sm">
+                        <span class="text-3xl block mb-2">⚡</span>
+                        <span class="text-xs font-bold text-gray-500 uppercase">Quick Guide</span>
+                    </div>
+                    <div class="text-center p-4 rounded-xl bg-white shadow-sm">
+                        <span class="text-3xl block mb-2">✉️</span>
+                        <span class="text-xs font-bold text-gray-500 uppercase">Welcome Letter</span>
+                    </div>
+                    <div class="text-center p-4 rounded-xl bg-white shadow-sm">
+                        <span class="text-3xl block mb-2">📂</span>
+                        <span class="text-xs font-bold text-gray-500 uppercase">Organizador</span>
+                    </div>
+                    <div class="text-center p-4 rounded-xl bg-white shadow-sm">
+                        <span class="text-3xl block mb-2">🧴</span>
+                        <span class="text-xs font-bold text-gray-500 uppercase">Higiene</span>
+                    </div>
+                </div>
+                <p class="mt-8 text-center text-sm text-gray-500 font-medium italic">O gráfico de radar mostra que um kit ideal deve equilibrar Compliance, Produtividade e Bem-estar (ESG).</p>
+            </section>
+
+            <section class="mb-20 p-8 rounded-3xl bg-indigo-900 text-white">
+                <div class="max-w-3xl mx-auto text-center mb-12">
+                    <h2 class="text-3xl font-bold mb-4">Saúde Ocupacional e NR-17</h2>
+                    <p class="text-indigo-200 text-lg">O trabalho administrativo exige atenção rigorosa à ergonomia. A integração deve ensinar o colaborador a configurar seu ambiente para evitar doenças ocupacionais.</p>
+                </div>
+
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+                    <div class="bg-indigo-800 p-8 rounded-2xl border border-indigo-700 text-center">
+                        <div class="text-4xl font-bold mb-2">90°</div>
+                        <p class="text-indigo-300 text-sm uppercase font-bold tracking-widest mb-4">Postura Ideal</p>
+                        <p class="text-sm opacity-80">Ângulo recomendado para cotovelos e joelhos durante o trabalho em escritório.</p>
+                    </div>
+                    <div class="bg-indigo-800 p-8 rounded-2xl border border-indigo-700 text-center">
+                        <div class="text-4xl font-bold mb-2">50cm</div>
+                        <p class="text-indigo-300 text-sm uppercase font-bold tracking-widest mb-4">Distância da Tela</p>
+                        <p class="text-sm opacity-80">Espaçamento mínimo entre os olhos e o monitor para evitar fadiga visual.</p>
+                    </div>
+                    <div class="bg-indigo-800 p-8 rounded-2xl border border-indigo-700 text-center">
+                        <div class="text-4xl font-bold mb-2">15min</div>
+                        <p class="text-indigo-300 text-sm uppercase font-bold tracking-widest mb-4">Pausa Ativa</p>
+                        <p class="text-sm opacity-80">Intervalo recomendado para alongamento a cada período de trabalho contínuo.</p>
+                    </div>
+                </div>
+            </section>
+        </main>
+    </div>
+
+    <!-- ABA 2: ATIVIDADE PRÁTICA INTERATIVA (EMPRESA X) -->
+    <div id="tab-content-atividade" class="tab-pane hidden">
+        <main class="max-w-7xl mx-auto px-4 py-12">
+            
+            <!-- Contextualização Geral -->
+            <section class="mb-12 bg-white rounded-3xl p-8 shadow-sm border border-gray-100">
+                <div class="grid grid-cols-1 lg:grid-cols-3 gap-8 items-center">
+                    <div class="lg:col-span-2">
+                        <span class="px-3 py-1 bg-indigo-100 text-indigo-700 rounded-full text-xs font-bold uppercase tracking-wider">Estudo de Caso Ativo</span>
+                        <h2 class="text-3xl font-extrabold text-gray-800 mt-2 mb-4">Desafio Prático: Onboarding da "Empresa X"</h2>
+                        <p class="text-gray-600 mb-4 leading-relaxed">
+                            A <strong>Empresa X</strong>, batizada comercialmente como <strong class="text-indigo-600">SylvaTech Solutions</strong>, é uma scale-up de tecnologia em franca expansão situada no município de <strong>Três Barras (SC)</strong>. Com um quadro consolidado de <strong>110 colaboradores</strong>, a empresa desenvolve sistemas de IoT e automação digital industrial, conectando a forte herança florestal e papeleira da região norte catarinense à revolução da Indústria 4.0.
+                        </p>
+                        <p class="text-gray-600 leading-relaxed">
+                            Como Técnicos em Administração, a missão do seu grupo é desenhar uma **Estratégia Integral de Onboarding** para os novos desenvolvedores, analistas e técnicos administrativos da SylvaTech.
+                        </p>
+                    </div>
+                    
+                    <!-- Card de Três Barras / Empresa X -->
+                    <div class="bg-gray-50 p-6 rounded-2xl border border-gray-200">
+                        <div class="flex items-center justify-between mb-4">
+                            <span class="text-xs font-bold text-gray-400 uppercase">Ficha Técnica</span>
+                            <span class="w-3 h-3 rounded-full bg-emerald-500 animate-pulse"></span>
+                        </div>
+                        <h3 class="text-lg font-bold text-gray-800 mb-1">SylvaTech Solutions</h3>
+                        <p class="text-xs text-indigo-600 font-semibold mb-3">📍 Três Barras, SC</p>
+                        <ul class="text-xs text-gray-600 space-y-2">
+                            <li>🏢 <strong>Segmento:</strong> Tecnologia / IoT / Software</li>
+                            <li>👥 <strong>Efetivo:</strong> 110 colaboradores</li>
+                            <li>🌱 <strong>Foco Regional:</strong> Sustentabilidade & Automação</li>
+                            <li>💼 <strong>Público-Alvo:</strong> Novos Contratados (Adm & Devs)</li>
+                        </ul>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Identidade Organizacional da Empresa X -->
+            <section class="mb-12 grid grid-cols-1 lg:grid-cols-12 gap-8">
+                <!-- Identidade Visual (Design de Marca) -->
+                <div class="lg:col-span-4 bg-slate-900 text-white p-8 rounded-3xl flex flex-col justify-between shadow-lg relative overflow-hidden">
+                    <div class="absolute -right-12 -top-12 w-48 h-48 rounded-full bg-indigo-600/20 blur-2xl"></div>
+                    <div>
+                        <span class="text-xs font-bold text-indigo-400 uppercase tracking-wider">Visual Identity Concept</span>
+                        <h3 class="text-2xl font-bold mt-2 mb-6">A Identidade Visual</h3>
+                        
+                        <!-- Logo Tecnológico Minimalista (Representando Árvores/Floresta + Tecnologia de Circuitos) -->
+                        <div class="bg-slate-800/80 p-6 rounded-2xl border border-slate-700/50 flex flex-col items-center justify-center mb-6">
+                            <svg class="w-20 h-20 text-indigo-400" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.5">
+                                <path stroke-linecap="round" stroke-linejoin="round" d="M12 21a9.004 9.004 0 008.716-6.747M12 21a9.004 9.004 0 01-8.716-6.747M12 21c2.485 0 4.5-4.03 4.5-9S14.485 3 12 3m0 18c-2.485 0-4.5-4.03-4.5-9S9.515 3 12 3m0 0a8.997 8.997 0 017.843 4.582M12 3a8.997 8.997 0 00-7.843 4.582m15.686 0A11.953 11.953 0 0112 10.5c-2.998 0-5.74-1.1-7.843-2.918m15.686 0A8.959 8.959 0 0121 12c0 .778-.099 1.533-.284 2.253m0 0A17.919 17.919 0 0112 16.5c-3.162 0-6.133-.815-8.716-2.247m0 0A9.015 9.015 0 013 12c0-.778.099-1.533.284-2.253" />
+                            </svg>
+                            <span class="font-extrabold text-lg mt-3 tracking-widest text-transparent bg-clip-text bg-gradient-to-r from-teal-400 to-indigo-400">SYLVATECH</span>
+                            <span class="text-[10px] text-gray-400 font-mono tracking-widest">TRÊS BARRAS - SC</span>
+                        </div>
+                        <p class="text-sm text-slate-300 leading-relaxed">
+                            O símbolo une o conceito de <strong>árvores coníferas</strong> de Três Barras (através de traços triangulares ascendentes) a <strong>redes de conexão e circuitos neurais</strong>. Uma linguagem limpa, moderna e altamente tecnológica.
+                        </p>
+                    </div>
+                    <div class="mt-6 border-t border-slate-800 pt-4 flex gap-2">
+                        <span class="w-3 h-3 rounded-full bg-teal-400" title="Teal Tecnológico"></span>
+                        <span class="w-3 h-3 rounded-full bg-indigo-500" title="Indigo Moderno"></span>
+                        <span class="w-3 h-3 rounded-full bg-slate-700" title="Cinza Administrativo"></span>
+                    </div>
+                </div>
+
+                <!-- Missão, Visão e Valores (Filosofia Corporativa) -->
+                <div class="lg:col-span-8 flex flex-col justify-between space-y-6">
+                    <div class="bg-indigo-50 p-6 rounded-3xl border border-indigo-100 flex items-start space-x-4">
+                        <div class="bg-indigo-600 text-white p-3 rounded-xl font-bold">🎯</div>
+                        <div>
+                            <h4 class="font-extrabold text-indigo-900 text-lg">Nossa Missão</h4>
+                            <p class="text-sm text-indigo-950 mt-1 leading-relaxed">
+                                "Desenvolver soluções tecnológicas sustentáveis e inovadoras que otimizem processos e conectem pessoas, impulsionando o ecossistema digital a partir de Três Barras para o mundo inteiro."
+                            </p>
+                        </div>
+                    </div>
+
+                    <div class="bg-violet-50 p-6 rounded-3xl border border-violet-100 flex items-start space-x-4">
+                        <div class="bg-violet-600 text-white p-3 rounded-xl font-bold">🔮</div>
+                        <div>
+                            <h4 class="font-extrabold text-violet-900 text-lg">Nossa Visão</h4>
+                            <p class="text-sm text-violet-950 mt-1 leading-relaxed">
+                                "Ser a principal referência em inovação tecnológica e atração de talentos na região norte de Santa Catarina até 2030, gerando valor real para nossos clientes e comunidade."
+                            </p>
+                        </div>
+                    </div>
+
+                    <div class="bg-emerald-50 p-6 rounded-3xl border border-emerald-100 flex items-start space-x-4">
+                        <div class="bg-emerald-600 text-white p-3 rounded-xl font-bold">💎</div>
+                        <div>
+                            <h4 class="font-extrabold text-emerald-900 text-lg">Nossos Valores</h4>
+                            <p class="text-sm text-emerald-950 mt-1 leading-relaxed">
+                                <strong>Inovação Colaborativa:</strong> Construir ideias coletivamente. 
+                                <br><strong>Sustentabilidade Regional:</strong> Honrar nossas raízes de Três Barras respeitando o meio ambiente. 
+                                <br><strong>Foco nas Pessoas:</strong> Valorizar a saúde física, ergonômica e mental da nossa equipe.
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Workspace da Atividade Prática -->
+            <section class="mb-12">
+                <div class="text-center max-w-2xl mx-auto mb-10">
+                    <h3 class="text-2xl font-bold text-gray-800">Monte o Planejamento de Onboarding</h3>
+                    <p class="text-gray-600 mt-2 text-sm">Escolha os componentes, defina os tempos de duração e selecione os itens do Welcome Kit da SylvaTech. Nosso simulador calculará o equilíbrio estratégico da sua entrega.</p>
+                </div>
+
+                <div class="grid grid-cols-1 lg:grid-cols-12 gap-8 items-stretch">
+                    
+                    <!-- Painel de Controles da Atividade -->
+                    <div class="lg:col-span-7 bg-white p-8 rounded-3xl shadow-sm border border-gray-100 space-y-8">
+                        
+                        <!-- Passo 1: Tempo do Onboarding -->
+                        <div>
+                            <div class="flex justify-between items-center mb-3">
+                                <label class="font-bold text-gray-700 text-sm md:text-base">🕒 1. Duração Total da Integração</label>
+                                <span id="duracao-val" class="px-3 py-1 bg-indigo-100 text-indigo-700 text-xs font-bold rounded-full">15 dias</span>
+                            </div>
+                            <input id="input-duracao" type="range" min="1" max="30" value="15" oninput="updateOnboardingSimulation()" class="w-full h-2 bg-gray-200 rounded-lg appearance-none cursor-pointer accent-indigo-600">
+                            <div class="flex justify-between text-xs text-gray-400 mt-1">
+                                <span>1 Dia (Crítico)</span>
+                                <span>15 Dias (Ideal)</span>
+                                <span>30 Dias (Abrangente)</span>
+                            </div>
+                        </div>
+
+                        <!-- Passo 2: Seleção de Welcome Kit -->
+                        <div>
+                            <label class="font-bold text-gray-700 text-sm md:text-base block mb-3">🎁 2. Seleção do Welcome Kit (Escolha 5 itens estratégicos)</label>
+                            <div class="grid grid-cols-1 md:grid-cols-2 gap-3">
+                                
+                                <label class="flex items-center p-3 rounded-xl border border-gray-200 cursor-pointer hover:bg-slate-50 transition-all select-none">
+                                    <input type="checkbox" checked value="Manual" data-cost="20" data-strat="90" onchange="updateOnboardingSimulation()" class="w-4 h-4 text-indigo-600 border-gray-300 rounded focus:ring-indigo-500 mr-3 welcome-item">
+                                    <div class="text-xs">
+                                        <p class="font-bold text-gray-700">📋 Manual do Colaborador (Digital)</p>
+                                        <p class="text-gray-400">Foco em Compliance e História</p>
+                                    </div>
+                                </label>
+
+                                <label class="flex items-center p-3 rounded-xl border border-gray-200 cursor-pointer hover:bg-slate-50 transition-all select-none">
+                                    <input type="checkbox" checked value="Crachá" data-cost="15" data-strat="85" onchange="updateOnboardingSimulation()" class="w-4 h-4 text-indigo-600 border-gray-300 rounded focus:ring-indigo-500 mr-3 welcome-item">
+                                    <div class="text-xs">
+                                        <p class="font-bold text-gray-700">🪪 Crachá de Acesso NFC</p>
+                                        <p class="text-gray-400">Segurança física e Identidade</p>
+                                    </div>
+                                </label>
+
+                                <label class="flex items-center p-3 rounded-xl border border-gray-200 cursor-pointer hover:bg-slate-50 transition-all select-none">
+                                    <input type="checkbox" checked value="Planner" data-cost="35" data-strat="80" onchange="updateOnboardingSimulation()" class="w-4 h-4 text-indigo-600 border-gray-300 rounded focus:ring-indigo-500 mr-3 welcome-item">
+                                    <div class="text-xs">
+                                        <p class="font-bold text-gray-700">📓 Bloco Planner & Caneta Reciclada</p>
+                                        <p class="text-gray-400">Produtividade Administrativa</p>
+                                    </div>
+                                </label>
+
+                                <label class="flex items-center p-3 rounded-xl border border-gray-200 cursor-pointer hover:bg-slate-50 transition-all select-none">
+                                    <input type="checkbox" checked value="Squeeze" data-cost="40" data-strat="75" onchange="updateOnboardingSimulation()" class="w-4 h-4 text-indigo-600 border-gray-300 rounded focus:ring-indigo-500 mr-3 welcome-item">
+                                    <div class="text-xs">
+                                        <p class="font-bold text-gray-700">💧 Garrafa Inox Térmica</p>
+                                        <p class="text-gray-400">Saúde e Redução de Copos</p>
+                                    </div>
+                                </label>
+
+                                <label class="flex items-center p-3 rounded-xl border border-gray-200 cursor-pointer hover:bg-slate-50 transition-all select-none">
+                                    <input type="checkbox" checked value="Mousepad" data-cost="30" data-strat="95" onchange="updateOnboardingSimulation()" class="w-4 h-4 text-indigo-600 border-gray-300 rounded focus:ring-indigo-500 mr-3 welcome-item">
+                                    <div class="text-xs">
+                                        <p class="font-bold text-gray-700">🖱️ Apoio Ergonômico de Pulso</p>
+                                        <p class="text-gray-400">Segurança NR-17 Ativa</p>
+                                    </div>
+                                </label>
+
+                                <label class="flex items-center p-3 rounded-xl border border-gray-200 cursor-pointer hover:bg-slate-50 transition-all select-none">
+                                    <input type="checkbox" value="Headset" data-cost="120" data-strat="90" onchange="updateOnboardingSimulation()" class="w-4 h-4 text-indigo-600 border-gray-300 rounded focus:ring-indigo-500 mr-3 welcome-item">
+                                    <div class="text-xs">
+                                        <p class="font-bold text-gray-700">🎧 Headset Cancelador de Ruído</p>
+                                        <p class="text-gray-400">Reuniões e Foco em Open Office</p>
+                                    </div>
+                                </label>
+
+                                <label class="flex items-center p-3 rounded-xl border border-gray-200 cursor-pointer hover:bg-slate-50 transition-all select-none">
+                                    <input type="checkbox" value="Sementes" data-cost="10" data-strat="70" onchange="updateOnboardingSimulation()" class="w-4 h-4 text-indigo-600 border-gray-300 rounded focus:ring-indigo-500 mr-3 welcome-item">
+                                    <div class="text-xs">
+                                        <p class="font-bold text-gray-700">🌱 Sementes de Araucária para Plantar</p>
+                                        <p class="text-gray-400">Conexão Ecológica com Três Barras</p>
+                                    </div>
+                                </label>
+
+                                <label class="flex items-center p-3 rounded-xl border border-gray-200 cursor-pointer hover:bg-slate-50 transition-all select-none">
+                                    <input type="checkbox" value="Cacau" data-cost="25" data-strat="65" onchange="updateOnboardingSimulation()" class="w-4 h-4 text-indigo-600 border-gray-300 rounded focus:ring-indigo-500 mr-3 welcome-item">
+                                    <div class="text-xs">
+                                        <p class="font-bold text-gray-700">🍫 Doces Artesanais da Região</p>
+                                        <p class="text-gray-400">Cultura Local e Acolhimento</p>
+                                    </div>
+                                </label>
+
+                            </div>
+                        </div>
+
+                        <!-- Passo 3: Foco em Segurança NR-17 -->
+                        <div>
+                            <label class="font-bold text-gray-700 text-sm md:text-base block mb-3">🛡️ 3. Foco em Saúde e Ergonomia (NR-17)</label>
+                            <select id="select-nr17" onchange="updateOnboardingSimulation()" class="w-full p-3 rounded-xl border border-gray-200 text-sm bg-white focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500">
+                                <option value="Cadeiras e Apoios de Pulso ajustáveis">Fornecimento completo de Cinto/Apoios de Punho e Mousepad com Gel</option>
+                                <option value="Pausas Ativas e Treinamento de Alongamento">Rotina monitorada de Alongamento e Ginástica Laboral a cada 2h</option>
+                                <option value="Iluminação e Posicionamento correto de Telas">Treinamento visual e ajuste de luminância de telas em relação às janelas</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <!-- Painel de Resultados do Planejamento -->
+                    <div class="lg:col-span-5 flex flex-col justify-between space-y-6">
+                        
+                        <!-- Card com Métricas de Saúde e Orçamento -->
+                        <div class="bg-slate-900 text-white p-8 rounded-3xl shadow-lg space-y-6">
+                            <h4 class="font-bold text-lg text-indigo-400 border-b border-slate-800 pb-3">Indicadores de Viabilidade</h4>
+                            
+                            <!-- Indicador de Custo -->
+                            <div>
+                                <div class="flex justify-between text-xs mb-1">
+                                    <span>Custo Estimado por Onboarding</span>
+                                    <span id="custo-total-text" class="font-bold text-teal-400">R$ 140,00</span>
+                                </div>
+                                <div class="w-full bg-slate-800 h-2 rounded-full overflow-hidden">
+                                    <div id="bar-custo" class="bg-teal-400 h-full transition-all duration-300" style="width: 40%"></div>
+                                </div>
+                            </div>
+
+                            <!-- Indicador Estratégico -->
+                            <div>
+                                <div class="flex justify-between text-xs mb-1">
+                                    <span>Pontuação de Engajamento e Compliance</span>
+                                    <span id="score-text" class="font-bold text-indigo-400">85 pts</span>
+                                </div>
+                                <div class="w-full bg-slate-800 h-2 rounded-full overflow-hidden">
+                                    <div id="bar-score" class="bg-indigo-400 h-full transition-all duration-300" style="width: 85%"></div>
+                                </div>
+                            </div>
+
+                            <!-- Mensagem de Viabilidade -->
+                            <div class="bg-slate-800 p-4 rounded-xl border border-slate-700/50 text-xs">
+                                <p class="font-bold text-amber-400 mb-1">Status do Onboarding:</p>
+                                <p id="status-onboarding-sim" class="text-slate-300">Equilibrado. Ideal para as demandas dos 110 colaboradores da SylvaTech.</p>
+                            </div>
+                        </div>
+
+                        <!-- Card de Geração de Relatório de Trabalho -->
+                        <div class="bg-white p-6 rounded-3xl border border-gray-200 shadow-sm flex-1 flex flex-col justify-between">
+                            <div>
+                                <h4 class="font-extrabold text-gray-800 text-lg mb-2">Relatório do Projeto</h4>
+                                <p class="text-xs text-gray-500 mb-4">Veja abaixo o sumário gerado para o planejamento de onboarding da SylvaTech (Empresa X):</p>
+                                
+                                <div class="bg-gray-50 p-4 rounded-xl border border-gray-200 font-mono text-xs text-gray-700 space-y-1 overflow-y-auto max-h-48" id="visualizador-relatorio">
+                                    <!-- Será preenchido por script -->
+                                </div>
+                            </div>
+                            
+                            <!-- Botão de Copiar Relatório -->
+                            <button onclick="copiarRelatorioAtividade()" class="mt-4 w-full py-3 bg-indigo-600 hover:bg-indigo-700 text-white rounded-xl text-xs font-bold transition-all duration-300 flex items-center justify-center gap-2">
+                                📋 Copiar Relatório Completo
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </section>
+        </main>
+    </div>
+
+    <footer class="bg-white border-t border-gray-200 py-12 px-6">
+        <div class="max-w-4xl mx-auto text-center">
+            <h2 class="text-2xl font-bold text-gray-800 mb-4">O Onboarding não termina no Kit.</h2>
+            <p class="text-gray-600 mb-8 leading-relaxed">A integração é um processo contínuo de acolhimento. Um Técnico em Administração bem integrado é um profissional que compreende seu papel estratégico, respeita as normas de segurança e se sente valorizado pela organização desde o primeiro contato.</p>
+            <div class="flex justify-center space-x-4">
+                <span class="px-4 py-2 bg-indigo-100 text-indigo-700 rounded-full text-xs font-bold uppercase">Gestão de Pessoas</span>
+                <span class="px-4 py-2 bg-rose-100 text-rose-700 rounded-full text-xs font-bold uppercase">Compliance</span>
+                <span class="px-4 py-2 bg-emerald-100 text-emerald-700 rounded-full text-xs font-bold uppercase">Produtividade</span>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        // Sistema de Controle de Abas
+        function switchTab(tabId) {
+            // Remove active classes
+            document.querySelectorAll('.tab-btn').forEach(btn => btn.classList.remove('active'));
+            document.querySelectorAll('.tab-pane').forEach(pane => pane.classList.add('hidden'));
+
+            if (tabId === 'infografico') {
+                document.getElementById('btn-infografico').classList.add('active');
+                document.getElementById('tab-content-infografico').classList.remove('hidden');
+            } else if (tabId === 'atividade') {
+                document.getElementById('btn-atividade').classList.add('active');
+                document.getElementById('tab-content-atividade').classList.remove('hidden');
+                updateOnboardingSimulation(); // Atualiza os cálculos ao abrir a simulação
+            }
+        }
+
+        // Lógica de Simulação da Atividade Prática (Empresa X)
+        function updateOnboardingSimulation() {
+            const duracao = parseInt(document.getElementById('input-duracao').value);
+            document.getElementById('duracao-val').innerText = duracao + " dias";
+
+            // Coleta checkboxes de kit
+            const checkboxes = document.querySelectorAll('.welcome-item');
+            let totalCost = 0;
+            let totalStrat = 0;
+            let selectedItems = [];
+
+            checkboxes.forEach(chk => {
+                if (chk.checked) {
+                    totalCost += parseFloat(chk.getAttribute('data-cost'));
+                    totalStrat += parseFloat(chk.getAttribute('data-strat'));
+                    selectedItems.push(chk.value);
+                }
+            });
+
+            // Ajuste estratégico baseado no tempo de Onboarding
+            let timeFactor = 1;
+            if (duracao < 5) {
+                timeFactor = 0.6; // Onboarding muito curto reduz fixação e pontuação
+            } else if (duracao >= 10 && duracao <= 20) {
+                timeFactor = 1.2; // Equilíbrio pedagógico ótimo
+            } else {
+                timeFactor = 1.0; // Onboarding longo demais dispersa foco
+            }
+
+            // Cálculo dos Indicadores
+            const finalScore = Math.min(100, Math.round((totalStrat / Math.max(1, selectedItems.length)) * timeFactor));
+            const finalCusto = totalCost;
+
+            // Interface
+            document.getElementById('custo-total-text').innerText = "R$ " + finalCusto.toFixed(2);
+            document.getElementById('score-text').innerText = finalScore + " pts";
+
+            // Barras de visualização
+            const maxCostLimit = 300; // Limite virtual do orçamento
+            const custoPorcentagem = Math.min(100, (finalCusto / maxCostLimit) * 100);
+            document.getElementById('bar-custo').style.width = custoPorcentagem + "%";
+            document.getElementById('bar-score').style.width = finalScore + "%";
+
+            // Status e Alertas de Viabilidade
+            let statusText = "";
+            if (selectedItems.length > 5) {
+                statusText = "Orçamento Elevado! Com mais de 5 itens no kit, certifique-se de que os custos cabem na dotação orçamentária de Três Barras.";
+                document.getElementById('status-onboarding-sim').className = "text-rose-400";
+            } else if (selectedItems.length < 3) {
+                statusText = "Impacto Inicial Baixo! Menos de 3 itens podem gerar sensação de falta de acolhimento no novo contratado.";
+                document.getElementById('status-onboarding-sim').className = "text-amber-400";
+            } else if (duracao < 5) {
+                statusText = "Tempo Crítico! Um onboarding menor que 5 dias impossibilita o treinamento adequado de NR-17 e segurança interna.";
+                document.getElementById('status-onboarding-sim').className = "text-rose-400";
+            } else {
+                statusText = "Equilibrado! Excelente composição para os 110 colaboradores da SylvaTech (Empresa X).";
+                document.getElementById('status-onboarding-sim').className = "text-emerald-400";
+            }
+            document.getElementById('status-onboarding-sim').innerText = statusText;
+
+            // Atualiza visualização do relatório em tempo real
+            const nr17Select = document.getElementById('select-nr17').value;
+            const outputReport = `EMPRESA: SylvaTech Solutions (Empresa X)
+CIDADE: Três Barras - SC
+COLABORADORES: 110 colaboradores
+---
+DURAÇÃO INTEGRAL: ${duracao} dias
+WELCOME KIT SELECIONADO:
+${selectedItems.map(it => " - [x] " + it).join('\n')}
+---
+PREVENÇÃO NR-17 (ERGONOMIA):
+ - ${nr17Select}
+---
+VIABILIDADE DO PLANO:
+ - Custo Estimado: R$ ${finalCusto.toFixed(2)} por pessoa
+ - Score Estratégico: ${finalScore} pontos / 100`;
+
+            document.getElementById('visualizador-relatorio').innerText = outputReport;
+        }
+
+        // Função de cópia segura para iFrames
+        function copiarRelatorioAtividade() {
+            const reportContent = document.getElementById('visualizador-relatorio').innerText;
+            const tempTextArea = document.createElement("textarea");
+            tempTextArea.value = reportContent;
+            document.body.appendChild(tempTextArea);
+            tempTextArea.select();
+            document.execCommand("copy");
+            document.body.removeChild(tempTextArea);
+            
+            // Feedback temporário visual (não invasivo)
+            const btn = document.querySelector('button[onclick="copiarRelatorioAtividade()"]');
+            const originalText = btn.innerHTML;
+            btn.innerHTML = "✅ Copiado com Sucesso!";
+            btn.classList.remove('bg-indigo-600');
+            btn.classList.add('bg-emerald-600');
+            
+            setTimeout(() => {
+                btn.innerHTML = originalText;
+                btn.classList.remove('bg-emerald-600');
+                btn.classList.add('bg-indigo-600');
+            }, 2500);
+        }
+
+        // Funções auxiliares originais para formatação de labels
+        function wrapLabel(label, limit = 16) {
+            if (label.length <= limit) return label;
+            const words = label.split(' ');
+            const lines = [];
+            let currentLine = '';
+            words.forEach(word => {
+                if ((currentLine + word).length <= limit) {
+                    currentLine += (currentLine === '' ? '' : ' ') + word;
+                } else {
+                    lines.push(currentLine);
+                    currentLine = word;
+                }
+            });
+            lines.push(currentLine);
+            return lines;
+        }
+
+        const tooltipConfig = {
+            callbacks: {
+                title: function(tooltipItems) {
+                    const item = tooltipItems[0];
+                    let label = item.chart.data.labels[item.dataIndex];
+                    if (Array.isArray(label)) {
+                        return label.join(' ');
+                    } else {
+                        return label;
+                    }
+                }
+            }
+        };
+
+        window.onload = function () {
+            // Inicializa gráficos originais intactos
+            const ctxPillars = document.getElementById('manualPillarsChart').getContext('2d');
+            new Chart(ctxPillars, {
+                type: 'doughnut',
+                data: {
+                    labels: [
+                        wrapLabel('Histórico e Cultura'),
+                        wrapLabel('Normas e Procedimentos'),
+                        wrapLabel('Benefícios e Recompensas'),
+                        wrapLabel('Saúde e Segurança')
+                    ],
+                    datasets: [{
+                        data: [25, 25, 25, 25],
+                        backgroundColor: ['#6366f1', '#f43f5e', '#10b981', '#f59e0b'],
+                        borderWidth: 0,
+                        hoverOffset: 20
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        legend: { position: 'bottom', labels: { boxWidth: 12, padding: 20, font: { size: 11 } } },
+                        tooltip: tooltipConfig
+                    }
+                }
+            });
+
+            const ctxBar = document.getElementById('kitItemsBarChart').getContext('2d');
+            new Chart(ctxBar, {
+                type: 'bar',
+                data: {
+                    labels: [
+                        wrapLabel('Organização e Produtividade'),
+                        wrapLabel('Integração e Compliance'),
+                        wrapLabel('Saúde e Segurança (NR17)'),
+                        wrapLabel('Sustentabilidade e ESG'),
+                        wrapLabel('Cultura e Endomarketing')
+                    ],
+                    datasets: [{
+                        label: 'Itens por Categoria',
+                        data: [3, 2, 2, 1, 2],
+                        backgroundColor: '#8b5cf6',
+                        borderRadius: 8
+                    }]
+                },
+                options: {
+                    indexAxis: 'y',
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    scales: {
+                        x: { beginAtZero: true, grid: { display: false }, ticks: { stepSize: 1 } },
+                        y: { grid: { display: false } }
+                    },
+                    plugins: {
+                        legend: { display: false },
+                        tooltip: tooltipConfig
+                    }
+                }
+            });
+
+            const ctxRadar = document.getElementById('kitStrategyChart').getContext('2d');
+            new Chart(ctxRadar, {
+                type: 'radar',
+                data: {
+                    labels: [
+                        wrapLabel('Acesso à Informação'),
+                        wrapLabel('Identidade Visual'),
+                        wrapLabel('Segurança de Dados'),
+                        wrapLabel('Ergonomia Física'),
+                        wrapLabel('Acolhimento Humano')
+                    ],
+                    datasets: [{
+                        label: 'Impacto Estratégico',
+                        data: [90, 85, 70, 95, 80],
+                        fill: true,
+                        backgroundColor: 'rgba(99, 102, 241, 0.2)',
+                        borderColor: '#6366f1',
+                        pointBackgroundColor: '#6366f1',
+                        pointBorderColor: '#fff',
+                        pointHoverBackgroundColor: '#fff',
+                        pointHoverBorderColor: '#6366f1'
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    scales: {
+                        r: {
+                            angleLines: { display: true },
+                            suggestedMin: 0,
+                            suggestedMax: 100,
+                            ticks: { display: false }
+                        }
+                    },
+                    plugins: {
+                        legend: { display: false },
+                        tooltip: tooltipConfig
+                    }
+                }
+            });
+
+            // Força renderização inicial da atividade
+            updateOnboardingSimulation();
+        }
+    </script>
+</body>
+</html>

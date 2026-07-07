@@ -1,0 +1,343 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Estratégia de Onboarding e Cultura Organizacional</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&display=swap');
+        body { font-family: 'Inter', sans-serif; background-color: #f8fafc; color: #1e293b; scroll-behavior: smooth; }
+        .chart-container { position: relative; width: 100%; max-width: 600px; margin-left: auto; margin-right: auto; height: 350px; max-height: 400px; }
+        .stat-card { transition: all 0.3s ease; }
+        .stat-card:hover { transform: translateY(-4px); box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1); }
+        .bg-vibrant-primary { background-color: #4f46e5; }
+        .text-vibrant-primary { color: #4f46e5; }
+        .border-vibrant-accent { border-color: #f59e0b; }
+        .form-input { width: 100%; padding: 0.75rem; border: 1px solid #e2e8f0; border-radius: 0.5rem; outline: none; transition: border-color 0.2s; }
+        .form-input:focus { border-color: #4f46e5; ring: 2px ring-indigo-200; }
+        .challenge-card { background: white; border-radius: 1rem; padding: 1.5rem; border: 1px solid #e2e8f0; }
+    </style>
+</head>
+<body class="p-4 md:p-8">
+
+<!-- 
+PALETTE SELECTION: Energetic & Playful (Modified for Professionalism)
+Primary: #4F46E5 (Indigo)
+Secondary: #10B981 (Emerald)
+Accent: #F59E0B (Amber)
+Neutral: #F8FAFC
+-->
+
+<!-- 
+NARRATIVE PLAN:
+1. Executive Intro: Setting the stage for Onboarding as a strategic weapon.
+2. Data Visualization: Iceberg (culture), Methods (effectiveness), and Turnover (financial impact).
+3. Laboratório de Práticas: 5 high-impact challenges translating theory into HR action.
+4. Submission Forms: Integrated feedback loop for student participation.
+-->
+
+<!-- 
+VISUALIZATION SUMMARY:
+- Iceberg Chart -> Donut (Chart.js) -> Wrap Labels: Yes. Tooltip: Multi-line support.
+- Methods Analysis -> Radar (Chart.js) -> Goal: Comparison of 5 socialization levers.
+- Turnover Impact -> Line (Chart.js) -> Goal: Visualize ROI of onboarding.
+- Responsibility Split -> HTML/CSS Bars -> Goal: Staff vs Line distinction.
+- NO SVG OR MERMAID JS USED. ALL ICONS ARE UNICODE OR CSS.
+-->
+
+<!-- 
+CONFIRMATION:
+Neither Mermaid JS nor SVG graphics were used in this output. 
+All visuals are generated via Canvas (Chart.js) or structured HTML/CSS with Tailwind.
+-->
+
+    <header class="max-w-7xl mx-auto mb-10 text-center md:text-left flex flex-col md:flex-row justify-between items-end gap-4">
+        <div>
+            <h1 class="text-4xl font-bold text-vibrant-primary mb-2">Inteligência em Onboarding</h1>
+            <p class="text-lg text-slate-600 max-w-2xl">Gestão de Pessoas: Acolhimento, Cultura e Retenção Estratégica.</p>
+        </div>
+        <nav class="flex gap-4">
+            <a href="#dados" class="text-sm font-semibold text-indigo-600 hover:underline">Dados</a>
+            <a href="#laboratorio" class="px-4 py-2 bg-indigo-600 text-white rounded-lg shadow-md hover:bg-indigo-700 transition">Laboratório de Práticas</a>
+        </nav>
+    </header>
+
+    <main class="max-w-7xl mx-auto space-y-10">
+        
+        <section id="dados" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+            <div class="lg:col-span-3 bg-white p-6 rounded-2xl shadow-sm border-l-4 border-vibrant-primary">
+                <h2 class="text-2xl font-semibold mb-2">A Ciência do Acolhimento</h2>
+                <p class="text-slate-600 leading-relaxed">
+                    Segundo Chiavenato, a integração não é um evento isolado, mas o início de um contrato psicológico. O sucesso nos primeiros 90 dias define o ciclo de vida do talento na organização.
+                </p>
+            </div>
+
+            <div class="stat-card bg-white p-6 rounded-2xl shadow-sm flex flex-col items-center justify-center border border-slate-100">
+                <h3 class="text-slate-500 font-semibold text-sm uppercase tracking-wider mb-2">Meta de Retenção</h3>
+                <span class="text-5xl font-bold text-emerald-600">92%</span>
+                <p class="text-xs text-slate-400 mt-2">Padrão de excelência no 1º ano</p>
+            </div>
+            <div class="stat-card bg-white p-6 rounded-2xl shadow-sm flex flex-col items-center justify-center border border-slate-100">
+                <h3 class="text-slate-500 font-semibold text-sm uppercase tracking-wider mb-2">Custo de Falha</h3>
+                <span class="text-5xl font-bold text-amber-500">1.5x</span>
+                <p class="text-xs text-slate-400 mt-2">Múltiplo do salário anual perdido</p>
+            </div>
+            <div class="stat-card bg-white p-6 rounded-2xl shadow-sm flex flex-col items-center justify-center border border-slate-100">
+                <h3 class="text-slate-500 font-semibold text-sm uppercase tracking-wider mb-2">Engajamento</h3>
+                <span class="text-5xl font-bold text-indigo-600">+40%</span>
+                <p class="text-xs text-slate-400 mt-2">Aumento em produtividade inicial</p>
+            </div>
+
+            <div class="md:col-span-2 bg-white p-8 rounded-2xl shadow-md">
+                <h3 class="text-xl font-bold mb-2">O Iceberg da Cultura Organizacional</h3>
+                <p class="text-sm text-slate-500 mb-6">Mapeamento das camadas visíveis (formais) e invisíveis (psicológicas).</p>
+                <div class="chart-container">
+                    <canvas id="icebergChart"></canvas>
+                </div>
+            </div>
+
+            <div class="bg-white p-8 rounded-2xl shadow-md">
+                <h3 class="text-xl font-bold mb-2">Impacto por Método</h3>
+                <p class="text-sm text-slate-500 mb-6">Eficácia relativa dos 5 pilares de socialização.</p>
+                <div class="chart-container">
+                    <canvas id="methodsChart"></canvas>
+                </div>
+            </div>
+
+            <div class="md:col-span-3 bg-white p-8 rounded-2xl shadow-md">
+                <h3 class="text-xl font-bold mb-2">Projeção de Turnover Mensal</h3>
+                <p class="text-sm text-slate-500 mb-6">Diferença acumulada entre processos Estratégicos e Burocráticos.</p>
+                <div class="chart-container" style="max-width: 1000px; height: 300px;">
+                    <canvas id="turnoverChart"></canvas>
+                </div>
+            </div>
+        </section>
+
+        <!-- LABORATORIO DE PRATICAS -->
+        <section id="laboratorio" class="bg-slate-50 p-8 rounded-3xl border-2 border-dashed border-slate-200">
+            <div class="text-center mb-12">
+                <h2 class="text-3xl font-bold text-indigo-900 mb-4">🧪 Laboratório de Práticas</h2>
+                <p class="text-slate-600 max-w-2xl mx-auto">Desafios criativos para aplicar a teoria de Gestão de Pessoas em cenários reais do mercado de trabalho.</p>
+            </div>
+
+            <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
+                
+                <!-- DESAFIO 1 -->
+                <div class="challenge-card flex flex-col">
+                    <div class="flex items-center gap-3 mb-4">
+                        <span class="w-10 h-10 bg-indigo-100 text-indigo-600 rounded-full flex items-center justify-center font-bold">01</span>
+                        <h3 class="text-lg font-bold">O "Anti-Manual" da Cultura</h3>
+                    </div>
+                    <p class="text-sm text-slate-600 mb-6">Identifique 3 aspectos do "Iceberg Invisível" (regras não escritas) de uma empresa fictícia e como explicá-los a um novato.</p>
+                    <form class="space-y-4 mt-auto">
+                        <textarea class="form-input h-24" placeholder="Ex: 'O cafezinho das 15h é onde as decisões reais acontecem...'"></textarea>
+                        <button type="button" onclick="alert('Desafio 1 salvo!')" class="w-full py-2 bg-indigo-600 text-white rounded-lg font-semibold hover:bg-indigo-700">Enviar Solução</button>
+                    </form>
+                </div>
+
+                <!-- DESAFIO 2 -->
+                <div class="challenge-card flex flex-col">
+                    <div class="flex items-center gap-3 mb-4">
+                        <span class="w-10 h-10 bg-emerald-100 text-emerald-600 rounded-full flex items-center justify-center font-bold">02</span>
+                        <h3 class="text-lg font-bold">Calculadora de Impacto Financeiro</h3>
+                    </div>
+                    <p class="text-sm text-slate-600 mb-6">Simule o custo de turnover de um cargo com salário de R$ 4.000,00 que pede demissão após 2 meses por falta de integração.</p>
+                    <div class="grid grid-cols-2 gap-4 mb-4">
+                        <input type="number" id="salarioInput" class="form-input text-sm" placeholder="Salário (R$)">
+                        <div id="resResult" class="bg-amber-50 p-2 rounded border border-amber-200 text-xs flex items-center font-bold text-amber-700">Custo Est.: R$ 0,00</div>
+                    </div>
+                    <button type="button" onclick="calcTurnover()" class="w-full py-2 bg-emerald-600 text-white rounded-lg font-semibold hover:bg-emerald-700">Calcular e Validar</button>
+                </div>
+
+                <!-- DESAFIO 3 -->
+                <div class="challenge-card flex flex-col">
+                    <div class="flex items-center gap-3 mb-4">
+                        <span class="w-10 h-10 bg-amber-100 text-amber-600 rounded-full flex items-center justify-center font-bold">03</span>
+                        <h3 class="text-lg font-bold">Pitch para o Gestor de Linha</h3>
+                    </div>
+                    <p class="text-sm text-slate-600 mb-6">Escreva um argumento de 3 linhas para convencer um gestor de linha ocupado a dedicar 2 horas do seu dia ao novo colaborador.</p>
+                    <form class="space-y-4 mt-auto">
+                        <input type="text" class="form-input" placeholder="Seu argumento de impacto...">
+                        <button type="button" onclick="alert('Pitch enviado para avaliação!')" class="w-full py-2 bg-amber-500 text-white rounded-lg font-semibold hover:bg-amber-600">Submeter Pitch</button>
+                    </form>
+                </div>
+
+                <!-- DESAFIO 4 -->
+                <div class="challenge-card flex flex-col">
+                    <div class="flex items-center gap-3 mb-4">
+                        <span class="w-10 h-10 bg-purple-100 text-purple-600 rounded-full flex items-center justify-center font-bold">04</span>
+                        <h3 class="text-lg font-bold">Checklist do "Padrinho" (Buddy)</h3>
+                    </div>
+                    <p class="text-sm text-slate-600 mb-6">Selecione as 3 ações mais críticas para um colega de equipe (Padrinho) realizar na primeira semana.</p>
+                    <div class="space-y-2 mb-6">
+                        <label class="flex items-center gap-2 text-sm text-slate-700">
+                            <input type="checkbox" class="rounded text-indigo-600"> Apresentar o melhor lugar para almoçar
+                        </label>
+                        <label class="flex items-center gap-2 text-sm text-slate-700">
+                            <input type="checkbox" class="rounded text-indigo-600"> Ensinar os atalhos do sistema interno
+                        </label>
+                        <label class="flex items-center gap-2 text-sm text-slate-700">
+                            <input type="checkbox" class="rounded text-indigo-600"> Explicar quem é quem no organograma
+                        </label>
+                    </div>
+                    <button type="button" onclick="alert('Checklist salvo!')" class="w-full py-2 bg-purple-600 text-white rounded-lg font-semibold hover:bg-purple-700">Finalizar Seleção</button>
+                </div>
+
+                <!-- DESAFIO 5 -->
+                <div class="challenge-card flex flex-col lg:col-span-2">
+                    <div class="flex items-center gap-3 mb-4">
+                        <span class="w-10 h-10 bg-rose-100 text-rose-600 rounded-full flex items-center justify-center font-bold">05</span>
+                        <h3 class="text-lg font-bold">Design da Jornada de 90 Dias</h3>
+                    </div>
+                    <p class="text-sm text-slate-600 mb-4">Crie um marco de sucesso para cada período do onboarding estratégico.</p>
+                    <div class="grid grid-cols-1 md:grid-cols-3 gap-4 mb-6">
+                        <div>
+                            <label class="text-xs font-bold text-slate-400 uppercase">Dia 01 (Conexão)</label>
+                            <input type="text" class="form-input text-sm" placeholder="Ex: Almoço com time">
+                        </div>
+                        <div>
+                            <label class="text-xs font-bold text-slate-400 uppercase">Dia 30 (Engajamento)</label>
+                            <input type="text" class="form-input text-sm" placeholder="Ex: Entrega 1º mini-projeto">
+                        </div>
+                        <div>
+                            <label class="text-xs font-bold text-slate-400 uppercase">Dia 90 (Performance)</label>
+                            <input type="text" class="form-input text-sm" placeholder="Ex: Feedback 360">
+                        </div>
+                    </div>
+                    <button type="button" onclick="alert('Jornada desenhada com sucesso!')" class="w-full py-3 bg-rose-600 text-white rounded-xl font-bold hover:bg-rose-700 shadow-lg">Publicar Jornada Estratégica</button>
+                </div>
+
+            </div>
+        </section>
+
+    </main>
+
+    <footer class="max-w-7xl mx-auto mt-16 pt-8 border-t border-slate-200 text-center text-slate-400 text-sm pb-10">
+        <p>Baseado na Obra de Idalberto Chiavenato - Gestão de Pessoas</p>
+        <p class="mt-2 font-semibold">Aula 8: Integração Prática e Fechamento</p>
+    </footer>
+
+    <script>
+        // CHART UTILS
+        const wrapLabel = (str) => {
+            if (str.length <= 16) return str;
+            const words = str.split(' ');
+            let lines = [];
+            let currentLine = '';
+            words.forEach(word => {
+                if ((currentLine + word).length > 16) {
+                    lines.push(currentLine.trim());
+                    currentLine = word + ' ';
+                } else {
+                    currentLine += word + ' ';
+                }
+            });
+            lines.push(currentLine.trim());
+            return lines;
+        };
+
+        const tooltipConfig = {
+            callbacks: {
+                title: function(tooltipItems) {
+                    const item = tooltipItems[0];
+                    let label = item.chart.data.labels[item.dataIndex];
+                    return Array.isArray(label) ? label.join(' ') : label;
+                }
+            }
+        };
+
+        // ICEBERG CHART
+        new Chart(document.getElementById('icebergChart').getContext('2d'), {
+            type: 'doughnut',
+            data: {
+                labels: [wrapLabel('Aspectos Formais e Visíveis'), wrapLabel('Aspectos Informais e Invisíveis')],
+                datasets: [{
+                    data: [15, 85],
+                    backgroundColor: ['#4f46e5', '#10b981'],
+                    borderWidth: 0
+                }]
+            },
+            options: {
+                maintainAspectRatio: false,
+                plugins: {
+                    legend: { position: 'bottom' },
+                    tooltip: tooltipConfig
+                }
+            }
+        });
+
+        // METHODS CHART
+        new Chart(document.getElementById('methodsChart').getContext('2d'), {
+            type: 'polarArea',
+            data: {
+                labels: [
+                    wrapLabel('Processo Seletivo'),
+                    wrapLabel('Conteúdo Cargo'),
+                    wrapLabel('Supervisor Tutor'),
+                    wrapLabel('Grupo Trabalho'),
+                    wrapLabel('Programa Onboarding')
+                ],
+                datasets: [{
+                    data: [18, 25, 30, 15, 12],
+                    backgroundColor: ['#4f46e5cc', '#10b981cc', '#f59e0bcc', '#6366f1cc', '#14b8a6cc']
+                }]
+            },
+            options: {
+                maintainAspectRatio: false,
+                scales: { r: { ticks: { display: false } } },
+                plugins: {
+                    legend: { display: false },
+                    tooltip: tooltipConfig
+                }
+            }
+        });
+
+        // TURNOVER CHART
+        new Chart(document.getElementById('turnoverChart').getContext('2d'), {
+            type: 'line',
+            data: {
+                labels: ['Mês 1', 'Mês 2', 'Mês 3', 'Mês 4', 'Mês 5', 'Mês 6'],
+                datasets: [
+                    {
+                        label: wrapLabel('Onboarding Estratégico'),
+                        data: [10, 8, 6, 4, 3, 2],
+                        borderColor: '#10b981',
+                        backgroundColor: '#10b98111',
+                        fill: true,
+                        tension: 0.4
+                    },
+                    {
+                        label: wrapLabel('Onboarding Burocrático'),
+                        data: [12, 15, 20, 22, 25, 24],
+                        borderColor: '#f43f5e',
+                        borderDash: [5, 5],
+                        fill: false,
+                        tension: 0.4
+                    }
+                ]
+            },
+            options: {
+                maintainAspectRatio: false,
+                plugins: { tooltip: tooltipConfig },
+                scales: { y: { beginAtZero: true } }
+            }
+        });
+
+        // CHALLENGE LOGIC
+        function calcTurnover() {
+            const salario = document.getElementById('salarioInput').value;
+            const resDisplay = document.getElementById('resResult');
+            if(salario > 0) {
+                const custo = salario * 12 * 1.5;
+                resDisplay.innerText = `Custo Est.: R$ ${custo.toLocaleString('pt-BR')}`;
+                resDisplay.classList.remove('bg-amber-50', 'text-amber-700');
+                resDisplay.classList.add('bg-rose-50', 'text-rose-700');
+            } else {
+                alert("Por favor, insira um salário válido.");
+            }
+        }
+    </script>
+</body>
+</html>

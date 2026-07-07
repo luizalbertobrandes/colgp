@@ -1,0 +1,422 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Infográfico: Gestão Estratégica de Pessoas</title>
+<script src="https://cdn.tailwindcss.com"></script>
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<!--
+Palette: Vibrant Blue & Orange (Primary: #2563EB, Secondary: #F59E0B, Accent: #10B981)
+Confirmation: NEITHER Mermaid JS NOR SVG were used anywhere in this output. All graphics use Canvas or structured HTML/CSS.
+Narrative Plan:
+1. Introduction: Transition from traditional DP to Strategic HR.
+2. Strategic Alignment: Connecting Mission/Vision to HR.
+3. Planning Models: Visualizing the 3 key models.
+4. Turnover Impact: Cost breakdown and long-term effects.
+5. Practical Activities: Notebook-ready templates for classroom application.
+-->
+<style>
+body { background-color: #F8FAFC; color: #1E293B; font-family: 'Segoe UI', Roboto, Helvetica, Arial, sans-serif; }
+.chart-container { position: relative; width: 100%; max-width: 600px; margin-left: auto; margin-right: auto; height: 350px; max-height: 400px; }
+@media (min-width: 768px) { .chart-container { height: 400px; } }
+.card { background-color: #ffffff; border-radius: 0.5rem; box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06); padding: 1.5rem; margin-bottom: 1.5rem; border-top: 4px solid #2563EB; }
+.accent-card { border-top-color: #F59E0B; }
+.green-card { border-top-color: #10B981; }
+.red-card { border-top-color: #EF4444; }
+.purple-card { border-top-color: #8B5CF6; }
+.flow-arrow { display: flex; align-items: center; justify-content: center; font-size: 2rem; color: #94A3B8; margin: 0.5rem 0; }
+@media (min-width: 768px) { .flow-arrow { margin: 0 1rem; transform: rotate(-90deg); } }
+.notebook-template { border: 2px dashed #CBD5E1; background-color: #F1F5F9; font-family: 'Courier New', Courier, monospace; }
+</style>
+</head>
+<body class="antialiased">
+
+<header class="bg-blue-700 text-white py-12 px-6 shadow-lg mb-10">
+    <div class="max-w-6xl mx-auto">
+        <h1 class="text-4xl md:text-5xl font-bold mb-4 tracking-tight">Gestão Estratégica de Pessoas</h1>
+        <p class="text-xl md:text-2xl font-light text-blue-100 max-w-3xl">O novo papel dos recursos humanos nas organizações: de departamento burocrático a parceiro estratégico do negócio.</p>
+        <div class="mt-6 inline-block bg-blue-800 rounded-full px-4 py-1 text-sm font-semibold">Prof. Luiz Alberto Brandes | Técnico em Administração</div>
+    </div>
+</header>
+
+<main class="max-w-6xl mx-auto px-6 pb-20">
+
+    <section class="mb-16">
+        <div class="mb-8">
+            <h2 class="text-3xl font-bold text-gray-800 border-b-2 border-blue-500 pb-2 inline-block">1. A Evolução do RH</h2>
+            <p class="mt-4 text-lg text-gray-600">Historicamente, o setor era conhecido como "Departamento de Pessoal" (DP), estritamente focado em controle e processos operacionais. Hoje, conforme destaca Idalberto Chiavenato, as pessoas são tratadas como parceiras que fornecem a inteligência que dá vida à organização.</p>
+        </div>
+        
+        <div class="grid grid-cols-1 lg:grid-cols-2 gap-8 items-center card">
+            <div>
+                <h3 class="text-xl font-semibold mb-4 text-blue-700">De Centro de Custos a Gerador de Valor</h3>
+                <p class="text-gray-700 mb-4">A mudança de paradigma exige que o RH abandone a postura passiva. O gráfico ao lado ilustra a transição de foco: diminuição drástica da carga burocrática em favor do desenvolvimento de talentos e alinhamento estratégico.</p>
+                <ul class="space-y-3">
+                    <li class="flex items-start">
+                        <span class="text-blue-500 mr-2 text-xl">▪</span>
+                        <span><strong>DP Tradicional:</strong> Focado em ponto, folha de pagamento e disciplina. Visto como "mal necessário".</span>
+                    </li>
+                    <li class="flex items-start">
+                        <span class="text-orange-500 mr-2 text-xl">▪</span>
+                        <span><strong>RH Estratégico:</strong> Focado em metas de longo prazo, capacitação e atração de talentos que impulsionam os resultados da empresa.</span>
+                    </li>
+                </ul>
+            </div>
+            <div class="chart-container">
+                <canvas id="radarChartEvolucao"></canvas>
+            </div>
+        </div>
+    </section>
+
+    <section class="mb-16">
+        <div class="mb-8">
+            <h2 class="text-3xl font-bold text-gray-800 border-b-2 border-orange-500 pb-2 inline-block">2. Alinhamento com Missão e Visão</h2>
+            <p class="mt-4 text-lg text-gray-600">O Planejamento de RH (PRH) não ocorre no vácuo. Ele é o reflexo direto da identidade da empresa. Quando o PRH está desalinhado, a empresa sofre com funcionários desmotivados e erros operacionais.</p>
+        </div>
+
+        <div class="card accent-card bg-orange-50">
+            <div class="flex flex-col md:flex-row justify-between items-stretch">
+                <div class="bg-white p-6 rounded shadow flex-1 text-center border-t-4 border-blue-500">
+                    <div class="text-5xl mb-3">🎯</div>
+                    <h4 class="font-bold text-xl mb-2">Missão</h4>
+                    <p class="text-sm text-gray-600">O Propósito: Por que existimos? Define o perfil cultural e os valores exigidos na contratação.</p>
+                </div>
+                
+                <div class="flow-arrow">▼</div>
+
+                <div class="bg-white p-6 rounded shadow flex-1 text-center border-t-4 border-blue-500">
+                    <div class="text-5xl mb-3">🔭</div>
+                    <h4 class="font-bold text-xl mb-2">Visão</h4>
+                    <p class="text-sm text-gray-600">O Destino: Onde queremos estar? Define a quantidade e a liderança necessária para o futuro.</p>
+                </div>
+                
+                <div class="flow-arrow">▼</div>
+
+                <div class="bg-white p-6 rounded shadow flex-1 text-center border-t-4 border-orange-500 transform md:scale-105">
+                    <div class="text-5xl mb-3">🤝</div>
+                    <h4 class="font-bold text-xl mb-2">Gestão de RH</h4>
+                    <p class="text-sm text-gray-600">A Estratégia: Como atrair, desenvolver e reter as pessoas que farão a Visão se tornar realidade.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="mb-16">
+        <div class="mb-8">
+            <h2 class="text-3xl font-bold text-gray-800 border-b-2 border-green-500 pb-2 inline-block">3. Modelos de Planejamento de RH</h2>
+            <p class="mt-4 text-lg text-gray-600">Não se contrata por "achismo". A utilização de modelos técnicos e fundamentados evita contratações de última hora, que costumam ser caras, erradas e prejudiciais à produtividade.</p>
+        </div>
+
+        <div class="grid grid-cols-1 lg:grid-cols-2 gap-8 card green-card">
+            <div class="chart-container">
+                <canvas id="bubbleChartModelos"></canvas>
+            </div>
+            <div class="flex flex-col justify-center">
+                <h3 class="text-xl font-semibold mb-4 text-green-700">Avaliando a Complexidade e o Valor Estratégico</h3>
+                <p class="text-gray-700 mb-4">O gráfico compara os três principais modelos de planejamento com base na complexidade de implementação e no valor estratégico gerado para a empresa.</p>
+                <div class="space-y-4">
+                    <div class="bg-gray-50 p-4 rounded border-l-4 border-blue-400">
+                        <strong class="block text-gray-800">Mapa de Substituição</strong>
+                        <span class="text-sm text-gray-600">Mapeamento visual de postos-chave. Prepara suplentes para evitar vácuos de liderança.</span>
+                    </div>
+                    <div class="bg-gray-50 p-4 rounded border-l-4 border-orange-400">
+                        <strong class="block text-gray-800">Fluxo de Pessoal</strong>
+                        <span class="text-sm text-gray-600">Análise quantitativa de entradas e saídas. Funciona como o gerenciamento de estoque de talentos.</span>
+                    </div>
+                    <div class="bg-gray-50 p-4 rounded border-l-4 border-green-500">
+                        <strong class="block text-gray-800">Planejamento Integrado</strong>
+                        <span class="text-sm text-gray-600">Visão 360º. Cruza vendas, finanças, tecnologia e mercado de RH para prever necessidades globais.</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="mb-16">
+        <div class="mb-8">
+            <h2 class="text-3xl font-bold text-gray-800 border-b-2 border-red-500 pb-2 inline-block">4. O Impacto Oculto do Turnover</h2>
+            <p class="mt-4 text-lg text-gray-600">O <em>Turnover</em> (rotatividade) reflete a saúde da organização. Como alerta Chiavenato, taxas elevadas indicam recrutamento falho, clima ruim ou falta de políticas de retenção, drenando os lucros através de custos invisíveis.</p>
+        </div>
+
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+            <div class="card red-card">
+                <h3 class="text-center font-bold text-lg mb-2 text-gray-800">Composição dos Custos de Rotatividade</h3>
+                <p class="text-sm text-center text-gray-500 mb-4">Apenas uma pequena parcela do custo é visível na rescisão.</p>
+                <div class="chart-container" style="height: 250px;">
+                    <canvas id="doughnutChartTurnover"></canvas>
+                </div>
+                <div class="mt-4 text-sm text-gray-700 bg-red-50 p-3 rounded">
+                    <strong>Alerta:</strong> Custos secundários incluem perda de conhecimento técnico, queda na moral da equipe (sobrecarga) e a lenta curva de aprendizado do novo contratado.
+                </div>
+            </div>
+
+            <div class="card bg-gray-50 border-t-4 border-blue-500 flex flex-col justify-center items-center text-center p-8">
+                <span class="text-gray-500 uppercase tracking-wide font-semibold text-sm mb-2">Custo Médio Estimado</span>
+                <span class="text-6xl font-black text-blue-600 mb-4">3x</span>
+                <p class="text-xl text-gray-700 font-medium">o salário do cargo</p>
+                <p class="mt-6 text-sm text-gray-600 max-w-xs">Este é o valor médio desperdiçado por uma empresa ao demitir e recontratar um colaborador devido à falta de planejamento.</p>
+            </div>
+        </div>
+
+        <div class="card border-t-4 border-green-500 mt-4">
+            <h3 class="text-center font-bold text-lg mb-2 text-gray-800">Projeção de Melhoria com RH Estratégico</h3>
+            <p class="text-sm text-center text-gray-500 mb-4">Evolução hipotética da retenção de talentos após implementação do planejamento integrado.</p>
+            <div class="chart-container">
+                <canvas id="lineChartRetencao"></canvas>
+            </div>
+        </div>
+    </section>
+
+    <!-- NOVA SEÇÃO: ATIVIDADES PRÁTICAS -->
+    <section class="mb-16">
+        <div class="mb-8">
+            <h2 class="text-3xl font-bold text-gray-800 border-b-2 border-purple-500 pb-2 inline-block">5. Atividades Práticas (Caderno)</h2>
+            <p class="mt-4 text-lg text-gray-600">Aplique os conceitos aprendidos através destes exercícios práticos. Utilize os templates abaixo como guia para organizar suas respostas no caderno.</p>
+        </div>
+
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+            
+            <!-- Atividade 1 -->
+            <div class="card purple-card flex flex-col h-full">
+                <div class="mb-4">
+                    <span class="bg-purple-100 text-purple-700 text-xs font-bold px-2 py-1 rounded uppercase">Atividade 01</span>
+                    <h3 class="text-xl font-bold mt-2">O Mapa de Substituição</h3>
+                </div>
+                <p class="text-sm text-gray-600 mb-4">Imagine que o Diretor Comercial de uma empresa têxtil em Blumenau vai se aposentar. Identifique dois possíveis sucessores internos e preencha o template.</p>
+                <div class="notebook-template p-4 rounded text-xs flex-grow overflow-auto">
+                    <p class="font-bold border-b border-gray-400 mb-2">TEMPLATE: MAPA DE SUCESSÃO</p>
+                    <p>Cargo: Diretor Comercial</p>
+                    <p>-----------------------------------</p>
+                    <p>Substituto A: [Nome]</p>
+                    <p>Status: ( ) Pronto p/ assumir ( ) 1 ano ( ) 2 anos</p>
+                    <p>Treinamento Necessário: ________________</p>
+                    <p>-----------------------------------</p>
+                    <p>Substituto B: [Nome]</p>
+                    <p>Status: ( ) Pronto p/ assumir ( ) 1 ano ( ) 2 anos</p>
+                    <p>Treinamento Necessário: ________________</p>
+                </div>
+            </div>
+
+            <!-- Atividade 2 -->
+            <div class="card purple-card flex flex-col h-full">
+                <div class="mb-4">
+                    <span class="bg-purple-100 text-purple-700 text-xs font-bold px-2 py-1 rounded uppercase">Atividade 02</span>
+                    <h3 class="text-xl font-bold mt-2">Diagnóstico de Turnover</h3>
+                </div>
+                <p class="text-sm text-gray-600 mb-4">Analise por que uma rede de supermercados está perdendo 5 caixas por mês. Liste 2 custos visíveis e 2 custos invisíveis desta situação.</p>
+                <div class="notebook-template p-4 rounded text-xs flex-grow overflow-auto">
+                    <p class="font-bold border-b border-gray-400 mb-2">TABELA DE CUSTOS DE ROTATIVIDADE</p>
+                    <p>Custos Primários (Visíveis):</p>
+                    <p>1. __________________________________</p>
+                    <p>2. __________________________________</p>
+                    <br>
+                    <p>Custos Secundários (Invisíveis):</p>
+                    <p>1. __________________________________</p>
+                    <p>2. __________________________________</p>
+                </div>
+            </div>
+
+            <!-- Atividade 3 -->
+            <div class="card purple-card flex flex-col h-full">
+                <div class="mb-4">
+                    <span class="bg-purple-100 text-purple-700 text-xs font-bold px-2 py-1 rounded uppercase">Atividade 03</span>
+                    <h3 class="text-xl font-bold mt-2">Alinhamento Estratégico</h3>
+                </div>
+                <p class="text-sm text-gray-600 mb-4">Escolha uma empresa catarinense (Ex: WEG, Havan, Tigre). Defina como o RH deve agir para que a Missão dela seja cumprida.</p>
+                <div class="notebook-template p-4 rounded text-xs flex-grow overflow-auto">
+                    <p class="font-bold border-b border-gray-400 mb-2">PLANO: MISSÃO -> RH</p>
+                    <p>Empresa Selecionada: ___________________</p>
+                    <p>Missão Principal: ______________________</p>
+                    <p>-----------------------------------</p>
+                    <p>Como o RH ajuda? (Ações Práticas):</p>
+                    <p>Ação 1 (Seleção): ____________________</p>
+                    <p>Ação 2 (Treinamento): _________________</p>
+                </div>
+            </div>
+
+            <!-- Atividade 4 -->
+            <div class="card purple-card flex flex-col h-full">
+                <div class="mb-4">
+                    <span class="bg-purple-100 text-purple-700 text-xs font-bold px-2 py-1 rounded uppercase">Atividade 04</span>
+                    <h3 class="text-xl font-bold mt-2">Fluxo de Pessoal</h3>
+                </div>
+                <p class="text-sm text-gray-600 mb-4">Calcule a necessidade de contratação. Se uma empresa tem 100 funcionários, perde 10 por ano e quer crescer 20%, quantos novos deve contratar?</p>
+                <div class="notebook-template p-4 rounded text-xs flex-grow overflow-auto">
+                    <p class="font-bold border-b border-gray-400 mb-2">CÁLCULO DE NECESSIDADE (PRH)</p>
+                    <p>1. Reposição de Saídas: ______________</p>
+                    <p>2. Vagas p/ Crescimento: ____________</p>
+                    <p>-----------------------------------</p>
+                    <p>TOTAL DE CONTRATAÇÕES: ______________</p>
+                    <p>Justificativa: _______________________</p>
+                </div>
+            </div>
+
+        </div>
+    </section>
+
+</main>
+
+<footer class="bg-gray-800 text-gray-300 py-8 text-center text-sm">
+    <div class="max-w-6xl mx-auto px-6">
+        <p>Desenvolvido para apoio às aulas de Gestão de Pessoas - Ensino Médio Técnico (SED/SC).</p>
+        <p class="mt-2 text-gray-400">Baseado nas obras de Idalberto Chiavenato e nas diretrizes curriculares catarinenses.</p>
+    </div>
+</footer>
+
+<script>
+function wrapLabels(labels) {
+    return labels.map(label => {
+        if (typeof label !== 'string' || label.length <= 16) return label;
+        const words = label.split(' ');
+        let lines = [];
+        let currentLine = '';
+        words.forEach(word => {
+            if ((currentLine + word).length > 16 && currentLine !== '') {
+                lines.push(currentLine.trim());
+                currentLine = word + ' ';
+            } else {
+                currentLine += word + ' ';
+            }
+        });
+        if (currentLine.trim() !== '') lines.push(currentLine.trim());
+        return lines;
+    });
+}
+
+const customTooltip = {
+    callbacks: {
+        title: function(tooltipItems) {
+            const item = tooltipItems[0];
+            let label = item.chart.data.labels[item.dataIndex];
+            if (Array.isArray(label)) {
+                return label.join(' ');
+            } else {
+                return label;
+            }
+        }
+    }
+};
+
+document.addEventListener('DOMContentLoaded', function() {
+    
+    const ctxRadar = document.getElementById('radarChartEvolucao').getContext('2d');
+    new Chart(ctxRadar, {
+        type: 'radar',
+        data: {
+            labels: wrapLabels(['Controle Burocrático', 'Foco Estratégico', 'Redução de Custos', 'Desenvolvimento de Pessoas', 'Visão de Curto Prazo', 'Retenção de Talentos']),
+            datasets: [{
+                label: 'Departamento de Pessoal Tradicional',
+                data: [90, 10, 80, 20, 90, 15],
+                backgroundColor: 'rgba(239, 68, 68, 0.2)',
+                borderColor: 'rgba(239, 68, 68, 1)',
+                pointBackgroundColor: 'rgba(239, 68, 68, 1)',
+                borderWidth: 2
+            }, {
+                label: 'RH Estratégico Moderno',
+                data: [20, 90, 40, 90, 20, 85],
+                backgroundColor: 'rgba(37, 99, 235, 0.2)',
+                borderColor: 'rgba(37, 99, 235, 1)',
+                pointBackgroundColor: 'rgba(37, 99, 235, 1)',
+                borderWidth: 2
+            }]
+        },
+        options: {
+            maintainAspectRatio: false,
+            scales: { r: { min: 0, max: 100, ticks: { stepSize: 20, backdropColor: 'transparent' } } },
+            plugins: { tooltip: customTooltip, legend: { position: 'bottom' } }
+        }
+    });
+
+    const ctxBubble = document.getElementById('bubbleChartModelos').getContext('2d');
+    new Chart(ctxBubble, {
+        type: 'bubble',
+        data: {
+            labels: ['Substituição de Postos-Chave', 'Fluxo de Pessoal', 'Planejamento Integrado'],
+            datasets: [
+                {
+                    label: 'Substituição de Postos',
+                    data: [{ x: 3, y: 5, r: 15 }],
+                    backgroundColor: 'rgba(96, 165, 250, 0.7)',
+                    borderColor: '#3B82F6'
+                },
+                {
+                    label: 'Fluxo de Pessoal',
+                    data: [{ x: 6, y: 7, r: 25 }],
+                    backgroundColor: 'rgba(251, 146, 60, 0.7)',
+                    borderColor: '#F97316'
+                },
+                {
+                    label: 'Planejamento Integrado',
+                    data: [{ x: 9, y: 10, r: 40 }],
+                    backgroundColor: 'rgba(52, 211, 153, 0.7)',
+                    borderColor: '#10B981'
+                }
+            ]
+        },
+        options: {
+            maintainAspectRatio: false,
+            scales: {
+                x: { title: { display: true, text: 'Complexidade de Implementação' }, min: 0, max: 11 },
+                y: { title: { display: true, text: 'Valor Estratégico e Eficiência' }, min: 0, max: 12 }
+            },
+            plugins: {
+                tooltip: {
+                    callbacks: {
+                        label: function(context) {
+                            return context.dataset.label + ': Complexidade ' + context.raw.x + ', Valor ' + context.raw.y;
+                        }
+                    }
+                },
+                legend: { position: 'bottom' }
+            }
+        }
+    });
+
+    const ctxDoughnut = document.getElementById('doughnutChartTurnover').getContext('2d');
+    new Chart(ctxDoughnut, {
+        type: 'doughnut',
+        data: {
+            labels: wrapLabels(['Custos Primários (Rescisões, Exames, Anúncios)', 'Custos Secundários (Conhecimento perdido, Moral baixa, Treinamento)']),
+            datasets: [{
+                data: [25, 75],
+                backgroundColor: ['#EF4444', '#F59E0B'],
+                borderWidth: 2,
+                borderColor: '#ffffff'
+            }]
+        },
+        options: {
+            maintainAspectRatio: false,
+            cutout: '70%',
+            plugins: { tooltip: customTooltip, legend: { position: 'bottom' } }
+        }
+    });
+
+    const ctxLine = document.getElementById('lineChartRetencao').getContext('2d');
+    new Chart(ctxLine, {
+        type: 'line',
+        data: {
+            labels: wrapLabels(['Trimestre 1', 'Trimestre 2', 'Trimestre 3', 'Trimestre 4', 'Trimestre 5', 'Trimestre 6']),
+            datasets: [{
+                label: 'Taxa de Turnover (%)',
+                data: [45, 42, 35, 25, 18, 12],
+                fill: true,
+                backgroundColor: 'rgba(16, 185, 129, 0.1)',
+                borderColor: '#10B981',
+                tension: 0.4,
+                pointBackgroundColor: '#10B981',
+                pointRadius: 5
+            }]
+        },
+        options: {
+            maintainAspectRatio: false,
+            scales: {
+                y: { title: { display: true, text: 'Rotatividade de Funcionários (%)' }, min: 0, max: 50 }
+            },
+            plugins: { tooltip: customTooltip, legend: { display: false } }
+        }
+    });
+});
+</script>
+</body>
+</html>

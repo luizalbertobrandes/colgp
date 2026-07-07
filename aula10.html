@@ -1,0 +1,535 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Panorama Salarial e Tendências de Mercado 2026</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="https://cdn.plot.ly/plotly-2.27.0.min.js"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;700;900&display=swap" rel="stylesheet">
+    
+    <style>
+        body {
+            font-family: 'Roboto', sans-serif;
+            background-color: #F4F4F9;
+            color: #1A1A1A;
+        }
+        
+        .chart-container {
+            position: relative;
+            width: 100%;
+            max-width: 100%;
+            margin-left: auto;
+            margin-right: auto;
+            height: 40vh;
+            max-height: 350px;
+        }
+
+        @media (min-width: 768px) {
+            .chart-container {
+                height: 50vh;
+                max-height: 450px;
+            }
+        }
+
+        .text-primary { color: #00C4CC; }
+        .text-secondary { color: #FF3366; }
+        .text-accent { color: #FF9900; }
+        .text-dark { color: #7030A0; }
+
+        .bg-primary { background-color: #00C4CC; }
+        .bg-secondary { background-color: #FF3366; }
+        .bg-accent { background-color: #FF9900; }
+        .bg-dark { background-color: #7030A0; }
+
+        .card-shadow {
+            box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.1), 0 8px 10px -6px rgba(0, 0, 0, 0.1);
+        }
+
+        .flow-box {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            font-weight: bold;
+            color: white;
+            padding: 1rem;
+            border-radius: 0.5rem;
+            height: 100%;
+        }
+
+        .arrow-down {
+            width: 0; 
+            height: 0; 
+            border-left: 20px solid transparent;
+            border-right: 20px solid transparent;
+            border-top: 20px solid #1A1A1A;
+            margin: 10px auto;
+        }
+
+        .arrow-right {
+            width: 0; 
+            height: 0; 
+            border-top: 20px solid transparent;
+            border-bottom: 20px solid transparent;
+            border-left: 20px solid #1A1A1A;
+            margin: auto 10px;
+            display: none;
+        }
+
+        @media (min-width: 768px) {
+            .md-row { display: flex; align-items: center; }
+            .arrow-down.md-hidden { display: none; }
+            .arrow-right.md-visible { display: block; }
+        }
+
+        /* Estilos do Formulário */
+        .form-input {
+            width: 100%;
+            padding: 0.75rem;
+            border: 2px solid #E5E7EB;
+            border-radius: 0.5rem;
+            margin-top: 0.5rem;
+            margin-bottom: 1rem;
+            transition: border-color 0.3s;
+        }
+        .form-input:focus {
+            outline: none;
+            border-color: #00C4CC;
+        }
+        .activity-textarea {
+            min-height: 120px;
+            resize: vertical;
+        }
+    </style>
+</head>
+<body class="antialiased">
+
+    <!-- Palette Name: Vibrant Energetic & Playful (Cyan #00C4CC, Pink #FF3366, Orange #FF9900, Purple #7030A0, Dark #1A1A1A) -->
+    <!-- Narrative Plan: 1. Hook (Introduction) -> 2. Executive Compensation (Bar) -> 3. Sector Distribution (Donut) -> 4. Exp vs Salary (Plotly) -> 5. Retention Flow (CSS) -> 6. Fixation Activities -> 7. NEW: Submission Form -> Conclusion. -->
+    <!-- Confirmation: NEITHER Mermaid JS NOR SVG were used anywhere in the output. -->
+
+    <header class="bg-dark text-white py-16 px-4 md:px-8 shadow-lg text-center relative overflow-hidden">
+        <div class="absolute top-0 left-0 w-full h-2 bg-gradient-to-r from-primary via-secondary to-accent"></div>
+        <div class="max-w-5xl mx-auto relative z-10">
+            <h1 class="text-4xl md:text-6xl font-black mb-4 uppercase tracking-tight">O Futuro do Trabalho <span class="text-primary">2026</span></h1>
+            <p class="text-xl md:text-2xl font-light text-gray-200">Transformação rápida, humanidade essencial. Um panorama analítico sobre remuneração, setores em alta e retenção de talentos no mercado brasileiro.</p>
+        </div>
+    </header>
+
+    <main class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
+        
+        <!-- Seção 1: Paradigma Executivo -->
+        <section class="mb-16">
+            <div class="text-center mb-10">
+                <h2 class="text-3xl font-bold text-gray-800 mb-4">O Novo Paradigma Executivo</h2>
+                <p class="text-lg text-gray-600 max-w-3xl mx-auto">A velocidade da mudança superou a curva de aprendizado tradicional. O mercado de 2026 não avalia apenas o currículo, mas a capacidade de adaptação. Abaixo, destacamos as variações salariais para posições estratégicas de liderança, contrastando pequenas/médias empresas com grandes corporações.</p>
+            </div>
+
+            <div class="bg-white rounded-2xl card-shadow p-6 md:p-10 border-t-4 border-secondary">
+                <h3 class="text-2xl font-bold text-gray-800 mb-6 text-center">Evolução Salarial: Liderança Comercial e Logística (R$ Milhares)</h3>
+                <div class="chart-container">
+                    <canvas id="salaryBarChart"></canvas>
+                </div>
+                <div class="mt-6 text-sm text-gray-500 text-center font-medium">
+                    *Valores representam a média salarial (R$) em milhares. Base: Pequenas/Médias vs. Grandes Empresas.
+                </div>
+            </div>
+        </section>
+
+        <!-- Seção 2: Setores e Dispersão -->
+        <section class="mb-16 grid grid-cols-1 lg:grid-cols-2 gap-8">
+            <div class="bg-white rounded-2xl card-shadow p-6 md:p-8 border-t-4 border-primary flex flex-col">
+                <h3 class="text-2xl font-bold text-gray-800 mb-4">Volume de Contratações por Setor</h3>
+                <p class="text-gray-600 mb-6 flex-grow">A transformação digital acelerada solidifica a Tecnologia e o Agronegócio como os principais motores de contratação especializada, seguidos pelo setor Financeiro que busca inovação constante.</p>
+                <div class="chart-container">
+                    <canvas id="sectorDonutChart"></canvas>
+                </div>
+            </div>
+
+            <div class="bg-white rounded-2xl card-shadow p-6 md:p-8 border-t-4 border-accent flex flex-col">
+                <h3 class="text-2xl font-bold text-gray-800 mb-4">Dispersão: Experiência vs. Remuneração Base</h3>
+                <p class="text-gray-600 mb-6">Uma análise correlacional mostrando como anos de experiência em gestão impactam a remuneração (R$ Mil) nos setores de alta tecnologia. Nota-se a formação de clusters em níveis de diretoria.</p>
+                <div class="chart-container" id="scatterPlotlyContainer"></div>
+            </div>
+        </section>
+
+        <!-- Seção 3: Ciclo de Vida -->
+        <section class="mb-16">
+            <div class="text-center mb-10">
+                <h2 class="text-3xl font-bold text-gray-800 mb-4">Ciclo de Vida e Retenção do Talento</h2>
+                <p class="text-lg text-gray-600 max-w-3xl mx-auto">Para combater o *turnover* e garantir o retorno sobre o capital intelectual, o processo de agregação de pessoas deve seguir um fluxo estruturado de socialização organizacional, reduzindo a ansiedade e maximizando a produtividade inicial.</p>
+            </div>
+
+            <div class="bg-white rounded-2xl card-shadow p-8 md:p-12 border-t-4 border-dark">
+                <div class="md-row justify-center items-stretch flex-col md:flex-row">
+                    
+                    <div class="flex-1">
+                        <div class="flow-box bg-gray-800 shadow-md">
+                            <span class="text-xl">1. Captação & Seleção<br><span class="text-sm font-normal text-gray-300 mt-2 block">Foco em Soft Skills e Fit Cultural</span></span>
+                        </div>
+                    </div>
+                    
+                    <div class="arrow-down md-hidden"></div>
+                    <div class="arrow-right md-visible"></div>
+
+                    <div class="flex-1">
+                        <div class="flow-box bg-secondary shadow-md transform md:-translate-y-4">
+                            <span class="text-xl">2. Onboarding Intenso<br><span class="text-sm font-normal text-pink-200 mt-2 block">Aculturação nos primeiros 90 dias</span></span>
+                        </div>
+                    </div>
+
+                    <div class="arrow-down md-hidden"></div>
+                    <div class="arrow-right md-visible"></div>
+
+                    <div class="flex-1">
+                        <div class="flow-box bg-primary shadow-md">
+                            <span class="text-xl">3. Treinamento Técnico<br><span class="text-sm font-normal text-cyan-100 mt-2 block">Desenvolvimento de Hard Skills</span></span>
+                        </div>
+                    </div>
+
+                    <div class="arrow-down md-hidden"></div>
+                    <div class="arrow-right md-visible"></div>
+
+                    <div class="flex-1">
+                        <div class="flow-box bg-accent shadow-md transform md:-translate-y-4">
+                            <span class="text-xl">4. Engajamento & Retenção<br><span class="text-sm font-normal text-orange-100 mt-2 block">Plano de carreira e benefícios flexíveis</span></span>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        </section>
+
+        <!-- Seção 4: KPIs rápidos -->
+        <section class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-16">
+            <div class="bg-white p-6 rounded-xl border-l-8 border-secondary shadow-sm">
+                <div class="text-5xl font-black text-secondary mb-2">60<span class="text-2xl">%</span></div>
+                <h4 class="font-bold text-gray-800 text-lg">Aumento na Demanda</h4>
+                <p class="text-sm text-gray-600 mt-2">Crescimento na busca por perfis de liderança comercial com habilidades em dados.</p>
+            </div>
+            <div class="bg-white p-6 rounded-xl border-l-8 border-primary shadow-sm">
+                <div class="text-5xl font-black text-primary mb-2">90<span class="text-2xl">Dias</span></div>
+                <h4 class="font-bold text-gray-800 text-lg">Período Crítico</h4>
+                <p class="text-sm text-gray-600 mt-2">Tempo médio de onboarding necessário para garantir o alinhamento de expectativas.</p>
+            </div>
+            <div class="bg-white p-6 rounded-xl border-l-8 border-accent shadow-sm">
+                <div class="text-5xl font-black text-accent mb-2">R$ 80<span class="text-2xl">k</span></div>
+                <h4 class="font-bold text-gray-800 text-lg">Teto Salarial Base</h4>
+                <p class="text-sm text-gray-600 mt-2">Pico de remuneração fixa para Vice-Presidentes (CSO) em grandes corporações.</p>
+            </div>
+        </section>
+
+        <!-- Seção 5: Atividades de Fixação -->
+        <section class="mb-16">
+            <div class="text-center mb-10">
+                <h2 class="text-3xl font-bold text-gray-800 mb-4 uppercase tracking-widest">Laboratório de Aprendizagem</h2>
+                <div class="h-1 w-24 bg-primary mx-auto mb-6"></div>
+                <p class="text-lg text-gray-600 max-w-3xl mx-auto">Cinco missões práticas para aplicar os dados apresentados e consolidar sua visão estratégica sobre Gestão de Pessoas em 2026.</p>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 mb-12">
+                <div class="bg-white rounded-xl shadow-lg overflow-hidden border border-gray-100 flex flex-col">
+                    <div class="bg-dark text-white p-4 font-bold text-center">Atividade 1: O "Pitch" do Budget</div>
+                    <div class="p-6 flex-grow">
+                        <p class="text-sm text-gray-700 leading-relaxed mb-4"><strong>Contexto:</strong> Você é o Gerente de RH de uma startup. Use o gráfico de "Evolução Salarial" para convencer o CEO a aumentar o orçamento de contratação para um Diretor Comercial.</p>
+                        <p class="text-xs font-bold text-secondary uppercase">Desafio:</p>
+                        <p class="text-xs text-gray-500 italic">Escreva um parágrafo de 5 linhas justificando o aumento com base na concorrência das Grandes Empresas.</p>
+                    </div>
+                </div>
+
+                <div class="bg-white rounded-xl shadow-lg overflow-hidden border border-gray-100 flex flex-col">
+                    <div class="bg-primary text-white p-4 font-bold text-center">Atividade 2: Mapa de Talentos</div>
+                    <div class="p-6 flex-grow">
+                        <p class="text-sm text-gray-700 leading-relaxed mb-4"><strong>Contexto:</strong> Observe o gráfico de "Volume de Contratações por Setor". Se você fosse abrir uma agência de recrutamento hoje, em quais dois nichos você focaria?</p>
+                        <p class="text-xs font-bold text-primary uppercase">Desafio:</p>
+                        <p class="text-xs text-gray-500 italic">Crie uma lista de 3 "Hard Skills" que seriam obrigatórias para os candidatos desses dois setores em 2026.</p>
+                    </div>
+                </div>
+
+                <div class="bg-white rounded-xl shadow-lg overflow-hidden border border-gray-100 flex flex-col">
+                    <div class="bg-secondary text-white p-4 font-bold text-center">Atividade 3: O Guardião da Cultura</div>
+                    <div class="p-6 flex-grow">
+                        <p class="text-sm text-gray-700 leading-relaxed mb-4"><strong>Contexto:</strong> Analise o fluxo de "Ciclo de Vida". Um novo colaborador acaba de chegar e o "Onboarding Intenso" falhou no dia 15.</p>
+                        <p class="text-xs font-bold text-secondary uppercase">Desafio:</p>
+                        <p class="text-xs text-gray-500 italic">Proponha uma ação imediata de "Re-Onboarding" para resgatar o engajamento antes que ele peça demissão.</p>
+                    </div>
+                </div>
+
+                <div class="bg-white rounded-xl shadow-lg overflow-hidden border border-gray-100 flex flex-col">
+                    <div class="bg-accent text-white p-4 font-bold text-center">Atividade 4: Análise de Correlação</div>
+                    <div class="p-6 flex-grow">
+                        <p class="text-sm text-gray-700 leading-relaxed mb-4"><strong>Contexto:</strong> Olhe para a "Dispersão: Experiência vs. Remuneração". Existem pontos fora da curva (salários altos com pouca experiência).</p>
+                        <p class="text-xs font-bold text-accent uppercase">Desafio:</p>
+                        <p class="text-xs text-gray-500 italic">Dê um exemplo de que tipo de especialização ultra-rara justificaria esse ponto fora da curva no mercado atual.</p>
+                    </div>
+                </div>
+
+                <div class="bg-white rounded-xl shadow-lg overflow-hidden border border-gray-100 flex flex-col md:col-span-2 lg:col-span-1">
+                    <div class="bg-gray-800 text-white p-4 font-bold text-center">Atividade 5: Auditoria de Retenção</div>
+                    <div class="p-6 flex-grow">
+                        <p class="text-sm text-gray-700 leading-relaxed mb-4"><strong>Contexto:</strong> O dado indica 60% de aumento na demanda por perfis de liderança comercial. Isso significa que seus talentos internos serão "assediados" pelo mercado.</p>
+                        <p class="text-xs font-bold text-gray-800 uppercase">Desafio:</p>
+                        <p class="text-xs text-gray-500 italic">Desenvolva uma "Contraproposta Não-Financeira" (benefício) para manter um talento que recebeu uma oferta maior.</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- NOVO FORMULÁRIO DE ENTREGA -->
+            <div class="bg-white rounded-2xl card-shadow p-8 md:p-12 border-t-8 border-primary max-w-4xl mx-auto">
+                <h3 class="text-2xl font-black text-gray-800 mb-6 text-center uppercase tracking-tighter">Formulário de Entrega</h3>
+                
+                <form id="submissionForm" onsubmit="handleFormSubmission(event)">
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                        <div>
+                            <label class="block text-sm font-bold text-gray-700 uppercase mb-1">Nome Completo</label>
+                            <input type="text" id="userName" required class="form-input" placeholder="Seu nome...">
+                        </div>
+                        <div>
+                            <label class="block text-sm font-bold text-gray-700 uppercase mb-1">E-mail Corporativo/Estudantil</label>
+                            <input type="email" id="userEmail" required class="form-input" placeholder="email@exemplo.com">
+                        </div>
+                    </div>
+
+                    <div class="mt-4">
+                        <label class="block text-sm font-bold text-secondary uppercase mb-2">1. Resposta: O "Pitch" do Budget</label>
+                        <textarea id="act1" required class="form-input activity-textarea" placeholder="Digite sua justificativa estratégica aqui..."></textarea>
+                    </div>
+
+                    <div class="mt-4">
+                        <label class="block text-sm font-bold text-primary uppercase mb-2">2. Resposta: Mapa de Talentos</label>
+                        <textarea id="act2" required class="form-input activity-textarea" placeholder="Setores escolhidos e as 3 Hard Skills..."></textarea>
+                    </div>
+
+                    <div class="mt-4">
+                        <label class="block text-sm font-bold text-secondary uppercase mb-2">3. Resposta: O Guardião da Cultura</label>
+                        <textarea id="act3" required class="form-input activity-textarea" placeholder="Descreva sua ação de resgate..."></textarea>
+                    </div>
+
+                    <div class="mt-4">
+                        <label class="block text-sm font-bold text-accent uppercase mb-2">4. Resposta: Análise de Correlação</label>
+                        <textarea id="act4" required class="form-input activity-textarea" placeholder="Especifique a especialização rara..."></textarea>
+                    </div>
+
+                    <div class="mt-4">
+                        <label class="block text-sm font-bold text-dark uppercase mb-2">5. Resposta: Auditoria de Retenção</label>
+                        <textarea id="act5" required class="form-input activity-textarea" placeholder="Descreva o benefício não-financeiro..."></textarea>
+                    </div>
+
+                    <button type="submit" class="w-full bg-dark text-white font-black py-4 px-8 rounded-lg mt-6 hover:bg-black transition-colors shadow-lg uppercase tracking-widest">
+                        Enviar Atividades para Avaliação
+                    </button>
+                    
+                    <div id="successMessage" class="hidden mt-4 p-4 bg-green-100 text-green-700 rounded-lg text-center font-bold">
+                        Sucesso! Suas atividades foram enviadas para revisão.
+                    </div>
+                </form>
+            </div>
+        </section>
+
+    </main>
+
+    <footer class="bg-gray-900 text-gray-400 py-8 text-center text-sm">
+        <p>Dados sintetizados a partir do Guia Salarial Michael Page 2026 e metodologias de Gestão de Pessoas (Chiavenato).</p>
+        <p class="mt-2">&copy; 2026 Canvas Infographics. Todos os direitos reservados.</p>
+    </footer>
+
+    <script>
+        function handleFormSubmission(event) {
+            event.preventDefault();
+            const form = document.getElementById('submissionForm');
+            const success = document.getElementById('successMessage');
+            
+            // Simulação de envio
+            const button = form.querySelector('button');
+            button.disabled = true;
+            button.innerText = 'Enviando...';
+
+            setTimeout(() => {
+                form.reset();
+                button.disabled = false;
+                button.innerText = 'Enviar Atividades para Avaliação';
+                success.classList.remove('hidden');
+                
+                setTimeout(() => {
+                    success.classList.add('hidden');
+                }, 5000);
+            }, 1500);
+        }
+
+        function wrapLabel(label, limit = 16) {
+            const words = label.split(' ');
+            let lines = [];
+            let currentLine = '';
+
+            words.forEach(word => {
+                if ((currentLine + word).length > limit) {
+                    if (currentLine.trim() !== '') {
+                        lines.push(currentLine.trim());
+                    }
+                    currentLine = word + ' ';
+                } else {
+                    currentLine += word + ' ';
+                }
+            });
+            
+            if (currentLine.trim() !== '') {
+                lines.push(currentLine.trim());
+            }
+            return lines;
+        }
+
+        const commonTooltipConfig = {
+            callbacks: {
+                title: function(tooltipItems) {
+                    const item = tooltipItems[0];
+                    let label = item.chart.data.labels[item.dataIndex];
+                    if (Array.isArray(label)) {
+                        return label.join(' ');
+                    } else {
+                        return label;
+                    }
+                }
+            },
+            backgroundColor: 'rgba(26, 26, 26, 0.9)',
+            titleFont: { size: 14, family: 'Roboto' },
+            bodyFont: { size: 14, family: 'Roboto' },
+            padding: 12,
+            cornerRadius: 8
+        };
+
+        const rawLabelsBar = [
+            'Gerente Nacional de Vendas',
+            'Diretor de Unidade de Negócios',
+            'Diretor Comercial Vendas',
+            'Vice-Presidente de Vendas (CSO)'
+        ];
+        const processedBarLabels = rawLabelsBar.map(label => wrapLabel(label));
+
+        const ctxBar = document.getElementById('salaryBarChart').getContext('2d');
+        new Chart(ctxBar, {
+            type: 'bar',
+            data: {
+                labels: processedBarLabels,
+                datasets: [
+                    {
+                        label: 'Pequena/Média Empresa',
+                        data: [27, 35, 43, 53],
+                        backgroundColor: '#00C4CC',
+                        borderRadius: 6,
+                        borderWidth: 0
+                    },
+                    {
+                        label: 'Grande Empresa',
+                        data: [32, 50, 60, 80],
+                        backgroundColor: '#7030A0',
+                        borderRadius: 6,
+                        borderWidth: 0
+                    }
+                ]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                plugins: {
+                    legend: {
+                        position: 'top',
+                        labels: { font: { family: 'Roboto', size: 13 }, color: '#1A1A1A' }
+                    },
+                    tooltip: commonTooltipConfig
+                },
+                scales: {
+                    y: {
+                        beginAtZero: true,
+                        grid: { color: '#e5e7eb', drawBorder: false },
+                        ticks: { color: '#4b5563', font: { family: 'Roboto' }, callback: function(value) { return 'R$ ' + value + 'k'; } }
+                    },
+                    x: {
+                        grid: { display: false },
+                        ticks: { color: '#1A1A1A', font: { family: 'Roboto', weight: 'bold' } }
+                    }
+                }
+            }
+        });
+
+        const rawLabelsDonut = ['Tecnologia e TI', 'Agronegócio', 'Saúde e Farma', 'Serviços Financeiros', 'Logística'];
+        const processedDonutLabels = rawLabelsDonut.map(label => wrapLabel(label));
+
+        const ctxDonut = document.getElementById('sectorDonutChart').getContext('2d');
+        new Chart(ctxDonut, {
+            type: 'doughnut',
+            data: {
+                labels: processedDonutLabels,
+                datasets: [{
+                    data: [35, 25, 15, 15, 10],
+                    backgroundColor: ['#00C4CC', '#FF3366', '#FF9900', '#7030A0', '#1A1A1A'],
+                    borderWidth: 2,
+                    borderColor: '#ffffff',
+                    hoverOffset: 8
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                cutout: '65%',
+                plugins: {
+                    legend: {
+                        position: 'right',
+                        labels: { font: { family: 'Roboto', size: 13 }, color: '#1A1A1A', padding: 20 }
+                    },
+                    tooltip: commonTooltipConfig
+                }
+            }
+        });
+
+        const expYears = [2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 14, 15, 18, 20];
+        const salaries = [15, 18, 22, 26, 30, 35, 38, 43, 50, 53, 60, 65, 70, 75, 80];
+        
+        const trace1 = {
+            x: expYears,
+            y: salaries,
+            mode: 'markers',
+            type: 'scattergl',
+            marker: {
+                size: 16,
+                color: salaries,
+                colorscale: [
+                    [0, '#00C4CC'],
+                    [0.5, '#FF3366'],
+                    [1, '#FF9900']
+                ],
+                showscale: false,
+                opacity: 0.8,
+                line: { width: 1, color: '#ffffff' }
+            },
+            hovertemplate: 'Experiência: %{x} anos<br>Remuneração: R$ %{y}k<extra></extra>'
+        };
+
+        const layout = {
+            autosize: true,
+            margin: { l: 50, r: 20, t: 20, b: 50 },
+            paper_bgcolor: 'rgba(0,0,0,0)',
+            plot_bgcolor: 'rgba(0,0,0,0)',
+            xaxis: { 
+                title: { text: 'Anos de Experiência', font: { family: 'Roboto', color: '#4b5563' } },
+                gridcolor: '#e5e7eb',
+                zerolinecolor: '#e5e7eb',
+                tickfont: { color: '#4b5563' }
+            },
+            yaxis: { 
+                title: { text: 'Remuneração Base (R$ Mil)', font: { family: 'Roboto', color: '#4b5563' } },
+                gridcolor: '#e5e7eb',
+                zerolinecolor: '#e5e7eb',
+                tickfont: { color: '#4b5563' }
+            },
+            hoverlabel: {
+                bgcolor: '#1A1A1A',
+                font: { family: 'Roboto', size: 14, color: '#ffffff' }
+            }
+        };
+
+        Plotly.newPlot('scatterPlotlyContainer', [trace1], layout, { displayModeBar: false, responsive: true });
+    </script>
+</body>
+</html>

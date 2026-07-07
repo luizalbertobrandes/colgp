@@ -1,0 +1,410 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Gestão de Pessoas - Prof. Luiz Alberto Brandes</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;600;700&display=swap');
+        
+        :root {
+            --bg-canvas: #f9fafb;
+            --primary: #2d3e40;
+            --accent: #c08457;
+            --glass: rgba(255, 255, 255, 0.8);
+        }
+
+        body {
+            font-family: 'Plus Jakarta Sans', sans-serif;
+            background-color: var(--bg-canvas);
+            color: var(--primary);
+        }
+
+        .chart-container {
+            position: relative;
+            width: 100%;
+            max-width: 600px;
+            margin: auto;
+            height: 300px;
+        }
+
+        .drop-zone {
+            min-height: 80px;
+            border: 2px dashed #cbd5e1;
+            transition: all 0.3s ease;
+        }
+
+        .rank-card {
+            cursor: grab;
+            transition: transform 0.2s;
+        }
+
+        .rank-card:active { cursor: grabbing; }
+
+        .citation-box {
+            border-left: 4px solid var(--accent);
+            background: #fff7ed;
+        }
+
+        input[type="text"], textarea, select {
+            border: 1px solid #e2e8f0;
+            padding: 0.75rem;
+            border-radius: 0.5rem;
+            width: 100%;
+            font-size: 0.875rem;
+        }
+    </style>
+</head>
+<body class="overflow-x-hidden">
+
+    <!-- Chosen Palette: Profissional Acadêmico (Verde Petróleo Escuro, Terracota, Creme e Cinzas Suaves) -->
+    <!-- Application Structure Plan: O SPA agora possui três blocos principais: 
+        1. Módulo de Avaliação de Cargos (Aula 3): Teoria e Laboratório de Hierarquia. 
+        2. Módulo de Pesquisa Salarial (Aula 4): Contexto de SC e Custo Brasil.
+        3. Laboratório de Criação e Fixação: Seção nova com desafios práticos onde o aluno atua como consultor, gera um relatório individualizado e exporta suas conclusões para entrega via arquivo TXT. 
+        O fluxo foi desenhado para ir da observação (Aulas 3 e 4) para a produção ativa (Atividades). -->
+    <!-- Visualization & Content Choices: 
+        - Gráfico de Rosca: Decomposição do Custo Brasil.
+        - Drag-and-Drop: Escalonamento de cargos.
+        - Formulários Dinâmicos: Para coleta de dados das atividades criativas.
+        - Exportador Blob JS: Permite transformar o conteúdo HTML/JS em um arquivo de texto para download. -->
+    <!-- CONFIRMATION: NO SVG graphics used. NO Mermaid JS used. -->
+
+    <nav class="bg-white/90 backdrop-blur-md sticky top-0 z-50 border-b border-stone-200 shadow-sm">
+        <div class="max-w-6xl mx-auto px-6 h-16 flex items-center justify-between">
+            <div class="font-bold text-lg text-stone-800">EEB Colombo Machado Salles | <span class="text-amber-700">GP</span></div>
+            <div class="hidden md:flex space-x-6 text-sm font-semibold uppercase tracking-wider">
+                <a href="#aula3" class="hover:text-amber-700 transition">Aula 3</a>
+                <a href="#aula4" class="hover:text-amber-700 transition">Aula 4</a>
+                <a href="#atividades" class="hover:text-amber-700 transition">Atividades de Fixação</a>
+            </div>
+        </div>
+    </nav>
+
+    <header class="py-16 px-6 bg-gradient-to-b from-stone-100 to-transparent">
+        <div class="max-w-4xl mx-auto text-center space-y-4">
+            <h1 class="text-4xl font-extrabold text-stone-900 leading-tight">Administração de Salários: Do Valor Interno ao Mercado</h1>
+            <p class="text-xl text-stone-600">Material de Apoio & Laboratório de Fixação - Prof. Luiz Alberto Brandes</p>
+        </div>
+    </header>
+
+    <main class="max-w-6xl mx-auto px-6 space-y-32 pb-24">
+
+        <!-- AULA 3: AVALIAÇÃO DE CARGOS -->
+        <section id="aula3" class="space-y-12">
+            <div class="flex items-center space-x-4">
+                <span class="bg-stone-800 text-white px-3 py-1 text-sm font-bold rounded">AULA 3</span>
+                <h2 class="text-3xl font-bold">Avaliação e Classificação de Cargos</h2>
+            </div>
+
+            <div class="citation-box p-6 rounded-r-xl italic text-stone-700 leading-relaxed">
+                "A administração de salários é o conjunto de normas e procedimentos que visam estabelecer e/ou manter estruturas de salários equitativas e justas na organização." 
+                <span class="block mt-2 font-semibold">— Idalberto Chiavenato</span>
+            </div>
+
+            <div class="grid md:grid-cols-2 gap-12">
+                <div class="space-y-6">
+                    <h3 class="text-xl font-bold text-amber-800">Métodos Tradicionais</h3>
+                    <div class="space-y-4">
+                        <div class="p-4 bg-white border border-stone-200 rounded-lg shadow-sm">
+                            <h4 class="font-bold">1. Escalonamento Simples (Job Ranking)</h4>
+                            <p class="text-sm text-stone-600">Compara os cargos entre si em bloco. É o método mais rudimentar e não analítico.</p>
+                        </div>
+                        <div class="p-4 bg-white border border-stone-200 rounded-lg shadow-sm">
+                            <h4 class="font-bold">2. Categorias Predeterminadas</h4>
+                            <p class="text-sm text-stone-600">Divide os cargos em grupos (ex: Mensalistas, Horistas) antes da avaliação.</p>
+                        </div>
+                        <div class="p-4 bg-white border border-stone-200 rounded-lg shadow-sm">
+                            <h4 class="font-bold">3. Comparação por Fatores</h4>
+                            <p class="text-sm text-stone-600">Método analítico que divide o cargo em fatores como requisitos mentais e físicos.</p>
+                        </div>
+                        <div class="p-4 bg-white border border-stone-200 rounded-lg shadow-sm">
+                            <h4 class="font-bold">4. Método por Pontos</h4>
+                            <p class="text-sm text-stone-600">O mais comum. Atribui valores numéricos a cada fator do cargo.</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="bg-stone-50 p-8 rounded-2xl border border-stone-200 space-y-6">
+                    <div class="text-center">
+                        <h3 class="font-bold text-xl uppercase">Laboratório de Escalonamento</h3>
+                        <p class="text-sm text-stone-500">Arraste para definir a hierarquia (do maior para o menor valor)</p>
+                    </div>
+                    <div id="laboratorio-ranking" class="space-y-3">
+                        <div class="rank-card p-4 bg-white border border-stone-300 rounded shadow-sm flex items-center justify-between" draggable="true" data-id="1">
+                            <div>
+                                <span class="font-bold">A. Gerente de Produção</span>
+                                <p class="text-xs text-stone-500">Planejamento estratégico e gestão de 50 pessoas.</p>
+                            </div>
+                            <span class="text-stone-300">☰</span>
+                        </div>
+                        <div class="rank-card p-4 bg-white border border-stone-300 rounded shadow-sm flex items-center justify-between" draggable="true" data-id="2">
+                            <div>
+                                <span class="font-bold">B. Auxiliar de Almoxarifado</span>
+                                <p class="text-xs text-stone-500">Recebimento e conferência de materiais sob supervisão.</p>
+                            </div>
+                            <span class="text-stone-300">☰</span>
+                        </div>
+                        <div class="rank-card p-4 bg-white border border-stone-300 rounded shadow-sm flex items-center justify-between" draggable="true" data-id="3">
+                            <div>
+                                <span class="font-bold">C. Analista de Custos Sênior</span>
+                                <p class="text-xs text-stone-500">Cálculos complexos e relatórios de viabilidade financeira.</p>
+                            </div>
+                            <span class="text-stone-300">☰</span>
+                        </div>
+                    </div>
+                    <button onclick="checkRanking()" class="w-full py-3 bg-stone-800 text-white rounded-lg font-bold hover:bg-stone-700 transition">Validar Hierarquia</button>
+                    <div id="ranking-feedback" class="hidden p-3 text-center text-sm font-semibold rounded"></div>
+                </div>
+            </div>
+        </section>
+
+        <!-- AULA 4: PESQUISA SALARIAL -->
+        <section id="aula4" class="space-y-12">
+            <div class="flex items-center space-x-4">
+                <span class="bg-amber-700 text-white px-3 py-1 text-sm font-bold rounded">AULA 4</span>
+                <h2 class="text-3xl font-bold">Pesquisa Salarial e o "Custo Brasil"</h2>
+            </div>
+
+            <div class="grid md:grid-cols-2 gap-12 items-start">
+                <div class="space-y-6">
+                    <p class="text-stone-600 leading-relaxed">
+                        A pesquisa salarial visa garantir a <strong>competitividade externa</strong> da empresa calibrando seus salários com o mercado local.
+                    </p>
+                    <div class="p-6 bg-white border border-stone-200 rounded-xl space-y-4">
+                        <h3 class="font-bold">Pesquisa Dirigida: Santa Catarina</h3>
+                        <div class="flex flex-wrap gap-2">
+                            <button onclick="updateRegionData('Joinville', 2450)" class="px-3 py-1 bg-stone-100 hover:bg-amber-100 rounded text-xs border border-stone-300">Joinville</button>
+                            <button onclick="updateRegionData('Florianópolis', 2680)" class="px-3 py-1 bg-stone-100 hover:bg-amber-100 rounded text-xs border border-stone-300">Florianópolis</button>
+                            <button onclick="updateRegionData('Lages', 2100)" class="px-3 py-1 bg-stone-100 hover:bg-amber-100 rounded text-xs border border-stone-300">Lages</button>
+                            <button onclick="updateRegionData('Canoinhas', 2250)" class="px-3 py-1 bg-stone-100 hover:bg-amber-100 rounded text-xs border border-stone-300">Canoinhas</button>
+                        </div>
+                        <div id="region-display" class="text-xl font-bold text-amber-700 pt-4">R$ --,--</div>
+                    </div>
+                </div>
+
+                <div class="bg-stone-900 text-white p-8 rounded-3xl shadow-2xl space-y-8">
+                    <h3 class="text-2xl font-bold">A Realidade do Custo Brasil</h3>
+                    <div class="chart-container">
+                        <canvas id="chartCustoBrasil"></canvas>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- SEÇÃO NOVA: ATIVIDADES CRIATIVAS DE FIXAÇÃO -->
+        <section id="atividades" class="space-y-16 py-12 border-t border-stone-200">
+            <div class="text-center space-y-4">
+                <h2 class="text-4xl font-bold text-stone-800">Oficina de Prática Profissional</h2>
+                <p class="text-stone-500 max-w-2xl mx-auto">Coloque em prática os conceitos de Chiavenato. Preencha seus dados e responda aos desafios para gerar seu relatório final.</p>
+            </div>
+
+            <!-- Dados do Aluno -->
+            <div class="max-w-md mx-auto bg-white p-6 rounded-xl border border-amber-200 shadow-sm space-y-4">
+                <h3 class="font-bold text-amber-800 text-center uppercase text-sm tracking-widest">Identificação do Aluno</h3>
+                <div>
+                    <label class="block text-xs font-bold mb-1 text-stone-500 uppercase">Nome Completo:</label>
+                    <input type="text" id="aluno-nome" placeholder="Digite seu nome aqui...">
+                </div>
+                <div>
+                    <label class="block text-xs font-bold mb-1 text-stone-500 uppercase">Série/Turma:</label>
+                    <input type="text" id="aluno-turma" placeholder="Ex: 3º Ano Admin">
+                </div>
+            </div>
+
+            <div class="grid lg:grid-cols-2 gap-8">
+                <!-- Desafio 1: O Designer de Cargos -->
+                <div class="bg-white p-8 rounded-2xl border border-stone-200 shadow-sm space-y-6">
+                    <div class="flex items-start justify-between">
+                        <div class="bg-stone-100 p-3 rounded-lg text-2xl">📝</div>
+                        <span class="text-[10px] bg-stone-800 text-white px-2 py-1 rounded font-bold uppercase">Aula 3</span>
+                    </div>
+                    <h3 class="text-xl font-bold">Desafio 1: O Arquiteto de Cargos</h3>
+                    <p class="text-sm text-stone-600 leading-relaxed">
+                        Imagine que a escola decidiu contratar um <strong>"Monitor de Inovação Digital"</strong>. Sua tarefa é criar um mini-sistema de avaliação por pontos para este novo cargo.
+                    </p>
+                    <div class="space-y-4">
+                        <div>
+                            <label class="block text-sm font-semibold mb-2">Quais seriam os 3 principais fatores de avaliação para este cargo?</label>
+                            <textarea id="atv1-fatores" rows="3" placeholder="Ex: Requisitos Mentais, Responsabilidade por Equipamentos..."></textarea>
+                        </div>
+                        <div>
+                            <label class="block text-sm font-semibold mb-2">Atribua uma pontuação de 0 a 100 para cada fator e justifique:</label>
+                            <textarea id="atv1-justificativa" rows="3" placeholder="Por que o fator X vale mais pontos que o fator Y?"></textarea>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Desafio 2: Analista de Mercado Regional -->
+                <div class="bg-white p-8 rounded-2xl border border-stone-200 shadow-sm space-y-6">
+                    <div class="flex items-start justify-between">
+                        <div class="bg-amber-50 p-3 rounded-lg text-2xl">📊</div>
+                        <span class="text-[10px] bg-amber-700 text-white px-2 py-1 rounded font-bold uppercase">Aula 4</span>
+                    </div>
+                    <h3 class="text-xl font-bold">Desafio 2: Mapeando o Mercado de SC</h3>
+                    <p class="text-sm text-stone-600 leading-relaxed">
+                        Analise a diferença salarial que você viu no simulador acima (entre Lages, Joinville e Florianópolis). 
+                    </p>
+                    <div class="space-y-4">
+                        <div>
+                            <label class="block text-sm font-semibold mb-2">Por que um Assistente Administrativo ganha salários diferentes em cidades de SC?</label>
+                            <select id="atv2-motivo">
+                                <option value="">Selecione o motivo principal...</option>
+                                <option value="Custo de Vida Regional">Diferença no Custo de Vida (Aluguel/Alimentação)</option>
+                                <option value="Escassez de Mão de Obra">Oferta e Procura de Profissionais</option>
+                                <option value="Poder Econômico Local">Riqueza produzida na Região (PIB)</option>
+                                <option value="Acordos Sindicais">Pisos Salariais Diferenciados por Sindicatos</option>
+                            </select>
+                        </div>
+                        <div>
+                            <label class="block text-sm font-semibold mb-2">Sua Análise Crítica:</label>
+                            <textarea id="atv2-analise" rows="4" placeholder="Com base na teoria de Chiavenato sobre Equilíbrio Externo, como a empresa deve agir se o mercado da cidade vizinha pagar 20% a mais?"></textarea>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Botão de Exportação -->
+            <div class="text-center space-y-4">
+                <button onclick="exportarAtividade()" class="bg-amber-800 text-white px-10 py-4 rounded-full font-bold text-lg hover:bg-amber-900 transition-all shadow-xl hover:scale-105 active:scale-95">
+                    Finalizar e Exportar Relatório (TXT)
+                </button>
+                <p class="text-xs text-stone-400">O arquivo será salvo na sua pasta de downloads para envio ao professor.</p>
+            </div>
+        </section>
+    </main>
+
+    <footer class="bg-stone-100 border-t border-stone-200 py-12">
+        <div class="max-w-6xl mx-auto px-6 text-center text-stone-500 text-sm">
+            <p>Disciplina: Gestão de Pessoas | EEB Colombo Machado Salles</p>
+            <p>Base Teórica: Idalberto Chiavenato - Gestão de Pessoas (Edição Atualizada)</p>
+        </div>
+    </footer>
+
+    <script>
+        // Lógica do Laboratório de Escalonamento (Aula 3)
+        const container = document.getElementById('laboratorio-ranking');
+        let draggedItem = null;
+
+        container.addEventListener('dragstart', (e) => {
+            draggedItem = e.target;
+            e.target.style.opacity = '0.5';
+        });
+
+        container.addEventListener('dragend', (e) => {
+            e.target.style.opacity = '1';
+        });
+
+        container.addEventListener('dragover', (e) => {
+            e.preventDefault();
+            const afterElement = getDragAfterElement(container, e.clientY);
+            if (afterElement == null) {
+                container.appendChild(draggedItem);
+            } else {
+                container.insertBefore(draggedItem, afterElement);
+            }
+        });
+
+        function getDragAfterElement(container, y) {
+            const draggableElements = [...container.querySelectorAll('.rank-card:not(.dragging)')];
+            return draggableElements.reduce((closest, child) => {
+                const box = child.getBoundingClientRect();
+                const offset = y - box.top - box.height / 2;
+                if (offset < 0 && offset > closest.offset) {
+                    return { offset: offset, element: child };
+                } else {
+                    return closest;
+                }
+            }, { offset: Number.NEGATIVE_INFINITY }).element;
+        }
+
+        function checkRanking() {
+            const items = [...container.querySelectorAll('.rank-card')];
+            const order = items.map(i => i.dataset.id).join('');
+            const feedback = document.getElementById('ranking-feedback');
+            feedback.classList.remove('hidden');
+            if (order === '132') {
+                feedback.innerText = "Correto! Hierarquia baseada na complexidade estratégica.";
+                feedback.className = "mt-4 p-3 text-center text-sm font-semibold rounded bg-green-100 text-green-800";
+            } else {
+                feedback.innerText = "Revise a ordem. O Analista Sênior possui mais requisitos que o Auxiliar.";
+                feedback.className = "mt-4 p-3 text-center text-sm font-semibold rounded bg-red-100 text-red-800";
+            }
+        }
+
+        // Gráfico Custo Brasil (Aula 4)
+        const ctx = document.getElementById('chartCustoBrasil').getContext('2d');
+        new Chart(ctx, {
+            type: 'doughnut',
+            data: {
+                labels: ['Salário Líquido', 'Encargos Patronais', '13º e Férias', 'RAT/FAP'],
+                datasets: [{
+                    data: [52, 28, 15, 5],
+                    backgroundColor: ['#c08457', '#4b5563', '#2d3e40', '#9ca3af'],
+                    borderWidth: 0
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                plugins: {
+                    legend: { position: 'bottom', labels: { color: '#ffffff', font: { size: 11 } } }
+                }
+            }
+        });
+
+        function updateRegionData(name, val) {
+            document.getElementById('region-display').innerText = `${name}: R$ ${val.toFixed(2)}`;
+        }
+
+        // LÓGICA DE EXPORTAÇÃO DE ATIVIDADES
+        function exportarAtividade() {
+            const nome = document.getElementById('aluno-nome').value || "Não informado";
+            const turma = document.getElementById('aluno-turma').value || "Não informada";
+            
+            const atv1Fatores = document.getElementById('atv1-fatores').value;
+            const atv1Just = document.getElementById('atv1-justificativa').value;
+            
+            const atv2Motivo = document.getElementById('atv2-motivo').value;
+            const atv2Analise = document.getElementById('atv2-analise').value;
+
+            if(!atv1Fatores || !atv2Analise) {
+                alert("Por favor, preencha as atividades antes de exportar.");
+                return;
+            }
+
+            const data = new Date().toLocaleDateString();
+            
+            let relatorio = `RELATÓRIO DE ATIVIDADES - ADMINISTRAÇÃO SALARIAL\n`;
+            relatorio += `================================================\n`;
+            relatorio += `ALUNO: ${nome}\n`;
+            relatorio += `TURMA: ${turma}\n`;
+            relatorio += `DATA: ${data}\n\n`;
+            
+            relatorio += `DESAFIO 1: O ARQUITETO DE CARGOS\n`;
+            relatorio += `------------------------------------------------\n`;
+            relatorio += `Fatores Identificados:\n${atv1Fatores}\n\n`;
+            relatorio += `Justificativa de Pontuação:\n${atv1Just}\n\n\n`;
+            
+            relatorio += `DESAFIO 2: ANALISTA DE MERCADO REGIONAL\n`;
+            relatorio += `------------------------------------------------\n`;
+            relatorio += `Motivo Principal Identificado: ${atv2Motivo}\n\n`;
+            relatorio += `Análise de Equilíbrio Externo:\n${atv2Analise}\n\n`;
+            relatorio += `================================================\n`;
+            relatorio += `EEB Colombo Machado Salles - Prof. Luiz Alberto Brandes\n`;
+
+            const blob = new Blob([relatorio], { type: 'text/plain' });
+            const url = window.URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = `Atividade_GP_${nome.replace(/ /g, '_')}.txt`;
+            a.click();
+            window.URL.revokeObjectURL(url);
+        }
+
+        window.onload = () => updateRegionData('Selecione uma região', 0);
+    </script>
+</body>
+</html>

@@ -1,0 +1,292 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Gestão de Pessoas: Estratégia e Prática</title>
+    <style>
+        :root {
+            --navy: #0f172a;
+            --navy-light: #1e293b;
+            --blue-accent: #3b82f6;
+            --slate-100: #f1f5f9;
+            --slate-200: #e2e8f0;
+            --slate-400: #94a3b8;
+            --slate-600: #475569;
+            --white: #ffffff;
+            --green-soft: #f0fdf4;
+            --red-soft: #fef2f2;
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        
+        body { 
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+            background-color: var(--white);
+            color: var(--navy);
+            line-height: 1.5;
+        }
+
+        .container { max-width: 1100px; margin: 0 auto; padding: 0 1.5rem; }
+
+        header { 
+            background-color: var(--navy);
+            color: var(--white);
+            padding: 3rem 0 1rem 0;
+            text-align: center;
+            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
+        }
+
+        h1 { font-size: 2.25rem; font-weight: 800; text-transform: uppercase; letter-spacing: -0.025em; margin-bottom: 0.5rem; }
+        .subtitle { color: #bfdbfe; font-weight: 300; font-size: 1.125rem; margin-bottom: 2rem; }
+
+        .nav-tabs { display: flex; justify-content: center; gap: 2rem; border-bottom: 1px solid rgba(255,255,255,0.1); }
+        .tab-button { 
+            background: none; border: none; color: white; opacity: 0.7; 
+            padding: 1rem 0.5rem; font-weight: 700; cursor: pointer;
+            transition: all 0.3s; font-size: 0.875rem;
+            border-bottom: 4px solid transparent;
+        }
+        .tab-button:hover { opacity: 1; }
+        .tab-button.active { opacity: 1; border-bottom-color: var(--white); }
+
+        main { padding: 3rem 0; }
+        .tab-content { display: none; animation: fadeIn 0.4s ease; }
+        .tab-content.active { display: block; }
+
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+
+        .grid { display: grid; gap: 2rem; margin-bottom: 3rem; }
+        .md-grid-2 { grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); }
+        .md-grid-4 { grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); }
+
+        .section-title { 
+            font-size: 1.5rem; font-weight: 700; margin-bottom: 2rem;
+            border-bottom: 2px solid var(--slate-200); padding-bottom: 0.5rem;
+            display: flex; align-items: center; gap: 0.75rem;
+        }
+
+        .card-old { padding: 2rem; border-left: 4px solid #ef4444; background-color: var(--red-soft); border-radius: 0 0.75rem 0.75rem 0; }
+        .card-new { padding: 2rem; border-left: 4px solid #22c55e; background-color: var(--green-soft); border-radius: 0 0.75rem 0.75rem 0; }
+        
+        .pilar-card { 
+            text-align: center; padding: 1.5rem; border: 1px solid var(--slate-200); 
+            border-top: 4px solid var(--navy); border-radius: 0.75rem;
+            background: var(--white); transition: 0.3s;
+        }
+        .pilar-card:hover { transform: translateY(-5px); border-top-color: var(--blue-accent); }
+
+        .quote-box { 
+            background-color: var(--navy); color: white; padding: 3.5rem; text-align: center;
+            border-radius: 2rem; margin: 3rem 0; position: relative; overflow: hidden;
+        }
+        .quote-icon { position: absolute; top: 10px; left: 20px; font-size: 5rem; opacity: 0.1; line-height: 1; }
+        blockquote { font-size: 1.6rem; font-style: italic; font-weight: 300; margin-bottom: 1.5rem; position: relative; z-index: 2; }
+        cite { font-weight: 700; color: #93c5fd; text-transform: uppercase; font-size: 0.9rem; }
+
+        .card-practice { 
+            background-color: #f8fafc; border: 1px solid var(--slate-200); 
+            padding: 1.5rem; border-radius: 0.75rem; display: flex; gap: 1.5rem;
+            transition: all 0.3s; margin-bottom: 1rem;
+        }
+        .badge-num { background: var(--navy); color: white; padding: 0.75rem; border-radius: 0.5rem; font-weight: 800; min-width: 3rem; text-align: center; height: fit-content;}
+
+        .icon { width: 24px; height: 24px; fill: currentColor; }
+        .icon-large { width: 48px; height: 48px; margin-bottom: 1rem; color: var(--navy); }
+
+        footer { background-color: var(--navy); color: #93c5fd; padding: 3rem 0; text-align: center; margin-top: 4rem; }
+    </style>
+</head>
+<body>
+
+    <header>
+        <div class="container">
+            <h1>Gestão Estratégica de Pessoas</h1>
+            <p class="subtitle">Do Departamento Pessoal à Parceria de Negócios</p>
+        </div>
+        <nav class="nav-tabs">
+            <button onclick="switchTab('conteudo')" id="btn-conteudo" class="tab-button active">INFOGRÁFICO TEÓRICO</button>
+            <button onclick="switchTab('atividades')" id="btn-atividades" class="tab-button">ATIVIDADES PRÁTICAS</button>
+        </nav>
+    </header>
+
+    <main class="container">
+        
+        <!-- ABA 1: CONTEÚDO TEÓRICO (CONTEÚDO DA VERSÃO 1) -->
+        <div id="conteudo" class="tab-content active">
+            
+            <!-- Seção: Mudança de Paradigma -->
+            <section>
+                <h2 class="section-title">
+                    <svg class="icon" viewBox="0 0 24 24"><path d="M16 17V19H2V17H16M16 13V15H2V13H16M16 9V11H2V9H16M2 5V7H16V5H2M22 12L18 8V11H17V13H18V16L22 12Z"/></svg>
+                    A GRANDE MUDANÇA DE PARADIGMA
+                </h2>
+                <div class="grid md-grid-2">
+                    <div class="card-old">
+                        <h3 style="color: #b91c1c; margin-bottom: 1rem;">Ontem: RH Operacional</h3>
+                        <ul style="list-style: none; font-size: 0.95rem; color: #7f1d1d;">
+                            <li style="margin-bottom: 0.5rem;">• Foco em regras e controles</li>
+                            <li style="margin-bottom: 0.5rem;">• Pessoas como "Recursos" (Custo)</li>
+                            <li style="margin-bottom: 0.5rem;">• Ênfase na burocracia/DP</li>
+                            <li>• Isolamento tático</li>
+                        </ul>
+                    </div>
+                    <div class="card-new">
+                        <h3 style="color: #15803d; margin-bottom: 1rem;">Hoje: RH Estratégico</h3>
+                        <ul style="list-style: none; font-size: 0.95rem; color: #14532d;">
+                            <li style="margin-bottom: 0.5rem;">• Foco em metas e resultados</li>
+                            <li style="margin-bottom: 0.5rem;">• Pessoas como "Parceiros" (Investimento)</li>
+                            <li style="margin-bottom: 0.5rem;">• Ênfase na cultura e talentos</li>
+                            <li>• Conexão com a estratégia global</li>
+                        </ul>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Citação de Chiavenato -->
+            <section class="quote-box">
+                <div class="quote-icon">“</div>
+                <blockquote>
+                    "As pessoas deixaram de ser recursos produtivos ou meros agentes passivos para se tornarem os parceiros da organização."
+                </blockquote>
+                <cite>— Idalberto Chiavenato</cite>
+            </section>
+
+            <!-- Planejamento e Turnover -->
+            <section class="grid md-grid-2">
+                <div>
+                    <h2 class="section-title">
+                        <svg class="icon" viewBox="0 0 24 24"><path d="M16 6l2.29 2.29-4.88 4.88-4-4L2 16.59 3.41 18l6-6 4 4 6.3-6.29L22 12V6h-6z"/></svg>
+                        PROCURA DO PRODUTO
+                    </h2>
+                    <p class="text-slate" style="margin-bottom: 1.5rem;">O planejamento não é um "chute". A equipe cresce conforme o mercado exige:</p>
+                    <div style="background: var(--slate-100); padding: 1.5rem; border-radius: 1rem; text-align: center; display: flex; justify-content: space-around; align-items: center;">
+                        <div>
+                            <svg class="icon" style="color:var(--blue-accent)" viewBox="0 0 24 24"><path d="M7 18c-1.1 0-1.99.9-1.99 2S5.9 22 7 22s2-.9 2-2-.9-2-2-2zM1 2v2h2l3.6 7.59-1.35 2.45c-.16.28-.25.61-.25.96 0 1.1.9 2 2 2h12v-2H7.42c-.14 0-.25-.11-.25-.25l.03-.12.9-1.63h7.45c.75 0 1.41-.41 1.75-1.03l3.58-6.49c.08-.14.12-.31.12-.48 0-.55-.45-1-1-1H5.21l-.94-2H1zm16 16c-1.1 0-1.99.9-1.99 2s.89 2 1.99 2 2-.9 2-2-.9-2-2-2z"/></svg>
+                            <p style="font-size: 0.65rem; font-weight: 800; margin-top: 0.5rem;">VENDAS</p>
+                        </div>
+                        <svg class="icon" style="opacity:0.3" viewBox="0 0 24 24"><path d="M8.59 16.59L13.17 12 8.59 7.41 10 6l6 6-6 6-1.41-1.41z"/></svg>
+                        <div>
+                            <svg class="icon" style="color:var(--blue-accent)" viewBox="0 0 24 24"><path d="M12 7V3H2v18h20V7H12zM6 19H4v-2h2v2zm0-4H4v-2h2v2zm0-4H4V9h2v2zm0-4H4V5h2v2zm4 12H8v-2h2v2zm0-4H8v-2h2v2zm0-4H8V9h2v2zm0-4H8V5h2v2zm10 12h-8v-8h8v8zm-2-6h-4v4h4v-4z"/></svg>
+                            <p style="font-size: 0.65rem; font-weight: 800; margin-top: 0.5rem;">PRODUÇÃO</p>
+                        </div>
+                        <svg class="icon" style="opacity:0.3" viewBox="0 0 24 24"><path d="M8.59 16.59L13.17 12 8.59 7.41 10 6l6 6-6 6-1.41-1.41z"/></svg>
+                        <div>
+                            <svg class="icon" style="color:var(--blue-accent)" viewBox="0 0 24 24"><path d="M16 11c1.66 0 2.99-1.34 2.99-3S17.66 5 16 5s-3 1.34-3 3 1.34 3 3 3zm-8 0c1.66 0 2.99-1.34 2.99-3S9.66 5 8 5 5 6.34 5 8s1.34 3 3 3zm0 2c-2.33 0-7 1.17-7 3.5V19h14v-2.5c0-2.33-4.67-3.5-7-3.5zm8 0c-.29 0-.62.02-.97.05 1.16.84 1.97 1.97 1.97 3.45V19h6v-2.5c0-2.33-4.67-3.5-7-3.5z"/></svg>
+                            <p style="font-size: 0.65rem; font-weight: 800; margin-top: 0.5rem;">PESSOAS</p>
+                        </div>
+                    </div>
+                </div>
+                <div>
+                    <h2 class="section-title">
+                        <svg class="icon" style="color:#b91c1c" viewBox="0 0 24 24"><path d="M10.09 15.59L11.5 17l5-5-5-5-1.41 1.41L12.67 11H3v2h9.67l-2.58 2.59zM19 3H5c-1.11 0-2 .9-2 2v4h2V5h14v14H5v-4H3v4c0 1.1.89 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2z"/></svg>
+                        VILÃO: TURNOVER
+                    </h2>
+                    <p class="text-slate" style="margin-bottom: 1rem;">A rotatividade sabota o planejamento. Custos invisíveis:</p>
+                    <div style="font-size: 0.85rem; line-height: 1.8;">
+                        <div style="background: var(--slate-100); padding: 0.5rem 1rem; border-radius: 0.5rem; margin-bottom: 0.5rem;"><strong>$$$</strong> Recrutamento e Seleção (Anúncios/Entrevistas)</div>
+                        <div style="background: var(--slate-100); padding: 0.5rem 1rem; border-radius: 0.5rem; margin-bottom: 0.5rem;"><strong>⏰</strong> Treinamento e Integração de novos membros</div>
+                        <div style="background: var(--slate-100); padding: 0.5rem 1rem; border-radius: 0.5rem;"><strong>📉</strong> Queda de produtividade (Curva de aprendizado)</div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Pilares do RH Moderno -->
+            <section style="margin-top: 4rem;">
+                <h2 style="text-align:center; margin-bottom: 2.5rem; font-weight: 800; color: var(--navy);">OS 4 PILARES DA PARCERIA</h2>
+                <div class="grid md-grid-4">
+                    <div class="pilar-card">
+                        <svg class="icon icon-large" viewBox="0 0 24 24"><path d="M12 3c-4.97 0-9 4.03-9 9s4.03 9 9 9 9-4.03 9-9-4.03-9-9-9zm0 16c-3.86 0-7-3.14-7-7s3.14-7 7-7 7 3.14 7 7-3.14 7-7 7zm1-11h-2v3H8v2h3v3h2v-3h3v-2h-3V8z"/></svg>
+                        <h4 style="font-weight: 800;">Conhecimento</h4>
+                        <p style="font-size: 0.75rem; color: var(--slate-600); margin-top: 0.5rem;">Saber o que fazer</p>
+                    </div>
+                    <div class="pilar-card">
+                        <svg class="icon icon-large" viewBox="0 0 24 24"><path d="M22.7 19l-9.1-9.1c.9-2.3.4-5-1.5-6.9-2-2-5-2.4-7.4-1.3L9 6.3 6.3 9 1.7 4.4C.6 6.8 1 9.8 3 11.8c1.9 1.9 4.6 2.4 6.9 1.5l9.1 9.1c.4.4 1 .4 1.4 0l2.3-2.3c.4-.4.4-1.1 0-1.5z"/></svg>
+                        <h4 style="font-weight: 800;">Habilidade</h4>
+                        <p style="font-size: 0.75rem; color: var(--slate-600); margin-top: 0.5rem;">Saber como fazer</p>
+                    </div>
+                    <div class="pilar-card">
+                        <svg class="icon icon-large" viewBox="0 0 24 24"><path d="M13.13 22.19L11.5 18.36c-2.32.36-4.54-.53-6.12-2.13-2.34-2.35-2.34-6.15 0-8.5l1.42 1.42c-1.56 1.56-1.56 4.09 0 5.66 1.05 1.05 2.52 1.58 4.03 1.48L9.2 12.45l1.42-1.42 5.3 5.3c.39.39.39 1.02 0 1.42L13.13 22.19z"/></svg>
+                        <h4 style="font-weight: 800;">Atitude</h4>
+                        <p style="font-size: 0.75rem; color: var(--slate-600); margin-top: 0.5rem;">Querer fazer</p>
+                    </div>
+                    <div class="pilar-card">
+                        <svg class="icon icon-large" viewBox="0 0 24 24"><path d="M19 3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zm-2 10h-4v4h-2v-4H7v-2h4V7h2v4h4v2z"/></svg>
+                        <h4 style="font-weight: 800;">Entrega</h4>
+                        <p style="font-size: 0.75rem; color: var(--slate-600); margin-top: 0.5rem;">Fazer acontecer</p>
+                    </div>
+                </div>
+            </section>
+        </div>
+
+        <!-- ABA 2: ATIVIDADES PRÁTICAS -->
+        <div id="atividades" class="tab-content">
+            <h2 style="text-align:center; font-size: 1.75rem; font-weight: 800; margin-bottom: 3rem; letter-spacing: 0.1em; color: var(--navy);">LABORATÓRIO DE PRÁTICAS</h2>
+            
+            <div class="card-practice">
+                <div class="badge-num">01</div>
+                <div>
+                    <h4 style="font-weight:700;">Mapa Mental: Pessoas como Parceiros</h4>
+                    <p class="text-slate" style="font-size:0.9rem;">Conecte autonomia, riscos e metas participativas.</p>
+                </div>
+            </div>
+
+            <div class="card-practice">
+                <div class="badge-num">02</div>
+                <div>
+                    <h4 style="font-weight:700;">Simulador de Planejamento</h4>
+                    <p class="text-slate" style="font-size:0.9rem;">Previsão de vendas vs. Capacidade produtiva com turnover de 5%.</p>
+                </div>
+            </div>
+
+            <div class="card-practice">
+                <div class="badge-num">03</div>
+                <div>
+                    <h4 style="font-weight:700;">Role-Play: Entrevista de Desligamento</h4>
+                    <p class="text-slate" style="font-size:0.9rem;">Descobrir falhas na gestão para evitar a perda de talentos.</p>
+                </div>
+            </div>
+
+            <div class="card-practice">
+                <div class="badge-num">04</div>
+                <div>
+                    <h4 style="font-weight:700;">Auditoria de Anúncios</h4>
+                    <p class="text-slate" style="font-size:0.9rem;">Vaga para "Recurso" ou para "Parceiro"? Análise crítica de anúncios reais.</p>
+                </div>
+            </div>
+
+            <div class="card-practice">
+                <div class="badge-num">05</div>
+                <div>
+                    <h4 style="font-weight:700;">Pitch: Retenção Premiada</h4>
+                    <p class="text-slate" style="font-size:0.9rem;">Soluções criativas de baixo custo para reduzir a rotatividade.</p>
+                </div>
+            </div>
+        </div>
+
+    </main>
+
+    <footer>
+        <div class="container">
+            <p style="font-weight:700; text-transform:uppercase; letter-spacing:0.1em; margin-bottom:0.5rem; color: white;">Administração Catarinense: Formando Estrategistas</p>
+            <p style="font-size:0.75rem; opacity:0.6;">Funciona Offline • Baseado em Idalberto Chiavenato e Currículo de SC</p>
+        </div>
+    </footer>
+
+    <script>
+        function switchTab(tabId) {
+            const contents = document.getElementsByClassName('tab-content');
+            for (let i = 0; i < contents.length; i++) {
+                contents[i].classList.remove('active');
+            }
+            const buttons = document.getElementsByClassName('tab-button');
+            for (let i = 0; i < buttons.length; i++) {
+                buttons[i].classList.remove('active');
+            }
+            document.getElementById(tabId).classList.add('active');
+            document.getElementById('btn-' + tabId).classList.add('active');
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+    </script>
+</body>
+</html>

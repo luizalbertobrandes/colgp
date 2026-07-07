@@ -1,0 +1,378 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Infográfico: Gestão de Pessoas Estratégica</title>
+<script src="https://cdn.tailwindcss.com"></script>
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<style>
+body {
+    background-color: #F3F4F6;
+    font-family: 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+}
+.chart-container {
+    position: relative;
+    width: 100%;
+    max-width: 800px;
+    margin-left: auto;
+    margin-right: auto;
+    height: 350px;
+    max-height: 400px;
+}
+@media (min-width: 768px) {
+    .chart-container {
+        height: 400px;
+    }
+}
+.card-hover {
+    transition: transform 0.2s ease-in-out, box-shadow 0.2s ease-in-out;
+}
+.card-hover:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.1), 0 8px 10px -6px rgba(0, 0, 0, 0.1);
+}
+</style>
+</head>
+<body class="text-gray-800 antialiased">
+
+<!-- 
+CONFIRMAÇÃO E RESUMO DO PROJETO:
+1. RESTRIÇÕES ATENDIDAS: Confirmo explicitamente que NEITHER Mermaid JS NOR SVG foram utilizados em qualquer parte deste código. Todas as ilustrações usam caracteres Unicode estilizados e os gráficos usam a API Canvas via Chart.js.
+2. PALETA DE CORES: "Vibrant Professional Blues & Accents" (Azul Royal #2563EB, Teal #0D9488, Laranja #EA580C, Roxo #7C3AED).
+3. PLANO NARRATIVO: 
+   - Seção 1 (Introdução): A mudança de paradigma (Recursos vs. Parceiros).
+   - Seção 2 (Organizar/Processos): Os 5 Processos de RH (Provisão, Aplicação, Manutenção, Desenvolvimento, Monitoração) usando grid estruturado.
+   - Seção 3 (Comparar/Mercado): Média salarial 2026 para cargos do eixo tecnológico (Gráfico de Barras Horizontais).
+   - Seção 4 (Informar/Composição): Motivos de Turnover nas empresas (Gráfico de Rosca/Donut).
+   - Seção 5 (Mudança/Relacionamento): Evolução da retenção de talentos frente ao investimento em treinamento (Gráfico de Linha).
+4. JUSTIFICATIVA DE VISUALIZAÇÕES:
+   - Barras Horizontais: Ideal para comparar categorias longas (cargos) ordenadas por valor financeiro.
+   - Donut Chart: Excelente para mostrar a composição percentual de um todo (motivos de saída), focado em 4 categorias principais.
+   - Line Chart: A melhor escolha para demonstrar tendências ao longo do tempo (investimento vs retenção).
+-->
+
+<nav class="bg-blue-700 text-white sticky top-0 z-50 shadow-md">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div class="flex items-center justify-between h-16">
+            <div class="flex items-center space-x-3">
+                <span class="text-2xl">&#x1F4C8;</span>
+                <span class="font-bold text-xl tracking-tight">GP Estratégica</span>
+            </div>
+            <div class="hidden md:block">
+                <div class="ml-10 flex items-baseline space-x-4">
+                    <a href="#processos" class="hover:bg-blue-600 px-3 py-2 rounded-md text-sm font-medium">Os 5 Processos</a>
+                    <a href="#mercado" class="hover:bg-blue-600 px-3 py-2 rounded-md text-sm font-medium">Mercado Salarial</a>
+                    <a href="#turnover" class="hover:bg-blue-600 px-3 py-2 rounded-md text-sm font-medium">Turnover</a>
+                    <a href="#desenvolvimento" class="hover:bg-blue-600 px-3 py-2 rounded-md text-sm font-medium">Desenvolvimento</a>
+                </div>
+            </div>
+        </div>
+    </div>
+</nav>
+
+<header class="bg-gradient-to-r from-blue-800 to-indigo-900 text-white py-20 px-4">
+    <div class="max-w-4xl mx-auto text-center">
+        <span class="text-6xl mb-6 block">&#x1F465;</span>
+        <h1 class="text-4xl md:text-5xl font-extrabold mb-4 leading-tight">Gestão de Pessoas no Século XXI</h1>
+        <p class="text-xl md:text-2xl text-blue-100 mb-8">Da simples administração de recursos à gestão estratégica do capital intelectual corporativo.</p>
+        <div class="inline-block bg-white text-blue-900 font-bold px-6 py-3 rounded-full shadow-lg text-lg">
+            "As pessoas não são recursos da organização. Elas são parceiras."
+        </div>
+    </div>
+</header>
+
+<main class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
+
+    <section id="processos" class="mb-20">
+        <div class="text-center mb-12">
+            <h2 class="text-3xl font-bold text-gray-900 mb-4">Os 5 Pilares da Gestão de Pessoas</h2>
+            <p class="text-lg text-gray-600 max-w-2xl mx-auto">Para que uma organização alcance seus objetivos, ela precisa estruturar suas práticas de RH em cinco processos interdependentes, conforme a teoria de Idalberto Chiavenato.</p>
+        </div>
+
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+            <div class="bg-white rounded-xl shadow-md p-6 border-t-4 border-blue-500 card-hover">
+                <div class="text-4xl mb-4 text-blue-500">&#x1F50D;</div>
+                <h3 class="text-xl font-bold mb-2">1. Provisão</h3>
+                <p class="text-gray-600 text-sm">Quem irá trabalhar na organização. Envolve pesquisa de mercado, recrutamento (interno, externo, misto) e técnicas de seleção avançadas.</p>
+            </div>
+            <div class="bg-white rounded-xl shadow-md p-6 border-t-4 border-teal-500 card-hover">
+                <div class="text-4xl mb-4 text-teal-500">&#x1F4CB;</div>
+                <h3 class="text-xl font-bold mb-2">2. Aplicação</h3>
+                <p class="text-gray-600 text-sm">O que as pessoas farão. Abrange o desenho organizacional, a descrição detalhada de cargos e a avaliação de desempenho (ex: 360 graus).</p>
+            </div>
+            <div class="bg-white rounded-xl shadow-md p-6 border-t-4 border-orange-500 card-hover">
+                <div class="text-4xl mb-4 text-orange-500">&#x1F6E1;&#xFE0F;</div>
+                <h3 class="text-xl font-bold mb-2">3. Manutenção</h3>
+                <p class="text-gray-600 text-sm">Como manter as pessoas trabalhando. Inclui remuneração (salário nominal vs real), benefícios sociais, higiene, segurança e Qualidade de Vida no Trabalho (QVT).</p>
+            </div>
+            <div class="bg-white rounded-xl shadow-md p-6 border-t-4 border-purple-500 card-hover md:col-span-2 lg:col-span-1">
+                <div class="text-4xl mb-4 text-purple-500">&#x1F9E0;</div>
+                <h3 class="text-xl font-bold mb-2">4. Desenvolvimento</h3>
+                <p class="text-gray-600 text-sm">Como preparar as pessoas. Foco em treinamento (LNT), desenvolvimento organizacional (DO) e gestão contínua de competências.</p>
+            </div>
+            <div class="bg-white rounded-xl shadow-md p-6 border-t-4 border-red-500 card-hover md:col-span-2 lg:col-span-2">
+                <div class="text-4xl mb-4 text-red-500">&#x1F4CA;</div>
+                <h3 class="text-xl font-bold mb-2">5. Monitoração</h3>
+                <p class="text-gray-600 text-sm">Como saber o que fazem e quem são. Sistemas de informação de RH, banco de dados corporativos e auditoria de métricas (KPIs) para tomada de decisão gerencial.</p>
+            </div>
+        </div>
+    </section>
+
+    <div class="border-t border-gray-200 my-12"></div>
+
+    <section id="mercado" class="mb-20">
+        <div class="flex flex-col md:flex-row gap-12 items-center">
+            <div class="w-full md:w-1/3">
+                <h2 class="text-3xl font-bold text-gray-900 mb-4">Realidade do Mercado 2026</h2>
+                <p class="text-gray-600 mb-6">Com base nas projeções de mercado, as faixas salariais para os profissionais de Administração e RH mostram a valorização do capital intelectual. Cargos estratégicos como "Business Partner" apresentam saltos salariais significativos em relação aos papéis estritamente operacionais.</p>
+                <div class="bg-blue-50 p-4 rounded-lg border border-blue-100">
+                    <p class="text-sm text-blue-800 font-semibold">&#x1F4A1; Insight de Carreira:</p>
+                    <p class="text-xs text-blue-700 mt-1">A transição da "Administração de Pessoal" para a "Gestão Estratégica" exige que o profissional domine não apenas rotinas trabalhistas, mas análise de dados e comportamento humano.</p>
+                </div>
+            </div>
+            <div class="w-full md:w-2/3 bg-white p-6 rounded-xl shadow-md">
+                <h3 class="text-center font-bold text-gray-700 mb-2">Média Salarial Mensal Projetada (R$)</h3>
+                <div class="chart-container">
+                    <canvas id="salarioChart"></canvas>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <div class="border-t border-gray-200 my-12"></div>
+
+    <section id="turnover" class="mb-20">
+        <div class="flex flex-col md:flex-row-reverse gap-12 items-center">
+            <div class="w-full md:w-1/3">
+                <h2 class="text-3xl font-bold text-gray-900 mb-4">O Desafio do Turnover</h2>
+                <p class="text-gray-600 mb-6">A rotatividade de pessoal (Turnover) é um dos maiores custos ocultos das empresas. A análise demonstra que a perda de talentos raramente está ligada apenas ao salário nominal, mas sim a falhas nos processos de Aplicação e Desenvolvimento.</p>
+                <ul class="space-y-3">
+                    <li class="flex items-center text-sm text-gray-700">
+                        <span class="text-orange-500 mr-2">&#x25A0;</span> Falta de Reconhecimento
+                    </li>
+                    <li class="flex items-center text-sm text-gray-700">
+                        <span class="text-teal-500 mr-2">&#x25A0;</span> Clima Organizacional Ruim
+                    </li>
+                    <li class="flex items-center text-sm text-gray-700">
+                        <span class="text-blue-500 mr-2">&#x25A0;</span> Falta de Plano de Carreira
+                    </li>
+                    <li class="flex items-center text-sm text-gray-700">
+                        <span class="text-purple-500 mr-2">&#x25A0;</span> Insatisfação Salarial
+                    </li>
+                </ul>
+            </div>
+            <div class="w-full md:w-2/3 bg-white p-6 rounded-xl shadow-md">
+                 <h3 class="text-center font-bold text-gray-700 mb-2">Principais Causas de Desligamento Voluntário</h3>
+                <div class="chart-container">
+                    <canvas id="turnoverChart"></canvas>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <div class="border-t border-gray-200 my-12"></div>
+
+    <section id="desenvolvimento" class="mb-20">
+        <div class="text-center mb-12">
+            <h2 class="text-3xl font-bold text-gray-900 mb-4">O Retorno do Desenvolvimento (DO)</h2>
+            <p class="text-lg text-gray-600 max-w-3xl mx-auto">Treinamento não é despesa; é investimento. A métrica abaixo ilustra a correlação direta entre o aumento da carga horária de treinamentos corporativos e o crescimento da taxa de retenção de talentos ao longo dos últimos anos.</p>
+        </div>
+        
+        <div class="bg-white p-6 rounded-xl shadow-md w-full max-w-4xl mx-auto">
+            <h3 class="text-center font-bold text-gray-700 mb-4">Evolução: Horas de Treinamento vs. Retenção de Talentos (2022-2026)</h3>
+            <div class="chart-container" style="max-height: 450px; height: 450px;">
+                <canvas id="retencaoChart"></canvas>
+            </div>
+        </div>
+    </section>
+
+</main>
+
+<footer class="bg-gray-900 text-gray-400 py-8 text-center text-sm">
+    <p>Material desenvolvido para o Curso Técnico em Administração - Gestão de Pessoas.</p>
+    <p class="mt-2">Base teórica: Idalberto Chiavenato | Dados mercadológicos ilustrativos projetados para fins didáticos.</p>
+</footer>
+
+<script>
+const wrapText = (text, maxLength) => {
+    if (text.length <= maxLength) return text;
+    const words = text.split(' ');
+    let lines = [];
+    let currentLine = '';
+    words.forEach(word => {
+        if ((currentLine + word).length > maxLength) {
+            if (currentLine) lines.push(currentLine.trim());
+            currentLine = word + ' ';
+        } else {
+            currentLine += word + ' ';
+        }
+    });
+    if (currentLine) lines.push(currentLine.trim());
+    return lines;
+};
+
+const tooltipConfig = {
+    tooltip: {
+        callbacks: {
+            title: function(tooltipItems) {
+                const item = tooltipItems[0];
+                let label = item.chart.data.labels[item.dataIndex];
+                if (Array.isArray(label)) {
+                    return label.join(' ');
+                } else {
+                    return label;
+                }
+            }
+        }
+    }
+};
+
+const salariosRawLabels = [
+    "Assistente de Departamento Pessoal", 
+    "Analista de Recrutamento e Seleção", 
+    "Analista de Treinamento e Desenvolvimento", 
+    "Business Partner de Recursos Humanos", 
+    "Gerente de Desenvolvimento Organizacional"
+];
+const salariosLabels = salariosRawLabels.map(label => wrapText(label, 16));
+const salariosData = [2500, 4200, 4800, 8500, 14000];
+
+const ctxSalario = document.getElementById('salarioChart').getContext('2d');
+new Chart(ctxSalario, {
+    type: 'bar',
+    data: {
+        labels: salariosLabels,
+        datasets: [{
+            label: 'Salário Médio (R$)',
+            data: salariosData,
+            backgroundColor: '#2563EB',
+            borderRadius: 6,
+            barThickness: 'flex',
+            maxBarThickness: 40
+        }]
+    },
+    options: {
+        indexAxis: 'y',
+        responsive: true,
+        maintainAspectRatio: false,
+        plugins: {
+            legend: { display: false },
+            ...tooltipConfig
+        },
+        scales: {
+            x: {
+                beginAtZero: true,
+                grid: { color: '#E5E7EB' },
+                ticks: { font: { family: "'Segoe UI', sans-serif" } }
+            },
+            y: {
+                grid: { display: false },
+                ticks: { font: { family: "'Segoe UI', sans-serif", size: 11 } }
+            }
+        }
+    }
+});
+
+const turnoverRawLabels = [
+    "Falta de Reconhecimento e Feedback", 
+    "Clima Organizacional e Cultura", 
+    "Ausência de Plano de Carreira Claro", 
+    "Insatisfação com Pacote Salarial"
+];
+const turnoverLabels = turnoverRawLabels.map(label => wrapText(label, 16));
+const turnoverData = [35, 25, 25, 15];
+
+const ctxTurnover = document.getElementById('turnoverChart').getContext('2d');
+new Chart(ctxTurnover, {
+    type: 'doughnut',
+    data: {
+        labels: turnoverLabels,
+        datasets: [{
+            data: turnoverData,
+            backgroundColor: ['#EA580C', '#0D9488', '#2563EB', '#7C3AED'],
+            borderWidth: 2,
+            borderColor: '#ffffff',
+            hoverOffset: 4
+        }]
+    },
+    options: {
+        responsive: true,
+        maintainAspectRatio: false,
+        cutout: '65%',
+        plugins: {
+            legend: {
+                position: 'right',
+                labels: { font: { family: "'Segoe UI', sans-serif", size: 12 }, padding: 20 }
+            },
+            ...tooltipConfig
+        }
+    }
+});
+
+const retencaoLabels = ['2022', '2023', '2024', '2025', '2026 (Proj.)'];
+const ctxRetencao = document.getElementById('retencaoChart').getContext('2d');
+new Chart(ctxRetencao, {
+    type: 'line',
+    data: {
+        labels: retencaoLabels,
+        datasets: [
+            {
+                label: 'Média de Horas de Treinamento (por func/ano)',
+                data: [20, 24, 32, 45, 60],
+                borderColor: '#2563EB',
+                backgroundColor: 'rgba(37, 99, 235, 0.1)',
+                borderWidth: 3,
+                tension: 0.4,
+                yAxisID: 'y',
+                fill: true,
+                pointBackgroundColor: '#2563EB',
+                pointRadius: 5
+            },
+            {
+                label: 'Taxa de Retenção de Talentos (%)',
+                data: [72, 75, 81, 88, 92],
+                borderColor: '#10B981',
+                borderWidth: 3,
+                borderDash: [5, 5],
+                tension: 0.4,
+                yAxisID: 'y1',
+                pointBackgroundColor: '#10B981',
+                pointRadius: 5
+            }
+        ]
+    },
+    options: {
+        responsive: true,
+        maintainAspectRatio: false,
+        interaction: { mode: 'index', intersect: false },
+        plugins: {
+            legend: { position: 'top', labels: { usePointStyle: true, padding: 15 } },
+            ...tooltipConfig
+        },
+        scales: {
+            x: {
+                grid: { display: false }
+            },
+            y: {
+                type: 'linear',
+                display: true,
+                position: 'left',
+                title: { display: true, text: 'Horas de Treinamento', color: '#2563EB', font: { weight: 'bold' } },
+                grid: { color: '#E5E7EB' }
+            },
+            y1: {
+                type: 'linear',
+                display: true,
+                position: 'right',
+                title: { display: true, text: 'Retenção (%)', color: '#10B981', font: { weight: 'bold' } },
+                grid: { drawOnChartArea: false },
+                min: 60,
+                max: 100
+            }
+        }
+    }
+});
+</script>
+</body>
+</html>

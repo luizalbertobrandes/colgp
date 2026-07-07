@@ -1,0 +1,422 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>O Dilema do Recrutamento: Interno vs. Externo</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <!--
+    Palette: Vibrant Blue & Orange (#1E3A8A, #3B82F6, #F97316, #EAB308)
+    Plan Summary:
+    - Intro: Apresentação do tema e do cenário de "apagão de talentos" em SC.
+    - Section 1: Comparativo Chiavenato (Interno vs Externo) analisando custos, motivação e endogamia.
+    - Section 2: Diagrama de Processo de Decisão (estruturado em HTML/CSS puro).
+    - Section 3: Mapeamento do Mercado Catarinense por setores estratégicos.
+    - Section 4: Perspectivas 2026 segundo o Guia Michael Page focado em "Humanidade Essencial".
+    
+    Visualizations Choices:
+    1. Bar Chart -> Comparar atributos Interno vs Externo -> Goal: Compare -> Chart.js Canvas (NO SVG). Justification: Best for direct metric comparison across categories.
+    2. HTML/CSS Flowchart -> Fluxo de decisão de recrutamento -> Goal: Organize -> Tailwind/CSS (NO SVG). Justification: Fulfills flow mapping requirement without Mermaid/SVG.
+    3. Doughnut Chart -> Distribuição do mercado SC -> Goal: Composition -> Chart.js Canvas (NO SVG). Justification: Clearly shows proportional demand across regions.
+    4. Radar Chart -> Perfil do Profissional 2026 -> Goal: Relationships/Compare -> Chart.js Canvas (NO SVG). Justification: Ideal for mapping multiple skill dimensions.
+    
+    Confirmation: Explicitly confirming that NEITHER Mermaid JS NOR SVG were used anywhere in the output.
+    -->
+    <style>
+        .chart-container {
+            position: relative;
+            width: 100%;
+            max-width: 600px;
+            margin-left: auto;
+            margin-right: auto;
+            height: 350px;
+            max-height: 400px;
+        }
+        @media (min-width: 768px) {
+            .chart-container {
+                height: 400px;
+            }
+        }
+    </style>
+</head>
+<body class="bg-gray-100 font-sans text-gray-800 antialiased selection:bg-orange-500 selection:text-white">
+
+    <nav class="sticky top-0 z-50 bg-[#1E3A8A] text-white shadow-md">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-16 flex items-center justify-between">
+            <div class="font-bold text-xl tracking-wide flex items-center gap-2">
+                <span class="text-3xl">&#128202;</span> HR Analytics SC
+            </div>
+            <div class="hidden md:flex space-x-6 text-sm font-medium">
+                <a href="#teoria" class="hover:text-[#F97316] transition-colors">Teoria & Comparativo</a>
+                <a href="#fluxo" class="hover:text-[#F97316] transition-colors">Fluxo de Decisão</a>
+                <a href="#mercado" class="hover:text-[#F97316] transition-colors">Mercado Catarinense</a>
+                <a href="#futuro" class="hover:text-[#F97316] transition-colors">Tendências 2026</a>
+            </div>
+        </div>
+    </nav>
+
+    <header class="bg-[#3B82F6] py-20 px-4 text-center text-white relative overflow-hidden">
+        <div class="max-w-4xl mx-auto relative z-10">
+            <span class="bg-[#F97316] text-white text-xs font-bold px-3 py-1 rounded-full uppercase tracking-widest shadow-md">Gestão de Pessoas</span>
+            <h1 class="mt-6 text-4xl md:text-6xl font-extrabold tracking-tight drop-shadow-lg">
+                O Dilema do Recrutamento
+            </h1>
+            <p class="mt-6 text-lg md:text-xl font-light text-blue-100 max-w-2xl mx-auto">
+                Uma análise estratégica entre a promoção interna e a busca no mercado, aplicada à realidade socioeconômica de Santa Catarina e às tendências de 2026.
+            </p>
+        </div>
+        <div class="absolute top-0 left-0 w-full h-full opacity-10 flex justify-center items-center pointer-events-none">
+            <span class="text-[30rem] font-black">&#128101;</span>
+        </div>
+    </header>
+
+    <main class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12 space-y-20">
+
+        <section id="teoria" class="scroll-mt-20">
+            <div class="text-center mb-10">
+                <h2 class="text-3xl font-bold text-[#1E3A8A]">A Teoria de Chiavenato em Números</h2>
+                <div class="w-24 h-1 bg-[#F97316] mx-auto mt-4 rounded"></div>
+            </div>
+            
+            <p class="text-lg text-gray-700 max-w-4xl mx-auto text-center mb-12">
+                Segundo Idalberto Chiavenato, o recrutamento é um processo de comunicação vital. A escolha entre preencher uma vaga com o talento da casa (Recrutamento Interno) ou buscar "sangue novo" no mercado (Recrutamento Externo) traz impactos profundos nos custos, na inovação e na motivação da equipe.
+            </p>
+
+            <div class="grid grid-cols-1 lg:grid-cols-2 gap-10 items-center">
+                <div class="bg-white rounded-2xl shadow-xl p-8 border-t-4 border-[#3B82F6] hover:shadow-2xl transition-shadow">
+                    <h3 class="text-xl font-bold text-gray-800 mb-4 flex items-center gap-2">
+                        <span class="text-2xl text-[#3B82F6]">&#128200;</span> Comparativo de Impacto Organizacional
+                    </h3>
+                    <p class="text-gray-600 mb-6 text-sm">
+                        O gráfico ilustra os trade-offs clássicos: o recrutamento interno maximiza a motivação e economiza recursos, mas peca na oxigenação de ideias. O externo traz inovação, porém a um custo financeiro e de adaptação mais elevado.
+                    </p>
+                    <div class="chart-container">
+                        <canvas id="barChart"></canvas>
+                    </div>
+                </div>
+
+                <div class="space-y-6">
+                    <div class="bg-blue-50 p-6 rounded-xl border border-blue-100">
+                        <div class="flex items-center gap-4 mb-3">
+                            <div class="w-12 h-12 rounded-full bg-[#1E3A8A] flex items-center justify-center text-white text-xl font-bold">&#8681;</div>
+                            <h4 class="text-lg font-bold text-[#1E3A8A]">Vantagens do Recrutamento Interno</h4>
+                        </div>
+                        <p class="text-gray-700 text-sm">Age como um poderoso catalisador de motivação (plano de carreira). Exemplo claro ocorre em grandes indústrias catarinenses, como a WEG, onde a cultura de reter talentos reduz expressivamente o <em>turnover</em>.</p>
+                    </div>
+
+                    <div class="bg-orange-50 p-6 rounded-xl border border-orange-100">
+                        <div class="flex items-center gap-4 mb-3">
+                            <div class="w-12 h-12 rounded-full bg-[#F97316] flex items-center justify-center text-white text-xl font-bold">&#9888;</div>
+                            <h4 class="text-lg font-bold text-[#F97316]">O Risco da Endogamia</h4>
+                        </div>
+                        <p class="text-gray-700 text-sm">Ao recorrer exclusivamente à prata da casa, a organização corre o risco do <strong>conservadorismo</strong>. A falta de novos perfis gera o que Chiavenato chama de "Endogamia Organizacional", perpetuando vícios e bloqueando a inovação.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section id="fluxo" class="scroll-mt-20">
+            <div class="bg-white rounded-2xl shadow-xl p-8 lg:p-12">
+                <div class="text-center mb-10">
+                    <h2 class="text-3xl font-bold text-[#1E3A8A]">Diagrama Lógico de Decisão</h2>
+                    <p class="mt-4 text-gray-600 max-w-2xl mx-auto">Como os profissionais de Gestão de Pessoas definem a origem da contratação baseados nas necessidades da organização.</p>
+                </div>
+
+                <div class="flex flex-col items-center max-w-4xl mx-auto font-medium text-center">
+                    
+                    <div class="bg-[#1E3A8A] text-white px-8 py-4 rounded-lg shadow-md border-b-4 border-blue-900 w-full sm:w-auto">
+                        Abertura de Nova Vaga
+                    </div>
+                    
+                    <div class="h-8 border-l-2 border-gray-400 border-dashed my-1"></div>
+                    <div class="text-gray-400 text-xl">&#11015;</div>
+
+                    <div class="bg-[#EAB308] text-gray-900 px-8 py-4 rounded-full shadow-md w-full sm:w-auto mt-1 border-4 border-white ring-2 ring-[#EAB308]">
+                        A empresa precisa de renovação cultural ou inovação técnica urgente?
+                    </div>
+
+                    <div class="flex flex-col sm:flex-row w-full justify-center gap-8 sm:gap-24 mt-4">
+                        <div class="flex flex-col items-center">
+                            <div class="text-gray-500 font-bold mb-2">NÃO</div>
+                            <div class="h-8 border-l-2 border-gray-400 my-1"></div>
+                            <div class="text-gray-400 text-xl">&#11015;</div>
+                            
+                            <div class="bg-[#3B82F6] text-white px-6 py-4 rounded-lg shadow-md mt-1 border-b-4 border-blue-700 w-full">
+                                <span class="block font-bold text-lg mb-1">Recrutamento Interno</span>
+                                <span class="text-xs font-light">Foco em retenção, motivação e agilidade.</span>
+                            </div>
+                        </div>
+
+                        <div class="flex flex-col items-center">
+                            <div class="text-gray-500 font-bold mb-2">SIM</div>
+                            <div class="h-8 border-l-2 border-gray-400 my-1"></div>
+                            <div class="text-gray-400 text-xl">&#11015;</div>
+                            
+                            <div class="bg-[#F97316] text-white px-6 py-4 rounded-lg shadow-md mt-1 border-b-4 border-orange-700 w-full">
+                                <span class="block font-bold text-lg mb-1">Recrutamento Externo</span>
+                                <span class="text-xs font-light">Foco em oxigenação de ideias e diversidade.</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section id="mercado" class="scroll-mt-20">
+            <div class="text-center mb-10">
+                <h2 class="text-3xl font-bold text-[#1E3A8A]">Mapeamento do Cenário Catarinense</h2>
+                <div class="w-24 h-1 bg-[#3B82F6] mx-auto mt-4 rounded"></div>
+            </div>
+
+            <p class="text-lg text-gray-700 max-w-4xl mx-auto text-center mb-12">
+                Santa Catarina apresenta um dos menores índices de desemprego do país, gerando um "apagão de talentos". Compreender a vocação regional é essencial para direcionar os esforços e as mídias de recrutamento externo.
+            </p>
+
+            <div class="grid grid-cols-1 lg:grid-cols-2 gap-10 items-center">
+                <div class="order-2 lg:order-1 space-y-4">
+                    <div class="p-5 border-l-4 border-[#3B82F6] bg-white shadow-sm rounded-r-lg">
+                        <div class="flex items-center gap-3">
+                            <span class="text-3xl">&#128187;</span>
+                            <div>
+                                <h4 class="font-bold text-gray-800">Polo Tecnológico (Florianópolis / Região)</h4>
+                                <p class="text-sm text-gray-600 mt-1">Alta demanda por desenvolvedores e analistas. Recrutamento focado no LinkedIn e atração por cultura flexível (Employer Branding).</p>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="p-5 border-l-4 border-[#F97316] bg-white shadow-sm rounded-r-lg">
+                        <div class="flex items-center gap-3">
+                            <span class="text-3xl">&#128674;</span>
+                            <div>
+                                <h4 class="font-bold text-gray-800">Logística e Portos (Litoral / Itajaí)</h4>
+                                <p class="text-sm text-gray-600 mt-1">Busca por profissionais de Comércio Exterior e Logística. Mídias operacionais e agências especializadas são canais fortes.</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="p-5 border-l-4 border-[#EAB308] bg-white shadow-sm rounded-r-lg">
+                        <div class="flex items-center gap-3">
+                            <span class="text-3xl">&#127806;</span>
+                            <div>
+                                <h4 class="font-bold text-gray-800">Agronegócio & Indústria (Oeste / Norte)</h4>
+                                <p class="text-sm text-gray-600 mt-1">Forte cultura de sucessão e recrutamento interno para lideranças, mesclada com atração externa para inovação industrial.</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="order-1 lg:order-2 bg-white rounded-2xl shadow-xl p-8 border-t-4 border-[#F97316]">
+                    <h3 class="text-xl font-bold text-center text-gray-800 mb-2">Demandas Regionais Estimadas</h3>
+                    <p class="text-center text-gray-500 text-xs mb-6">Composição baseada na expansão de vagas nos polos de SC</p>
+                    <div class="chart-container">
+                        <canvas id="doughnutChart"></canvas>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section id="futuro" class="scroll-mt-20 pb-20">
+            <div class="text-center mb-10">
+                <h2 class="text-3xl font-bold text-[#1E3A8A]">O Perfil 2026: Humanidade Essencial</h2>
+                <div class="w-24 h-1 bg-[#EAB308] mx-auto mt-4 rounded"></div>
+            </div>
+
+            <div class="bg-gradient-to-br from-[#1E3A8A] to-[#3B82F6] rounded-3xl shadow-2xl overflow-hidden">
+                <div class="grid grid-cols-1 lg:grid-cols-5 h-full">
+                    <div class="lg:col-span-2 p-10 text-white flex flex-col justify-center">
+                        <span class="bg-white/20 text-white text-xs font-bold px-3 py-1 rounded-full uppercase tracking-widest self-start mb-6">Guia Michael Page</span>
+                        <h3 class="text-3xl font-bold mb-4">A Revolução das Soft Skills</h3>
+                        <p class="font-light text-blue-100 mb-6">
+                            Segundo o Guia Salarial 2026 da Michael Page, em um mercado de transformações rápidas, o foco do recrutamento externo mudou. A competência técnica (Hard Skill) tornou-se apenas o requisito mínimo.
+                        </p>
+                        <p class="font-light text-blue-100">
+                            O diferencial para os anúncios de vagas modernos em SC é a busca por <strong>Adaptabilidade</strong> e <strong>Inteligência Emocional</strong>. O recrutador de hoje não busca apenas quem sabe usar a ferramenta, mas quem sabe agir diante do inesperado.
+                        </p>
+                    </div>
+                    <div class="lg:col-span-3 bg-white p-10 flex flex-col items-center justify-center relative">
+                        <h4 class="text-xl font-bold text-gray-800 text-center mb-6 w-full">Mudança de Foco nos Requisitos de Vagas</h4>
+                        <div class="chart-container" style="max-width: 500px;">
+                            <canvas id="radarChart"></canvas>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <footer class="bg-gray-900 text-gray-400 py-8 text-center text-sm border-t-4 border-[#F97316]">
+        <p>Desenvolvido para as aulas de Gestão de Pessoas - EEB Colombo Machado Sales.</p>
+        <p class="mt-2">Professor: Luiz Alberto Brandes | Curso Técnico em Administração | SC</p>
+    </footer>
+
+    <script>
+        const wrapLabel = (label) => {
+            if (label.length <= 16) return label;
+            const words = label.split(' ');
+            const lines = [];
+            let currentLine = '';
+            words.forEach(word => {
+                if ((currentLine + word).length > 16) {
+                    if (currentLine) lines.push(currentLine.trim());
+                    currentLine = word + ' ';
+                } else {
+                    currentLine += word + ' ';
+                }
+            });
+            if (currentLine) lines.push(currentLine.trim());
+            return lines;
+        };
+
+        const globalTooltipConfig = {
+            callbacks: {
+                title: function(tooltipItems) {
+                    const item = tooltipItems[0];
+                    let label = item.chart.data.labels[item.dataIndex];
+                    if (Array.isArray(label)) {
+                        return label.join(' ');
+                    } else {
+                        return label;
+                    }
+                }
+            }
+        };
+
+        Chart.defaults.font.family = "'Inter', 'Helvetica Neue', 'Helvetica', 'Arial', sans-serif";
+        Chart.defaults.color = '#4B5563';
+
+        const ctxBar = document.getElementById('barChart').getContext('2d');
+        const rawBarLabels = ['Velocidade do Processo', 'Baixo Custo Financeiro', 'Índice de Inovação', 'Impacto na Motivação', 'Risco de Endogamia'];
+        const wrappedBarLabels = rawBarLabels.map(wrapLabel);
+        
+        new Chart(ctxBar, {
+            type: 'bar',
+            data: {
+                labels: wrappedBarLabels,
+                datasets: [
+                    {
+                        label: 'Recrutamento Interno',
+                        data: [9, 8, 2, 9, 8],
+                        backgroundColor: '#1E3A8A',
+                        borderRadius: 4
+                    },
+                    {
+                        label: 'Recrutamento Externo',
+                        data: [4, 3, 9, 5, 2],
+                        backgroundColor: '#F97316',
+                        borderRadius: 4
+                    }
+                ]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                plugins: {
+                    tooltip: globalTooltipConfig,
+                    legend: {
+                        position: 'bottom',
+                        labels: { padding: 20, usePointStyle: true }
+                    }
+                },
+                scales: {
+                    y: {
+                        beginAtZero: true,
+                        max: 10,
+                        ticks: { display: false },
+                        grid: { borderDash: [5, 5] }
+                    },
+                    x: {
+                        grid: { display: false }
+                    }
+                }
+            }
+        });
+
+        const ctxDoughnut = document.getElementById('doughnutChart').getContext('2d');
+        const rawDoughnutLabels = ['Tecnologia e Informação (Florianópolis)', 'Logística e Portos (Litoral)', 'Agronegócio e Indústria (Oeste/Norte)'];
+        const wrappedDoughnutLabels = rawDoughnutLabels.map(wrapLabel);
+
+        new Chart(ctxDoughnut, {
+            type: 'doughnut',
+            data: {
+                labels: wrappedDoughnutLabels,
+                datasets: [{
+                    data: [40, 35, 25],
+                    backgroundColor: ['#3B82F6', '#F97316', '#EAB308'],
+                    borderWidth: 0,
+                    hoverOffset: 4
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                cutout: '65%',
+                plugins: {
+                    tooltip: globalTooltipConfig,
+                    legend: {
+                        position: 'bottom',
+                        labels: { padding: 20, usePointStyle: true }
+                    }
+                }
+            }
+        });
+
+        const ctxRadar = document.getElementById('radarChart').getContext('2d');
+        const rawRadarLabels = [
+            'Adaptabilidade ao Inesperado', 
+            'Inteligência Emocional', 
+            'Fit Cultural (Valores)', 
+            'Habilidades Técnicas', 
+            'Experiência Prévia'
+        ];
+        const wrappedRadarLabels = rawRadarLabels.map(wrapLabel);
+
+        new Chart(ctxRadar, {
+            type: 'radar',
+            data: {
+                labels: wrappedRadarLabels,
+                datasets: [
+                    {
+                        label: 'Foco do Anúncio (2026)',
+                        data: [9, 8, 8, 5, 4],
+                        backgroundColor: 'rgba(249, 115, 22, 0.2)',
+                        borderColor: '#F97316',
+                        pointBackgroundColor: '#F97316',
+                        borderWidth: 2
+                    },
+                    {
+                        label: 'Foco Tradicional (Passado)',
+                        data: [4, 3, 5, 9, 9],
+                        backgroundColor: 'rgba(59, 130, 246, 0.2)',
+                        borderColor: '#3B82F6',
+                        pointBackgroundColor: '#3B82F6',
+                        borderWidth: 2
+                    }
+                ]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                plugins: {
+                    tooltip: globalTooltipConfig,
+                    legend: {
+                        position: 'bottom',
+                        labels: { padding: 20, usePointStyle: true }
+                    }
+                },
+                scales: {
+                    r: {
+                        angleLines: { color: 'rgba(0,0,0,0.1)' },
+                        grid: { color: 'rgba(0,0,0,0.1)' },
+                        pointLabels: {
+                            font: { size: 11 },
+                            color: '#4B5563'
+                        },
+                        ticks: { display: false, max: 10, min: 0 }
+                    }
+                }
+            }
+        });
+    </script>
+</body>
+</html>

@@ -1,0 +1,424 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Laboratório de Gestão: O Processo de Seleção na Prática</title>
+    
+    <!-- Confirmations and Summaries 
+    PALETTE: Energetic & Playful (Blue #0056B3, Vibrant Orange #FF6B35, Teal #00B4D8, Yellow #FFD166, Dark Gray #333333)
+    NARRATIVE PLAN: The infographic acts as a visual syllabus for the Role-Playing class. It starts by introducing Chiavenato's theory of selection (The Funnel). Then, it compares traditional CBO requirements with 2026 market trends to set the expected candidate profile. Next, it outlines the STAR method for the simulation using structured HTML. Finally, it visualizes the assessment criteria and the value of structured feedback to combat bias.
+    CHART CHOICES: 
+    1. Funnel (Horizontal Bar) -> Goal: Organize/Process. Shows the filtering nature of selection described by Chiavenato. Library: Chart.js.
+    2. Radar Chart -> Goal: Compare. Directly compares traditional hard skills vs modern soft skills (CBO vs Guia 2026). Library: Chart.js.
+    3. Stacked Bar Chart -> Goal: Evaluate/Compare. Simulates the grading of 3 candidates across different criteria during the role-play. Library: Chart.js.
+    4. Pie Chart -> Goal: Inform/Composition. Shows the multi-faceted benefits of structured feedback. Library: Chart.js.
+    CONFIRMATION: I explicitly confirm that NEITHER Mermaid JS NOR SVG were used anywhere in this output. All icons use standard Unicode characters and styling relies on Tailwind CSS and Canvas.
+    -->
+
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;800&display=swap" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #F4F4F9;
+            color: #333333;
+        }
+        
+        .chart-container {
+            position: relative;
+            width: 100%;
+            max-width: 600px;
+            margin-left: auto;
+            margin-right: auto;
+            height: 350px;
+            max-height: 400px;
+        }
+
+        @media (min-width: 768px) {
+            .chart-container {
+                height: 400px;
+            }
+        }
+
+        .bg-brand-blue { background-color: #0056B3; }
+        .text-brand-blue { color: #0056B3; }
+        .bg-brand-orange { background-color: #FF6B35; }
+        .text-brand-orange { color: #FF6B35; }
+        .bg-brand-teal { background-color: #00B4D8; }
+        .bg-brand-yellow { background-color: #FFD166; }
+        
+        .border-brand-blue { border-color: #0056B3; }
+        
+        .glass-card {
+            background: rgba(255, 255, 255, 0.95);
+            border-radius: 12px;
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.05);
+            border: 1px solid rgba(0,0,0,0.05);
+        }
+        
+        .timeline-step {
+            position: relative;
+            padding-left: 2rem;
+            border-left: 4px solid #00B4D8;
+            margin-bottom: 1.5rem;
+        }
+        .timeline-step::before {
+            content: '';
+            position: absolute;
+            left: -12px;
+            top: 0;
+            width: 20px;
+            height: 20px;
+            border-radius: 50%;
+            background-color: #FF6B35;
+            border: 4px solid #FFF;
+        }
+    </style>
+</head>
+<body class="antialiased">
+
+    <nav class="bg-brand-blue text-white sticky top-0 z-50 shadow-lg">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex items-center justify-between h-16">
+                <div class="flex items-center gap-3 text-xl font-bold">
+                    <span>📋</span>
+                    <span>Técnico em Administração | SC</span>
+                </div>
+                <div class="hidden md:block text-sm font-semibold opacity-80">
+                    Laboratório de Gestão: Aula 7
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <header class="bg-white py-16 border-b-4 border-brand-orange">
+        <div class="max-w-5xl mx-auto px-4 text-center">
+            <h1 class="text-4xl md:text-6xl font-extrabold text-brand-blue mb-4 tracking-tight">O Processo de Seleção na Prática</h1>
+            <p class="text-xl md:text-2xl text-gray-600 font-light mb-8 max-w-3xl mx-auto">Uma análise visual da teoria de Idalberto Chiavenato aplicada à simulação de entrevistas e avaliação de desempenho no mercado catarinense.</p>
+            <div class="inline-flex gap-4 items-center justify-center flex-wrap">
+                <span class="px-4 py-2 bg-brand-teal text-white rounded-full font-bold text-sm shadow">🎯 Role-Playing</span>
+                <span class="px-4 py-2 bg-brand-yellow text-gray-800 rounded-full font-bold text-sm shadow">📊 CBO & Guia 2026</span>
+                <span class="px-4 py-2 bg-gray-200 text-gray-700 rounded-full font-bold text-sm shadow">🧠 Hard & Soft Skills</span>
+            </div>
+        </div>
+    </header>
+
+    <main class="max-w-7xl mx-auto px-4 py-12 space-y-16">
+
+        <section class="grid grid-cols-1 md:grid-cols-2 gap-10 items-center">
+            <div class="glass-card p-8">
+                <h2 class="text-3xl font-bold text-brand-blue mb-4 border-l-8 border-brand-orange pl-4">A Seleção como Filtro</h2>
+                <p class="text-gray-700 mb-4 text-lg">
+                    Segundo <strong>Idalberto Chiavenato</strong>, a seleção de pessoas é um sistema de comparação e decisão. Funciona como um filtro rigoroso que permite o ingresso apenas daqueles que apresentam as características exigidas pelo cargo.
+                </p>
+                <div class="bg-blue-50 p-4 rounded-lg border border-blue-100 mb-4">
+                    <p class="italic text-gray-600 font-medium">"A seleção é a escolha do homem certo para o cargo certo, ou, mais modernamente, o cargo certo para o homem certo."</p>
+                </div>
+                <p class="text-gray-700">
+                    O gráfico ao lado ilustra o comportamento típico de um funil de recrutamento e seleção, evidenciando como o volume de candidatos diminui à medida que o nível de exigência técnica e comportamental aumenta até a decisão final.
+                </p>
+            </div>
+            <div class="glass-card p-6 flex flex-col items-center justify-center">
+                <h3 class="text-xl font-bold text-center mb-2 text-gray-800">Funil de Seleção e Decisão</h3>
+                <div class="chart-container">
+                    <canvas id="funnelChart"></canvas>
+                </div>
+            </div>
+        </section>
+
+        <section class="grid grid-cols-1 md:grid-cols-2 gap-10 items-center bg-gray-100 p-8 rounded-2xl border border-gray-200">
+            <div class="glass-card p-6 flex flex-col items-center justify-center order-2 md:order-1">
+                <h3 class="text-xl font-bold text-center mb-2 text-gray-800">Análise de Competências</h3>
+                <div class="chart-container">
+                    <canvas id="radarChart"></canvas>
+                </div>
+            </div>
+            <div class="order-1 md:order-2">
+                <h2 class="text-3xl font-bold text-brand-blue mb-4 border-l-8 border-brand-teal pl-4">O Perfil do Assistente Adm.</h2>
+                <p class="text-gray-700 mb-4 text-lg">
+                    Para o nosso Laboratório, utilizaremos o cargo de Assistente Administrativo (CBO 4110-10). No entanto, o gestor moderno não avalia apenas rotinas tradicionais.
+                </p>
+                <p class="text-gray-700 mb-6">
+                    Cruzando os dados básicos da CBO com o <strong>Guia Salarial Michael Page 2026</strong>, notamos uma forte transição: enquanto o conhecimento técnico (arquivos, faturamento) continua essencial, as <em>Soft Skills</em> e a adoção de novas tecnologias (IA, análise de dados) assumem um protagonismo vital para a aprovação nas empresas de Santa Catarina.
+                </p>
+                <ul class="space-y-3">
+                    <li class="flex items-center gap-3">
+                        <span class="text-2xl">📚</span>
+                        <span class="font-semibold text-gray-800">CBO: Foco em rotina e processos documentais.</span>
+                    </li>
+                    <li class="flex items-center gap-3">
+                        <span class="text-2xl">🚀</span>
+                        <span class="font-semibold text-gray-800">Mercado 2026: Foco em resolução de problemas e comunicação.</span>
+                    </li>
+                </ul>
+            </div>
+        </section>
+
+        <section class="glass-card p-8 md:p-12">
+            <div class="text-center mb-10">
+                <h2 class="text-3xl font-bold text-brand-blue mb-4">Metodologia de Entrevista: O Método STAR</h2>
+                <p class="text-lg text-gray-600 max-w-3xl mx-auto">
+                    Na simulação prática (Role-Playing), os entrevistadores devem evitar perguntas genéricas. O método STAR garante uma avaliação objetiva de evidências comportamentais passadas para prever desempenhos futuros.
+                </p>
+            </div>
+            
+            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+                <div class="bg-white p-6 rounded-xl shadow-md border-t-4 border-brand-blue text-center">
+                    <div class="text-4xl font-black text-brand-blue mb-2">S</div>
+                    <h4 class="font-bold text-lg mb-2">Situação</h4>
+                    <p class="text-sm text-gray-600">Qual era o contexto ou o problema inicial que o candidato enfrentava na empresa anterior?</p>
+                </div>
+                <div class="bg-white p-6 rounded-xl shadow-md border-t-4 border-brand-orange text-center">
+                    <div class="text-4xl font-black text-brand-orange mb-2">T</div>
+                    <h4 class="font-bold text-lg mb-2">Tarefa</h4>
+                    <p class="text-sm text-gray-600">Qual era a responsabilidade específica do candidato dentro daquela situação?</p>
+                </div>
+                <div class="bg-white p-6 rounded-xl shadow-md border-t-4 border-brand-teal text-center">
+                    <div class="text-4xl font-black text-brand-teal mb-2">A</div>
+                    <h4 class="font-bold text-lg mb-2">Ação</h4>
+                    <p class="text-sm text-gray-600">O que o candidato efetivamente FEZ? Quais ferramentas usou? Como comunicou?</p>
+                </div>
+                <div class="bg-white p-6 rounded-xl shadow-md border-t-4 border-brand-yellow text-center">
+                    <div class="text-4xl font-black text-brand-yellow mb-2">R</div>
+                    <h4 class="font-bold text-lg mb-2">Resultado</h4>
+                    <p class="text-sm text-gray-600">Qual foi o impacto tangível da ação? Resolveu o problema? Gerou economia?</p>
+                </div>
+            </div>
+        </section>
+
+        <section class="mb-12">
+            <h2 class="text-3xl font-bold text-brand-blue mb-8 text-center border-b-2 border-gray-200 pb-4">Avaliação e Feedback na Simulação</h2>
+            <p class="text-center text-lg text-gray-600 mb-10 max-w-4xl mx-auto">
+                O papel do Observador é registrar notas baseadas na grade de critérios. O gráfico abaixo simula os resultados de três candidatos hipotéticos durante o Laboratório de Gestão, demonstrando como diferentes perfis pontuam no CHA (Conhecimento, Habilidade, Atitude).
+            </p>
+
+            <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
+                <div class="lg:col-span-2 glass-card p-6">
+                    <h3 class="text-xl font-bold text-center mb-4 text-gray-800">Resultado da Simulação (Critérios)</h3>
+                    <div class="chart-container">
+                        <canvas id="stackedBarChart"></canvas>
+                    </div>
+                </div>
+                
+                <div class="glass-card p-6 flex flex-col justify-center">
+                    <h3 class="text-xl font-bold text-center mb-4 text-gray-800">O Valor do Feedback Estruturado</h3>
+                    <p class="text-sm text-gray-600 mb-4 text-center">
+                        Chiavenato alerta para o "Efeito de Halo", onde uma característica do candidato ofusca todas as outras. O feedback estruturado no método sanduíche combate isso.
+                    </p>
+                    <div class="chart-container !h-64">
+                        <canvas id="pieChart"></canvas>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section class="bg-brand-blue text-white p-10 rounded-2xl shadow-xl text-center">
+            <h2 class="text-2xl md:text-3xl font-bold mb-4">Prontos para o Laboratório?</h2>
+            <p class="text-lg md:text-xl font-light opacity-90 max-w-2xl mx-auto">
+                Organizaremos a turma em trios (Gestor, Candidato e Observador). Usem os dados reais discutidos aqui e apliquem as grades de avaliação com rigor e empatia profissional.
+            </p>
+        </section>
+
+    </main>
+
+    <footer class="bg-gray-900 text-gray-400 py-8 text-center text-sm">
+        <p>Infográfico gerado para apoio ao Plano de Aula | Curso Técnico em Administração (Estado de Santa Catarina).</p>
+        <p class="mt-2">Referências: Idalberto Chiavenato (Gestão de Pessoas), CBO MTE, Guia Salarial 2026 Michael Page.</p>
+    </footer>
+
+    <script>
+        const commonOptions = {
+            maintainAspectRatio: false,
+            responsive: true,
+            plugins: {
+                legend: {
+                    labels: {
+                        font: { family: "'Inter', sans-serif" }
+                    }
+                },
+                tooltip: {
+                    callbacks: {
+                        title: function(tooltipItems) {
+                            const item = tooltipItems[0];
+                            let label = item.chart.data.labels[item.dataIndex];
+                            if (Array.isArray(label)) {
+                              return label.join(' ');
+                            } else {
+                              return label;
+                            }
+                        }
+                    }
+                }
+            }
+        };
+
+        const ctxFunnel = document.getElementById('funnelChart').getContext('2d');
+        new Chart(ctxFunnel, {
+            type: 'bar',
+            data: {
+                labels: [
+                    ['Candidatos', 'Atraídos'], 
+                    ['Triagem de', 'Currículos'], 
+                    ['Entrevistas por', 'Competência'], 
+                    ['Aprovados (O', 'Cargo Certo)']
+                ],
+                datasets: [{
+                    label: 'Quantidade de Pessoas',
+                    data: [150, 45, 12, 1],
+                    backgroundColor: ['#00B4D8', '#FFD166', '#FF6B35', '#0056B3'],
+                    borderRadius: 4
+                }]
+            },
+            options: {
+                ...commonOptions,
+                indexAxis: 'y',
+                scales: {
+                    x: {
+                        beginAtZero: true,
+                        grid: { display: false }
+                    },
+                    y: {
+                        grid: { display: false },
+                        ticks: { font: { weight: 'bold' } }
+                    }
+                },
+                plugins: {
+                    ...commonOptions.plugins,
+                    legend: { display: false }
+                }
+            }
+        });
+
+        const ctxRadar = document.getElementById('radarChart').getContext('2d');
+        new Chart(ctxRadar, {
+            type: 'radar',
+            data: {
+                labels: [
+                    ['Domínio Técnico', '(CBO)'], 
+                    ['Comunicação', 'Interpessoal'], 
+                    ['Uso de IA e', 'Ferramentas'], 
+                    ['Organização', 'e Prazos'], 
+                    ['Resolução de', 'Problemas']
+                ],
+                datasets: [
+                    {
+                        label: 'Perfil Clássico (CBO)',
+                        data: [90, 60, 30, 85, 50],
+                        backgroundColor: 'rgba(0, 180, 216, 0.2)',
+                        borderColor: '#00B4D8',
+                        pointBackgroundColor: '#00B4D8',
+                        borderWidth: 2
+                    },
+                    {
+                        label: 'Tendência 2026',
+                        data: [75, 95, 90, 80, 85],
+                        backgroundColor: 'rgba(255, 107, 53, 0.2)',
+                        borderColor: '#FF6B35',
+                        pointBackgroundColor: '#FF6B35',
+                        borderWidth: 2
+                    }
+                ]
+            },
+            options: {
+                ...commonOptions,
+                scales: {
+                    r: {
+                        angleLines: { display: true },
+                        suggestedMin: 0,
+                        suggestedMax: 100,
+                        ticks: { stepSize: 20 }
+                    }
+                }
+            }
+        });
+
+        const ctxStacked = document.getElementById('stackedBarChart').getContext('2d');
+        new Chart(ctxStacked, {
+            type: 'bar',
+            data: {
+                labels: [
+                    ['Candidato A', '(Aprovado)'], 
+                    ['Candidato B', '(Reprovado)'], 
+                    ['Candidato C (Banco', 'de Talentos)']
+                ],
+                datasets: [
+                    {
+                        label: 'Pontualidade e Postura',
+                        data: [5, 2, 4],
+                        backgroundColor: '#0056B3'
+                    },
+                    {
+                        label: 'Comunicação',
+                        data: [4, 3, 5],
+                        backgroundColor: '#00B4D8'
+                    },
+                    {
+                        label: 'Conhecimento Técnico',
+                        data: [5, 4, 3],
+                        backgroundColor: '#FFD166'
+                    },
+                    {
+                        label: 'Adaptabilidade',
+                        data: [4, 2, 4],
+                        backgroundColor: '#FF6B35'
+                    }
+                ]
+            },
+            options: {
+                ...commonOptions,
+                scales: {
+                    x: {
+                        stacked: true,
+                        grid: { display: false }
+                    },
+                    y: {
+                        stacked: true,
+                        beginAtZero: true,
+                        max: 20,
+                        title: {
+                            display: true,
+                            text: 'Pontuação Total (Máx 20)'
+                        }
+                    }
+                }
+            }
+        });
+
+        const ctxPie = document.getElementById('pieChart').getContext('2d');
+        new Chart(ctxPie, {
+            type: 'doughnut',
+            data: {
+                labels: [
+                    ['Melhoria Contínua', 'do Candidato'], 
+                    ['Maior Assertividade', 'do RH'], 
+                    ['Alinhamento', 'com Gestores'], 
+                    ['Redução do', 'Efeito Halo']
+                ],
+                datasets: [{
+                    data: [35, 30, 20, 15],
+                    backgroundColor: ['#00B4D8', '#FF6B35', '#FFD166', '#0056B3'],
+                    borderWidth: 2,
+                    borderColor: '#ffffff'
+                }]
+            },
+            options: {
+                ...commonOptions,
+                cutout: '60%',
+                plugins: {
+                    ...commonOptions.plugins,
+                    legend: {
+                        position: 'bottom',
+                        labels: {
+                            boxWidth: 12,
+                            padding: 15
+                        }
+                    }
+                }
+            }
+        });
+    </script>
+</body>
+</html>

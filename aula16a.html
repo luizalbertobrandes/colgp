@@ -1,0 +1,341 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Explorador de Design de Cargos - JCM</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&display=swap');
+        
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #fcfaf7;
+            color: #334155;
+        }
+
+        .chart-container {
+            position: relative;
+            width: 100%;
+            max-width: 500px;
+            margin-left: auto;
+            margin-right: auto;
+            height: 350px;
+            max-height: 400px;
+        }
+
+        .dimension-card {
+            transition: all 0.3s ease;
+            cursor: pointer;
+        }
+
+        .dimension-card:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
+        }
+
+        .active-tab {
+            border-bottom: 3px solid #e2e8f0;
+            background-color: #f1f5f9;
+        }
+
+        .state-gauge {
+            height: 12px;
+            background: #e2e8f0;
+            border-radius: 6px;
+            overflow: hidden;
+        }
+
+        .state-fill {
+            height: 100%;
+            transition: width 0.8s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+    </style>
+</head>
+<body class="p-4 md:p-8">
+
+    <!-- Chosen Palette: Clay & Slate (Harmonia de tons terrosos e neutros profissionais) -->
+    
+    <!-- Application Structure Plan: 
+        A aplicação foi estruturada como um painel de exploração pedagógica. 
+        1. Introdução: Contextualiza o Modelo de Características do Cargo (MCC).
+        2. Galeria Interativa: Substitui o texto estático pelas 5 dimensões, usando a codificação por cores sugerida no plano de aula para reduzir carga cognitiva.
+        3. Simulador de Impacto: Um gráfico de radar dinâmico onde o usuário "enriquece" um cargo operacional para ver a mudança visual no potencial motivador.
+        4. Painel de Logística: Guia prático para a exportação de dados do Google Forms.
+    -->
+
+    <!-- Visualization & Content Choices: 
+        - Gráfico de Radar (Chart.js): Escolhido para mostrar a "assinatura" psicológica de um cargo. É ideal para comparar o estado atual vs. enriquecido.
+        - Cards de Cores: Implementam a estratégia de codificação visual (Laranja/Vermelho para proatividade, Azul/Verde para estrutura).
+        - Barras de Progresso: Representam os "Estados Psicológicos Críticos" que variam conforme o input do usuário.
+        - CONFIRMAÇÃO: NO SVG graphics used. NO Mermaid JS used. 
+    -->
+
+    <div class="max-w-6xl mx-auto">
+        
+        <!-- Header -->
+        <header class="mb-12 text-center">
+            <h1 class="text-4xl font-bold text-slate-800 mb-4">Dimensões Psicológicas do Cargo</h1>
+            <p class="text-lg text-slate-600 max-w-2xl mx-auto">EEB Colombo Machado Salles • Curso Técnico em Administração</p>
+            <div class="mt-6 inline-block bg-amber-100 text-amber-800 px-4 py-1 rounded-full text-sm font-semibold uppercase tracking-wider">
+                Gestão de Pessoas
+            </div>
+        </header>
+
+        <!-- Seção 1: Introdução -->
+        <section class="mb-16 bg-white p-8 rounded-2xl shadow-sm border border-slate-100">
+            <h2 class="text-2xl font-semibold mb-4 border-l-4 border-amber-500 pl-4">O Coração do Modelo (JCM)</h2>
+            <p class="text-slate-600 leading-relaxed mb-6">
+                O trabalho não é apenas uma lista de obrigações, mas uma estrutura que molda como nos sentimos. Segundo Hackman e Oldham, cargos bem desenhados geram estados psicológicos que impulsionam a motivação interna. Nesta aplicação, exploraremos como pequenas mudanças no "design" de uma função podem transformar a produtividade e a satisfação do colaborador.
+            </p>
+        </section>
+
+        <!-- Seção 2: As 5 Dimensões -->
+        <section class="mb-16">
+            <h2 class="text-2xl font-semibold mb-6">Exploração das 5 Dimensões</h2>
+            <p class="text-slate-600 mb-8 italic">Selecione uma dimensão para ver sua definição e como ela impacta o colaborador.</p>
+            
+            <div class="grid grid-cols-1 md:grid-cols-5 gap-4 mb-8">
+                <button onclick="showDimension(0)" id="btn-0" class="dimension-card p-4 rounded-xl border bg-orange-50 border-orange-200 text-center">
+                    <span class="block text-2xl mb-2">✦</span>
+                    <span class="font-bold text-orange-900">Variedade</span>
+                </button>
+                <button onclick="showDimension(1)" id="btn-1" class="dimension-card p-4 rounded-xl border bg-red-50 border-red-200 text-center">
+                    <span class="block text-2xl mb-2">⚙</span>
+                    <span class="font-bold text-red-900">Identidade</span>
+                </button>
+                <button onclick="showDimension(2)" id="btn-2" class="dimension-card p-4 rounded-xl border bg-amber-50 border-amber-200 text-center">
+                    <span class="block text-2xl mb-2">🌍</span>
+                    <span class="font-bold text-amber-900">Significado</span>
+                </button>
+                <button onclick="showDimension(3)" id="btn-3" class="dimension-card p-4 rounded-xl border bg-emerald-50 border-emerald-200 text-center">
+                    <span class="block text-2xl mb-2">🧭</span>
+                    <span class="font-bold text-emerald-900">Autonomia</span>
+                </button>
+                <button onclick="showDimension(4)" id="btn-4" class="dimension-card p-4 rounded-xl border bg-blue-50 border-blue-200 text-center">
+                    <span class="block text-2xl mb-2">⟲</span>
+                    <span class="font-bold text-blue-900">Feedback</span>
+                </button>
+            </div>
+
+            <div id="dimension-content" class="bg-white p-8 rounded-2xl shadow-md border border-slate-200 min-h-[250px] flex items-center transition-all">
+                <!-- Conteúdo Dinâmico JS -->
+                <div class="text-center w-full py-12">
+                    <p class="text-slate-400">Clique em uma dimensão acima para explorar os detalhes teóricos.</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- Seção 3: Simulador Prático -->
+        <section class="mb-16 grid grid-cols-1 lg:grid-cols-2 gap-12 items-center bg-slate-50 p-8 rounded-3xl">
+            <div>
+                <h2 class="text-3xl font-bold mb-6 text-slate-800">O Simulador de RH</h2>
+                <p class="text-slate-600 mb-6">
+                    Muitos cargos operacionais (como em um estoque ou call center) possuem um design "fechado". Use o simulador para ver como o enriquecimento de cargo expande o potencial motivador da função.
+                </p>
+                
+                <div class="space-y-6">
+                    <div>
+                        <div class="flex justify-between mb-2">
+                            <span class="font-semibold">Nível de Enriquecimento</span>
+                            <span id="level-label" class="text-indigo-600 font-bold">Básico</span>
+                        </div>
+                        <input type="range" min="0" max="2" value="0" step="1" oninput="updateSim(this.value)" class="w-full h-2 bg-slate-300 rounded-lg appearance-none cursor-pointer accent-indigo-600">
+                    </div>
+
+                    <div class="space-y-4">
+                        <div>
+                            <span class="text-sm font-medium text-slate-500">Estado Psicológico: Significado do Trabalho</span>
+                            <div class="state-gauge mt-1"><div id="bar-1" class="state-fill bg-orange-400" style="width: 20%"></div></div>
+                        </div>
+                        <div>
+                            <span class="text-sm font-medium text-slate-500">Estado Psicológico: Responsabilidade</span>
+                            <div class="state-gauge mt-1"><div id="bar-2" class="state-fill bg-emerald-500" style="width: 15%"></div></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="bg-white p-6 rounded-2xl shadow-xl">
+                <div class="chart-container">
+                    <canvas id="jcmChart"></canvas>
+                </div>
+                <p class="text-center text-xs text-slate-400 mt-4">Comparação: Cargo Estático vs. Cargo Enriquecido</p>
+            </div>
+        </section>
+
+        <!-- Seção 4: Exportação e Logística -->
+        <section class="mb-16">
+            <h2 class="text-2xl font-semibold mb-6">Fluxo de Trabalho e WhatsApp</h2>
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+                <div class="p-6 bg-white rounded-xl border border-slate-200">
+                    <div class="w-10 h-10 bg-indigo-100 text-indigo-600 rounded-full flex items-center justify-center font-bold mb-4">1</div>
+                    <h3 class="font-bold mb-2 text-slate-800">Coleta via Google Forms</h3>
+                    <p class="text-sm text-slate-600 italic">Os alunos preenchem os desafios práticos diretamente no formulário sugerido no plano.</p>
+                </div>
+                <div class="p-6 bg-white rounded-xl border border-slate-200">
+                    <div class="w-10 h-10 bg-emerald-100 text-emerald-600 rounded-full flex items-center justify-center font-bold mb-4">2</div>
+                    <h3 class="font-bold mb-2 text-slate-800">Exportação em PDF/CSV</h3>
+                    <p class="text-sm text-slate-600 italic">No Google Sheets, selecione Arquivo > Fazer Download. Isso consolida todas as respostas em um único documento.</p>
+                </div>
+                <div class="p-6 bg-white rounded-xl border border-slate-200">
+                    <div class="w-10 h-10 bg-green-100 text-green-600 rounded-full flex items-center justify-center font-bold mb-4">3</div>
+                    <h3 class="font-bold mb-2 text-slate-800">Registro no WhatsApp</h3>
+                    <p class="text-sm text-slate-600 italic">Envie o arquivo consolidado para (47) 98411-4380 para garantir o registro final da atividade.</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- Footer -->
+        <footer class="text-center py-8 border-t border-slate-200 text-slate-400 text-sm">
+            <p>© 2024 EEB Colombo Machado Salles • Gestão de Pessoas - 2ª Série Técnica</p>
+        </footer>
+    </div>
+
+    <script>
+        const dimensions = [
+            {
+                title: "Variedade de Habilidades",
+                color: "text-orange-600",
+                bg: "bg-orange-50",
+                border: "border-orange-200",
+                desc: "O grau em que o cargo requer uma variedade de atividades diferentes para que o colaborador possa usar diversas habilidades e talentos.",
+                visual: "Imagine um 'menu' de competências. Em vez de apertar apenas um botão, o colaborador precisa negociar, analisar e criar.",
+                pro: "Evita a monotonia e amplia o valor de mercado do profissional."
+            },
+            {
+                title: "Identidade da Tarefa",
+                color: "text-red-600",
+                bg: "bg-red-50",
+                border: "border-red-200",
+                desc: "O grau em que o cargo exige a execução de uma peça de trabalho completa e identificável.",
+                visual: "É a diferença entre fabricar uma perna de cadeira o dia todo e construir a cadeira inteira e assinar o seu nome nela.",
+                pro: "Gera orgulho pelo resultado final e senso de propriedade."
+            },
+            {
+                title: "Significado da Tarefa",
+                color: "text-amber-600",
+                bg: "bg-amber-50",
+                border: "border-amber-200",
+                desc: "O grau em que o cargo tem um impacto substancial na vida ou no trabalho de outras pessoas.",
+                visual: "Conectar o trabalho ao propósito social. Um zelador de hospital não apenas limpa o chão; ele ajuda a salvar vidas através da assepsia.",
+                pro: "Cria conexão emocional e propósito existencial no trabalho."
+            },
+            {
+                title: "Autonomia",
+                color: "text-emerald-600",
+                bg: "bg-emerald-50",
+                border: "border-emerald-200",
+                desc: "O grau em que o cargo oferece liberdade, independência e discrição substanciais para agendar o trabalho e determinar os procedimentos.",
+                visual: "Uma bússola nas mãos do funcionário. Ele decide o ritmo e o caminho, não apenas segue ordens rígidas.",
+                pro: "Aumenta a responsabilidade pessoal pelos resultados (sucessos e falhas)."
+            },
+            {
+                title: "Feedback",
+                color: "text-blue-600",
+                bg: "bg-blue-50",
+                border: "border-blue-200",
+                desc: "O grau em que a execução das atividades exigidas resulta em informações diretas e claras sobre a eficácia do desempenho.",
+                visual: "Um loop de sinalização. O próprio trabalho diz ao funcionário se ele está indo bem, sem precisar esperar a avaliação anual.",
+                pro: "Permite ajustes rápidos e gera aprendizado contínuo."
+            }
+        ];
+
+        function showDimension(index) {
+            const d = dimensions[index];
+            const content = document.getElementById('dimension-content');
+            
+            // Update buttons
+            for(let i=0; i<5; i++) {
+                document.getElementById(`btn-${i}`).classList.remove('active-tab', 'ring-2', 'ring-slate-300');
+            }
+            document.getElementById(`btn-${index}`).classList.add('active-tab', 'ring-2', 'ring-slate-300');
+
+            content.innerHTML = `
+                <div class="animate-fadeIn w-full">
+                    <h3 class="text-3xl font-bold ${d.color} mb-4">${d.title}</h3>
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+                        <div>
+                            <p class="text-slate-700 leading-relaxed mb-4 font-medium">${d.desc}</p>
+                            <div class="p-4 ${d.bg} rounded-lg border ${d.border}">
+                                <span class="font-bold block mb-1">Impacto Psicológico:</span>
+                                <p class="text-sm text-slate-600">${d.pro}</p>
+                            </div>
+                        </div>
+                        <div class="border-l-2 border-slate-100 pl-6">
+                            <span class="text-xs uppercase font-bold text-slate-400 tracking-widest">Visualização Gráfica</span>
+                            <p class="mt-2 text-slate-600 italic">${d.visual}</p>
+                        </div>
+                    </div>
+                </div>
+            `;
+        }
+
+        // Radar Chart Logic
+        let jcmChart;
+        const labels = ['Variedade', 'Identidade', 'Significado', 'Autonomia', 'Feedback'];
+        const dataSets = {
+            '0': [20, 30, 20, 10, 30], // Básico
+            '1': [50, 60, 50, 45, 60], // Intermediário
+            '2': [90, 85, 95, 80, 90]  // Enriquecido
+        };
+
+        function initChart() {
+            const ctx = document.getElementById('jcmChart').getContext('2d');
+            jcmChart = new Chart(ctx, {
+                type: 'radar',
+                data: {
+                    labels: labels,
+                    datasets: [{
+                        label: 'Perfil do Cargo',
+                        data: dataSets['0'],
+                        fill: true,
+                        backgroundColor: 'rgba(99, 102, 241, 0.2)',
+                        borderColor: 'rgb(99, 102, 241)',
+                        pointBackgroundColor: 'rgb(99, 102, 241)',
+                        pointBorderColor: '#fff',
+                        pointHoverBackgroundColor: '#fff',
+                        pointHoverBorderColor: 'rgb(99, 102, 241)'
+                    }]
+                },
+                options: {
+                    maintainAspectRatio: false,
+                    elements: { line: { borderWidth: 3 } },
+                    scales: {
+                        r: {
+                            angleLines: { display: true },
+                            suggestedMin: 0,
+                            suggestedMax: 100,
+                            ticks: { display: false }
+                        }
+                    },
+                    plugins: { legend: { display: false } }
+                }
+            });
+        }
+
+        function updateSim(val) {
+            const labelsMap = ['Básico', 'Expandido', 'Enriquecido (Foco Humano)'];
+            document.getElementById('level-label').innerText = labelsMap[val];
+            
+            // Update chart
+            jcmChart.data.datasets[0].data = dataSets[val];
+            jcmChart.update();
+
+            // Update Progress Bars
+            const bar1 = document.getElementById('bar-1');
+            const bar2 = document.getElementById('bar-2');
+            
+            if(val == '0') { bar1.style.width = '20%'; bar2.style.width = '15%'; }
+            else if(val == '1') { bar1.style.width = '55%'; bar2.style.width = '50%'; }
+            else { bar1.style.width = '95%'; bar2.style.width = '90%'; }
+        }
+
+        window.onload = initChart;
+    </script>
+
+    <!-- CONFIRMATION: NO SVG graphics used. NO Mermaid JS used. -->
+
+</body>
+</html>

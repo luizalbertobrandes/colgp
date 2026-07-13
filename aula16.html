@@ -1,63 +1,375 @@
 <!DOCTYPE html>
-<html lang="pt-BR">
+<html lang="pt-br">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Aguarde - Aula em Breve</title>
+    <title>Laboratório JCM - EEB Colombo Machado Salles</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <style>
+        @import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;600;700&display=swap');
+        
         body {
-            margin: 0;
-            padding: 0;
-            background-color: #f4f4f4; /* Cor de fundo suave */
-            font-family: Arial, sans-serif;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            height: 100vh;
+            font-family: 'Plus Jakarta Sans', sans-serif;
+            background-color: #fdfbf9;
+            color: #1e293b;
         }
 
-        .container {
-            background-color: #fff;
-            border-radius: 8px;
-            box-shadow: 0 4px 8px rgba(0,0,0,0.1);
-            padding: 40px;
-            text-align: center;
+        .chart-container {
+            position: relative;
+            width: 100%;
+            max-width: 550px;
+            margin: auto;
+            height: 400px;
         }
 
-        .container img {
-            max-width: 100%;
-            height: auto;
-            border-radius: 8px; /* Mantém as bordas arredondadas da imagem */
-            margin-bottom: 20px;
-        }
-
-        .container h1 {
-            color: #333;
-            font-size: 24px;
-            margin-bottom: 30px;
-        }
-
-        .btn-voltar {
-            display: inline-block;
-            background-color: #007bff; /* Azul para o botão */
-            color: #fff;
-            padding: 12px 24px;
-            text-decoration: none;
+        .input-slider {
+            -webkit-appearance: none;
+            width: 100%;
+            height: 6px;
             border-radius: 5px;
-            font-weight: bold;
-            transition: background-color 0.3s ease;
+            outline: none;
         }
 
-        .btn-voltar:hover {
-            background-color: #0056b3; /* Cor mais escura no hover */
+        .input-slider::-webkit-slider-thumb {
+            -webkit-appearance: none;
+            appearance: none;
+            width: 18px;
+            height: 18px;
+            border-radius: 50%;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+
+        .card-glass {
+            background: rgba(255, 255, 255, 0.8);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(226, 232, 240, 0.8);
+        }
+
+        .step-active {
+            border-left: 4px solid #6366f1;
+            padding-left: 1rem;
         }
     </style>
 </head>
-<body>
-    <div class="container">
-        <img src="imagem1.png" width="320" height="240" alt="O professor em sala de aula">
-        <h1>Aguarde: em breve essa aula estará disponivel.</h1>
-        <a href="index.html" class="btn-voltar">Voltar</a>
+<body class="p-4 md:p-10">
+
+    <!-- Chosen Palette: Warm Earth & Indigo (Seriedade técnica com acolhimento) -->
+    
+    <!-- Application Structure Plan: 
+        1. EDUCAÇÃO: Mantém a base teórica sobre as 5 dimensões (MCC).
+        2. SIMULAÇÃO: Upgrade para 5 variáveis independentes que alimentam um gráfico de radar em tempo real.
+        3. AÇÃO: Formulário de desafios com validação de identidade do aluno.
+        4. LOGÍSTICA: Sistema de exportação de string de texto e integração com a API do WhatsApp para envio ao número (47) 98411-4380.
+    -->
+
+    <!-- Visualization & Content Choices: 
+        - Radar Chart: Ideal para visualizar o "volume" psicológico de um cargo.
+        - Sliders Color-Coded: Cada slider usa a cor da dimensão correspondente.
+        - Form Text Generator: Converte inputs em um relatório formatado para o WhatsApp.
+        - CONFIRMAÇÃO: NO SVG graphics used. NO Mermaid JS used. 
+    -->
+
+    <div class="max-w-6xl mx-auto">
+        
+        <header class="mb-12 text-left border-b pb-8 border-slate-200">
+            <div class="flex flex-col md:flex-row md:items-end justify-between gap-4">
+                <div>
+                    <h1 class="text-4xl font-extrabold text-slate-900 tracking-tight">Laboratório de Design de Cargos</h1>
+                    <p class="text-lg text-slate-500 mt-2">EEB Colombo Machado Salles • Gestão de Pessoas</p>
+                </div>
+                <div class="bg-indigo-600 text-white px-4 py-2 rounded-lg text-sm font-bold">
+                    2ª Série Técnica
+                </div>
+            </div>
+        </header>
+
+        <!-- Seção 1: Teoria (Preservada) -->
+        <section class="mb-16 grid grid-cols-1 lg:grid-cols-3 gap-8">
+            <div class="lg:col-span-1">
+                <h2 class="text-2xl font-bold text-indigo-900 mb-4 italic">O Modelo JCM</h2>
+                <p class="text-slate-600 leading-relaxed">
+                    Hackman e Oldham provaram que a motivação não vem apenas do salário, mas de como a tarefa é desenhada. Um cargo rico em características psicológicas gera estados de satisfação interna que impulsionam o desempenho sem supervisão constante.
+                </p>
+            </div>
+            <div class="lg:col-span-2 grid grid-cols-2 md:grid-cols-3 gap-4">
+                <div class="p-4 bg-orange-50 border border-orange-100 rounded-xl">
+                    <span class="font-bold text-orange-800 text-sm">Variedade</span>
+                    <p class="text-xs text-orange-600 mt-1">Uso de múltiplas competências.</p>
+                </div>
+                <div class="p-4 bg-red-50 border border-red-100 rounded-xl">
+                    <span class="font-bold text-red-800 text-sm">Identidade</span>
+                    <p class="text-xs text-red-600 mt-1">Trabalho do início ao fim.</p>
+                </div>
+                <div class="p-4 bg-amber-50 border border-amber-100 rounded-xl">
+                    <span class="font-bold text-amber-800 text-sm">Significado</span>
+                    <p class="text-xs text-amber-600 mt-1">Impacto na vida dos outros.</p>
+                </div>
+                <div class="p-4 bg-emerald-50 border border-emerald-100 rounded-xl">
+                    <span class="font-bold text-emerald-800 text-sm">Autonomia</span>
+                    <p class="text-xs text-emerald-600 mt-1">Liberdade de decisão.</p>
+                </div>
+                <div class="p-4 bg-blue-50 border border-blue-100 rounded-xl">
+                    <span class="font-bold text-blue-800 text-sm">Feedback</span>
+                    <p class="text-xs text-blue-600 mt-1">Clareza sobre eficácia.</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- Seção 2: Simulador Completo -->
+        <section class="mb-16 bg-white p-6 md:p-10 rounded-3xl shadow-xl border border-slate-100">
+            <div class="mb-10">
+                <h2 class="text-2xl font-bold mb-2">Simulador de Características</h2>
+                <p class="text-slate-500">Ajuste os níveis abaixo para ver a assinatura psicológica do cargo no gráfico.</p>
+            </div>
+
+            <div class="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
+                <div class="space-y-8">
+                    <!-- Sliders Independentes -->
+                    <div>
+                        <div class="flex justify-between text-sm font-bold mb-2 text-orange-700">
+                            <span>VARIEDADE</span><span id="v-val">30</span>
+                        </div>
+                        <input type="range" id="v-slider" min="0" max="100" value="30" class="input-slider bg-orange-200" style="accent-color: #ea580c">
+                    </div>
+                    <div>
+                        <div class="flex justify-between text-sm font-bold mb-2 text-red-700">
+                            <span>IDENTIDADE</span><span id="i-val">20</span>
+                        </div>
+                        <input type="range" id="i-slider" min="0" max="100" value="20" class="input-slider bg-red-200" style="accent-color: #dc2626">
+                    </div>
+                    <div>
+                        <div class="flex justify-between text-sm font-bold mb-2 text-amber-700">
+                            <span>SIGNIFICADO</span><span id="s-val">40</span>
+                        </div>
+                        <input type="range" id="s-slider" min="0" max="100" value="40" class="input-slider bg-amber-200" style="accent-color: #d97706">
+                    </div>
+                    <div>
+                        <div class="flex justify-between text-sm font-bold mb-2 text-emerald-700">
+                            <span>AUTONOMIA</span><span id="a-val">15</span>
+                        </div>
+                        <input type="range" id="a-slider" min="0" max="100" value="15" class="input-slider bg-emerald-200" style="accent-color: #059669">
+                    </div>
+                    <div>
+                        <div class="flex justify-between text-sm font-bold mb-2 text-blue-700">
+                            <span>FEEDBACK</span><span id="f-val">25</span>
+                        </div>
+                        <input type="range" id="f-slider" min="0" max="100" value="25" class="input-slider bg-blue-200" style="accent-color: #2563eb">
+                    </div>
+                </div>
+
+                <div class="bg-slate-50 p-6 rounded-2xl flex flex-col items-center">
+                    <div class="chart-container">
+                        <canvas id="radarChart"></canvas>
+                    </div>
+                    <div class="mt-4 text-center">
+                        <span class="text-xs font-bold text-slate-400 uppercase tracking-widest">Potencial Motivador (Geral)</span>
+                        <div id="score-total" class="text-4xl font-black text-indigo-600 mt-1">2.400</div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Seção 3: Desafios e Formulário -->
+        <section class="mb-16 bg-slate-900 text-white p-8 md:p-12 rounded-3xl">
+            <div class="max-w-3xl mx-auto">
+                <h2 class="text-3xl font-bold mb-8 text-center">Formulário de Entrega: Desafio JCM</h2>
+                
+                <div class="space-y-6">
+                    <!-- Identificação -->
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                        <div>
+                            <label class="block text-xs font-bold text-slate-400 uppercase mb-2">Nome Completo</label>
+                            <input type="text" id="aluno-nome" class="w-full bg-slate-800 border border-slate-700 rounded-lg p-3 focus:ring-2 focus:ring-indigo-500 outline-none text-white">
+                        </div>
+                        <div>
+                            <label class="block text-xs font-bold text-slate-400 uppercase mb-2">Turma/Série</label>
+                            <input type="text" id="aluno-turma" class="w-full bg-slate-800 border border-slate-700 rounded-lg p-3 focus:ring-2 focus:ring-indigo-500 outline-none text-white">
+                        </div>
+                    </div>
+
+                    <div class="pt-6 border-t border-slate-800">
+                        <!-- Desafio 1 -->
+                        <div class="mb-8">
+                            <span class="text-indigo-400 font-bold">DESAFIO 01: O Cargo Escolhido</span>
+                            <label class="block text-sm mt-1 mb-3 text-slate-300">Qual cargo operacional você escolheu analisar? (Ex: Estoquista, Operador de Caixa, Limpeza)</label>
+                            <input type="text" id="d1-cargo" class="w-full bg-slate-800 border border-slate-700 rounded-lg p-3 focus:ring-2 focus:ring-indigo-500 outline-none text-white" placeholder="Digite o nome da função...">
+                        </div>
+
+                        <!-- Desafio 2 -->
+                        <div class="mb-8">
+                            <span class="text-indigo-400 font-bold">DESAFIO 02: Plano de Identidade e Autonomia</span>
+                            <label class="block text-sm mt-1 mb-3 text-slate-300">Como você alteraria as tarefas para que o funcionário veja o "produto final" (Identidade) e qual regra você criaria para dar mais poder de decisão a ele (Autonomia)?</label>
+                            <textarea id="d2-plano" rows="4" class="w-full bg-slate-800 border border-slate-700 rounded-lg p-3 focus:ring-2 focus:ring-indigo-500 outline-none text-white" placeholder="Escreva sua proposta técnica..."></textarea>
+                        </div>
+
+                        <!-- Desafio 3 -->
+                        <div class="mb-8">
+                            <span class="text-indigo-400 font-bold">DESAFIO 03: Significado Social</span>
+                            <label class="block text-sm mt-1 mb-3 text-slate-300">De que forma você explicaria para este colaborador que o trabalho dele é fundamental para a sociedade ou para os clientes da empresa?</label>
+                            <textarea id="d3-significado" rows="3" class="w-full bg-slate-800 border border-slate-700 rounded-lg p-3 focus:ring-2 focus:ring-indigo-500 outline-none text-white" placeholder="Descreva a conexão com o propósito..."></textarea>
+                        </div>
+                    </div>
+
+                    <!-- Ações -->
+                    <div class="flex flex-col md:flex-row gap-4 pt-6">
+                        <button onclick="exportToText()" class="flex-1 bg-slate-700 hover:bg-slate-600 p-4 rounded-xl font-bold transition-all">
+                            Gerar Relatório de Texto
+                        </button>
+                        <button onclick="sendToWhatsapp()" class="flex-1 bg-emerald-600 hover:bg-emerald-500 p-4 rounded-xl font-bold flex items-center justify-center gap-2 transition-all">
+                            Enviar para WhatsApp (Professor)
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Seção 4: Fluxo de Trabalho (Novo) -->
+        <section class="mb-16">
+            <h2 class="text-2xl font-bold mb-8">Novo Fluxo de Trabalho Digital</h2>
+            <div class="grid grid-cols-1 md:grid-cols-4 gap-6">
+                <div class="step-active">
+                    <h3 class="font-bold text-slate-800">1. Simulação</h3>
+                    <p class="text-sm text-slate-500">Ajuste os sliders para diagnosticar o cargo atual do seu desafio.</p>
+                </div>
+                <div class="step-active">
+                    <h3 class="font-bold text-slate-800">2. Diagnóstico</h3>
+                    <p class="text-sm text-slate-500">Observe o "Potencial Motivador". Se estiver baixo, o cargo precisa de redesenho.</p>
+                </div>
+                <div class="step-active">
+                    <h3 class="font-bold text-slate-800">3. Solução</h3>
+                    <p class="text-sm text-slate-500">Preencha os desafios propondo melhorias práticas para as dimensões.</p>
+                </div>
+                <div class="step-active">
+                    <h3 class="font-bold text-slate-800">4. Entrega</h3>
+                    <p class="text-sm text-slate-500">Clique em "Enviar" para registrar sua atividade diretamente no WhatsApp oficial.</p>
+                </div>
+            </div>
+        </section>
+
+        <footer class="text-center py-10 border-t border-slate-100 text-slate-400 text-sm">
+            EEB Colombo Machado Salles • Projeto Didático Interativo <a href="aula16a.html"> ⚙</a>
+        </footer>
     </div>
+
+    <!-- Modal de Texto -->
+    <div id="modal-text" class="fixed inset-0 bg-black/50 hidden flex items-center justify-center p-4 z-50">
+        <div class="bg-white rounded-2xl p-6 max-w-2xl w-full max-h-[80vh] overflow-y-auto">
+            <h3 class="text-xl font-bold mb-4">Relatório Formatado</h3>
+            <pre id="text-output" class="bg-slate-50 p-4 rounded-lg text-sm whitespace-pre-wrap font-mono text-slate-700 mb-6"></pre>
+            <button onclick="document.getElementById('modal-text').classList.add('hidden')" class="w-full bg-slate-900 text-white p-3 rounded-lg font-bold">Fechar</button>
+        </div>
+    </div>
+
+    <script>
+        let radarChart;
+        const sliders = ['v-slider', 'i-slider', 's-slider', 'a-slider', 'f-slider'];
+        
+        function initChart() {
+            const ctx = document.getElementById('radarChart').getContext('2d');
+            radarChart = new Chart(ctx, {
+                type: 'radar',
+                data: {
+                    labels: ['Variedade', 'Identidade', 'Significado', 'Autonomia', 'Feedback'],
+                    datasets: [{
+                        label: 'Nível Dimensional',
+                        data: [30, 20, 40, 15, 25],
+                        backgroundColor: 'rgba(99, 102, 241, 0.2)',
+                        borderColor: '#6366f1',
+                        pointBackgroundColor: '#6366f1',
+                        borderWidth: 3
+                    }]
+                },
+                options: {
+                    maintainAspectRatio: false,
+                    scales: {
+                        r: {
+                            min: 0,
+                            max: 100,
+                            ticks: { display: false },
+                            grid: { color: '#e2e8f0' }
+                        }
+                    },
+                    plugins: { legend: { display: false } }
+                }
+            });
+
+            // Adicionar ouvintes para todos os sliders
+            sliders.forEach((id, index) => {
+                const slider = document.getElementById(id);
+                slider.addEventListener('input', () => {
+                    const val = slider.value;
+                    document.getElementById(id.replace('slider', 'val')).innerText = val;
+                    radarChart.data.datasets[0].data[index] = parseInt(val);
+                    radarChart.update();
+                    calculateMPS();
+                });
+            });
+        }
+
+        function calculateMPS() {
+            const v = parseInt(document.getElementById('v-slider').value);
+            const i = parseInt(document.getElementById('i-slider').value);
+            const s = parseInt(document.getElementById('s-slider').value);
+            const a = parseInt(document.getElementById('a-slider').value);
+            const f = parseInt(document.getElementById('f-slider').value);
+            
+            // Fórmula Simplificada do MPS: ((V+I+S)/3) * A * F (Escalonada)
+            const mps = Math.round(((v + i + s) / 3) * (a/10) * (f/10));
+            document.getElementById('score-total').innerText = mps.toLocaleString('pt-BR');
+        }
+
+        function generateData() {
+            const nome = document.getElementById('aluno-nome').value;
+            const turma = document.getElementById('aluno-turma').value;
+            const cargo = document.getElementById('d1-cargo').value;
+            const plano = document.getElementById('d2-plano').value;
+            const significado = document.getElementById('d3-significado').value;
+
+            if(!nome || !cargo) {
+                alert("Por favor, preencha ao menos seu nome e o cargo escolhido.");
+                return null;
+            }
+
+            return `*RELATÓRIO: DESAFIO JCM*\n\n` +
+                   `*ALUNO:* ${nome}\n` +
+                   `*TURMA:* ${turma}\n\n` +
+                   `*1. CARGO ANALISADO:* ${cargo}\n\n` +
+                   `*2. PLANO DE REDESENHO (Id/Aut):*\n${plano}\n\n` +
+                   `*3. SIGNIFICADO SOCIAL:*\n${significado}\n\n` +
+                   `*DIAGNÓSTICO DO SIMULADOR:*\n` +
+                   `- Variedade: ${document.getElementById('v-slider').value}%\n` +
+                   `- Identidade: ${document.getElementById('i-slider').value}%\n` +
+                   `- Significado: ${document.getElementById('s-slider').value}%\n` +
+                   `- Autonomia: ${document.getElementById('a-slider').value}%\n` +
+                   `- Feedback: ${document.getElementById('f-slider').value}%\n` +
+                   `*MPS TOTAL:* ${document.getElementById('score-total').innerText}`;
+        }
+
+        function exportToText() {
+            const text = generateData();
+            if(text) {
+                document.getElementById('text-output').innerText = text;
+                document.getElementById('modal-text').classList.remove('hidden');
+            }
+        }
+
+        function sendToWhatsapp() {
+            const text = generateData();
+            if(text) {
+                const encoded = encodeURIComponent(text);
+                window.open(`https://wa.me/5547984114380?text=${encoded}`, '_blank');
+            }
+        }
+
+        window.onload = () => {
+            initChart();
+            calculateMPS();
+        };
+    </script>
+
+    <!-- CONFIRMATION: NO SVG graphics used. NO Mermaid JS used. -->
+
 </body>
 </html>

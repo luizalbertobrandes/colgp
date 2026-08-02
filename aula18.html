@@ -1,63 +1,424 @@
 <!DOCTYPE html>
-<html lang="pt-BR">
+<html lang="pt-br">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Aguarde - Aula em Breve</title>
+    <title>Gestão de Pessoas - Modelagem de Cargos</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&display=swap');
+        
         body {
-            margin: 0;
-            padding: 0;
-            background-color: #f4f4f4; /* Cor de fundo suave */
-            font-family: Arial, sans-serif;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            height: 100vh;
+            font-family: 'Inter', sans-serif;
+            background-color: #fcfaf7;
+            color: #2d2d2d;
+            scroll-behavior: smooth;
         }
 
-        .container {
-            background-color: #fff;
-            border-radius: 8px;
-            box-shadow: 0 4px 8px rgba(0,0,0,0.1);
-            padding: 40px;
-            text-align: center;
+        .chart-container {
+            position: relative;
+            width: 100%;
+            max-width: 700px;
+            margin-left: auto;
+            margin-right: auto;
+            height: 350px;
+            max-height: 400px;
         }
 
-        .container img {
-            max-width: 100%;
-            height: auto;
-            border-radius: 8px; /* Mantém as bordas arredondadas da imagem */
-            margin-bottom: 20px;
+        .glass-card {
+            background: rgba(255, 255, 255, 0.8);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(229, 231, 235, 0.5);
+            transition: all 0.3s ease;
         }
 
-        .container h1 {
-            color: #333;
-            font-size: 24px;
-            margin-bottom: 30px;
+        .glass-card:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.05);
         }
 
-        .btn-voltar {
-            display: inline-block;
-            background-color: #007bff; /* Azul para o botão */
-            color: #fff;
-            padding: 12px 24px;
-            text-decoration: none;
-            border-radius: 5px;
-            font-weight: bold;
-            transition: background-color 0.3s ease;
+        .tab-active {
+            border-bottom: 3px solid #d4a373;
+            color: #d4a373;
         }
 
-        .btn-voltar:hover {
-            background-color: #0056b3; /* Cor mais escura no hover */
+        .custom-scrollbar::-webkit-scrollbar {
+            width: 6px;
+        }
+        .custom-scrollbar::-webkit-scrollbar-track {
+            background: #f1f1f1;
+        }
+        .custom-scrollbar::-webkit-scrollbar-thumb {
+            background: #d4a373;
+            border-radius: 10px;
         }
     </style>
 </head>
-<body>
-    <div class="container">
-        <img src="imagem1.png" width="320" height="240" alt="O professor em sala de aula">
-        <h1>Aguarde: em breve essa aula estará disponivel.</h1>
-        <a href="index.html" class="btn-voltar">Voltar</a>
-    </div>
+<body class="custom-scrollbar">
+
+    <!-- Chosen Palette: Harmonia Profissional (Fundo Creme #fcfaf7, Acento Amadeirado #d4a373, Texto Carvão #2d2d2d) -->
+    
+    <!-- Application Structure Plan: 
+        A aplicação foi desenhada como uma jornada de aprendizado em 5 atos. 
+        1. Overview Comparativo: Diferenciação imediata entre Descrição e Análise.
+        2. Mergulho na Descrição: Exploração das 4 perguntas fundamentais via cards interativos.
+        3. Dimensões da Análise: Visualização gráfica (Radar) das exigências do cargo.
+        4. Central de Métodos: Seletor comparativo para entender como coletar dados.
+        5. Ecossistema Organizacional: Mapa de aplicações práticas.
+        Este fluxo foi escolhido para que o usuário primeiro entenda o 'quê' (conceitos), depois o 'como' (métodos) e finalmente o 'para quê' (aplicações), garantindo uma retenção lógica superior ao texto linear.
+    -->
+
+    <nav class="sticky top-0 z-50 bg-white/90 border-b border-stone-200 py-4 px-6 mb-8">
+        <div class="max-w-7xl mx-auto flex flex-col md:flex-row justify-between items-center gap-4">
+            <div class="flex items-center gap-2">
+                <div class="w-8 h-8 bg-[#d4a373] rounded-lg flex items-center justify-center text-white font-bold text-xl">C</div>
+                <h1 class="text-xl font-bold tracking-tight">Gestão de Pessoas <span class="text-[#d4a373]">Chiavenato</span></h1>
+            </div>
+            <div class="flex gap-6 text-sm font-medium">
+                <a href="#conceitos" class="hover:text-[#d4a373] transition-colors">Conceitos</a>
+                <a href="#analise" class="hover:text-[#d4a373] transition-colors">Análise</a>
+                <a href="#metodos" class="hover:text-[#d4a373] transition-colors">Métodos</a>
+                <a href="#aplicacoes" class="hover:text-[#d4a373] transition-colors">Aplicações</a>
+		<a href="app_cargos.html">Prática</a>
+            </div>
+        </div>
+    </nav>
+
+    <main class="max-w-6xl mx-auto px-6 pb-20">
+        
+        <!-- Intro Section -->
+        <section class="mb-16 text-center">
+            <h2 class="text-4xl font-bold mb-4">Modelagem de Cargos</h2>
+            <p class="text-lg text-stone-600 max-w-3xl mx-auto">
+                Para Chiavenato, o cargo é a unidade básica da organização. Esta aplicação explora como mapear o que o cargo é (Descrição) e o que ele exige (Análise), fornecendo as ferramentas para uma gestão estratégica de talentos.
+            </p>
+        </section>
+
+        <!-- Section 1: Descrição vs Análise -->
+        <section id="conceitos" class="mb-20">
+            <div class="bg-stone-100 p-8 rounded-3xl mb-12">
+                <h3 class="text-2xl font-bold mb-4 flex items-center gap-2">
+                    <span>1.</span> Descrição vs. Análise de Cargos
+                </h3>
+                <p class="mb-8 text-stone-700 italic">
+                    Embora complementares, possuem focos distintos: um olha para dentro do cargo (conteúdo), o outro para fora (requisitos do ocupante).
+                </p>
+                
+                <div class="grid md:grid-cols-2 gap-8">
+                    <div class="glass-card p-6 rounded-2xl bg-white border-l-4 border-[#d4a373]">
+                        <h4 class="font-bold text-xl mb-3">Descrição de Cargos</h4>
+                        <p class="text-sm text-stone-600 mb-4">Mapeamento narrativo das tarefas e deveres. É impessoal e foca no <strong>cargo</strong>.</p>
+                        <ul class="text-sm space-y-2">
+                            <li class="flex items-center gap-2">✔ O que o cargo faz?</li>
+                            <li class="flex items-center gap-2">✔ Quando faz?</li>
+                            <li class="flex items-center gap-2">✔ Como faz?</li>
+                            <li class="flex items-center gap-2">✔ Por que faz?</li>
+                        </ul>
+                    </div>
+                    <div class="glass-card p-6 rounded-2xl bg-white border-l-4 border-stone-800">
+                        <h4 class="font-bold text-xl mb-3">Análise de Cargos</h4>
+                        <p class="text-sm text-stone-600 mb-4">Investigação dos requisitos extrínsecos e <strong>exigências</strong> impostas ao ocupante.</p>
+                        <ul class="text-sm space-y-2">
+                            <li class="flex items-center gap-2">✔ Requisitos Mentais</li>
+                            <li class="flex items-center gap-2">✔ Requisitos Físicos</li>
+                            <li class="flex items-center gap-2">✔ Responsabilidades</li>
+                            <li class="flex items-center gap-2">✔ Condições de Trabalho</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Interativo: As 4 Perguntas da Descrição -->
+            <div class="mb-12">
+                <h4 class="text-center font-semibold text-stone-500 uppercase tracking-widest text-xs mb-8">As Quatro Perguntas Fundamentais (Descrição)</h4>
+                <div class="grid grid-cols-2 lg:grid-cols-4 gap-4">
+                    <button onclick="updateDesc(0)" class="p-6 rounded-xl bg-white border border-stone-200 hover:bg-stone-50 transition-all text-center group">
+                        <span class="block text-2xl mb-2 group-hover:scale-110 transition-transform">📋</span>
+                        <span class="font-bold block">O que faz?</span>
+                    </button>
+                    <button onclick="updateDesc(1)" class="p-6 rounded-xl bg-white border border-stone-200 hover:bg-stone-50 transition-all text-center group">
+                        <span class="block text-2xl mb-2 group-hover:scale-110 transition-transform">📅</span>
+                        <span class="font-bold block">Quando faz?</span>
+                    </button>
+                    <button onclick="updateDesc(2)" class="p-6 rounded-xl bg-white border border-stone-200 hover:bg-stone-50 transition-all text-center group">
+                        <span class="block text-2xl mb-2 group-hover:scale-110 transition-transform">🛠</span>
+                        <span class="font-bold block">Como faz?</span>
+                    </button>
+                    <button onclick="updateDesc(3)" class="p-6 rounded-xl bg-white border border-stone-200 hover:bg-stone-50 transition-all text-center group">
+                        <span class="block text-2xl mb-2 group-hover:scale-110 transition-transform">🎯</span>
+                        <span class="font-bold block">Por que faz?</span>
+                    </button>
+                </div>
+                <div id="desc-box" class="mt-6 p-8 bg-white border border-stone-100 rounded-2xl text-center min-h-[150px] flex flex-col justify-center shadow-sm">
+                    <p id="desc-text" class="text-lg text-stone-600">Selecione uma pergunta para ver os detalhes da descrição de cargos.</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- Section 2: Fatores de Análise -->
+        <section id="analise" class="mb-20">
+            <h3 class="text-2xl font-bold mb-8 flex items-center gap-2">
+                <span>2.</span> Fatores de Análise de Cargos
+            </h3>
+            <p class="mb-10 text-stone-600">
+                A análise subdivide-se em quatro grandes áreas que determinam o perfil do ocupante. Veja abaixo a distribuição típica de exigências em diferentes níveis de cargo.
+            </p>
+
+            <div class="grid lg:grid-cols-2 gap-12 items-center">
+                <div class="chart-container">
+                    <canvas id="analysisChart"></canvas>
+                </div>
+                <div class="space-y-6">
+                    <div class="flex gap-4 p-4 rounded-xl hover:bg-white transition-colors cursor-pointer" onclick="highlightFactor(0)">
+                        <div class="w-10 h-10 rounded-full bg-blue-100 flex items-center justify-center flex-shrink-0 text-blue-600 font-bold">A</div>
+                        <div>
+                            <h5 class="font-bold">Requisitos Mentais</h5>
+                            <p class="text-xs text-stone-500">Instrução, experiência, aptidões e adaptação.</p>
+                        </div>
+                    </div>
+                    <div class="flex gap-4 p-4 rounded-xl hover:bg-white transition-colors cursor-pointer" onclick="highlightFactor(1)">
+                        <div class="w-10 h-10 rounded-full bg-orange-100 flex items-center justify-center flex-shrink-0 text-orange-600 font-bold">B</div>
+                        <div>
+                            <h5 class="font-bold">Requisitos Físicos</h5>
+                            <p class="text-xs text-stone-500">Esforço físico, concentração visual e constituição.</p>
+                        </div>
+                    </div>
+                    <div class="flex gap-4 p-4 rounded-xl hover:bg-white transition-colors cursor-pointer" onclick="highlightFactor(2)">
+                        <div class="w-10 h-10 rounded-full bg-green-100 flex items-center justify-center flex-shrink-0 text-green-600 font-bold">C</div>
+                        <div>
+                            <h5 class="font-bold">Responsabilidades Assumidas</h5>
+                            <p class="text-xs text-stone-500">Supervisão, materiais, valores e contatos.</p>
+                        </div>
+                    </div>
+                    <div class="flex gap-4 p-4 rounded-xl hover:bg-white transition-colors cursor-pointer" onclick="highlightFactor(3)">
+                        <div class="w-10 h-10 rounded-full bg-purple-100 flex items-center justify-center flex-shrink-0 text-purple-600 font-bold">D</div>
+                        <div>
+                            <h5 class="font-bold">Condições de Trabalho</h5>
+                            <p class="text-xs text-stone-500">Ambiente físico e riscos ocupacionais.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Section 3: Métodos de Coleta -->
+        <section id="metodos" class="mb-20">
+            <h3 class="text-2xl font-bold mb-8 flex items-center gap-2">
+                <span>3.</span> Métodos de Coleta de Dados
+            </h3>
+            
+            <div class="flex flex-wrap gap-2 mb-8 justify-center">
+                <button onclick="showMethod('entrevista')" id="btn-entrevista" class="px-6 py-2 rounded-full border border-stone-200 bg-white hover:border-[#d4a373] transition-all font-medium text-sm">Entrevista</button>
+                <button onclick="showMethod('questionario')" id="btn-questionario" class="px-6 py-2 rounded-full border border-stone-200 bg-white hover:border-[#d4a373] transition-all font-medium text-sm">Questionário</button>
+                <button onclick="showMethod('observacao')" id="btn-observacao" class="px-6 py-2 rounded-full border border-stone-200 bg-white hover:border-[#d4a373] transition-all font-medium text-sm">Observação Direta</button>
+            </div>
+
+            <div id="method-card" class="bg-white p-8 rounded-3xl border border-stone-100 shadow-sm transition-all duration-500">
+                <div class="grid md:grid-cols-2 gap-12">
+                    <div>
+                        <span id="method-tag" class="inline-block px-3 py-1 bg-stone-100 text-stone-500 rounded-lg text-xs font-bold uppercase mb-4 tracking-widest">Método</span>
+                        <h4 id="method-title" class="text-3xl font-bold mb-4">Escolha um Método</h4>
+                        <p id="method-desc" class="text-stone-600 mb-6">Selecione uma das opções acima para analisar as vantagens e desvantagens de cada abordagem de coleta de dados.</p>
+                    </div>
+                    <div class="space-y-6">
+                        <div class="p-4 bg-green-50 rounded-xl">
+                            <h5 class="text-green-800 font-bold text-sm mb-2 uppercase">Vantagens</h5>
+                            <p id="method-pros" class="text-green-700 text-sm">---</p>
+                        </div>
+                        <div class="p-4 bg-red-50 rounded-xl">
+                            <h5 class="text-red-800 font-bold text-sm mb-2 uppercase">Desvantagens</h5>
+                            <p id="method-cons" class="text-red-700 text-sm">---</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Section 4: Aplicações Práticas -->
+        <section id="aplicacoes" class="mb-20">
+            <h3 class="text-2xl font-bold mb-8 flex items-center gap-2">
+                <span>4.</span> O Valor Estratégico (Aplicações)
+            </h3>
+            <p class="mb-10 text-stone-600">A descrição e análise não são fins em si mesmas, mas o combustível para toda a Gestão de Pessoas.</p>
+            
+            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+                <div class="p-6 rounded-2xl bg-white border border-stone-100 hover:border-[#d4a373] transition-all">
+                    <div class="w-12 h-12 bg-[#d4a373]/10 text-[#d4a373] rounded-xl flex items-center justify-center mb-4 text-xl">👤</div>
+                    <h5 class="font-bold mb-2">Recrutamento e Seleção</h5>
+                    <p class="text-xs text-stone-500">Define o perfil ideal do candidato com base nos requisitos e competências esperadas.</p>
+                </div>
+                <div class="p-6 rounded-2xl bg-white border border-stone-100 hover:border-[#d4a373] transition-all">
+                    <div class="w-12 h-12 bg-[#d4a373]/10 text-[#d4a373] rounded-xl flex items-center justify-center mb-4 text-xl">🎓</div>
+                    <h5 class="font-bold mb-2">Treinamento (T&D)</h5>
+                    <p class="text-xs text-stone-500">Identifica lacunas (gaps) entre o que o cargo exige e o que o ocupante domina.</p>
+                </div>
+                <div class="p-6 rounded-2xl bg-white border border-stone-100 hover:border-[#d4a373] transition-all">
+                    <div class="w-12 h-12 bg-[#d4a373]/10 text-[#d4a373] rounded-xl flex items-center justify-center mb-4 text-xl">📊</div>
+                    <h5 class="font-bold mb-2">Avaliação de Desempenho</h5>
+                    <p class="text-xs text-stone-500">Estabelece critérios objetivos para medir se o trabalho atinge as metas propostas.</p>
+                </div>
+                <div class="p-6 rounded-2xl bg-white border border-stone-100 hover:border-[#d4a373] transition-all">
+                    <div class="w-12 h-12 bg-[#d4a373]/10 text-[#d4a373] rounded-xl flex items-center justify-center mb-4 text-xl">💰</div>
+                    <h5 class="font-bold mb-2">Administração Salarial</h5>
+                    <p class="text-xs text-stone-500">Base para a avaliação de cargos e estruturação de faixas salariais equitativas.</p>
+                </div>
+                <div class="p-6 rounded-2xl bg-white border border-stone-100 hover:border-[#d4a373] transition-all">
+                    <div class="w-12 h-12 bg-[#d4a373]/10 text-[#d4a373] rounded-xl flex items-center justify-center mb-4 text-xl">🛡</div>
+                    <h5 class="font-bold mb-2">Higiene e Segurança</h5>
+                    <p class="text-xs text-stone-500">Mapeia riscos ambientais, ergonômicos e necessidades de proteção.</p>
+                </div>
+                <div class="p-6 rounded-2xl bg-stone-900 text-white flex flex-col justify-center items-center text-center">
+                    <p class="text-sm italic opacity-80">"A descrição foca no cargo, a análise foca no perfil."</p>
+                    <span class="mt-4 font-bold text-[#d4a373]">CHIAVENATO</span>
+                </div>
+            </div>
+        </section>
+
+    </main>
+    <footer class="bg-stone-100 py-12 px-6 border-t border-stone-200">
+              <div style="text-align:center;">
+                <a href="app_cargos.html" style="font-size: 36px;">Prática--> 💻</a>
+                    
+            
+                <span class="px-3 py-1 bg-white rounded-md text-xs font-bold border border-stone-200 uppercase tracking-tighter">RH Estratégico</span>
+                <span class="px-3 py-1 bg-white rounded-md text-xs font-bold border border-stone-200 uppercase tracking-tighter">Modelagem 2024</span>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Visualization & Content Choices: 
+        - Radar Chart: Ideal para mostrar as "dimensões" da análise de cargos simultaneamente.
+        - Seletor de Métodos: Substitui tabelas longas por um card focado, reduzindo carga cognitiva.
+        - Botões de Descrição: Utiliza interação para revelar as 4 perguntas (O que, Quando, Como, Por que).
+        - Confirmado: Sem SVG/Mermaid. Chart.js com maintainAspectRatio: false e container responsivo.
+    -->
+
+    <script>
+        // Data Store
+        const descData = [
+            { title: "O que faz?", text: "Foca no conteúdo, tarefas e atribuições exercidas. Ex: Digitar relatórios, atender clientes, operar máquinas.", icon: "📋" },
+            { title: "Quando faz?", text: "Mapeia a periodicidade das tarefas: diária, semanal, mensal ou anual. Ex: Relatório mensal de vendas.", icon: "📅" },
+            { title: "Como faz?", text: "Refere-se aos métodos, ferramentas (softwares, máquinas) e processos utilizados. Ex: Usando ERP e planilhas.", icon: "🛠" },
+            { title: "Por que faz?", text: "Determina os objetivos e finalidade das atribuições no contexto global da empresa. Ex: Subsidiar a diretoria.", icon: "🎯" }
+        ];
+
+        const methodsData = {
+            entrevista: {
+                title: "Método da Entrevista",
+                tag: "Altamente Flexível",
+                desc: "Diálogo direto entre o analista e o ocupante ou supervisor. Ideal para cargos complexos.",
+                pros: "Flexibilidade, oportunidade de esclarecer dúvidas na hora e coleta dados de cargos heterogêneos.",
+                cons: "Pode gerar distorções se o ocupante exagerar responsabilidades. Consome muito tempo."
+            },
+            questionario: {
+                title: "Método do Questionário",
+                tag: "Rápido e Econômico",
+                desc: "Formulário padronizado preenchido pelo ocupante e revisado pelo gestor.",
+                pros: "Método mais rápido e barato para grandes grupos e unidades geograficamente distantes.",
+                cons: "Exige cuidado extremo na elaboração das perguntas. Ineficiente para cargos operacionais com dificuldades de redação."
+            },
+            observacao: {
+                title: "Observação Direta",
+                tag: "Objetividade Máxima",
+                desc: "O analista observa visualmente a execução das tarefas no local de trabalho.",
+                pros: "Garantia de dados reais e objetivos. Não interfere na produção (se discreto). Ideal para tarefas repetitivas.",
+                cons: "Inviável para cargos intelectuais. Pode causar alteração de comportamento no colaborador (Efeito Hawthorne)."
+            }
+        };
+
+        // UI Logic
+        function updateDesc(index) {
+            const box = document.getElementById('desc-box');
+            const text = document.getElementById('desc-text');
+            
+            box.style.opacity = '0';
+            setTimeout(() => {
+                text.innerHTML = `<span class="text-4xl block mb-2">${descData[index].icon}</span><strong>${descData[index].title}</strong><br>${descData[index].text}`;
+                box.style.opacity = '1';
+                box.style.borderColor = '#d4a373';
+            }, 200);
+        }
+
+        function showMethod(type) {
+            const data = methodsData[type];
+            document.getElementById('method-title').innerText = data.title;
+            document.getElementById('method-tag').innerText = data.tag;
+            document.getElementById('method-desc').innerText = data.desc;
+            document.getElementById('method-pros').innerText = data.pros;
+            document.getElementById('method-cons').innerText = data.cons;
+            
+            // Reset buttons and highlight active
+            ['entrevista', 'questionario', 'observacao'].forEach(t => {
+                const btn = document.getElementById(`btn-${t}`);
+                btn.classList.remove('bg-stone-900', 'text-white', 'border-stone-900');
+                btn.classList.add('bg-white', 'text-stone-700');
+            });
+            const activeBtn = document.getElementById(`btn-${type}`);
+            activeBtn.classList.add('bg-stone-900', 'text-white', 'border-stone-900');
+            activeBtn.classList.remove('bg-white', 'text-stone-700');
+        }
+
+        // Charts Initialization
+        let radarChart;
+        function initCharts() {
+            const ctx = document.getElementById('analysisChart').getContext('2d');
+            radarChart = new Chart(ctx, {
+                type: 'radar',
+                data: {
+                    labels: ['Requisitos Mentais', 'Requisitos Físicos', 'Responsabilidades', 'Condições Trabalho'],
+                    datasets: [{
+                        label: 'Cargo Estratégico (Ex: Gerente)',
+                        data: [90, 30, 95, 20],
+                        backgroundColor: 'rgba(212, 163, 115, 0.2)',
+                        borderColor: '#d4a373',
+                        pointBackgroundColor: '#d4a373',
+                        borderWidth: 2
+                    }, {
+                        label: 'Cargo Operacional (Ex: Operador)',
+                        data: [40, 85, 45, 80],
+                        backgroundColor: 'rgba(45, 45, 45, 0.1)',
+                        borderColor: '#2d2d2d',
+                        pointBackgroundColor: '#2d2d2d',
+                        borderWidth: 2
+                    }]
+                },
+                options: {
+                    maintainAspectRatio: false,
+                    responsive: true,
+                    scales: {
+                        r: {
+                            beginAtZero: true,
+                            max: 100,
+                            ticks: { display: false }
+                        }
+                    },
+                    plugins: {
+                        legend: { position: 'bottom' }
+                    }
+                }
+            });
+        }
+
+        function highlightFactor(index) {
+            // Simulated interaction: highlighting data points
+            radarChart.setActiveElements([{
+                datasetIndex: 0,
+                index: index,
+            }, {
+                datasetIndex: 1,
+                index: index,
+            }]);
+            radarChart.update();
+        }
+
+        // Initialize on load
+        window.onload = () => {
+            initCharts();
+            showMethod('entrevista');
+        };
+    </script>
+    
+    <!-- CONFIRMATION: NO SVG graphics used. NO Mermaid JS used. -->
 </body>
 </html>

@@ -1,0 +1,823 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Oficina Prática: Descrição e Análise de Cargos - Chiavenato Cap. 7</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap');
+        
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #f8fafc;
+            color: #1e293b;
+            scroll-behavior: smooth;
+        }
+
+        .chart-container {
+            position: relative;
+            width: 100%;
+            max-width: 500px;
+            margin-left: auto;
+            margin-right: auto;
+            height: 320px;
+        }
+
+        .step-card {
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        .step-card.active {
+            border-color: #0284c7;
+            box-shadow: 0 10px 25px -5px rgba(2, 132, 199, 0.15);
+        }
+
+        .custom-scrollbar::-webkit-scrollbar {
+            width: 6px;
+        }
+        .custom-scrollbar::-webkit-scrollbar-track {
+            background: #f1f5f9;
+        }
+        .custom-scrollbar::-webkit-scrollbar-thumb {
+            background: #0284c7;
+            border-radius: 10px;
+        }
+    </style>
+</head>
+<body class="custom-scrollbar bg-slate-50 min-h-screen flex flex-col">
+
+    <!-- Navigation Header -->
+    <nav class="sticky top-0 z-50 bg-white/95 backdrop-blur border-b border-slate-200 py-3.5 px-6 shadow-sm">
+        <div class="max-w-7xl mx-auto flex flex-col sm:flex-row justify-between items-center gap-3">
+            <div class="flex items-center gap-3">
+                <div class="w-10 h-10 bg-sky-600 rounded-xl flex items-center justify-center text-white font-bold text-xl shadow-md">
+                    C7
+                </div>
+                <div>
+                    <h1 class="text-lg font-bold text-slate-800 tracking-tight leading-tight">Gestão de Pessoas - Chiavenato</h1>
+                    <p class="text-xs text-sky-600 font-semibold">Oficina Prática: Cap. 7 (Tópico 3) — Descrição, Análise e Coleta de Dados</p>
+                </div>
+            </div>
+            <div class="flex items-center gap-3">
+                <span class="text-xs bg-sky-50 text-sky-700 font-medium px-3 py-1 rounded-full border border-sky-200 hidden md:inline-block">
+                    🎓 Exercício Acadêmico
+                </span>
+                <a href="https://docs.google.com/forms/d/e/1FAIpQLSfHnjJ65uIZFH3-dtIS5jDgSGCWI9wLP3fxbdKhMP6G5P5yjw/viewform?usp=header" target="_blank" rel="noopener noreferrer" class="text-xs bg-emerald-600 hover:bg-emerald-700 text-white font-semibold px-4 py-2 rounded-lg transition-colors flex items-center gap-1.5 shadow-sm">
+                    <span>📋 Formulário de Entrega</span>
+                    <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"></path></svg>
+                </a>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Main Content Container -->
+    <main class="max-w-6xl mx-auto px-4 py-8 flex-grow w-full">
+        
+        <!-- Banner Intro -->
+        <div class="bg-gradient-to-r from-slate-900 via-sky-950 to-slate-900 text-white p-6 sm:p-8 rounded-2xl shadow-xl mb-8">
+            <div class="max-w-3xl">
+                <span class="inline-block px-3 py-1 bg-sky-500/20 text-sky-300 text-xs font-semibold rounded-full uppercase tracking-wider mb-3 border border-sky-400/30">
+                    Laboratório de Mapeamento de Cargos
+                </span>
+                <h2 class="text-2xl sm:text-3xl font-bold text-white mb-2">Construção Prática de Descrição e Análise de Cargos</h2>
+                <p class="text-slate-300 text-sm sm:text-base leading-relaxed mb-4">
+                    Aplique os conceitos do Capítulo 7, Tópico 3 de Idalberto Chiavenato. Escolha ou crie um cargo, elabore sua <strong>Descrição (intrínseca)</strong>, estruture sua <strong>Análise (extrínseca)</strong>, selecione os <strong>Métodos de Coleta</strong> e responda às perguntas de fixação. Ao final, exporte a resposta formatada para envio no formulário oficial.
+                </p>
+                <div class="flex flex-wrap gap-4 text-xs text-sky-200">
+                    <span class="flex items-center gap-1">📌 1. Mapear Cargo</span>
+                    <span class="flex items-center gap-1">📌 2. Descrição (4 Perguntas)</span>
+                    <span class="flex items-center gap-1">📌 3. Análise (4 Fatores)</span>
+                    <span class="flex items-center gap-1">📌 4. Métodos & Fixação</span>
+                    <span class="flex items-center gap-1">📌 5. Exportar Texto</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- Progress Tracker Bar -->
+        <div class="bg-white p-4 rounded-xl border border-slate-200 shadow-sm mb-8">
+            <div class="flex flex-wrap justify-between items-center gap-2 mb-2">
+                <span class="text-xs font-bold text-slate-500 uppercase tracking-wider">Progresso da Atividade Prática</span>
+                <span id="progress-percentage" class="text-xs font-bold text-sky-600">0% Concluído</span>
+            </div>
+            <div class="w-full bg-slate-100 rounded-full h-2.5 overflow-hidden">
+                <div id="progress-bar" class="bg-sky-600 h-2.5 rounded-full transition-all duration-500" style="width: 20%;"></div>
+            </div>
+            <!-- Step Indicators -->
+            <div class="grid grid-cols-5 gap-1 text-center text-[10px] sm:text-xs font-medium text-slate-500 mt-3">
+                <button onclick="goToStep(1)" id="step-tab-1" class="py-1 px-2 rounded font-semibold text-sky-700 bg-sky-50">1. Cenário</button>
+                <button onclick="goToStep(2)" id="step-tab-2" class="py-1 px-2 rounded">2. Descrição</button>
+                <button onclick="goToStep(3)" id="step-tab-3" class="py-1 px-2 rounded">3. Análise</button>
+                <button onclick="goToStep(4)" id="step-tab-4" class="py-1 px-2 rounded">4. Métodos & Fixação</button>
+                <button onclick="goToStep(5)" id="step-tab-5" class="py-1 px-2 rounded">5. Exportar</button>
+            </div>
+        </div>
+
+        <!-- STEP 1: Escolha do Cargo e Contexto -->
+        <div id="step-1" class="step-content space-y-6">
+            <div class="bg-white p-6 sm:p-8 rounded-2xl border border-slate-200 shadow-sm">
+                <div class="flex items-center gap-3 mb-4">
+                    <span class="w-8 h-8 rounded-full bg-sky-100 text-sky-700 font-bold flex items-center justify-center text-sm">1</span>
+                    <h3 class="text-xl font-bold text-slate-800">Passo 1: Seleção ou Criação do Cargo para Estudo de Caso</h3>
+                </div>
+                <p class="text-sm text-slate-600 mb-6">
+                    Para iniciar o mapeamento conforme a teoria de Chiavenato, escolha um dos cargos predefinidos ou personalize um cargo da sua área de atuação/interesse.
+                </p>
+
+                <!-- Preset Role Selection -->
+                <div class="grid sm:grid-cols-2 lg:grid-cols-4 gap-4 mb-6">
+                    <div onclick="selectPresetRole('analista')" id="preset-analista" class="preset-card cursor-pointer p-4 rounded-xl border-2 border-slate-200 hover:border-sky-500 transition-all bg-slate-50">
+                        <span class="text-2xl block mb-1">💻</span>
+                        <h4 class="font-bold text-slate-800 text-sm">Analista de Sistemas Pleno</h4>
+                        <p class="text-xs text-slate-500 mt-1">Cargo de natureza técnica/intelectual e desenvolvimento de softwares.</p>
+                    </div>
+                    <div onclick="selectPresetRole('gerente')" id="preset-gerente" class="preset-card cursor-pointer p-4 rounded-xl border-2 border-slate-200 hover:border-sky-500 transition-all bg-slate-50">
+                        <span class="text-2xl block mb-1">👔</span>
+                        <h4 class="font-bold text-slate-800 text-sm">Gerente de Vendas Regional</h4>
+                        <p class="text-xs text-slate-500 mt-1">Cargo estratégico com liderança de equipe e metas salariais.</p>
+                    </div>
+                    <div onclick="selectPresetRole('operador')" id="preset-operador" class="preset-card cursor-pointer p-4 rounded-xl border-2 border-slate-200 hover:border-sky-500 transition-all bg-slate-50">
+                        <span class="text-2xl block mb-1">🏭</span>
+                        <h4 class="font-bold text-slate-800 text-sm">Operador de Logística I</h4>
+                        <p class="text-xs text-slate-500 mt-1">Cargo operacional com requisitos físicos e rotinas padronizadas.</p>
+                    </div>
+                    <div onclick="selectPresetRole('custom')" id="preset-custom" class="preset-card cursor-pointer p-4 rounded-xl border-2 border-slate-200 hover:border-sky-500 transition-all bg-slate-50">
+                        <span class="text-2xl block mb-1">✏️</span>
+                        <h4 class="font-bold text-slate-800 text-sm">Cargo Personalizado</h4>
+                        <p class="text-xs text-slate-500 mt-1">Defina um cargo específico da sua empresa ou área de estudo.</p>
+                    </div>
+                </div>
+
+                <!-- Role Input Fields -->
+                <div class="grid md:grid-cols-2 gap-4 pt-4 border-t border-slate-100">
+                    <div>
+                        <label class="block text-xs font-bold text-slate-700 uppercase mb-1">Nome do Aluno(a):</label>
+                        <input type="text" id="student-name" placeholder="Digite seu nome completo" class="w-full p-3 rounded-lg border border-slate-300 focus:ring-2 focus:ring-sky-500 focus:outline-none text-sm">
+                    </div>
+                    <div>
+                        <label class="block text-xs font-bold text-slate-700 uppercase mb-1">Título do Cargo Selecionado:</label>
+                        <input type="text" id="job-title" placeholder="Ex: Analista de Recursos Humanos" class="w-full p-3 rounded-lg border border-slate-300 focus:ring-2 focus:ring-sky-500 focus:outline-none text-sm font-semibold text-slate-800">
+                    </div>
+                    <div class="md:col-span-2">
+                        <label class="block text-xs font-bold text-slate-700 uppercase mb-1">Departamento / Área da Empresa:</label>
+                        <input type="text" id="job-department" placeholder="Ex: Departamento de Tecnologia / Operações" class="w-full p-3 rounded-lg border border-slate-300 focus:ring-2 focus:ring-sky-500 focus:outline-none text-sm">
+                    </div>
+                </div>
+
+                <div class="mt-6 flex justify-end">
+                    <button onclick="goToStep(2)" class="px-6 py-2.5 bg-sky-600 hover:bg-sky-700 text-white font-semibold rounded-lg transition-colors text-sm flex items-center gap-2">
+                        <span>Avançar para Descrição de Cargos</span>
+                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3"></path></svg>
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- STEP 2: Descrição de Cargos (4 Perguntas da Teoria de Chiavenato) -->
+        <div id="step-2" class="step-content hidden space-y-6">
+            <div class="bg-white p-6 sm:p-8 rounded-2xl border border-slate-200 shadow-sm">
+                <div class="flex items-center gap-3 mb-2">
+                    <span class="w-8 h-8 rounded-full bg-sky-100 text-sky-700 font-bold flex items-center justify-center text-sm">2</span>
+                    <h3 class="text-xl font-bold text-slate-800">Passo 2: Elaboração da Descrição de Cargos (Conteúdo Intrínseco)</h3>
+                </div>
+                <div class="p-4 bg-amber-50 border-l-4 border-amber-400 rounded-r-lg mb-6 text-xs text-amber-900 leading-relaxed">
+                    <strong>💡 Conceito de Chiavenato:</strong> A Descrição de Cargo foca no <em>cargo em si</em> (impessoal). Mapeia as tarefas e atribuições respondendo às 4 perguntas fundamentais: <strong>O que faz, Quando faz, Como faz e Por que faz</strong>.
+                </div>
+
+                <div class="space-y-6">
+                    <!-- Q1: O que faz? -->
+                    <div class="bg-slate-50 p-4 rounded-xl border border-slate-200">
+                        <label class="block text-sm font-bold text-slate-800 mb-1 flex items-center gap-2">
+                            <span>📋 1. O que faz? (Tarefas e Atribuições)</span>
+                        </label>
+                        <p class="text-xs text-slate-500 mb-2">Descreva detalhadamente o conjunto de tarefas e ações executadas pelo ocupante.</p>
+                        <textarea id="desc-what" rows="3" class="w-full p-3 rounded-lg border border-slate-300 focus:ring-2 focus:ring-sky-500 focus:outline-none text-sm" placeholder="Ex: Desenvolve sistemas web, codifica APIs REST, documenta arquitetura de dados e realiza testes unitários..."></textarea>
+                    </div>
+
+                    <!-- Q2: Quando faz? -->
+                    <div class="bg-slate-50 p-4 rounded-xl border border-slate-200">
+                        <label class="block text-sm font-bold text-slate-800 mb-1 flex items-center gap-2">
+                            <span>📅 2. Quando faz? (Periodicidade das Atividades)</span>
+                        </label>
+                        <p class="text-xs text-slate-500 mb-2">Mapeie a frequência das tarefas (diária, semanal, mensal ou esporádica).</p>
+                        <textarea id="desc-when" rows="3" class="w-full p-3 rounded-lg border border-slate-300 focus:ring-2 focus:ring-sky-500 focus:outline-none text-sm" placeholder="Ex: Diariamente realiza reuniões de alinhamento e programação; semanalmente atualiza relatórios de sprints; mensalmente realiza deploy em homologação..."></textarea>
+                    </div>
+
+                    <!-- Q3: Como faz? -->
+                    <div class="bg-slate-50 p-4 rounded-xl border border-slate-200">
+                        <label class="block text-sm font-bold text-slate-800 mb-1 flex items-center gap-2">
+                            <span>🛠 3. Como faz? (Métodos, Ferramentas e Recursos)</span>
+                        </label>
+                        <p class="text-xs text-slate-500 mb-2">Especifique as ferramentas, softwares, máquinas, metodologias ou procedimentos aplicados.</p>
+                        <textarea id="desc-how" rows="3" class="w-full p-3 rounded-lg border border-slate-300 focus:ring-2 focus:ring-sky-500 focus:outline-none text-sm" placeholder="Ex: Utilizando linguagens JavaScript/Python, IDE VSCode, repositório GitHub, metodologia ágil Scrum e comunicação via Slack..."></textarea>
+                    </div>
+
+                    <!-- Q4: Por que faz? -->
+                    <div class="bg-slate-50 p-4 rounded-xl border border-slate-200">
+                        <label class="block text-sm font-bold text-slate-800 mb-1 flex items-center gap-2">
+                            <span>🎯 4. Por que faz? (Objetivos e Finalidade)</span>
+                        </label>
+                        <p class="text-xs text-slate-500 mb-2">Explique a contribuição e objetivo final das atribuições para a organização.</p>
+                        <textarea id="desc-why" rows="3" class="w-full p-3 rounded-lg border border-slate-300 focus:ring-2 focus:ring-sky-500 focus:outline-none text-sm" placeholder="Ex: Para garantir a eficiência, inovação e alta disponibilidade das soluções digitais oferecidas aos clientes da empresa..."></textarea>
+                    </div>
+                </div>
+
+                <div class="mt-8 flex justify-between gap-4">
+                    <button onclick="goToStep(1)" class="px-5 py-2.5 border border-slate-300 text-slate-700 font-medium rounded-lg hover:bg-slate-50 text-sm">
+                        Voltar
+                    </button>
+                    <button onclick="goToStep(3)" class="px-6 py-2.5 bg-sky-600 hover:bg-sky-700 text-white font-semibold rounded-lg transition-colors text-sm flex items-center gap-2">
+                        <span>Avançar para Análise de Cargos</span>
+                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3"></path></svg>
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- STEP 3: Análise de Cargos (4 Fatores Extrínsecos) -->
+        <div id="step-3" class="step-content hidden space-y-6">
+            <div class="bg-white p-6 sm:p-8 rounded-2xl border border-slate-200 shadow-sm">
+                <div class="flex items-center gap-3 mb-2">
+                    <span class="w-8 h-8 rounded-full bg-sky-100 text-sky-700 font-bold flex items-center justify-center text-sm">3</span>
+                    <h3 class="text-xl font-bold text-slate-800">Passo 3: Matriz de Análise de Cargos (Fatores Extrínsecos)</h3>
+                </div>
+                <div class="p-4 bg-sky-50 border-l-4 border-sky-500 rounded-r-lg mb-6 text-xs text-sky-900 leading-relaxed">
+                    <strong>💡 Conceito de Chiavenato:</strong> A Análise de Cargos avalia o que o cargo <em>exige do seu ocupante</em>. Agrupa-se em 4 fatores fundamentais: <strong>Requisitos Mentais, Requisitos Físicos, Responsabilidades Assumidas e Condições de Trabalho</strong>.
+                </div>
+
+                <div class="grid lg:grid-cols-12 gap-8 items-start">
+                    <!-- Form Sliders and Texts -->
+                    <div class="lg:col-span-7 space-y-6">
+                        
+                        <!-- Factor A -->
+                        <div class="bg-slate-50 p-4 rounded-xl border border-slate-200">
+                            <div class="flex justify-between items-center mb-2">
+                                <label class="text-sm font-bold text-slate-800">A. Requisitos Mentais</label>
+                                <span id="val-mentais" class="text-xs font-bold text-sky-600 bg-sky-100 px-2 py-0.5 rounded">75 / 100</span>
+                            </div>
+                            <input type="range" id="slider-mentais" min="10" max="100" value="75" oninput="updateChartFromSliders()" class="w-full h-2 bg-slate-200 rounded-lg appearance-none cursor-pointer accent-sky-600 mb-3">
+                            <input type="text" id="text-mentais" class="w-full p-2.5 rounded-lg border border-slate-300 text-xs text-slate-700" placeholder="Especifique: Escolaridade exigida, experiência prévia, raciocínio lógico, idiomas...">
+                        </div>
+
+                        <!-- Factor B -->
+                        <div class="bg-slate-50 p-4 rounded-xl border border-slate-200">
+                            <div class="flex justify-between items-center mb-2">
+                                <label class="text-sm font-bold text-slate-800">B. Requisitos Físicos</label>
+                                <span id="val-fisicos" class="text-xs font-bold text-amber-600 bg-amber-100 px-2 py-0.5 rounded">30 / 100</span>
+                            </div>
+                            <input type="range" id="slider-fisicos" min="10" max="100" value="30" oninput="updateChartFromSliders()" class="w-full h-2 bg-slate-200 rounded-lg appearance-none cursor-pointer accent-amber-600 mb-3">
+                            <input type="text" id="text-fisicos" class="w-full p-2.5 rounded-lg border border-slate-300 text-xs text-slate-700" placeholder="Especifique: Esforço físico, postura, concentração visual contínua, destreza manual...">
+                        </div>
+
+                        <!-- Factor C -->
+                        <div class="bg-slate-50 p-4 rounded-xl border border-slate-200">
+                            <div class="flex justify-between items-center mb-2">
+                                <label class="text-sm font-bold text-slate-800">C. Responsabilidades Assumidas</label>
+                                <span id="val-resp" class="text-xs font-bold text-emerald-600 bg-emerald-100 px-2 py-0.5 rounded">80 / 100</span>
+                            </div>
+                            <input type="range" id="slider-resp" min="10" max="100" value="80" oninput="updateChartFromSliders()" class="w-full h-2 bg-slate-200 rounded-lg appearance-none cursor-pointer accent-emerald-600 mb-3">
+                            <input type="text" id="text-resp" class="w-full p-2.5 rounded-lg border border-slate-300 text-xs text-slate-700" placeholder="Especifique: Supervisão de pessoal, guarda de equipamentos/valores, sigilo, contatos...">
+                        </div>
+
+                        <!-- Factor D -->
+                        <div class="bg-slate-50 p-4 rounded-xl border border-slate-200">
+                            <div class="flex justify-between items-center mb-2">
+                                <label class="text-sm font-bold text-slate-800">D. Condições de Trabalho</label>
+                                <span id="val-condic" class="text-xs font-bold text-purple-600 bg-purple-100 px-2 py-0.5 rounded">25 / 100</span>
+                            </div>
+                            <input type="range" id="slider-condic" min="10" max="100" value="25" oninput="updateChartFromSliders()" class="w-full h-2 bg-slate-200 rounded-lg appearance-none cursor-pointer accent-purple-600 mb-3">
+                            <input type="text" id="text-condic" class="w-full p-2.5 rounded-lg border border-slate-300 text-xs text-slate-700" placeholder="Especifique: Ambiente de escritório/campo, ruídos, riscos de acidentes, ergonomia...">
+                        </div>
+
+                    </div>
+
+                    <!-- Live Radar Chart Visualization -->
+                    <div class="lg:col-span-5 bg-slate-900 text-white p-6 rounded-2xl shadow-lg flex flex-col justify-between">
+                        <div>
+                            <h4 class="text-sm font-bold text-sky-400 uppercase tracking-wider mb-1">Perfil Dimensional do Cargo</h4>
+                            <p class="text-xs text-slate-400 mb-4">Gráfico de Radar em tempo real dos 4 fatores de análise de Chiavenato.</p>
+                            <div class="chart-container">
+                                <canvas id="radarChart"></canvas>
+                            </div>
+                        </div>
+                        <p class="text-[11px] text-slate-400 italic text-center mt-4 border-t border-slate-800 pt-3">
+                            * Cargos estratégicos tendem a pontuar alto em Mentais/Responsabilidades. Cargos operacionais costumam exigir mais Físicos/Condições.
+                        </p>
+                    </div>
+                </div>
+
+                <div class="mt-8 flex justify-between gap-4">
+                    <button onclick="goToStep(2)" class="px-5 py-2.5 border border-slate-300 text-slate-700 font-medium rounded-lg hover:bg-slate-50 text-sm">
+                        Voltar
+                    </button>
+                    <button onclick="goToStep(4)" class="px-6 py-2.5 bg-sky-600 hover:bg-sky-700 text-white font-semibold rounded-lg transition-colors text-sm flex items-center gap-2">
+                        <span>Avançar para Métodos & Fixação</span>
+                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3"></path></svg>
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- STEP 4: Métodos de Coleta de Dados & Perguntas de Fixação -->
+        <div id="step-4" class="step-content hidden space-y-6">
+            <div class="bg-white p-6 sm:p-8 rounded-2xl border border-slate-200 shadow-sm">
+                <div class="flex items-center gap-3 mb-2">
+                    <span class="w-8 h-8 rounded-full bg-sky-100 text-sky-700 font-bold flex items-center justify-center text-sm">4</span>
+                    <h3 class="text-xl font-bold text-slate-800">Passo 4: Métodos de Coleta de Dados e Questões de Fixação</h3>
+                </div>
+                <p class="text-sm text-slate-600 mb-6">
+                    Mapeie como as informações seriam coletadas para o cargo estudado e responda às questões teórico-práticas.
+                </p>
+
+                <!-- Method Selection -->
+                <div class="mb-8">
+                    <h4 class="text-sm font-bold text-slate-800 mb-3">1. Escolha do Método de Coleta de Dados mais Adequado:</h4>
+                    <div class="grid sm:grid-cols-3 gap-4 mb-4">
+                        <label class="p-4 border rounded-xl cursor-pointer hover:bg-slate-50 block space-y-1">
+                            <input type="radio" name="method-choice" value="Entrevista" class="accent-sky-600" checked onclick="updateMethodJustification()">
+                            <span class="font-bold text-slate-800 text-sm block">Entrevista Direta</span>
+                            <span class="text-xs text-slate-500 block">Diálogo estruturado com ocupante/supervisor. Ideal para cargos complexos.</span>
+                        </label>
+                        <label class="p-4 border rounded-xl cursor-pointer hover:bg-slate-50 block space-y-1">
+                            <input type="radio" name="method-choice" value="Questionário" class="accent-sky-600" onclick="updateMethodJustification()">
+                            <span class="font-bold text-slate-800 text-sm block">Questionário Padronizado</span>
+                            <span class="text-xs text-slate-500 block">Formulário respondido pelo ocupante. Rápido e econômico para grande escala.</span>
+                        </label>
+                        <label class="p-4 border rounded-xl cursor-pointer hover:bg-slate-50 block space-y-1">
+                            <input type="radio" name="method-choice" value="Observação Direta" class="accent-sky-600" onclick="updateMethodJustification()">
+                            <span class="font-bold text-slate-800 text-sm block">Observação Direta</span>
+                            <span class="text-xs text-slate-500 block">Analista observa fisicamente o trabalho. Excelente para tarefas manuais/repetitivas.</span>
+                        </label>
+                    </div>
+
+                    <label class="block text-xs font-bold text-slate-700 uppercase mb-1">Justificativa da Escolha do Método para este Cargo:</label>
+                    <textarea id="method-justification" rows="3" class="w-full p-3 rounded-lg border border-slate-300 focus:ring-2 focus:ring-sky-500 focus:outline-none text-sm" placeholder="Justifique por que este método é o mais adequado para mapear este cargo específico..."></textarea>
+                </div>
+
+                <!-- Fixation Questions -->
+                <div class="space-y-6 pt-6 border-t border-slate-200">
+                    <h4 class="text-sm font-bold text-slate-800">2. Questões Teóricas de Autoavaliação e Fixação (Chiavenato Cap. 7):</h4>
+
+                    <div>
+                        <label class="block text-xs font-bold text-slate-700 mb-1">Q1: Qual a diferença fundamental entre Descrição de Cargo e Análise de Cargo?</label>
+                        <textarea id="quiz-q1" rows="3" class="w-full p-3 rounded-lg border border-slate-300 focus:ring-2 focus:ring-sky-500 focus:outline-none text-sm" placeholder="Explique com suas palavras a diferença do foco intrínseco x extrínseco..."></textarea>
+                    </div>
+
+                    <div>
+                        <label class="block text-xs font-bold text-slate-700 mb-1">Q2: Por que o método da Observação Direta costuma ser inadequado para cargos predominantemente intelectuais (ex: Engenheiro de Software)?</label>
+                        <textarea id="quiz-q2" rows="3" class="w-full p-3 rounded-lg border border-slate-300 focus:ring-2 focus:ring-sky-500 focus:outline-none text-sm" placeholder="Responda considerando a visibilidade do processo de raciocínio e o Efeito Hawthorne..."></textarea>
+                    </div>
+
+                    <div>
+                        <label class="block text-xs font-bold text-slate-700 mb-1">Q3: De que maneira a Descrição e Análise de Cargos servem de insumo para o Recrutamento, Seleção e Avaliação de Desempenho?</label>
+                        <textarea id="quiz-q3" rows="3" class="w-full p-3 rounded-lg border border-slate-300 focus:ring-2 focus:ring-sky-500 focus:outline-none text-sm" placeholder="Relacione os usos do mapeamento com outros subsistemas de RH..."></textarea>
+                    </div>
+                </div>
+
+                <div class="mt-8 flex justify-between gap-4">
+                    <button onclick="goToStep(3)" class="px-5 py-2.5 border border-slate-300 text-slate-700 font-medium rounded-lg hover:bg-slate-50 text-sm">
+                        Voltar
+                    </button>
+                    <button onclick="generateReportAndGoToStep5()" class="px-6 py-2.5 bg-emerald-600 hover:bg-emerald-700 text-white font-semibold rounded-lg transition-colors text-sm flex items-center gap-2">
+                        <span>Gerar Relatório & Exportar</span>
+                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- STEP 5: Visualização do Relatório Formatado e Exportação para Google Form -->
+        <div id="step-5" class="step-content hidden space-y-6">
+            <div class="bg-white p-6 sm:p-8 rounded-2xl border border-slate-200 shadow-sm">
+                <div class="flex items-center justify-between mb-4">
+                    <div class="flex items-center gap-3">
+                        <span class="w-8 h-8 rounded-full bg-emerald-100 text-emerald-700 font-bold flex items-center justify-center text-sm">5</span>
+                        <h3 class="text-xl font-bold text-slate-800">Passo 5: Resposta Formatada para Envio no Formulário</h3>
+                    </div>
+                    <span class="text-xs bg-emerald-100 text-emerald-800 font-bold px-3 py-1 rounded-full">Relatório Pronto</span>
+                </div>
+
+                <!-- Guidance Box for Google Form Submission -->
+                <div class="p-4 bg-emerald-50 border border-emerald-200 rounded-xl mb-6">
+                    <h4 class="font-bold text-emerald-900 text-sm mb-1 flex items-center gap-2">
+                        <span>🚀 Como enviar sua resposta para o professor:</span>
+                    </h4>
+                    <ol class="text-xs text-emerald-800 space-y-1 list-decimal list-inside">
+                        <li>Clique no botão <strong>"Copiar Resposta Formatada"</strong> abaixo.</li>
+                        <li>Clique no botão <strong>"Abrir Formulário no Google Forms"</strong>.</li>
+                        <li>Cole o texto copiado no campo de resposta do formulário e envie.</li>
+                    </ol>
+                </div>
+
+                <!-- Action Toolbar -->
+                <div class="flex flex-wrap gap-3 mb-4">
+                    <button onclick="copyFormattedText()" class="px-5 py-2.5 bg-emerald-600 hover:bg-emerald-700 text-white font-semibold rounded-lg text-sm transition-colors flex items-center gap-2 shadow-sm">
+                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 5H6a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2v-1M8 5a2 2 0 002 2h2a2 2 0 002-2M8 5a2 2 0 012-2h2a2 2 0 012 2m0 0h2a2 2 0 012 2v3m2 4H10m0 0l3-3m-3 3l3 3"></path></svg>
+                        <span>Copiar Resposta Formatada</span>
+                    </button>
+                    <a href="https://docs.google.com/forms/d/e/1FAIpQLSfHnjJ65uIZFH3-dtIS5jDgSGCWI9wLP3fxbdKhMP6G5P5yjw/viewform?usp=header" target="_blank" rel="noopener noreferrer" class="px-5 py-2.5 bg-sky-600 hover:bg-sky-700 text-white font-semibold rounded-lg text-sm transition-colors flex items-center gap-2 shadow-sm">
+                        <span>Abrir Formulário no Google Forms</span>
+                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"></path></svg>
+                    </a>
+                    <button onclick="downloadTextFile()" class="px-4 py-2.5 border border-slate-300 text-slate-700 font-medium rounded-lg text-sm hover:bg-slate-50 flex items-center gap-2">
+                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4"></path></svg>
+                        <span>Baixar .TXT</span>
+                    </button>
+                </div>
+
+                <!-- Toast Notification -->
+                <div id="copy-toast" class="hidden p-3 bg-slate-900 text-white text-xs rounded-lg font-medium mb-4 flex items-center justify-between">
+                    <span>✅ Resposta formatada copiada para a área de transferência!</span>
+                    <span class="text-slate-400">Pronto para colar no Google Form</span>
+                </div>
+
+                <!-- Formatted Textarea Output -->
+                <div>
+                    <label class="block text-xs font-bold text-slate-700 uppercase mb-2">Texto Completo Formatado (Saída):</label>
+                    <textarea id="final-report-text" rows="18" readonly class="w-full p-4 font-mono text-xs text-slate-800 bg-slate-50 border border-slate-300 rounded-xl focus:outline-none leading-relaxed custom-scrollbar"></textarea>
+                </div>
+
+                <div class="mt-8 flex justify-between gap-4">
+                    <button onclick="goToStep(4)" class="px-5 py-2.5 border border-slate-300 text-slate-700 font-medium rounded-lg hover:bg-slate-50 text-sm">
+                        Voltar e Editar Respostas
+                    </button>
+                </div>
+            </div>
+        </div>
+
+    </main>
+
+    <!-- Footer -->
+    <footer class="bg-white border-t border-slate-200 py-6 px-6 mt-12">
+        <div class="max-w-6xl mx-auto flex flex-col sm:flex-row justify-between items-center gap-4 text-xs text-slate-500">
+            <div>
+                Atividade baseada na obra <strong class="text-slate-700">"Gestão de Pessoas" (Idalberto Chiavenato)</strong> — Capítulo 7.
+            </div>
+            <div class="flex items-center gap-4">
+                <span>Modo de Aprendizagem Prática</span>
+                <span>•</span>
+                <a href="https://docs.google.com/forms/d/e/1FAIpQLSfHnjJ65uIZFH3-dtIS5jDgSGCWI9wLP3fxbdKhMP6G5P5yjw/viewform?usp=header" target="_blank" class="text-sky-600 hover:underline font-semibold">Formulário Google</a>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        // Preset Data Store
+        const presetRoles = {
+            analista: {
+                title: "Analista de Sistemas Pleno",
+                dept: "Tecnologia da Informação & Engenharia de Software",
+                what: "Desenvolver, testar e manter sistemas e aplicações web/mobile. Codificar APIs RESTful, revisar código de terceiros, otimizar consultas em banco de dados e documentar especificações técnicas.",
+                when: "Diariamente realiza desenvolvimento e reuniões de Daily Scrum; semanalmente efetua code reviews e entrega de sprints; mensalmente realiza deploy em ambiente de produção.",
+                how: "Utilizando linguagens de programação (JavaScript/TypeScript, Python), frameworks moderno, banco de dados PostgreSQL/MongoDB, Git/GitHub, Docker e ambiente Cloud.",
+                why: "Garantir a contínua inovação tecnológica, estabilidade operacional e alta performance dos sistemas para atender aos objetivos estratégicos dos negócios da empresa.",
+                mentais: 85,
+                mentaisText: "Ensino Superior Completo em Ciência da Computação/Análise de Sistemas. Mínimo de 3 anos de experiência em programação. Raciocínio lógico refinado e inglês técnico.",
+                fisicos: 25,
+                fisicosText: "Esforço físico baixo. Alta demanda de concentração visual e atenção contínua diante da tela do computador por períodos prolongados.",
+                resp: 75,
+                respText: "Responsabilidade pela integridade do código fonte, segurança de dados de clientes, cumprimento de prazos de projetos e sigilo industrial.",
+                condic: 20,
+                condicText: "Ambiente fabril/escritório climatizado, baixo ruído. Riscos de fadiga visual e problemas ergonômicos leves por postura sentada prolongada.",
+                method: "Entrevista",
+                methodJust: "O cargo possui alta complexidade técnica e atividades intelectuais. A entrevista combinada com a validação do gestor permite detalhar as nuances tecnológicas melhor do que a observação direta."
+            },
+            gerente: {
+                title: "Gerente de Vendas Regional",
+                dept: "Diretoria Comercial",
+                what: "Liderar a equipe de supervisores e vendedores regionais, definir metas comerciais, negociar com grandes contas clientes, analisar indicadores de desempenho e planejar estratégias de expansão de mercado.",
+                when: "Diariamente monitora o pipeline de vendas e apoia negociações complexas; semanalmente conduz reuniões de acompanhamento com a equipe; mensalmente apresenta resultados comerciais à diretoria.",
+                how: "Através do sistema CRM corporativo, relatórios de BI, reuniões virtuais/presenciais, técnicas de negociação comercial e análise de indicadores econômico-financeiros.",
+                why: "Atingir os objetivos de faturamento e margem de lucro da organização, expandir a participação de mercado e consolidar a marca na região de atuação.",
+                mentais: 90,
+                mentaisText: "Ensino Superior Completo em Administração ou Economia com Pós-graduação em Gestão Comercial/MBA. Ampla experiência prévia em liderança e negociação de alto nível.",
+                fisicos: 35,
+                fisicosText: "Esforço físico moderado relacionado a viagens frequentes na região sob sua responsabilidade, participação em eventos e reuniões extensas.",
+                resp: 95,
+                respText: "Alta responsabilidade por alcance de metas milionárias de faturamento, gestão direta de equipe numerosa, guarda de dados sigilosos da empresa e relacionamento com clientes-chave.",
+                condic: 30,
+                condicText: "Ambiente híbrido entre escritório e deslocamentos externos. Nível de estresse elevado devido à pressão constante por resultados e metas organizacionais.",
+                method: "Entrevista",
+                methodJust: "A entrevista com o titular e com a diretoria comercial é essencial para captar as atribuições estratégicas e de tomada de decisão que não são visíveis externamente."
+            },
+            operador: {
+                title: "Operador de Logística I",
+                dept: "Armazém & Distribuição Logística",
+                what: "Receber, conferir, armazenar, separar (picking) e embalar mercadorias e insumos no armazém. Operar paleteiras manuais/elétricas e registrar movimentações de estoque no leitor de código de barras.",
+                when: "Diariamente cumpre a rotina operacional contínua de movimentação de cargas conforme ordens de serviço recebidas em tempo real.",
+                how: "Utilizando coletores de dados RF, leitores óticos, paleteiras, empilhadeiras e equipamentos de proteção individual (EPIs) adequados.",
+                why: "Assegurar a acurácia do estoque da empresa e garantir a agilidade e integridade no envio de pedidos de produtos aos clientes finais.",
+                mentais: 40,
+                mentaisText: "Ensino Médio completo. Conhecimentos básicos de matemática e informática. Treinamento operacional interno de processos logísticos.",
+                fisicos: 85,
+                fisicosText: "Exigência física elevada: levantamento diário de volumes e cargas, movimentação manual constante, trabalho em pé e deslocamento pelo galpão.",
+                resp: 60,
+                respText: "Responsabilidade pela guarda física e integridade das mercadorias estocadas, manuseio seguro de equipamentos do armazém e atenção às normas de segurança.",
+                condic: 75,
+                condicText: "Galpão industrial/logístico, variações de temperatura e ruído de maquinário. Exposição a riscos de acidentes de trabalho com transporte de cargas.",
+                method: "Observação Direta",
+                methodJust: "Como o cargo possui ciclo de tarefas padronizado e rotinas predominantemente físicas/manuais, a observação direta permite registrar com precisão e objetividade a sequência exata de movimentos do trabalho."
+            },
+            custom: {
+                title: "Novo Cargo Personalizado",
+                dept: "Área a Definir",
+                what: "Descreva as tarefas e atribuições do cargo...",
+                when: "Descreva a periodicidade das tarefas...",
+                how: "Descreva métodos, ferramentas e tecnologias...",
+                why: "Descreva os objetivos do cargo...",
+                mentais: 50,
+                mentaisText: "Escolaridade e requisitos mentais...",
+                fisicos: 50,
+                fisicosText: "Requisitos físicos...",
+                resp: 50,
+                respText: "Responsabilidades do cargo...",
+                condic: 50,
+                condicText: "Condições ambientais de trabalho...",
+                method: "Entrevista",
+                methodJust: "Descreva a justificativa da escolha do método..."
+            }
+        };
+
+        // Default Answers for Fixation Quiz
+        const defaultQuiz = {
+            q1: "A Descrição de Cargos foca nos aspectos intrínsecos e no conteúdo do cargo (o que faz, quando, como e por que faz), sendo um processo impessoal. Já a Análise de Cargos foca nos fatores extrínsecos e nos requisitos exigidos do ocupante (físicos, mentais, responsabilidades e condições de trabalho).",
+            q2: "Porque atividades intelectuais ocorrem predominantemente no campo cognitivo, sendo invísiveis a uma simples observação visual. Além disso, a presença do analista pode causar constrangimento ou alteração de comportamento no profissional (Efeito Hawthorne).",
+            q3: "A Descrição e Análise fornecem o perfil exato do cargo para atrair e selecionar candidatos no R&S, identificam necessidades de capacitação para o Treinamento (T&D), e definem os critérios objetivos de metas e atribuições para a Avaliação de Desempenho e Estrutura Salarial."
+        };
+
+        let currentStep = 1;
+        let radarChart = null;
+
+        // Initialize App & Chart
+        window.onload = function() {
+            initRadarChart();
+            selectPresetRole('analista');
+            document.getElementById('quiz-q1').value = defaultQuiz.q1;
+            document.getElementById('quiz-q2').value = defaultQuiz.q2;
+            document.getElementById('quiz-q3').value = defaultQuiz.q3;
+        };
+
+        // Navigation Control
+        function goToStep(step) {
+            currentStep = step;
+            document.querySelectorAll('.step-content').forEach(el => el.classList.add('hidden'));
+            document.getElementById(`step-${step}`).classList.remove('hidden');
+
+            // Update Progress Bar
+            const percent = step * 20;
+            document.getElementById('progress-bar').style.width = `${percent}%`;
+            document.getElementById('progress-percentage').innerText = `${percent}% Concluído`;
+
+            // Update Step Tabs
+            for (let i = 1; i <= 5; i++) {
+                const tab = document.getElementById(`step-tab-${i}`);
+                if (i === step) {
+                    tab.className = "py-1 px-2 rounded font-semibold text-sky-700 bg-sky-50 border border-sky-200";
+                } else if (i < step) {
+                    tab.className = "py-1 px-2 rounded font-medium text-emerald-700 bg-emerald-50";
+                } else {
+                    tab.className = "py-1 px-2 rounded text-slate-500 hover:text-slate-700";
+                }
+            }
+
+            if (step === 3 && radarChart) {
+                radarChart.resize();
+            }
+
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+
+        // Preset Selector
+        function selectPresetRole(type) {
+            document.querySelectorAll('.preset-card').forEach(el => {
+                el.classList.remove('border-sky-500', 'bg-sky-50/50');
+                el.classList.add('border-slate-200');
+            });
+            document.getElementById(`preset-${type}`).classList.add('border-sky-500', 'bg-sky-50/50');
+
+            const data = presetRoles[type];
+            document.getElementById('job-title').value = data.title;
+            document.getElementById('job-department').value = data.dept;
+            document.getElementById('desc-what').value = data.what;
+            document.getElementById('desc-when').value = data.when;
+            document.getElementById('desc-how').value = data.how;
+            document.getElementById('desc-why').value = data.why;
+
+            // Sliders & Factors
+            document.getElementById('slider-mentais').value = data.mentais;
+            document.getElementById('slider-fisicos').value = data.fisicos;
+            document.getElementById('slider-resp').value = data.resp;
+            document.getElementById('slider-condic').value = data.condic;
+
+            document.getElementById('text-mentais').value = data.mentaisText;
+            document.getElementById('text-fisicos').value = data.fisicosText;
+            document.getElementById('text-resp').value = data.respText;
+            document.getElementById('text-condic').value = data.condicText;
+
+            // Method
+            const methodRadios = document.getElementsByName('method-choice');
+            for (let radio of methodRadios) {
+                if (radio.value === data.method) radio.checked = true;
+            }
+            document.getElementById('method-justification').value = data.methodJust;
+
+            updateChartFromSliders();
+        }
+
+        // Radar Chart Initialization
+        function initRadarChart() {
+            const ctx = document.getElementById('radarChart').getContext('2d');
+            radarChart = new Chart(ctx, {
+                type: 'radar',
+                data: {
+                    labels: ['Req. Mentais', 'Req. Físicos', 'Responsabilidades', 'Condições Trabalho'],
+                    datasets: [{
+                        label: 'Grau de Exigência (0-100)',
+                        data: [75, 30, 80, 25],
+                        backgroundColor: 'rgba(2, 132, 199, 0.3)',
+                        borderColor: '#0284c7',
+                        pointBackgroundColor: '#38bdf8',
+                        borderWidth: 2
+                    }]
+                },
+                options: {
+                    maintainAspectRatio: false,
+                    responsive: true,
+                    scales: {
+                        r: {
+                            beginAtZero: true,
+                            max: 100,
+                            ticks: { display: false },
+                            grid: { color: 'rgba(255, 255, 255, 0.1)' },
+                            angleLines: { color: 'rgba(255, 255, 255, 0.15)' },
+                            pointLabels: {
+                                color: '#e2e8f0',
+                                font: { size: 10, weight: '600' }
+                            }
+                        }
+                    },
+                    plugins: {
+                        legend: { display: false }
+                    }
+                }
+            });
+        }
+
+        function updateChartFromSliders() {
+            const m = document.getElementById('slider-mentais').value;
+            const f = document.getElementById('slider-fisicos').value;
+            const r = document.getElementById('slider-resp').value;
+            const c = document.getElementById('slider-condic').value;
+
+            document.getElementById('val-mentais').innerText = `${m} / 100`;
+            document.getElementById('val-fisicos').innerText = `${f} / 100`;
+            document.getElementById('val-resp').innerText = `${r} / 100`;
+            document.getElementById('val-condic').innerText = `${c} / 100`;
+
+            if (radarChart) {
+                radarChart.data.datasets[0].data = [m, f, r, c];
+                radarChart.update();
+            }
+        }
+
+        function updateMethodJustification() {
+            // Placeholder callback for radio selection
+        }
+
+        // Generate Report Text
+        function generateReportAndGoToStep5() {
+            const studentName = document.getElementById('student-name').value.trim() || 'Aluno(a) Não Identificado(a)';
+            const jobTitle = document.getElementById('job-title').value.trim() || 'Cargo Não Especificado';
+            const dept = document.getElementById('job-department').value.trim() || 'Departamento Geral';
+
+            const descWhat = document.getElementById('desc-what').value.trim();
+            const descWhen = document.getElementById('desc-when').value.trim();
+            const descHow = document.getElementById('desc-how').value.trim();
+            const descWhy = document.getElementById('desc-why').value.trim();
+
+            const valM = document.getElementById('slider-mentais').value;
+            const textM = document.getElementById('text-mentais').value.trim();
+            const valF = document.getElementById('slider-fisicos').value;
+            const textF = document.getElementById('text-fisicos').value.trim();
+            const valR = document.getElementById('slider-resp').value;
+            const textR = document.getElementById('text-resp').value.trim();
+            const valC = document.getElementById('slider-condic').value;
+            const textC = document.getElementById('text-condic').value.trim();
+
+            let selectedMethod = "Entrevista";
+            const methodRadios = document.getElementsByName('method-choice');
+            for (let radio of methodRadios) {
+                if (radio.checked) selectedMethod = radio.value;
+            }
+            const methodJust = document.getElementById('method-justification').value.trim();
+
+            const q1 = document.getElementById('quiz-q1').value.trim();
+            const q2 = document.getElementById('quiz-q2').value.trim();
+            const q3 = document.getElementById('quiz-q3').value.trim();
+
+            const report = 
+`====================================================================
+RELATÓRIO DE ATIVIDADE PRÁTICA — GESTÃO DE PESSOAS (CHIAVENATO CAP. 7)
+MODELAGEM DE CARGOS: DESCRIÇÃO, ANÁLISE E MÉTODOS DE COLETA DE DADOS
+====================================================================
+
+[1. DADOS DE IDENTIFICAÇÃO]
+• Nome do Aluno(a): ${studentName}
+• Cargo Selecionado: ${jobTitle}
+• Área / Departamento: ${dept}
+• Data de Elaboração: ${new Date().toLocaleDateString('pt-BR')}
+
+--------------------------------------------------------------------
+[2. DESCRIÇÃO DE CARGO (FATORES INTRÍNSECOS)]
+--------------------------------------------------------------------
+a) O QUE FAZ (Tarefas e Atribuições):
+${descWhat}
+
+b) QUANDO FAZ (Periodicidade):
+${descWhen}
+
+c) COMO FAZ (Métodos e Ferramentas):
+${descHow}
+
+d) POR QUE FAZ (Objetivos do Cargo):
+${descWhy}
+
+--------------------------------------------------------------------
+[3. ANÁLISE DE CARGO (FATORES EXTRÍNSECOS E EXIGÊNCIAS)]
+--------------------------------------------------------------------
+a) Requisitos Mentais [Intensidade: ${valM}/100]:
+   Detalhes: ${textM}
+
+b) Requisitos Físicos [Intensidade: ${valF}/100]:
+   Detalhes: ${textF}
+
+c) Responsabilidades Assumidas [Intensidade: ${valR}/100]:
+   Detalhes: ${textR}
+
+d) Condições de Trabalho [Intensidade: ${valC}/100]:
+   Detalhes: ${textC}
+
+--------------------------------------------------------------------
+[4. MÉTODO DE COLETA DE DADOS]
+--------------------------------------------------------------------
+• Método Selecionado: ${selectedMethod}
+• Justificativa da Escolha:
+  ${methodJust}
+
+--------------------------------------------------------------------
+[5. QUESTÕES DE FIXAÇÃO E AUTOAVALIAÇÃO TEÓRICA]
+--------------------------------------------------------------------
+Q1. Diferença fundamental entre Descrição e Análise de Cargo:
+R: ${q1}
+
+Q2. Por que Observação Direta é inadequada para cargos predominantemente intelectuais?
+R: ${q2}
+
+Q3. Como a Descrição e Análise de Cargos servem de insumo para outros subsistemas de RH?
+R: ${q3}
+
+====================================================================
+Atividade concluída via Aplicativo de Fixação Chiavenato Cap. 7
+====================================================================`;
+
+            document.getElementById('final-report-text').value = report;
+            goToStep(5);
+        }
+
+        // Copy Text for Google Form
+        function copyFormattedText() {
+            const reportTextarea = document.getElementById('final-report-text');
+            reportTextarea.select();
+            reportTextarea.setSelectionRange(0, 99999);
+
+            let success = false;
+            try {
+                success = document.execCommand('copy');
+            } catch (err) {
+                console.error("Falha ao copiar:", err);
+            }
+
+            const toast = document.getElementById('copy-toast');
+            toast.classList.remove('hidden');
+            setTimeout(() => {
+                toast.classList.add('hidden');
+            }, 5000);
+        }
+
+        // Download as TXT File
+        function downloadTextFile() {
+            const text = document.getElementById('final-report-text').value;
+            const blob = new Blob([text], { type: 'text/plain;charset=utf-8' });
+            const url = URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = `Atividade_Chiavenato_Cap7_${Date.now()}.txt`;
+            document.body.appendChild(a);
+            a.click();
+            document.body.removeChild(a);
+            URL.revokeObjectURL(url);
+        }
+    </script>
+</body>
+</html>

@@ -1,0 +1,2302 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Análise de Cargos - Plataforma Educacional</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://unpkg.com/@supabase/supabase-js@2"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        * { font-family: 'Inter', sans-serif; }
+        .sidebar { width: 260px; min-height: 100vh; }
+        .main-content { margin-left: 260px; }
+        .fade-in { animation: fadeIn 0.3s ease-in; }
+        @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+        .toast { position: fixed; top: 20px; right: 20px; z-index: 9999; }
+        .modal-overlay { position: fixed; inset: 0; background: rgba(0,0,0,0.5); z-index: 50; display: flex; align-items: center; justify-content: center; }
+        .tab-active { border-bottom: 2px solid #3b82f6; color: #3b82f6; }
+        input:required, select:required, textarea:required { border-left: 3px solid #ef4444; }
+        .loading-spinner { border: 3px solid #f3f3f3; border-top: 3px solid #3b82f6; border-radius: 50%; width: 24px; height: 24px; animation: spin 1s linear infinite; }
+        @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
+    </style>
+</head>
+<body class="bg-gray-50">
+    <div id="app"></div>
+
+    <script>
+    // =====================================================
+    // CONFIGURAÇÃO DO SUPABASE
+    // =====================================================
+    const SUPABASE_URL = 'https://yunbinnbusouyeemxrmh.supabase.co';
+    const SUPABASE_ANON_KEY = 'sb_publishable_NOMC2Bpp8J8V1W65pvI8Hw_d4Re-YHg';
+    
+    const supabase = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+
+    // =====================================================
+    // ESTADO DA APLICAÇÃO
+    // =====================================================
+    let state = {
+        user: null,
+        profile: null,
+        currentPage: 'login',
+        currentCompanyId: null,
+        currentPositionId: null,
+        companies: [],
+        positions: [],
+        interviews: [],
+        questionnaires: [],
+        observations: [],
+        stats: { companies: 0, positions: 0, interviews: 0, questionnaires: 0, observations: 0 }
+    };
+
+    // =====================================================
+    // UTILITÁRIOS
+    // =====================================================
+    function formatDate(date) {
+        if (!date) return '-';
+        return new Date(date).toLocaleDateString('pt-BR');
+    }
+
+    function formatDateTime(date) {
+        if (!date) return '-';
+        return new Date(date).toLocaleString('pt-BR');
+    }
+
+    function showToast(message, type = 'success') {
+        const colors = { success: 'bg-green-500', error: 'bg-red-500', info: 'bg-blue-500', warning: 'bg-yellow-500' };
+        const toast = document.createElement('div');
+        toast.className = `toast ${colors[type]} text-white px-6 py-3 rounded-lg shadow-lg mb-2 fade-in`;
+        toast.textContent = message;
+        document.body.appendChild(toast);
+        setTimeout(() => toast.remove(), 3000);
+    }
+
+    function showLoading() {
+        return '<div class="flex justify-center items-center p-8"><div class="loading-spinner"></div><span class="ml-3 text-gray-600">Carregando...</span></div>';
+    }
+
+    function showEmptyState(message) {
+        return `<div class="text-center py-12 text-gray-500"><svg class="w-16 h-16 mx-auto mb-4 text-gray-300" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20 13V6a2 2 0 00-2-2H6a2 2 0 00-2 2v7m16 0v5a2 2 0 01-2 2H6a2 2 0 01-2-2v-5m16 0h-2.586a1 1 0 00-.707.293l-2.414 2.414a1 1 0 01-.707.293h-3.172a1 1 0 01-.707-.293l-2.414-2.414A1 1 0 006.586 13H4"></path></svg><p>${message}</p></div>`;
+    }
+
+    // =====================================================
+    // AUTENTICAÇÃO
+    // =====================================================
+    async function signUp(email, password, fullName) {
+        const { data, error } = await supabase.auth.signUp({
+            email,
+            password,
+            options: { data: { full_name: fullName } }
+        });
+        if (error) throw error;
+        return data;
+    }
+
+    async function signIn(email, password) {
+        const { data, error } = await supabase.auth.signInWithPassword({ email, password });
+        if (error) throw error;
+        return data;
+    }
+
+    async function signOut() {
+        const { error } = await supabase.auth.signOut();
+        if (error) throw error;
+        state.user = null;
+        state.profile = null;
+        renderApp();
+    }
+
+    async function getProfile() {
+        const { data, error } = await supabase.from('profiles').select('*').eq('id', state.user.id).single();
+        if (error) throw error;
+        return data;
+    }
+
+    // =====================================================
+    // CRUD: EMPRESAS
+    // =====================================================
+    async function fetchCompanies() {
+        const { data, error } = await supabase.from('companies').select('*').order('created_at', { ascending: false });
+        if (error) throw error;
+        state.companies = data;
+        return data;
+    }
+
+    async function createCompany(company) {
+        const { data, error } = await supabase.from('companies').insert([{ ...company, user_id: state.user.id }]).select();
+        if (error) throw error;
+        return data[0];
+    }
+
+    async function updateCompany(id, company) {
+        const { data, error } = await supabase.from('companies').update(company).eq('id', id).select();
+        if (error) throw error;
+        return data[0];
+    }
+
+    async function deleteCompany(id) {
+        const { error } = await supabase.from('companies').delete().eq('id', id);
+        if (error) throw error;
+    }
+
+    // =====================================================
+    // CRUD: CARGOS
+    // =====================================================
+    async function fetchPositions(companyId) {
+        const { data, error } = await supabase.from('positions').select('*').eq('company_id', companyId).order('created_at', { ascending: false });
+        if (error) throw error;
+        state.positions = data;
+        return data;
+    }
+
+    async function createPosition(position) {
+        const { data, error } = await supabase.from('positions').insert([{ ...position, user_id: state.user.id }]).select();
+        if (error) throw error;
+        return data[0];
+    }
+
+    async function updatePosition(id, position) {
+        const { data, error } = await supabase.from('positions').update(position).eq('id', id).select();
+        if (error) throw error;
+        return data[0];
+    }
+
+    async function deletePosition(id) {
+        const { error } = await supabase.from('positions').delete().eq('id', id);
+        if (error) throw error;
+    }
+
+    async function getPosition(id) {
+        const { data, error } = await supabase.from('positions').select('*, companies(*)').eq('id', id).single();
+        if (error) throw error;
+        return data;
+    }
+
+    // =====================================================
+    // CRUD: ENTREVISTAS
+    // =====================================================
+    async function fetchInterviews(positionId) {
+        const { data, error } = await supabase.from('interviews').select('*').eq('position_id', positionId).order('created_at', { ascending: false });
+        if (error) throw error;
+        return data;
+    }
+
+    async function createInterview(interview) {
+        const { data, error } = await supabase.from('interviews').insert([{ ...interview, user_id: state.user.id }]).select();
+        if (error) throw error;
+        return data[0];
+    }
+
+    async function updateInterview(id, interview) {
+        const { data, error } = await supabase.from('interviews').update(interview).eq('id', id).select();
+        if (error) throw error;
+        return data[0];
+    }
+
+    async function deleteInterview(id) {
+        const { error } = await supabase.from('interviews').delete().eq('id', id);
+        if (error) throw error;
+    }
+
+    async function fetchInterviewQuestions(interviewId) {
+        const { data, error } = await supabase.from('interview_questions').select('*').eq('interview_id', interviewId).order('question_order');
+        if (error) throw error;
+        return data;
+    }
+
+    async function createInterviewQuestion(question) {
+        const { data, error } = await supabase.from('interview_questions').insert([{ ...question, user_id: state.user.id }]).select();
+        if (error) throw error;
+        return data[0];
+    }
+
+    async function updateInterviewQuestion(id, question) {
+        const { data, error } = await supabase.from('interview_questions').update(question).eq('id', id).select();
+        if (error) throw error;
+        return data[0];
+    }
+
+    async function deleteInterviewQuestion(id) {
+        const { error } = await supabase.from('interview_questions').delete().eq('id', id);
+        if (error) throw error;
+    }
+
+    // =====================================================
+    // CRUD: QUESTIONÁRIOS
+    // =====================================================
+    async function fetchQuestionnaires(positionId) {
+        const { data, error } = await supabase.from('questionnaires').select('*').eq('position_id', positionId).order('created_at', { ascending: false });
+        if (error) throw error;
+        return data;
+    }
+
+    async function createQuestionnaire(questionnaire) {
+        const { data, error } = await supabase.from('questionnaires').insert([{ ...questionnaire, user_id: state.user.id }]).select();
+        if (error) throw error;
+        return data[0];
+    }
+
+    async function updateQuestionnaire(id, questionnaire) {
+        const { data, error } = await supabase.from('questionnaires').update(questionnaire).eq('id', id).select();
+        if (error) throw error;
+        return data[0];
+    }
+
+    async function deleteQuestionnaire(id) {
+        const { error } = await supabase.from('questionnaires').delete().eq('id', id);
+        if (error) throw error;
+    }
+
+    async function fetchQuestionnaireQuestions(questionnaireId) {
+        const { data, error } = await supabase.from('questionnaire_questions').select('*').eq('questionnaire_id', questionnaireId).order('question_order');
+        if (error) throw error;
+        return data;
+    }
+
+    async function createQuestionnaireQuestion(question) {
+        const { data, error } = await supabase.from('questionnaire_questions').insert([{ ...question, user_id: state.user.id }]).select();
+        if (error) throw error;
+        return data[0];
+    }
+
+    async function updateQuestionnaireQuestion(id, question) {
+        const { data, error } = await supabase.from('questionnaire_questions').update(question).eq('id', id).select();
+        if (error) throw error;
+        return data[0];
+    }
+
+    async function deleteQuestionnaireQuestion(id) {
+        const { error } = await supabase.from('questionnaire_questions').delete().eq('id', id);
+        if (error) throw error;
+    }
+
+    // =====================================================
+    // CRUD: OBSERVAÇÕES
+    // =====================================================
+    async function fetchObservations(positionId) {
+        const { data, error } = await supabase.from('observations').select('*').eq('position_id', positionId).order('created_at', { ascending: false });
+        if (error) throw error;
+        return data;
+    }
+
+    async function createObservation(observation) {
+        const { data, error } = await supabase.from('observations').insert([{ ...observation, user_id: state.user.id }]).select();
+        if (error) throw error;
+        return data[0];
+    }
+
+    async function updateObservation(id, observation) {
+        const { data, error } = await supabase.from('observations').update(observation).eq('id', id).select();
+        if (error) throw error;
+        return data[0];
+    }
+
+    async function deleteObservation(id) {
+        const { error } = await supabase.from('observations').delete().eq('id', id);
+        if (error) throw error;
+    }
+
+    async function fetchObservationActivities(observationId) {
+        const { data, error } = await supabase.from('observation_activities').select('*').eq('observation_id', observationId).order('activity_order');
+        if (error) throw error;
+        return data;
+    }
+
+    async function createObservationActivity(activity) {
+        const { data, error } = await supabase.from('observation_activities').insert([{ ...activity, user_id: state.user.id }]).select();
+        if (error) throw error;
+        return data[0];
+    }
+
+    async function updateObservationActivity(id, activity) {
+        const { data, error } = await supabase.from('observation_activities').update(activity).eq('id', id).select();
+        if (error) throw error;
+        return data[0];
+    }
+
+    async function deleteObservationActivity(id) {
+        const { error } = await supabase.from('observation_activities').delete().eq('id', id);
+        if (error) throw error;
+    }
+
+    // =====================================================
+    // CRUD: CONSOLIDAÇÃO
+    // =====================================================
+    async function fetchConsolidations(positionId) {
+        const { data, error } = await supabase.from('position_consolidations').select('*').eq('position_id', positionId);
+        if (error) throw error;
+        return data;
+    }
+
+    async function upsertConsolidation(consolidation) {
+        const { data, error } = await supabase.from('position_consolidations').upsert(consolidation, { onConflict: 'position_id,category' }).select();
+        if (error) throw error;
+        return data[0];
+    }
+
+    // =====================================================
+    // CRUD: DESCRIÇÃO FINAL
+    // =====================================================
+    async function fetchFinalDescription(positionId) {
+        const { data, error } = await supabase.from('position_final_descriptions').select('*').eq('position_id', positionId).single();
+        if (error && error.code !== 'PGRST116') throw error;
+        return data;
+    }
+
+    async function upsertFinalDescription(description) {
+        const { data, error } = await supabase.from('position_final_descriptions').upsert(description, { onConflict: 'position_id' }).select();
+        if (error) throw error;
+        return data[0];
+    }
+
+    // =====================================================
+    // ESTATÍSTICAS
+    // =====================================================
+    async function fetchStats() {
+        const [companies, positions, interviews, questionnaires, observations] = await Promise.all([
+            supabase.from('companies').select('id', { count: 'exact', head: true }).eq('user_id', state.user.id),
+            supabase.from('positions').select('id', { count: 'exact', head: true }).eq('user_id', state.user.id),
+            supabase.from('interviews').select('id', { count: 'exact', head: true }).eq('user_id', state.user.id),
+            supabase.from('questionnaires').select('id', { count: 'exact', head: true }).eq('user_id', state.user.id),
+            supabase.from('observations').select('id', { count: 'exact', head: true }).eq('user_id', state.user.id)
+        ]);
+        state.stats = {
+            companies: companies.count || 0,
+            positions: positions.count || 0,
+            interviews: interviews.count || 0,
+            questionnaires: questionnaires.count || 0,
+            observations: observations.count || 0
+        };
+        return state.stats;
+    }
+
+    // =====================================================
+    // TELAS
+    // =====================================================
+
+    // TELA DE LOGIN
+    function renderLogin() {
+        return `
+        <div class="min-h-screen bg-gradient-to-br from-blue-600 to-blue-800 flex items-center justify-center p-4">
+            <div class="bg-white rounded-2xl shadow-2xl p-8 w-full max-w-md fade-in">
+                <div class="text-center mb-8">
+                    <div class="w-16 h-16 bg-blue-600 rounded-full flex items-center justify-center mx-auto mb-4">
+                        <svg class="w-8 h-8 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 13.255A23.931 23.931 0 0112 15c-3.183 0-6.22-.62-9-1.745M16 6V4a2 2 0 00-2-2h-4a2 2 0 00-2 2v2m4 6h.01M5 20h14a2 2 0 002-2V8a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"></path>
+                        </svg>
+                    </div>
+                    <h1 class="text-2xl font-bold text-gray-800">Análise de Cargos</h1>
+                    <p class="text-gray-500 mt-2">Plataforma Educacional</p>
+                </div>
+                
+                <form id="loginForm" class="space-y-4">
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 mb-1">E-mail</label>
+                        <input type="email" id="loginEmail" required
+                            class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                            placeholder="seu@email.com">
+                    </div>
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 mb-1">Senha</label>
+                        <input type="password" id="loginPassword" required
+                            class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                            placeholder="••••••••">
+                    </div>
+                    <button type="submit" 
+                        class="w-full bg-blue-600 text-white py-3 rounded-lg font-semibold hover:bg-blue-700 transition">
+                        Entrar
+                    </button>
+                </form>
+                
+                <div class="mt-6 text-center">
+                    <p class="text-gray-500">Não tem conta? 
+                        <button onclick="renderApp('register')" class="text-blue-600 font-semibold hover:underline">Criar conta</button>
+                    </p>
+                </div>
+            </div>
+        </div>`;
+    }
+
+    // TELA DE CADASTRO
+    function renderRegister() {
+        return `
+        <div class="min-h-screen bg-gradient-to-br from-blue-600 to-blue-800 flex items-center justify-center p-4">
+            <div class="bg-white rounded-2xl shadow-2xl p-8 w-full max-w-md fade-in">
+                <div class="text-center mb-8">
+                    <div class="w-16 h-16 bg-green-600 rounded-full flex items-center justify-center mx-auto mb-4">
+                        <svg class="w-8 h-8 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M18 9v3m0 0v3m0-3h3m-3 0h-3m-2-5a4 4 0 11-8 0 4 4 0 018 0zM3 20a6 6 0 0112 0v1H3v-1z"></path>
+                        </svg>
+                    </div>
+                    <h1 class="text-2xl font-bold text-gray-800">Criar Conta</h1>
+                    <p class="text-gray-500 mt-2">Preencha seus dados para começar</p>
+                </div>
+                
+                <form id="registerForm" class="space-y-4">
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 mb-1">Nome Completo</label>
+                        <input type="text" id="registerName" required
+                            class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                            placeholder="Seu nome">
+                    </div>
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 mb-1">E-mail</label>
+                        <input type="email" id="registerEmail" required
+                            class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                            placeholder="seu@email.com">
+                    </div>
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 mb-1">Senha</label>
+                        <input type="password" id="registerPassword" required minlength="6"
+                            class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                            placeholder="Mínimo 6 caracteres">
+                    </div>
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 mb-1">Confirmar Senha</label>
+                        <input type="password" id="registerConfirmPassword" required
+                            class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                            placeholder="Repita a senha">
+                    </div>
+                    <button type="submit" 
+                        class="w-full bg-green-600 text-white py-3 rounded-lg font-semibold hover:bg-green-700 transition">
+                        Criar Conta
+                    </button>
+                </form>
+                
+                <div class="mt-6 text-center">
+                    <p class="text-gray-500">Já tem conta? 
+                        <button onclick="renderApp('login')" class="text-blue-600 font-semibold hover:underline">Fazer login</button>
+                    </p>
+                </div>
+            </div>
+        </div>`;
+    }
+
+    // SIDEBAR
+    function renderSidebar() {
+        const menuItems = [
+            { id: 'dashboard', icon: 'M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6', label: 'Painel' },
+            { id: 'companies', icon: 'M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4', label: 'Empresas' }
+        ];
+
+        return `
+        <div class="sidebar bg-gray-900 text-white fixed h-full">
+            <div class="p-6 border-b border-gray-700">
+                <div class="flex items-center gap-3">
+                    <div class="w-10 h-10 bg-blue-600 rounded-lg flex items-center justify-center">
+                        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 13.255A23.931 23.931 0 0112 15c-3.183 0-6.22-.62-9-1.745M16 6V4a2 2 0 00-2-2h-4a2 2 0 00-2 2v2m4 6h.01M5 20h14a2 2 0 002-2V8a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"></path>
+                        </svg>
+                    </div>
+                    <div>
+                        <h2 class="font-bold">Análise de Cargos</h2>
+                        <p class="text-xs text-gray-400">Plataforma Educacional</p>
+                    </div>
+                </div>
+            </div>
+            
+            <nav class="p-4">
+                ${menuItems.map(item => `
+                    <button onclick="navigateTo('${item.id}')" 
+                        class="w-full flex items-center gap-3 px-4 py-3 rounded-lg mb-2 transition ${state.currentPage === item.id ? 'bg-blue-600' : 'hover:bg-gray-800'}">
+                        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="${item.icon}"></path>
+                        </svg>
+                        <span>${item.label}</span>
+                    </button>
+                `).join('')}
+            </nav>
+            
+            <div class="absolute bottom-0 w-full p-4 border-t border-gray-700">
+                <div class="flex items-center gap-3 px-4 py-2 mb-2">
+                    <div class="w-8 h-8 bg-gray-600 rounded-full flex items-center justify-center">
+                        <span class="text-sm font-semibold">${(state.profile?.full_name || 'U').charAt(0)}</span>
+                    </div>
+                    <div class="flex-1 min-w-0">
+                        <p class="text-sm font-medium truncate">${state.profile?.full_name || 'Usuário'}</p>
+                        <p class="text-xs text-gray-400 truncate">${state.user?.email || ''}</p>
+                    </div>
+                </div>
+                <button onclick="signOut()" 
+                    class="w-full flex items-center gap-3 px-4 py-3 rounded-lg text-gray-400 hover:bg-gray-800 hover:text-white transition">
+                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1"></path>
+                    </svg>
+                    <span>Sair</span>
+                </button>
+            </div>
+        </div>`;
+    }
+
+    // HEADER
+    function renderHeader() {
+        return `
+        <header class="bg-white shadow-sm border-b border-gray-200 ml-[260px]">
+            <div class="px-6 py-4">
+                <div class="flex items-center justify-between">
+                    <h1 class="text-xl font-semibold text-gray-800">${getPageTitle()}</h1>
+                    <div class="flex items-center gap-4">
+                        <span class="text-sm text-gray-500">${new Date().toLocaleDateString('pt-BR', { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' })}</span>
+                    </div>
+                </div>
+            </div>
+        </header>`;
+    }
+
+    function getPageTitle() {
+        const titles = {
+            dashboard: 'Painel',
+            companies: 'Empresas',
+            positions: 'Cargos',
+            position: 'Análise do Cargo',
+            interviews: 'Entrevistas',
+            interview: 'Detalhes da Entrevista',
+            questionnaires: 'Questionários',
+            questionnaire: 'Detalhes do Questionário',
+            observations: 'Observações',
+            observation: 'Detalhes da Observação',
+            consolidation: 'Consolidação',
+            finalDescription: 'Descrição Final'
+        };
+        return titles[state.currentPage] || 'Painel';
+    }
+
+    // DASHBOARD
+    function renderDashboard() {
+        return `
+        <div class="main-content">
+            ${renderSidebar()}
+            ${renderHeader()}
+            <main class="p-6 ml-[260px]">
+                <div class="mb-8">
+                    <h2 class="text-2xl font-bold text-gray-800">Bem-vindo, ${state.profile?.full_name?.split(' ')[0] || 'Aluno'}!</h2>
+                    <p class="text-gray-500">Gerencie suas análises de cargos</p>
+                </div>
+                
+                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-4 mb-8">
+                    <div class="bg-white rounded-xl shadow-sm p-6 border-l-4 border-blue-500">
+                        <div class="flex items-center justify-between">
+                            <div>
+                                <p class="text-gray-500 text-sm">Empresas</p>
+                                <p class="text-3xl font-bold text-gray-800" id="stat-companies">0</p>
+                            </div>
+                            <div class="w-12 h-12 bg-blue-100 rounded-lg flex items-center justify-center">
+                                <svg class="w-6 h-6 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4"></path>
+                                </svg>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="bg-white rounded-xl shadow-sm p-6 border-l-4 border-green-500">
+                        <div class="flex items-center justify-between">
+                            <div>
+                                <p class="text-gray-500 text-sm">Cargos</p>
+                                <p class="text-3xl font-bold text-gray-800" id="stat-positions">0</p>
+                            </div>
+                            <div class="w-12 h-12 bg-green-100 rounded-lg flex items-center justify-center">
+                                <svg class="w-6 h-6 text-green-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 13.255A23.931 23.931 0 0112 15c-3.183 0-6.22-.62-9-1.745M16 6V4a2 2 0 00-2-2h-4a2 2 0 00-2 2v2m4 6h.01M5 20h14a2 2 0 002-2V8a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"></path>
+                                </svg>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="bg-white rounded-xl shadow-sm p-6 border-l-4 border-purple-500">
+                        <div class="flex items-center justify-between">
+                            <div>
+                                <p class="text-gray-500 text-sm">Entrevistas</p>
+                                <p class="text-3xl font-bold text-gray-800" id="stat-interviews">0</p>
+                            </div>
+                            <div class="w-12 h-12 bg-purple-100 rounded-lg flex items-center justify-center">
+                                <svg class="w-6 h-6 text-purple-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z"></path>
+                                </svg>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="bg-white rounded-xl shadow-sm p-6 border-l-4 border-yellow-500">
+                        <div class="flex items-center justify-between">
+                            <div>
+                                <p class="text-gray-500 text-sm">Questionários</p>
+                                <p class="text-3xl font-bold text-gray-800" id="stat-questionnaires">0</p>
+                            </div>
+                            <div class="w-12 h-12 bg-yellow-100 rounded-lg flex items-center justify-center">
+                                <svg class="w-6 h-6 text-yellow-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"></path>
+                                </svg>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="bg-white rounded-xl shadow-sm p-6 border-l-4 border-red-500">
+                        <div class="flex items-center justify-between">
+                            <div>
+                                <p class="text-gray-500 text-sm">Observações</p>
+                                <p class="text-3xl font-bold text-gray-800" id="stat-observations">0</p>
+                            </div>
+                            <div class="w-12 h-12 bg-red-100 rounded-lg flex items-center justify-center">
+                                <svg class="w-6 h-6 text-red-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"></path>
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"></path>
+                                </svg>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="flex justify-between items-center mb-6">
+                    <h3 class="text-lg font-semibold text-gray-800">Suas Empresas</h3>
+                    <button onclick="showCompanyModal()" 
+                        class="bg-blue-600 text-white px-4 py-2 rounded-lg font-semibold hover:bg-blue-700 transition flex items-center gap-2">
+                        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6v6m0 0v6m0-6h6m-6 0H6"></path>
+                        </svg>
+                        Nova Empresa
+                    </button>
+                </div>
+                
+                <div id="companiesList" class="bg-white rounded-xl shadow-sm">
+                    ${showLoading()}
+                </div>
+            </main>
+        </div>`;
+    }
+
+    // LISTA DE EMPRESAS
+    function renderCompanies() {
+        return `
+        <div class="main-content">
+            ${renderSidebar()}
+            ${renderHeader()}
+            <main class="p-6 ml-[260px]">
+                <div class="flex justify-between items-center mb-6">
+                    <div>
+                        <h2 class="text-2xl font-bold text-gray-800">Empresas</h2>
+                        <p class="text-gray-500">Gerencie as empresas cadastradas</p>
+                    </div>
+                    <button onclick="showCompanyModal()" 
+                        class="bg-blue-600 text-white px-4 py-2 rounded-lg font-semibold hover:bg-blue-700 transition flex items-center gap-2">
+                        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6v6m0 0v6m0-6h6m-6 0H6"></path>
+                        </svg>
+                        Nova Empresa
+                    </button>
+                </div>
+                
+                <div class="bg-white rounded-xl shadow-sm mb-6">
+                    <div class="p-4 border-b border-gray-200">
+                        <div class="flex gap-4">
+                            <input type="text" id="searchCompany" placeholder="Buscar empresa..." 
+                                class="flex-1 px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500">
+                            <select id="filterSegment" class="px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500">
+                                <option value="">Todos os segmentos</option>
+                                <option value="Indústria">Indústria</option>
+                                <option value="Comércio">Comércio</option>
+                                <option value="Serviços">Serviços</option>
+                                <option value="Tecnologia">Tecnologia</option>
+                                <option value="Saúde">Saúde</option>
+                                <option value="Educação">Educação</option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+                
+                <div id="companiesTable" class="bg-white rounded-xl shadow-sm">
+                    ${showLoading()}
+                </div>
+            </main>
+        </div>`;
+    }
+
+    // LISTA DE CARGOS
+    function renderPositions() {
+        return `
+        <div class="main-content">
+            ${renderSidebar()}
+            ${renderHeader()}
+            <main class="p-6 ml-[260px]">
+                <div class="flex justify-between items-center mb-6">
+                    <div>
+                        <h2 class="text-2xl font-bold text-gray-800">Cargos</h2>
+                        <p class="text-gray-500" id="companyName">Carregando...</p>
+                    </div>
+                    <div class="flex gap-2">
+                        <button onclick="navigateTo('companies')" 
+                            class="bg-gray-200 text-gray-700 px-4 py-2 rounded-lg font-semibold hover:bg-gray-300 transition">
+                            ← Voltar
+                        </button>
+                        <button onclick="showPositionModal()" 
+                            class="bg-blue-600 text-white px-4 py-2 rounded-lg font-semibold hover:bg-blue-700 transition flex items-center gap-2">
+                            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6v6m0 0v6m0-6h6m-6 0H6"></path>
+                            </svg>
+                            Novo Cargo
+                        </button>
+                    </div>
+                </div>
+                
+                <div id="positionsTable" class="bg-white rounded-xl shadow-sm">
+                    ${showLoading()}
+                </div>
+            </main>
+        </div>`;
+    }
+
+    // PÁGINA DO CARGO (COM ABAS)
+    function renderPosition() {
+        const tabs = [
+            { id: 'overview', label: 'Visão Geral' },
+            { id: 'interviews', label: 'Entrevistas' },
+            { id: 'questionnaires', label: 'Questionários' },
+            { id: 'observations', label: 'Observações' },
+            { id: 'consolidation', label: 'Consolidação' },
+            { id: 'finalDescription', label: 'Descrição Final' }
+        ];
+
+        return `
+        <div class="main-content">
+            ${renderSidebar()}
+            ${renderHeader()}
+            <main class="p-6 ml-[260px]">
+                <div class="flex justify-between items-center mb-6">
+                    <div>
+                        <button onclick="navigateTo('positions')" class="text-blue-600 hover:underline mb-2 inline-block">← Voltar para Cargos</button>
+                        <h2 class="text-2xl font-bold text-gray-800" id="positionName">Carregando...</h2>
+                        <p class="text-gray-500" id="positionInfo">Carregando...</p>
+                    </div>
+                </div>
+                
+                <div id="progressIndicator" class="bg-white rounded-xl shadow-sm p-4 mb-6">
+                    <div class="flex items-center justify-between mb-2">
+                        <span class="text-sm font-medium text-gray-700">Progresso da Análise</span>
+                        <span class="text-sm font-medium text-blue-600" id="progressPercent">0%</span>
+                    </div>
+                    <div class="w-full bg-gray-200 rounded-full h-2">
+                        <div class="bg-blue-600 h-2 rounded-full transition-all duration-500" id="progressBar" style="width: 0%"></div>
+                    </div>
+                    <div class="flex gap-4 mt-4" id="progressChecks"></div>
+                </div>
+                
+                <div class="bg-white rounded-xl shadow-sm">
+                    <div class="border-b border-gray-200">
+                        <nav class="flex gap-0 px-4">
+                            ${tabs.map(tab => `
+                                <button onclick="switchTab('${tab.id}')" 
+                                    class="px-4 py-3 text-sm font-medium border-b-2 transition ${state.currentTab === tab.id ? 'tab-active' : 'text-gray-500 hover:text-gray-700 border-transparent'}"
+                                    data-tab="${tab.id}">
+                                    ${tab.label}
+                                </button>
+                            `).join('')}
+                        </nav>
+                    </div>
+                    <div id="tabContent" class="p-6">
+                        ${showLoading()}
+                    </div>
+                </div>
+            </main>
+        </div>`;
+    }
+
+    // =====================================================
+    // MODAIS
+    // =====================================================
+    
+    function showModal(title, content, onSave) {
+        const modal = document.createElement('div');
+        modal.className = 'modal-overlay';
+        modal.id = 'modal';
+        modal.innerHTML = `
+            <div class="bg-white rounded-2xl shadow-2xl w-full max-w-2xl max-h-[90vh] overflow-y-auto fade-in">
+                <div class="p-6 border-b border-gray-200">
+                    <div class="flex justify-between items-center">
+                        <h3 class="text-xl font-bold text-gray-800">${title}</h3>
+                        <button onclick="closeModal()" class="text-gray-400 hover:text-gray-600">
+                            <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
+                            </svg>
+                        </button>
+                    </div>
+                </div>
+                <div class="p-6" id="modalContent">
+                    ${content}
+                </div>
+            </div>
+        `;
+        document.body.appendChild(modal);
+    }
+
+    function closeModal() {
+        const modal = document.getElementById('modal');
+        if (modal) modal.remove();
+    }
+
+    function showConfirmModal(message, onConfirm) {
+        showModal('Confirmar Exclusão', `
+            <p class="text-gray-600 mb-6">${message}</p>
+            <div class="flex justify-end gap-3">
+                <button onclick="closeModal()" class="px-4 py-2 border border-gray-300 rounded-lg text-gray-700 hover:bg-gray-50">
+                    Cancelar
+                </button>
+                <button onclick="(${onConfirm.toString()})(); closeModal();" 
+                    class="px-4 py-2 bg-red-600 text-white rounded-lg hover:bg-red-700">
+                    Excluir
+                </button>
+            </div>
+        `);
+    }
+
+    // =====================================================
+    // FORMULÁRIOS
+    // =====================================================
+
+    function showCompanyModal(company = null) {
+        const isEdit = company !== null;
+        showModal(isEdit ? 'Editar Empresa' : 'Nova Empresa', `
+            <form id="companyForm" class="space-y-4">
+                <div class="grid grid-cols-2 gap-4">
+                    <div class="col-span-2">
+                        <label class="block text-sm font-medium text-gray-700 mb-1">Nome da Empresa *</label>
+                        <input type="text" name="name" required value="${company?.name || ''}"
+                            class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500">
+                    </div>
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 mb-1">CNPJ</label>
+                        <input type="text" name="cnpj" value="${company?.cnpj || ''}"
+                            class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500">
+                    </div>
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 mb-1">Segmento</label>
+                        <select name="segment" class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500">
+                            <option value="">Selecione...</option>
+                            <option value="Indústria" ${company?.segment === 'Indústria' ? 'selected' : ''}>Indústria</option>
+                            <option value="Comércio" ${company?.segment === 'Comércio' ? 'selected' : ''}>Comércio</option>
+                            <option value="Serviços" ${company?.segment === 'Serviços' ? 'selected' : ''}>Serviços</option>
+                            <option value="Tecnologia" ${company?.segment === 'Tecnologia' ? 'selected' : ''}>Tecnologia</option>
+                            <option value="Saúde" ${company?.segment === 'Saúde' ? 'selected' : ''}>Saúde</option>
+                            <option value="Educação" ${company?.segment === 'Educação' ? 'selected' : ''}>Educação</option>
+                        </select>
+                    </div>
+                    <div class="col-span-2">
+                        <label class="block text-sm font-medium text-gray-700 mb-1">Endereço</label>
+                        <input type="text" name="address" value="${company?.address || ''}"
+                            class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500">
+                    </div>
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 mb-1">Cidade</label>
+                        <input type="text" name="city" value="${company?.city || ''}"
+                            class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500">
+                    </div>
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 mb-1">Estado</label>
+                        <input type="text" name="state" value="${company?.state || ''}" maxlength="2"
+                            class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500">
+                    </div>
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 mb-1">Responsável</label>
+                        <input type="text" name="responsible_name" value="${company?.responsible_name || ''}"
+                            class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500">
+                    </div>
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 mb-1">Cargo do Responsável</label>
+                        <input type="text" name="responsible_position" value="${company?.responsible_position || ''}"
+                            class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500">
+                    </div>
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 mb-1">Telefone</label>
+                        <input type="text" name="phone" value="${company?.phone || ''}"
+                            class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500">
+                    </div>
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 mb-1">E-mail</label>
+                        <input type="email" name="email" value="${company?.email || ''}"
+                            class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500">
+                    </div>
+                    <div class="col-span-2">
+                        <label class="block text-sm font-medium text-gray-700 mb-1">Observações</label>
+                        <textarea name="observations" rows="3"
+                            class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500">${company?.observations || ''}</textarea>
+                    </div>
+                </div>
+                <div class="flex justify-end gap-3 pt-4">
+                    <button type="button" onclick="closeModal()" 
+                        class="px-4 py-2 border border-gray-300 rounded-lg text-gray-700 hover:bg-gray-50">
+                        Cancelar
+                    </button>
+                    <button type="submit" 
+                        class="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700">
+                        ${isEdit ? 'Salvar' : 'Cadastrar'}
+                    </button>
+                </div>
+            </form>
+        `);
+
+        document.getElementById('companyForm').addEventListener('submit', async (e) => {
+            e.preventDefault();
+            const formData = new FormData(e.target);
+            const data = Object.fromEntries(formData);
+            
+            try {
+                if (isEdit) {
+                    await updateCompany(company.id, data);
+                    showToast('Empresa atualizada com sucesso!');
+                } else {
+                    await createCompany(data);
+                    showToast('Empresa cadastrada com sucesso!');
+                }
+                closeModal();
+                loadCompanies();
+            } catch (error) {
+                showToast('Erro ao salvar empresa: ' + error.message, 'error');
+            }
+        });
+    }
+
+    function showPositionModal(position = null) {
+        const isEdit = position !== null;
+        showModal(isEdit ? 'Editar Cargo' : 'Novo Cargo', `
+            <form id="positionForm" class="space-y-4 max-h-[70vh] overflow-y-auto">
+                <div class="grid grid-cols-2 gap-4">
+                    <div class="col-span-2">
+                        <label class="block text-sm font-medium text-gray-700 mb-1">Nome do Cargo *</label>
+                        <input type="text" name="name" required value="${position?.name || ''}"
+                            class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500">
+                    </div>
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 mb-1">Código</label>
+                        <input type="text" name="code" value="${position?.code || ''}"
+                            class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500">
+                    </div>
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 mb-1">Setor</label>
+                        <input type="text" name="sector" value="${position?.sector || ''}"
+                            class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500">
+                    </div>
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 mb-1">Departamento</label>
+                        <input type="text" name="department" value="${position?.department || ''}"
+                            class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500">
+                    </div>
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 mb-1">Superior Imediato</label>
+                        <input type="text" name="immediate_superior" value="${position?.immediate_superior || ''}"
+                            class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500">
+                    </div>
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 mb-1">Nº Ocupantes</label>
+                        <input type="number" name="num_occupants" value="${position?.num_occupants || 1}"
+                            class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500">
+                    </div>
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 mb-1">Local de Trabalho</label>
+                        <input type="text" name="work_location" value="${position?.work_location || ''}"
+                            class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500">
+                    </div>
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 mb-1">Jornada de Trabalho</label>
+                        <input type="text" name="work_schedule" value="${position?.work_schedule || ''}"
+                            class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500">
+                    </div>
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 mb-1">Horário</label>
+                        <input type="text" name="work_hours" value="${position?.work_hours || ''}"
+                            class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500">
+                    </div>
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 mb-1">Tipo de Vínculo</label>
+                        <select name="bond_type" class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500">
+                            <option value="">Selecione...</option>
+                            <option value="CLT" ${position?.bond_type === 'CLT' ? 'selected' : ''}>CLT</option>
+                            <option value="Estágio" ${position?.bond_type === 'Estágio' ? 'selected' : ''}>Estágio</option>
+                            <option value="PJ" ${position?.bond_type === 'PJ' ? 'selected' : ''}>PJ</option>
+                            <option value="Concursado" ${position?.bond_type === 'Concursado' ? 'selected' : ''}>Concursado</option>
+                            <option value="Temporário" ${position?.bond_type === 'Temporário' ? 'selected' : ''}>Temporário</option>
+                        </select>
+                    </div>
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 mb-1">Faixa Salarial</label>
+                        <input type="text" name="salary_range" value="${position?.salary_range || ''}"
+                            class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500">
+                    </div>
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 mb-1">Escolaridade Mínima</label>
+                        <input type="text" name="minimum_education" value="${position?.minimum_education || ''}"
+                            class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500">
+                    </div>
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 mb-1">Experiência Necessária</label>
+                        <input type="text" name="required_experience" value="${position?.required_experience || ''}"
+                            class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500">
+                    </div>
+                    <div class="col-span-2">
+                        <label class="block text-sm font-medium text-gray-700 mb-1">Objetivo do Cargo</label>
+                        <textarea name="objective" rows="2"
+                            class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500">${position?.objective || ''}</textarea>
+                    </div>
+                    <div class="col-span-2">
+                        <label class="block text-sm font-medium text-gray-700 mb-1">Principais Responsabilidades</label>
+                        <textarea name="main_responsibilities" rows="2"
+                            class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500">${position?.main_responsibilities || ''}</textarea>
+                    </div>
+                    <div class="col-span-2">
+                        <label class="block text-sm font-medium text-gray-700 mb-1">Atividades Realizadas</label>
+                        <textarea name="activities" rows="2"
+                            class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500">${position?.activities || ''}</textarea>
+                    </div>
+                    <div class="col-span-2">
+                        <label class="block text-sm font-medium text-gray-700 mb-1">Competências Técnicas</label>
+                        <textarea name="technical_competencies" rows="2"
+                            class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500">${position?.technical_competencies || ''}</textarea>
+                    </div>
+                    <div class="col-span-2">
+                        <label class="block text-sm font-medium text-gray-700 mb-1">Competências Comportamentais</label>
+                        <textarea name="behavioral_competencies" rows="2"
+                            class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500">${position?.behavioral_competencies || ''}</textarea>
+                    </div>
+                    <div class="col-span-2">
+                        <label class="block text-sm font-medium text-gray-700 mb-1">Conhecimentos Necessários</label>
+                        <textarea name="required_knowledge" rows="2"
+                            class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500">${position?.required_knowledge || ''}</textarea>
+                    </div>
+                    <div class="col-span-2">
+                        <label class="block text-sm font-medium text-gray-700 mb-1">Habilidades Necessárias</label>
+                        <textarea name="required_skills" rows="2"
+                            class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500">${position?.required_skills || ''}</textarea>
+                    </div>
+                    <div class="col-span-2">
+                        <label class="block text-sm font-medium text-gray-700 mb-1">Atitudes Esperadas</label>
+                        <textarea name="expected_attitudes" rows="2"
+                            class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500">${position?.expected_attitudes || ''}</textarea>
+                    </div>
+                    <div class="col-span-2">
+                        <label class="block text-sm font-medium text-gray-700 mb-1">Equipamentos Utilizados</label>
+                        <textarea name="equipment_used" rows="2"
+                            class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500">${position?.equipment_used || ''}</textarea>
+                    </div>
+                    <div class="col-span-2">
+                        <label class="block text-sm font-medium text-gray-700 mb-1">Sistemas Utilizados</label>
+                        <textarea name="systems_used" rows="2"
+                            class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500">${position?.systems_used || ''}</textarea>
+                    </div>
+                    <div class="col-span-2">
+                        <label class="block text-sm font-medium text-gray-700 mb-1">Riscos Ocupacionais</label>
+                        <textarea name="occupational_risks" rows="2"
+                            class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500">${position?.occupational_risks || ''}</textarea>
+                    </div>
+                    <div class="col-span-2">
+                        <label class="block text-sm font-medium text-gray-700 mb-1">EPIs Utilizados</label>
+                        <textarea name="ppe_used" rows="2"
+                            class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500">${position?.ppe_used || ''}</textarea>
+                    </div>
+                    <div class="col-span-2">
+                        <label class="block text-sm font-medium text-gray-700 mb-1">Observações</label>
+                        <textarea name="observations" rows="2"
+                            class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500">${position?.observations || ''}</textarea>
+                    </div>
+                </div>
+                <div class="flex justify-end gap-3 pt-4 sticky bottom-0 bg-white py-4">
+                    <button type="button" onclick="closeModal()" 
+                        class="px-4 py-2 border border-gray-300 rounded-lg text-gray-700 hover:bg-gray-50">
+                        Cancelar
+                    </button>
+                    <button type="submit" 
+                        class="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700">
+                        ${isEdit ? 'Salvar' : 'Cadastrar'}
+                    </button>
+                </div>
+            </form>
+        `);
+
+        document.getElementById('positionForm').addEventListener('submit', async (e) => {
+            e.preventDefault();
+            const formData = new FormData(e.target);
+            const data = Object.fromEntries(formData);
+            data.company_id = state.currentCompanyId;
+            
+            try {
+                if (isEdit) {
+                    await updatePosition(position.id, data);
+                    showToast('Cargo atualizado com sucesso!');
+                } else {
+                    await createPosition(data);
+                    showToast('Cargo cadastrado com sucesso!');
+                }
+                closeModal();
+                loadPositions();
+            } catch (error) {
+                showToast('Erro ao salvar cargo: ' + error.message, 'error');
+            }
+        });
+    }
+
+    function showInterviewModal(interview = null) {
+        const isEdit = interview !== null;
+        showModal(isEdit ? 'Editar Entrevista' : 'Nova Entrevista', `
+            <form id="interviewForm" class="space-y-4">
+                <div class="grid grid-cols-2 gap-4">
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 mb-1">Data</label>
+                        <input type="date" name="interview_date" value="${interview?.interview_date || ''}"
+                            class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500">
+                    </div>
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 mb-1">Entrevistado</label>
+                        <input type="text" name="interviewee_name" value="${interview?.interviewee_name || ''}"
+                            class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500">
+                    </div>
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 mb-1">Cargo do Entrevistado</label>
+                        <input type="text" name="interviewee_position" value="${interview?.interviewee_position || ''}"
+                            class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500">
+                    </div>
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 mb-1">Entrevistador</label>
+                        <input type="text" name="interviewer_name" value="${interview?.interviewer_name || ''}"
+                            class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500">
+                    </div>
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 mb-1">Tempo de Empresa</label>
+                        <input type="text" name="time_at_company" value="${interview?.time_at_company || ''}"
+                            class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500">
+                    </div>
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 mb-1">Local</label>
+                        <input type="text" name="interview_location" value="${interview?.interview_location || ''}"
+                            class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500">
+                    </div>
+                    <div class="col-span-2">
+                        <label class="block text-sm font-medium text-gray-700 mb-1">Objetivo da Entrevista</label>
+                        <textarea name="interview_objective" rows="2"
+                            class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500">${interview?.interview_objective || ''}</textarea>
+                    </div>
+                    <div class="col-span-2">
+                        <label class="block text-sm font-medium text-gray-700 mb-1">Observações Gerais</label>
+                        <textarea name="general_observations" rows="2"
+                            class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500">${interview?.general_observations || ''}</textarea>
+                    </div>
+                </div>
+                <div class="flex justify-end gap-3 pt-4">
+                    <button type="button" onclick="closeModal()" 
+                        class="px-4 py-2 border border-gray-300 rounded-lg text-gray-700 hover:bg-gray-50">
+                        Cancelar
+                    </button>
+                    <button type="submit" 
+                        class="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700">
+                        ${isEdit ? 'Salvar' : 'Cadastrar'}
+                    </button>
+                </div>
+            </form>
+        `);
+
+        document.getElementById('interviewForm').addEventListener('submit', async (e) => {
+            e.preventDefault();
+            const formData = new FormData(e.target);
+            const data = Object.fromEntries(formData);
+            data.position_id = state.currentPositionId;
+            
+            try {
+                if (isEdit) {
+                    await updateInterview(interview.id, data);
+                    showToast('Entrevista atualizada com sucesso!');
+                } else {
+                    await createInterview(data);
+                    showToast('Entrevista cadastrada com sucesso!');
+                }
+                closeModal();
+                loadInterviews();
+            } catch (error) {
+                showToast('Erro ao salvar entrevista: ' + error.message, 'error');
+            }
+        });
+    }
+
+    function showQuestionnaireModal(questionnaire = null) {
+        const isEdit = questionnaire !== null;
+        showModal(isEdit ? 'Editar Questionário' : 'Novo Questionário', `
+            <form id="questionnaireForm" class="space-y-4">
+                <div class="grid grid-cols-2 gap-4">
+                    <div class="col-span-2">
+                        <label class="block text-sm font-medium text-gray-700 mb-1">Nome do Questionário *</label>
+                        <input type="text" name="name" required value="${questionnaire?.name || ''}"
+                            class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500">
+                    </div>
+                    <div class="col-span-2">
+                        <label class="block text-sm font-medium text-gray-700 mb-1">Descrição</label>
+                        <textarea name="description" rows="2"
+                            class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500">${questionnaire?.description || ''}</textarea>
+                    </div>
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 mb-1">Data</label>
+                        <input type="date" name="questionnaire_date" value="${questionnaire?.questionnaire_date || ''}"
+                            class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500">
+                    </div>
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 mb-1">Respondente</label>
+                        <input type="text" name="respondent_name" value="${questionnaire?.respondent_name || ''}"
+                            class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500">
+                    </div>
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 mb-1">Cargo do Respondente</label>
+                        <input type="text" name="respondent_position" value="${questionnaire?.respondent_position || ''}"
+                            class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500">
+                    </div>
+                </div>
+                <div class="flex justify-end gap-3 pt-4">
+                    <button type="button" onclick="closeModal()" 
+                        class="px-4 py-2 border border-gray-300 rounded-lg text-gray-700 hover:bg-gray-50">
+                        Cancelar
+                    </button>
+                    <button type="submit" 
+                        class="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700">
+                        ${isEdit ? 'Salvar' : 'Cadastrar'}
+                    </button>
+                </div>
+            </form>
+        `);
+
+        document.getElementById('questionnaireForm').addEventListener('submit', async (e) => {
+            e.preventDefault();
+            const formData = new FormData(e.target);
+            const data = Object.fromEntries(formData);
+            data.position_id = state.currentPositionId;
+            
+            try {
+                if (isEdit) {
+                    await updateQuestionnaire(questionnaire.id, data);
+                    showToast('Questionário atualizado com sucesso!');
+                } else {
+                    await createQuestionnaire(data);
+                    showToast('Questionário cadastrado com sucesso!');
+                }
+                closeModal();
+                loadQuestionnaires();
+            } catch (error) {
+                showToast('Erro ao salvar questionário: ' + error.message, 'error');
+            }
+        });
+    }
+
+    function showObservationModal(observation = null) {
+        const isEdit = observation !== null;
+        showModal(isEdit ? 'Editar Observação' : 'Nova Observação', `
+            <form id="observationForm" class="space-y-4 max-h-[70vh] overflow-y-auto">
+                <div class="grid grid-cols-2 gap-4">
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 mb-1">Data</label>
+                        <input type="date" name="observation_date" value="${observation?.observation_date || ''}"
+                            class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500">
+                    </div>
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 mb-1">Horário Inicial</label>
+                        <input type="time" name="start_time" value="${observation?.start_time || ''}"
+                            class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500">
+                    </div>
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 mb-1">Horário Final</label>
+                        <input type="time" name="end_time" value="${observation?.end_time || ''}"
+                            class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500">
+                    </div>
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 mb-1">Observador</label>
+                        <input type="text" name="observer_name" value="${observation?.observer_name || ''}"
+                            class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500">
+                    </div>
+                    <div class="col-span-2">
+                        <label class="block text-sm font-medium text-gray-700 mb-1">Local</label>
+                        <input type="text" name="observation_location" value="${observation?.observation_location || ''}"
+                            class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500">
+                    </div>
+                    <div class="col-span-2">
+                        <label class="block text-sm font-medium text-gray-700 mb-1">Atividade Observada</label>
+                        <textarea name="observed_activity" rows="2"
+                            class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500">${observation?.observed_activity || ''}</textarea>
+                    </div>
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 mb-1">Frequência da Atividade</label>
+                        <input type="text" name="activity_frequency" value="${observation?.activity_frequency || ''}"
+                            class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500">
+                    </div>
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 mb-1">Duração Aproximada</label>
+                        <input type="text" name="approximate_duration" value="${observation?.approximate_duration || ''}"
+                            class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500">
+                    </div>
+                    <div class="col-span-2">
+                        <label class="block text-sm font-medium text-gray-700 mb-1">Equipamentos Utilizados</label>
+                        <textarea name="equipment_used" rows="2"
+                            class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500">${observation?.equipment_used || ''}</textarea>
+                    </div>
+                    <div class="col-span-2">
+                        <label class="block text-sm font-medium text-gray-700 mb-1">Sistemas Utilizados</label>
+                        <textarea name="systems_used" rows="2"
+                            class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500">${observation?.systems_used || ''}</textarea>
+                    </div>
+                    <div class="col-span-2">
+                        <label class="block text-sm font-medium text-gray-700 mb-1">Pessoas Envolvidas</label>
+                        <textarea name="people_involved" rows="2"
+                            class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500">${observation?.people_involved || ''}</textarea>
+                    </div>
+                    <div class="col-span-2">
+                        <label class="block text-sm font-medium text-gray-700 mb-1">Riscos Identificados</label>
+                        <textarea name="identified_risks" rows="2"
+                            class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500">${observation?.identified_risks || ''}</textarea>
+                    </div>
+                    <div class="col-span-2">
+                        <label class="block text-sm font-medium text-gray-700 mb-1">Observações Gerais</label>
+                        <textarea name="general_observations" rows="2"
+                            class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500">${observation?.general_observations || ''}</textarea>
+                    </div>
+                </div>
+                <div class="flex justify-end gap-3 pt-4 sticky bottom-0 bg-white py-4">
+                    <button type="button" onclick="closeModal()" 
+                        class="px-4 py-2 border border-gray-300 rounded-lg text-gray-700 hover:bg-gray-50">
+                        Cancelar
+                    </button>
+                    <button type="submit" 
+                        class="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700">
+                        ${isEdit ? 'Salvar' : 'Cadastrar'}
+                    </button>
+                </div>
+            </form>
+        `);
+
+        document.getElementById('observationForm').addEventListener('submit', async (e) => {
+            e.preventDefault();
+            const formData = new FormData(e.target);
+            const data = Object.fromEntries(formData);
+            data.position_id = state.currentPositionId;
+            
+            try {
+                if (isEdit) {
+                    await updateObservation(observation.id, data);
+                    showToast('Observação atualizada com sucesso!');
+                } else {
+                    await createObservation(data);
+                    showToast('Observação registrada com sucesso!');
+                }
+                closeModal();
+                loadObservations();
+            } catch (error) {
+                showToast('Erro ao salvar observação: ' + error.message, 'error');
+            }
+        });
+    }
+
+    // =====================================================
+    // FUNÇÕES DE CARREGAMENTO
+    // =====================================================
+
+    async function loadCompanies() {
+        try {
+            await fetchCompanies();
+            const container = document.getElementById('companiesList') || document.getElementById('companiesTable');
+            if (state.companies.length === 0) {
+                container.innerHTML = showEmptyState('Nenhuma empresa cadastrada. Clique em "Nova Empresa" para começar.');
+            } else {
+                container.innerHTML = `
+                    <div class="overflow-x-auto">
+                        <table class="w-full">
+                            <thead class="bg-gray-50">
+                                <tr>
+                                    <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Empresa</th>
+                                    <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Segmento</th>
+                                    <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Cidade</th>
+                                    <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Cadastro</th>
+                                    <th class="px-6 py-3 text-right text-xs font-medium text-gray-500 uppercase">Ações</th>
+                                </tr>
+                            </thead>
+                            <tbody class="divide-y divide-gray-200">
+                                ${state.companies.map(company => `
+                                    <tr class="hover:bg-gray-50">
+                                        <td class="px-6 py-4">
+                                            <div class="font-medium text-gray-900">${company.name}</div>
+                                            <div class="text-sm text-gray-500">${company.cnpj || 'Sem CNPJ'}</div>
+                                        </td>
+                                        <td class="px-6 py-4 text-sm text-gray-500">${company.segment || '-'}</td>
+                                        <td class="px-6 py-4 text-sm text-gray-500">${company.city || '-'}</td>
+                                        <td class="px-6 py-4 text-sm text-gray-500">${formatDate(company.created_at)}</td>
+                                        <td class="px-6 py-4 text-right">
+                                            <button onclick="openCompany(${JSON.stringify(company).replace(/"/g, '&quot;')})" 
+                                                class="text-blue-600 hover:text-blue-800 mr-3" title="Acessar Cargos">
+                                                <svg class="w-5 h-5 inline" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 13.255A23.931 23.931 0 0112 15c-3.183 0-6.22-.62-9-1.745M16 6V4a2 2 0 00-2-2h-4a2 2 0 00-2 2v2m4 6h.01M5 20h14a2 2 0 002-2V8a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"></path>
+                                                </svg>
+                                            </button>
+                                            <button onclick='showCompanyModal(${JSON.stringify(company)})' 
+                                                class="text-yellow-600 hover:text-yellow-800 mr-3" title="Editar">
+                                                <svg class="w-5 h-5 inline" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"></path>
+                                                </svg>
+                                            </button>
+                                            <button onclick="deleteCompanyConfirm('${company.id}')" 
+                                                class="text-red-600 hover:text-red-800" title="Excluir">
+                                                <svg class="w-5 h-5 inline" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"></path>
+                                                </svg>
+                                            </button>
+                                        </td>
+                                    </tr>
+                                `).join('')}
+                            </tbody>
+                        </table>
+                    </div>`;
+            }
+        } catch (error) {
+            showToast('Erro ao carregar empresas: ' + error.message, 'error');
+        }
+    }
+
+    async function loadPositions() {
+        try {
+            const company = state.companies.find(c => c.id === state.currentCompanyId);
+            document.getElementById('companyName').textContent = company?.name || '';
+            
+            await fetchPositions(state.currentCompanyId);
+            const container = document.getElementById('positionsTable');
+            
+            if (state.positions.length === 0) {
+                container.innerHTML = showEmptyState('Nenhum cargo cadastrado. Clique em "Novo Cargo" para começar.');
+            } else {
+                container.innerHTML = `
+                    <div class="overflow-x-auto">
+                        <table class="w-full">
+                            <thead class="bg-gray-50">
+                                <tr>
+                                    <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Cargo</th>
+                                    <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Setor</th>
+                                    <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Departamento</th>
+                                    <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Status</th>
+                                    <th class="px-6 py-3 text-right text-xs font-medium text-gray-500 uppercase">Ações</th>
+                                </tr>
+                            </thead>
+                            <tbody class="divide-y divide-gray-200">
+                                ${state.positions.map(position => `
+                                    <tr class="hover:bg-gray-50">
+                                        <td class="px-6 py-4">
+                                            <div class="font-medium text-gray-900">${position.name}</div>
+                                            <div class="text-sm text-gray-500">${position.code || 'Sem código'}</div>
+                                        </td>
+                                        <td class="px-6 py-4 text-sm text-gray-500">${position.sector || '-'}</td>
+                                        <td class="px-6 py-4 text-sm text-gray-500">${position.department || '-'}</td>
+                                        <td class="px-6 py-4">
+                                            <span class="px-2 py-1 text-xs rounded-full ${getStatusColor(position.status)}">${position.status}</span>
+                                        </td>
+                                        <td class="px-6 py-4 text-right">
+                                            <button onclick="openPosition('${position.id}')" 
+                                                class="text-blue-600 hover:text-blue-800 mr-3" title="Analisar">
+                                                <svg class="w-5 h-5 inline" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2"></path>
+                                                </svg>
+                                            </button>
+                                            <button onclick='showPositionModal(${JSON.stringify(position).replace(/'/g, "\\'")})' 
+                                                class="text-yellow-600 hover:text-yellow-800 mr-3" title="Editar">
+                                                <svg class="w-5 h-5 inline" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"></path>
+                                                </svg>
+                                            </button>
+                                            <button onclick="deletePositionConfirm('${position.id}')" 
+                                                class="text-red-600 hover:text-red-800" title="Excluir">
+                                                <svg class="w-5 h-5 inline" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"></path>
+                                                </svg>
+                                            </button>
+                                        </td>
+                                    </tr>
+                                `).join('')}
+                            </tbody>
+                        </table>
+                    </div>`;
+            }
+        } catch (error) {
+            showToast('Erro ao carregar cargos: ' + error.message, 'error');
+        }
+    }
+
+    function getStatusColor(status) {
+        const colors = {
+            'Não iniciada': 'bg-gray-100 text-gray-800',
+            'Em andamento': 'bg-yellow-100 text-yellow-800',
+            'Entrevista realizada': 'bg-blue-100 text-blue-800',
+            'Questionário realizado': 'bg-purple-100 text-purple-800',
+            'Observação realizada': 'bg-green-100 text-green-800',
+            'Consolidação em andamento': 'bg-orange-100 text-orange-800',
+            'Concluída': 'bg-green-100 text-green-800'
+        };
+        return colors[status] || 'bg-gray-100 text-gray-800';
+    }
+
+    async function loadInterviews() {
+        try {
+            const interviews = await fetchInterviews(state.currentPositionId);
+            const container = document.getElementById('interviewsContent');
+            
+            if (interviews.length === 0) {
+                container.innerHTML = `
+                    ${showEmptyState('Nenhuma entrevista cadastrada.')}
+                    <div class="text-center mt-4">
+                        <button onclick="showInterviewModal()" 
+                            class="bg-blue-600 text-white px-4 py-2 rounded-lg font-semibold hover:bg-blue-700">
+                            + Nova Entrevista
+                        </button>
+                    </div>`;
+            } else {
+                container.innerHTML = `
+                    <div class="flex justify-end mb-4">
+                        <button onclick="showInterviewModal()" 
+                            class="bg-blue-600 text-white px-4 py-2 rounded-lg font-semibold hover:bg-blue-700">
+                            + Nova Entrevista
+                        </button>
+                    </div>
+                    <div class="space-y-4">
+                        ${interviews.map(interview => `
+                            <div class="border border-gray-200 rounded-lg p-4 hover:shadow-md transition">
+                                <div class="flex justify-between items-start">
+                                    <div>
+                                        <h4 class="font-semibold text-gray-800">${interview.interviewee_name || 'Entrevista'}</h4>
+                                        <p class="text-sm text-gray-500">Data: ${formatDate(interview.interview_date)} | Entrevistador: ${interview.interviewer_name || '-'}</p>
+                                    </div>
+                                    <div class="flex gap-2">
+                                        <button onclick="openInterview('${interview.id}')" 
+                                            class="text-blue-600 hover:text-blue-800" title="Responder">
+                                            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2"></path>
+                                            </svg>
+                                        </button>
+                                        <button onclick='showInterviewModal(${JSON.stringify(interview).replace(/'/g, "\\'")})' 
+                                            class="text-yellow-600 hover:text-yellow-800" title="Editar">
+                                            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"></path>
+                                            </svg>
+                                        </button>
+                                        <button onclick="deleteInterviewConfirm('${interview.id}')" 
+                                            class="text-red-600 hover:text-red-800" title="Excluir">
+                                            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"></path>
+                                            </svg>
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                        `).join('')}
+                    </div>`;
+            }
+        } catch (error) {
+            showToast('Erro ao carregar entrevistas: ' + error.message, 'error');
+        }
+    }
+
+    async function loadQuestionnaires() {
+        try {
+            const questionnaires = await fetchQuestionnaires(state.currentPositionId);
+            const container = document.getElementById('questionnairesContent');
+            
+            if (questionnaires.length === 0) {
+                container.innerHTML = `
+                    ${showEmptyState('Nenhum questionário cadastrado.')}
+                    <div class="text-center mt-4">
+                        <button onclick="showQuestionnaireModal()" 
+                            class="bg-blue-600 text-white px-4 py-2 rounded-lg font-semibold hover:bg-blue-700">
+                            + Novo Questionário
+                        </button>
+                    </div>`;
+            } else {
+                container.innerHTML = `
+                    <div class="flex justify-end mb-4">
+                        <button onclick="showQuestionnaireModal()" 
+                            class="bg-blue-600 text-white px-4 py-2 rounded-lg font-semibold hover:bg-blue-700">
+                            + Novo Questionário
+                        </button>
+                    </div>
+                    <div class="space-y-4">
+                        ${questionnaires.map(q => `
+                            <div class="border border-gray-200 rounded-lg p-4 hover:shadow-md transition">
+                                <div class="flex justify-between items-start">
+                                    <div>
+                                        <h4 class="font-semibold text-gray-800">${q.name}</h4>
+                                        <p class="text-sm text-gray-500">Data: ${formatDate(q.questionnaire_date)} | Respondente: ${q.respondent_name || '-'}</p>
+                                    </div>
+                                    <div class="flex gap-2">
+                                        <button onclick="openQuestionnaire('${q.id}')" 
+                                            class="text-blue-600 hover:text-blue-800" title="Responder">
+                                            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2"></path>
+                                            </svg>
+                                        </button>
+                                        <button onclick='showQuestionnaireModal(${JSON.stringify(q).replace(/'/g, "\\'")})' 
+                                            class="text-yellow-600 hover:text-yellow-800" title="Editar">
+                                            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"></path>
+                                            </svg>
+                                        </button>
+                                        <button onclick="deleteQuestionnaireConfirm('${q.id}')" 
+                                            class="text-red-600 hover:text-red-800" title="Excluir">
+                                            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"></path>
+                                            </svg>
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                        `).join('')}
+                    </div>`;
+            }
+        } catch (error) {
+            showToast('Erro ao carregar questionários: ' + error.message, 'error');
+        }
+    }
+
+    async function loadObservations() {
+        try {
+            const observations = await fetchObservations(state.currentPositionId);
+            const container = document.getElementById('observationsContent');
+            
+            if (observations.length === 0) {
+                container.innerHTML = `
+                    ${showEmptyState('Nenhuma observação cadastrada.')}
+                    <div class="text-center mt-4">
+                        <button onclick="showObservationModal()" 
+                            class="bg-blue-600 text-white px-4 py-2 rounded-lg font-semibold hover:bg-blue-700">
+                            + Nova Observação
+                        </button>
+                    </div>`;
+            } else {
+                container.innerHTML = `
+                    <div class="flex justify-end mb-4">
+                        <button onclick="showObservationModal()" 
+                            class="bg-blue-600 text-white px-4 py-2 rounded-lg font-semibold hover:bg-blue-700">
+                            + Nova Observação
+                        </button>
+                    </div>
+                    <div class="space-y-4">
+                        ${observations.map(obs => `
+                            <div class="border border-gray-200 rounded-lg p-4 hover:shadow-md transition">
+                                <div class="flex justify-between items-start">
+                                    <div>
+                                        <h4 class="font-semibold text-gray-800">${obs.observed_activity || 'Observação'}</h4>
+                                        <p class="text-sm text-gray-500">Data: ${formatDate(obs.observation_date)} | Observador: ${obs.observer_name || '-'}</p>
+                                    </div>
+                                    <div class="flex gap-2">
+                                        <button onclick="openObservation('${obs.id}')" 
+                                            class="text-blue-600 hover:text-blue-800" title="Ver Detalhes">
+                                            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"></path>
+                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"></path>
+                                            </svg>
+                                        </button>
+                                        <button onclick='showObservationModal(${JSON.stringify(obs).replace(/'/g, "\\'")})' 
+                                            class="text-yellow-600 hover:text-yellow-800" title="Editar">
+                                            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"></path>
+                                            </svg>
+                                        </button>
+                                        <button onclick="deleteObservationConfirm('${obs.id}')" 
+                                            class="text-red-600 hover:text-red-800" title="Excluir">
+                                            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"></path>
+                                            </svg>
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                        `).join('')}
+                    </div>`;
+            }
+        } catch (error) {
+            showToast('Erro ao carregar observações: ' + error.message, 'error');
+        }
+    }
+
+    // =====================================================
+    // NAVEGAÇÃO
+    // =====================================================
+    
+    function navigateTo(page, data = null) {
+        state.currentPage = page;
+        if (data) {
+            if (data.companyId) state.currentCompanyId = data.companyId;
+            if (data.positionId) state.currentPositionId = data.positionId;
+        }
+        renderApp();
+    }
+
+    function openCompany(company) {
+        state.currentCompanyId = company.id;
+        navigateTo('positions');
+    }
+
+    async function openPosition(positionId) {
+        state.currentPositionId = positionId;
+        state.currentTab = 'overview';
+        navigateTo('position');
+    }
+
+    function switchTab(tab) {
+        state.currentTab = tab;
+        renderPositionContent();
+    }
+
+    async function deleteCompanyConfirm(id) {
+        if (confirm('Tem certeza que deseja excluir esta empresa? Todos os cargos associados serão excluídos.')) {
+            try {
+                await deleteCompany(id);
+                showToast('Empresa excluída com sucesso!');
+                loadCompanies();
+            } catch (error) {
+                showToast('Erro ao excluir empresa: ' + error.message, 'error');
+            }
+        }
+    }
+
+    async function deletePositionConfirm(id) {
+        if (confirm('Tem certeza que deseja excluir este cargo? Todas as análises serão excluídas.')) {
+            try {
+                await deletePosition(id);
+                showToast('Cargo excluído com sucesso!');
+                loadPositions();
+            } catch (error) {
+                showToast('Erro ao excluir cargo: ' + error.message, 'error');
+            }
+        }
+    }
+
+    async function deleteInterviewConfirm(id) {
+        if (confirm('Tem certeza que deseja excluir esta entrevista?')) {
+            try {
+                await deleteInterview(id);
+                showToast('Entrevista excluída com sucesso!');
+                loadInterviews();
+            } catch (error) {
+                showToast('Erro ao excluir entrevista: ' + error.message, 'error');
+            }
+        }
+    }
+
+    async function deleteQuestionnaireConfirm(id) {
+        if (confirm('Tem certeza que deseja excluir este questionário?')) {
+            try {
+                await deleteQuestionnaire(id);
+                showToast('Questionário excluído com sucesso!');
+                loadQuestionnaires();
+            } catch (error) {
+                showToast('Erro ao excluir questionário: ' + error.message, 'error');
+            }
+        }
+    }
+
+    async function deleteObservationConfirm(id) {
+        if (confirm('Tem certeza que deseja excluir esta observação?')) {
+            try {
+                await deleteObservation(id);
+                showToast('Observação excluída com sucesso!');
+                loadObservations();
+            } catch (error) {
+                showToast('Erro ao excluir observação: ' + error.message, 'error');
+            }
+        }
+    }
+
+    function openInterview(id) {
+        state.currentInterviewId = id;
+        navigateTo('interview');
+    }
+
+    function openQuestionnaire(id) {
+        state.currentQuestionnaireId = id;
+        navigateTo('questionnaire');
+    }
+
+    function openObservation(id) {
+        state.currentObservationId = id;
+        navigateTo('observation');
+    }
+
+    // =====================================================
+    // RENDERIZAÇÃO PRINCIPAL
+    // =====================================================
+    
+    function renderApp(initialPage = null) {
+        const app = document.getElementById('app');
+        
+        if (initialPage) {
+            state.currentPage = initialPage;
+        }
+        
+        if (state.currentPage === 'login') {
+            app.innerHTML = renderLogin();
+            setupLoginForm();
+        } else if (state.currentPage === 'register') {
+            app.innerHTML = renderRegister();
+            setupRegisterForm();
+        } else {
+            switch (state.currentPage) {
+                case 'dashboard':
+                    app.innerHTML = renderDashboard();
+                    loadCompanies();
+                    fetchStats().then(stats => {
+                        document.getElementById('stat-companies').textContent = stats.companies;
+                        document.getElementById('stat-positions').textContent = stats.positions;
+                        document.getElementById('stat-interviews').textContent = stats.interviews;
+                        document.getElementById('stat-questionnaires').textContent = stats.questionnaires;
+                        document.getElementById('stat-observations').textContent = stats.observations;
+                    });
+                    break;
+                case 'companies':
+                    app.innerHTML = renderCompanies();
+                    loadCompanies();
+                    break;
+                case 'positions':
+                    app.innerHTML = renderPositions();
+                    loadPositions();
+                    break;
+                case 'position':
+                    app.innerHTML = renderPosition();
+                    loadPositionData();
+                    break;
+                default:
+                    app.innerHTML = renderDashboard();
+                    loadCompanies();
+            }
+        }
+    }
+
+    async function loadPositionData() {
+        try {
+            const position = await getPosition(state.currentPositionId);
+            document.getElementById('positionName').textContent = position.name;
+            document.getElementById('positionInfo').textContent = `${position.companies?.name || ''} | ${position.sector || ''} | ${position.department || ''}`;
+            
+            await updateProgress();
+            renderPositionContent();
+        } catch (error) {
+            showToast('Erro ao carregar cargo: ' + error.message, 'error');
+        }
+    }
+
+    async function updateProgress() {
+        try {
+            const [interviews, questionnaires, observations] = await Promise.all([
+                fetchInterviews(state.currentPositionId),
+                fetchQuestionnaires(state.currentPositionId),
+                fetchObservations(state.currentPositionId)
+            ]);
+            
+            const checks = [
+                { label: 'Entrevista', done: interviews.length > 0 },
+                { label: 'Questionário', done: questionnaires.length > 0 },
+                { label: 'Observação', done: observations.length > 0 }
+            ];
+            
+            const completed = checks.filter(c => c.done).length;
+            const percent = Math.round((completed / 3) * 100);
+            
+            document.getElementById('progressPercent').textContent = `${percent}%`;
+            document.getElementById('progressBar').style.width = `${percent}%`;
+            document.getElementById('progressChecks').innerHTML = checks.map(check => `
+                <div class="flex items-center gap-2">
+                    <div class="w-5 h-5 rounded-full ${check.done ? 'bg-green-500' : 'bg-gray-300'} flex items-center justify-center">
+                        ${check.done ? '<svg class="w-3 h-3 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="3" d="M5 13l4 4L19 7"></path></svg>' : ''}
+                    </div>
+                    <span class="text-sm ${check.done ? 'text-green-600 font-medium' : 'text-gray-500'}">${check.label}</span>
+                </div>
+            `).join('');
+        } catch (error) {
+            console.error('Erro ao atualizar progresso:', error);
+        }
+    }
+
+    function renderPositionContent() {
+        const container = document.getElementById('tabContent');
+        
+        switch (state.currentTab) {
+            case 'overview':
+                loadPositionOverview(container);
+                break;
+            case 'interviews':
+                container.innerHTML = '<div id="interviewsContent"></div>';
+                loadInterviews();
+                break;
+            case 'questionnaires':
+                container.innerHTML = '<div id="questionnairesContent"></div>';
+                loadQuestionnaires();
+                break;
+            case 'observations':
+                container.innerHTML = '<div id="observationsContent"></div>';
+                loadObservations();
+                break;
+            case 'consolidation':
+                loadConsolidation(container);
+                break;
+            case 'finalDescription':
+                loadFinalDescription(container);
+                break;
+        }
+    }
+
+    async function loadPositionOverview(container) {
+        try {
+            const position = await getPosition(state.currentPositionId);
+            container.innerHTML = `
+                <div class="grid grid-cols-2 gap-6">
+                    <div class="space-y-4">
+                        <h4 class="font-semibold text-gray-800 border-b pb-2">Identificação</h4>
+                        <div class="grid grid-cols-2 gap-4 text-sm">
+                            <div><span class="text-gray-500">Cargo:</span> ${position.name}</div>
+                            <div><span class="text-gray-500">Código:</span> ${position.code || '-'}</div>
+                            <div><span class="text-gray-500">Setor:</span> ${position.sector || '-'}</div>
+                            <div><span class="text-gray-500">Departamento:</span> ${position.department || '-'}</div>
+                            <div><span class="text-gray-500">Superior:</span> ${position.immediate_superior || '-'}</div>
+                            <div><span class="text-gray-500">Ocupantes:</span> ${position.num_occupants || '-'}</div>
+                        </div>
+                        
+                        <h4 class="font-semibold text-gray-800 border-b pb-2 mt-6">Condições de Trabalho</h4>
+                        <div class="grid grid-cols-2 gap-4 text-sm">
+                            <div><span class="text-gray-500">Local:</span> ${position.work_location || '-'}</div>
+                            <div><span class="text-gray-500">Jornada:</span> ${position.work_schedule || '-'}</div>
+                            <div><span class="text-gray-500">Horário:</span> ${position.work_hours || '-'}</div>
+                            <div><span class="text-gray-500">Vínculo:</span> ${position.bond_type || '-'}</div>
+                            <div><span class="text-gray-500">Salário:</span> ${position.salary_range || '-'}</div>
+                        </div>
+                    </div>
+                    
+                    <div class="space-y-4">
+                        <h4 class="font-semibold text-gray-800 border-b pb-2">Requisitos</h4>
+                        <div class="text-sm space-y-2">
+                            <div><span class="text-gray-500">Escolaridade:</span> ${position.minimum_education || '-'}</div>
+                            <div><span class="text-gray-500">Experiência:</span> ${position.required_experience || '-'}</div>
+                        </div>
+                        
+                        <h4 class="font-semibold text-gray-800 border-b pb-2 mt-6">Descrição do Cargo</h4>
+                        <div class="text-sm space-y-2">
+                            <div><span class="text-gray-500">Objetivo:</span> ${position.objective || '-'}</div>
+                            <div><span class="text-gray-500">Responsabilidades:</span> ${position.main_responsibilities || '-'}</div>
+                            <div><span class="text-gray-500">Atividades:</span> ${position.activities || '-'}</div>
+                        </div>
+                        
+                        <h4 class="font-semibold text-gray-800 border-b pb-2 mt-6">Competências</h4>
+                        <div class="text-sm space-y-2">
+                            <div><span class="text-gray-500">Técnicas:</span> ${position.technical_competencies || '-'}</div>
+                            <div><span class="text-gray-500">Comportamentais:</span> ${position.behavioral_competencies || '-'}</div>
+                        </div>
+                        
+                        <h4 class="font-semibold text-gray-800 border-b pb-2 mt-6">Recursos</h4>
+                        <div class="text-sm space-y-2">
+                            <div><span class="text-gray-500">Equipamentos:</span> ${position.equipment_used || '-'}</div>
+                            <div><span class="text-gray-500">Sistemas:</span> ${position.systems_used || '-'}</div>
+                            <div><span class="text-gray-500">Riscos:</span> ${position.occupational_risks || '-'}</div>
+                            <div><span class="text-gray-500">EPIs:</span> ${position.ppe_used || '-'}</div>
+                        </div>
+                    </div>
+                </div>
+            `;
+        } catch (error) {
+            container.innerHTML = `<p class="text-red-500">Erro ao carregar dados: ${error.message}</p>`;
+        }
+    }
+
+    async function loadConsolidation(container) {
+        const categories = [
+            'Objetivo do cargo',
+            'Principais atividades',
+            'Responsabilidades',
+            'Conhecimentos',
+            'Habilidades',
+            'Competências comportamentais',
+            'Equipamentos',
+            'Sistemas',
+            'Relacionamentos internos',
+            'Relacionamentos externos',
+            'Tomada de decisão',
+            'Riscos',
+            'Condições de trabalho',
+            'Resultados esperados',
+            'Requisitos do cargo'
+        ];
+
+        try {
+            const consolidations = await fetchConsolidations(state.currentPositionId);
+            
+            container.innerHTML = `
+                <div class="space-y-6">
+                    <p class="text-gray-600">Consolide as informações coletadas nos três métodos de análise.</p>
+                    
+                    ${categories.map(category => {
+                        const existing = consolidations.find(c => c.category === category);
+                        return `
+                            <div class="border border-gray-200 rounded-lg p-4">
+                                <h4 class="font-semibold text-gray-800 mb-3">${category}</h4>
+                                <div class="grid grid-cols-3 gap-4 mb-4">
+                                    <div>
+                                        <label class="block text-xs font-medium text-blue-600 mb-1">ENTREVISTA</label>
+                                        <textarea class="consolidation-interview w-full px-3 py-2 border border-gray-200 rounded text-sm" 
+                                            rows="2" data-category="${category}">${existing?.interview_data || ''}</textarea>
+                                    </div>
+                                    <div>
+                                        <label class="block text-xs font-medium text-purple-600 mb-1">QUESTIONÁRIO</label>
+                                        <textarea class="consolidation-questionnaire w-full px-3 py-2 border border-gray-200 rounded text-sm" 
+                                            rows="2" data-category="${category}">${existing?.questionnaire_data || ''}</textarea>
+                                    </div>
+                                    <div>
+                                        <label class="block text-xs font-medium text-green-600 mb-1">OBSERVAÇÃO</label>
+                                        <textarea class="consolidation-observation w-full px-3 py-2 border border-gray-200 rounded text-sm" 
+                                            rows="2" data-category="${category}">${existing?.observation_data || ''}</textarea>
+                                    </div>
+                                </div>
+                                <div>
+                                    <label class="block text-xs font-medium text-gray-600 mb-1">CONCLUSÃO</label>
+                                    <textarea class="consolidation-conclusion w-full px-3 py-2 border border-gray-300 rounded text-sm" 
+                                        rows="2" data-category="${category}">${existing?.conclusion || ''}</textarea>
+                                </div>
+                            </div>
+                        `;
+                    }).join('')}
+                    
+                    <div class="flex justify-end">
+                        <button onclick="saveConsolidations()" 
+                            class="bg-blue-600 text-white px-6 py-2 rounded-lg font-semibold hover:bg-blue-700">
+                            Salvar Consolidação
+                        </button>
+                    </div>
+                </div>
+            `;
+        } catch (error) {
+            container.innerHTML = `<p class="text-red-500">Erro ao carregar consolidação: ${error.message}</p>`;
+        }
+    }
+
+    async function saveConsolidations() {
+        const categories = document.querySelectorAll('[data-category]');
+        const saved = new Set();
+        
+        try {
+            for (const el of categories) {
+                const category = el.dataset.category;
+                if (saved.has(category)) continue;
+                
+                const container = el.closest('.border');
+                const consolidation = {
+                    position_id: state.currentPositionId,
+                    user_id: state.user.id,
+                    category: category,
+                    interview_data: container.querySelector('.consolidation-interview')?.value || '',
+                    questionnaire_data: container.querySelector('.consolidation-questionnaire')?.value || '',
+                    observation_data: container.querySelector('.consolidation-observation')?.value || '',
+                    conclusion: container.querySelector('.consolidation-conclusion')?.value || ''
+                };
+                
+                await upsertConsolidation(consolidation);
+                saved.add(category);
+            }
+            
+            showToast('Consolidação salva com sucesso!');
+        } catch (error) {
+            showToast('Erro ao salvar consolidação: ' + error.message, 'error');
+        }
+    }
+
+    async function loadFinalDescription(container) {
+        try {
+            const description = await fetchFinalDescription(state.currentPositionId);
+            const position = await getPosition(state.currentPositionId);
+            
+            container.innerHTML = `
+                <div class="space-y-6">
+                    <div class="bg-gray-50 rounded-lg p-6">
+                        <h3 class="text-lg font-bold text-gray-800 mb-4">DESCRIÇÃO FINAL DO CARGO</h3>
+                        
+                        <div class="space-y-4">
+                            <div>
+                                <h4 class="font-semibold text-gray-700">IDENTIFICAÇÃO</h4>
+                                <div class="grid grid-cols-2 gap-4 mt-2 text-sm">
+                                    <div><span class="text-gray-500">Empresa:</span> ${position.companies?.name || '-'}</div>
+                                    <div><span class="text-gray-500">Cargo:</span> ${position.name}</div>
+                                    <div><span class="text-gray-500">Setor:</span> ${position.sector || '-'}</div>
+                                    <div><span class="text-gray-500">Departamento:</span> ${position.department || '-'}</div>
+                                    <div><span class="text-gray-500">Superior Imediato:</span> ${position.immediate_superior || '-'}</div>
+                                    <div><span class="text-gray-500">Nº Ocupantes:</span> ${position.num_occupants || '-'}</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <form id="finalDescriptionForm" class="space-y-4">
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700 mb-1">MISSÃO DO CARGO</label>
+                            <textarea name="mission" rows="3"
+                                class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500">${description?.mission || ''}</textarea>
+                        </div>
+                        
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700 mb-1">RESPONSABILIDADES</label>
+                            <textarea name="responsibilities" rows="3"
+                                class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500">${description?.responsibilities || ''}</textarea>
+                        </div>
+                        
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700 mb-1">ATIVIDADES PRINCIPAIS</label>
+                            <textarea name="main_activities" rows="3"
+                                class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500">${description?.main_activities || ''}</textarea>
+                        </div>
+                        
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700 mb-1">REQUISITOS</label>
+                            <textarea name="requirements" rows="3"
+                                class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500">${description?.requirements || ''}</textarea>
+                        </div>
+                        
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700 mb-1">COMPETÊNCIAS</label>
+                            <textarea name="competencies" rows="3"
+                                class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500">${description?.competencies || ''}</textarea>
+                        </div>
+                        
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700 mb-1">CONDIÇÕES DE TRABALHO</label>
+                            <textarea name="working_conditions" rows="3"
+                                class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500">${description?.working_conditions || ''}</textarea>
+                        </div>
+                        
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700 mb-1">EQUIPAMENTOS</label>
+                            <textarea name="equipment" rows="3"
+                                class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500">${description?.equipment || ''}</textarea>
+                        </div>
+                        
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700 mb-1">SISTEMAS</label>
+                            <textarea name="systems" rows="3"
+                                class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500">${description?.systems || ''}</textarea>
+                        </div>
+                        
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700 mb-1">RISCOS</label>
+                            <textarea name="risks" rows="3"
+                                class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500">${description?.risks || ''}</textarea>
+                        </div>
+                        
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700 mb-1">RESULTADOS ESPERADOS</label>
+                            <textarea name="expected_results" rows="3"
+                                class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500">${description?.expected_results || ''}</textarea>
+                        </div>
+                        
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700 mb-1">RELACIONAMENTOS</label>
+                            <textarea name="relationships" rows="3"
+                                class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500">${description?.relationships || ''}</textarea>
+                        </div>
+                        
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700 mb-1">OBSERVAÇÕES</label>
+                            <textarea name="final_observations" rows="3"
+                                class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500">${description?.final_observations || ''}</textarea>
+                        </div>
+                        
+                        <div class="flex justify-end">
+                            <button type="submit" 
+                                class="bg-blue-600 text-white px-6 py-2 rounded-lg font-semibold hover:bg-blue-700">
+                                Salvar Descrição Final
+                            </button>
+                        </div>
+                    </form>
+                </div>
+            `;
+            
+            document.getElementById('finalDescriptionForm').addEventListener('submit', async (e) => {
+                e.preventDefault();
+                const formData = new FormData(e.target);
+                const data = Object.fromEntries(formData);
+                data.position_id = state.currentPositionId;
+                data.user_id = state.user.id;
+                
+                try {
+                    await upsertFinalDescription(data);
+                    showToast('Descrição final salva com sucesso!');
+                } catch (error) {
+                    showToast('Erro ao salvar descrição: ' + error.message, 'error');
+                }
+            });
+        } catch (error) {
+            container.innerHTML = `<p class="text-red-500">Erro ao carregar descrição: ${error.message}</p>`;
+        }
+    }
+
+    // =====================================================
+    // SETUP DE FORMULÁRIOS
+    // =====================================================
+    
+    function setupLoginForm() {
+        document.getElementById('loginForm')?.addEventListener('submit', async (e) => {
+            e.preventDefault();
+            const email = document.getElementById('loginEmail').value;
+            const password = document.getElementById('loginPassword').value;
+            
+            try {
+                await signIn(email, password);
+                showToast('Login realizado com sucesso!');
+                navigateTo('dashboard');
+            } catch (error) {
+                showToast('Erro ao fazer login: ' + error.message, 'error');
+            }
+        });
+    }
+
+    function setupRegisterForm() {
+        document.getElementById('registerForm')?.addEventListener('submit', async (e) => {
+            e.preventDefault();
+            const name = document.getElementById('registerName').value;
+            const email = document.getElementById('registerEmail').value;
+            const password = document.getElementById('registerPassword').value;
+            const confirmPassword = document.getElementById('registerConfirmPassword').value;
+            
+            if (password !== confirmPassword) {
+                showToast('As senhas não conferem!', 'error');
+                return;
+            }
+            
+            try {
+                await signUp(email, password, name);
+                showToast('Conta criada com sucesso! Verifique seu e-mail.');
+                navigateTo('login');
+            } catch (error) {
+                showToast('Erro ao criar conta: ' + error.message, 'error');
+            }
+        });
+    }
+
+    // =====================================================
+    // INICIALIZAÇÃO
+    // =====================================================
+    
+    document.addEventListener('DOMContentLoaded', async () => {
+        const { data: { session } } = await supabase.auth.getSession();
+        
+        if (session) {
+            state.user = session.user;
+            try {
+                state.profile = await getProfile();
+                navigateTo('dashboard');
+            } catch (error) {
+                console.error('Erro ao carregar perfil:', error);
+                navigateTo('login');
+            }
+        } else {
+            navigateTo('login');
+        }
+        
+        supabase.auth.onAuthStateChange(async (event, session) => {
+            if (event === 'SIGNED_IN' && session) {
+                state.user = session.user;
+                state.profile = await getProfile();
+                navigateTo('dashboard');
+            } else if (event === 'SIGNED_OUT') {
+                state.user = null;
+                state.profile = null;
+                navigateTo('login');
+            }
+        });
+    });
+    </script>
+</body>
+</html>

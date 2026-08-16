@@ -3,61 +3,645 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Aguarde - Aula em Breve</title>
+    <title>Gestão Estratégica de Pessoas & Arquitetação de Remuneração</title>
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- FontAwesome Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
     <style>
-        body {
-            margin: 0;
-            padding: 0;
-            background-color: #f4f4f4; /* Cor de fundo suave */
-            font-family: Arial, sans-serif;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            height: 100vh;
+        body { font-family: 'Inter', sans-serif; }
+        .gradient-bg {
+            background: linear-gradient(135deg, #1e3a8a 0%, #3b82f6 50%, #1d4ed8 100%);
         }
-
-        .container {
-            background-color: #fff;
-            border-radius: 8px;
-            box-shadow: 0 4px 8px rgba(0,0,0,0.1);
-            padding: 40px;
-            text-align: center;
+        .quote-card {
+            border-left: 4px solid #2563eb;
         }
-
-        .container img {
-            max-width: 100%;
-            height: auto;
-            border-radius: 8px; /* Mantém as bordas arredondadas da imagem */
-            margin-bottom: 20px;
-        }
-
-        .container h1 {
-            color: #333;
-            font-size: 24px;
-            margin-bottom: 30px;
-        }
-
-        .btn-voltar {
-            display: inline-block;
-            background-color: #007bff; /* Azul para o botão */
-            color: #fff;
-            padding: 12px 24px;
-            text-decoration: none;
-            border-radius: 5px;
-            font-weight: bold;
-            transition: background-color 0.3s ease;
-        }
-
-        .btn-voltar:hover {
-            background-color: #0056b3; /* Cor mais escura no hover */
+        .glass-card {
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
         }
     </style>
 </head>
-<body>
-    <div class="container">
-        <img src="imagem1.png" width="320" height="240" alt="O professor em sala de aula">
-        <h1>Aguarde: em breve essa aula estará disponivel.</h1>
-        <a href="index.html" class="btn-voltar">Voltar</a>
-    </div>
+<body class="bg-slate-50 text-slate-800 antialiased selection:bg-blue-500 selection:text-white">
+
+    <!-- Header / Hero Section -->
+    <header class="gradient-bg text-white py-16 px-4 sm:px-6 lg:px-8 shadow-xl">
+        <div class="max-w-7xl mx-auto text-center">
+            <span class="inline-block py-1 px-3 rounded-full bg-blue-400/30 text-blue-100 text-xs font-semibold tracking-wider uppercase mb-4 border border-blue-300/30">
+                Módulo de Ensino & Prática Corporativa
+            </span>
+            <h1 class="text-3xl sm:text-5xl font-extrabold tracking-tight leading-tight">
+                Gestão Estratégica de Pessoas
+            </h1>
+            <p class="mt-4 text-lg sm:text-xl text-blue-100 max-w-3xl mx-auto font-light">
+                Da Administração de Salários à Arquitetura da Remuneração Estratégica: Conceitos, Fundamentos Legais, Motivação e Prática Aplicada.
+            </p>
+            <div class="mt-8 flex flex-wrap justify-center gap-4 text-sm font-medium">
+                <a href="#evolucao" class="bg-white/10 hover:bg-white/20 backdrop-blur-md px-4 py-2 rounded-lg border border-white/20 transition">
+                    <i class="fa-solid fa-timeline mr-2"></i>Evolução Histórica
+                </a>
+                <a href="#definicoes" class="bg-white/10 hover:bg-white/20 backdrop-blur-md px-4 py-2 rounded-lg border border-white/20 transition">
+                    <i class="fa-solid fa-scale-balanced mr-2"></i>Salário vs. Remuneração
+                </a>
+                <a href="#motivacao" class="bg-white/10 hover:bg-white/20 backdrop-blur-md px-4 py-2 rounded-lg border border-white/20 transition">
+                    <i class="fa-solid fa-brain mr-2"></i>Motivação & Clima
+                </a>
+                <a href="#atividade" class="bg-blue-500 hover:bg-blue-600 text-white px-4 py-2 rounded-lg shadow-lg font-semibold transition">
+                    <i class="fa-solid fa-rocket mr-2"></i>Atividade Prática
+                </a>
+            </div>
+        </div>
+    </header>
+
+    <!-- Main Container -->
+    <main class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12 space-y-16">
+
+        <!-- SECTION 1: EVOLUÇÃO DOS CONCEITOS -->
+        <section id="evolucao" class="scroll-mt-8">
+            <div class="border-b border-slate-200 pb-4 mb-8">
+                <span class="text-blue-600 font-bold uppercase text-xs tracking-wider">Unidade I</span>
+                <h2 class="text-3xl font-bold text-slate-900 flex items-center gap-3">
+                    <i class="fa-solid fa-arrow-trend-up text-blue-600"></i>
+                    Evolução dos Conceitos: Do Pagamento Burocrático à Remuneração Estratégica
+                </h2>
+            </div>
+
+            <p class="text-slate-600 text-lg leading-relaxed mb-8">
+                A maneira como as organizações lidam com a contraprestação pelo trabalho prestado passou por transformações profundas nas últimas décadas. O que antes era encarado como um mero custo operacional gerido por um departamento cartorial transformou-se em uma das principais alavancas competitivas da Gestão Estratégica de Pessoas.
+            </p>
+
+            <!-- Timeline Grid -->
+            <div class="grid md:grid-cols-3 gap-6 mb-12">
+                <!-- Fase 1 -->
+                <div class="bg-white rounded-2xl p-6 shadow-sm border border-slate-200 hover:shadow-md transition">
+                    <div class="w-12 h-12 bg-slate-100 rounded-xl flex items-center justify-center text-slate-600 font-bold text-xl mb-4">
+                        01
+                    </div>
+                    <span class="text-xs font-semibold text-slate-400 uppercase tracking-wider">Era Industrial Clássica</span>
+                    <h3 class="text-xl font-bold text-slate-800 mt-1 mb-3">Departamento Pessoal (DP)</h3>
+                    <ul class="text-slate-600 text-sm space-y-2">
+                        <li class="flex items-start gap-2">
+                            <i class="fa-solid fa-xmark text-red-500 mt-1"></i>
+                            <span>Foco puramente burocrático, contábil e cumpridor de exigências legais (CLT, folha de pagamento).</span>
+                        </li>
+                        <li class="flex items-start gap-2">
+                            <i class="fa-solid fa-xmark text-red-500 mt-1"></i>
+                            <span>Pessoas vistas como custos operacionais fixos e engrenagens do processo produtivo.</span>
+                        </li>
+                        <li class="flex items-start gap-2">
+                            <i class="fa-solid fa-xmark text-red-500 mt-1"></i>
+                            <span>Pagamento padronizado baseado no tempo de presença, com tabelas rígidas e impessoais.</span>
+                        </li>
+                    </ul>
+                </div>
+
+                <!-- Fase 2 -->
+                <div class="bg-white rounded-2xl p-6 shadow-sm border border-slate-200 hover:shadow-md transition">
+                    <div class="w-12 h-12 bg-blue-50 rounded-xl flex items-center justify-center text-blue-600 font-bold text-xl mb-4">
+                        02
+                    </div>
+                    <span class="text-xs font-semibold text-blue-500 uppercase tracking-wider">Era Industrial Neoclássica</span>
+                    <h3 class="text-xl font-bold text-slate-800 mt-1 mb-3">Administração de RH (ARH)</h3>
+                    <ul class="text-slate-600 text-sm space-y-2">
+                        <li class="flex items-start gap-2">
+                            <i class="fa-solid fa-check text-blue-500 mt-1"></i>
+                            <span>Estruturação formal de Administração de Cargos e Salários baseada na descrição analítica de funções.</span>
+                        </li>
+                        <li class="flex items-start gap-2">
+                            <i class="fa-solid fa-check text-blue-500 mt-1"></i>
+                            <span>Busca por equidade interna (avaliação de cargos) e competitividade externa (pesquisas salariais).</span>
+                        </li>
+                        <li class="flex items-start gap-2">
+                            <i class="fa-solid fa-triangle-exclamation text-amber-500 mt-1"></i>
+                            <span>Ainda predominantemente operacional e reativo às exigências de mercado.</span>
+                        </li>
+                    </ul>
+                </div>
+
+                <!-- Fase 3 -->
+                <div class="bg-blue-600 text-white rounded-2xl p-6 shadow-lg hover:shadow-xl transition">
+                    <div class="w-12 h-12 bg-white/10 rounded-xl flex items-center justify-center text-white font-bold text-xl mb-4">
+                        03
+                    </div>
+                    <span class="text-xs font-semibold text-blue-200 uppercase tracking-wider">Era da Informação & Conhecimento</span>
+                    <h3 class="text-xl font-bold text-white mt-1 mb-3">Gestão Estratégica de Pessoas</h3>
+                    <ul class="text-blue-100 text-sm space-y-2">
+                        <li class="flex items-start gap-2">
+                            <i class="fa-solid fa-star text-amber-300 mt-1"></i>
+                            <span>Pessoas reconhecidas como parceiras estratégicas, detentoras do capital intelectual.</span>
+                        </li>
+                        <li class="flex items-start gap-2">
+                            <i class="fa-solid fa-star text-amber-300 mt-1"></i>
+                            <span>Arquitetura de **Remuneração Estratégica**: alinhamento das recompensas aos objetivos do negócio.</span>
+                        </li>
+                        <li class="flex items-start gap-2">
+                            <i class="fa-solid fa-star text-amber-300 mt-1"></i>
+                            <span>Foco em flexibilidade, competências, desempenho, participação nos resultados e remuneração total.</span>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+
+            <!-- Destaque Chiavenato -->
+            <div class="bg-amber-50 rounded-2xl p-6 border-l-4 border-amber-500 shadow-sm">
+                <div class="flex items-start gap-4">
+                    <div class="p-3 bg-amber-100 rounded-xl text-amber-700 hidden sm:block">
+                        <i class="fa-solid fa-quote-left text-2xl"></i>
+                    </div>
+                    <div>
+                        <h4 class="font-bold text-slate-800 text-lg mb-2">Fundamentação Teórica - Idalberto Chiavenato</h4>
+                        <p class="text-slate-700 italic mb-3">
+                            "A remuneração tradicional costuma premiar a execução da rotina, a permanência do funcionário no cargo e o tempo de serviço na empresa. Ela é rígida e estática. Em contrapartida, a remuneração estratégica visa recompensar o desempenho excelente, o alcance de metas, o conhecimento agregado e a flexibilidade das pessoas diante dos novos desafios organizacionais."
+                        </p>
+                        <span class="text-xs font-semibold text-slate-500 uppercase">
+                            — CHIAVENATO, Idalberto. <i>Gestão de Pessoas: o novo papel dos recursos humanos nas organizações</i>.
+                        </span>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- SECTION 2: DEFINIÇÕES LEGAIS E MERCADOLÓGICAS -->
+        <section id="definicoes" class="scroll-mt-8">
+            <div class="border-b border-slate-200 pb-4 mb-8">
+                <span class="text-blue-600 font-bold uppercase text-xs tracking-wider">Unidade II</span>
+                <h2 class="text-3xl font-bold text-slate-900 flex items-center gap-3">
+                    <i class="fa-solid fa-scale-balanced text-blue-600"></i>
+                    Diferenciação Conceitual: Salário, Remuneração Global, Incentivos e Benefícios
+                </h2>
+            </div>
+
+            <p class="text-slate-600 text-lg leading-relaxed mb-8">
+                Para desenhar políticas eficientes de retenção e atração de talentos, é fundamental discernir entre os componentes do pacote de compensação sob a ótica **legal (CLT)** e a ótica **mercadológica/estratégica**.
+            </p>
+
+            <!-- Cards de Conceitos -->
+            <div class="grid md:grid-cols-2 lg:grid-cols-4 gap-6 mb-12">
+                <!-- Salário -->
+                <div class="bg-white rounded-2xl p-6 border border-slate-200 shadow-sm flex flex-col justify-between">
+                    <div>
+                        <div class="w-10 h-10 rounded-lg bg-emerald-100 text-emerald-600 flex items-center justify-center mb-4 font-bold text-lg">
+                            <i class="fa-solid fa-money-bill-wave"></i>
+                        </div>
+                        <h3 class="text-lg font-bold text-slate-800 mb-2">1. Salário</h3>
+                        <p class="text-xs text-slate-500 font-mono mb-3 uppercase">Visão Legal (Art. 457, CLT)</p>
+                        <p class="text-slate-600 text-sm leading-relaxed mb-4">
+                            Valor contraprestativo fixo pago diretamente pelo empregador ao empregado em função da contraprestação do serviço estipulado no contrato de trabalho.
+                        </p>
+                    </div>
+                    <div class="bg-slate-50 p-3 rounded-xl border border-slate-100 text-xs text-slate-600">
+                        <strong>Exemplos:</strong> Salário-base mensal, valor da hora de trabalho contratada.
+                    </div>
+                </div>
+
+                <!-- Remuneração Global -->
+                <div class="bg-white rounded-2xl p-6 border border-slate-200 shadow-sm flex flex-col justify-between">
+                    <div>
+                        <div class="w-10 h-10 rounded-lg bg-blue-100 text-blue-600 flex items-center justify-center mb-4 font-bold text-lg">
+                            <i class="fa-solid fa-coins"></i>
+                        </div>
+                        <h3 class="text-lg font-bold text-slate-800 mb-2">2. Remuneração Global</h3>
+                        <p class="text-xs text-slate-500 font-mono mb-3 uppercase">Total Compensation</p>
+                        <p class="text-slate-600 text-sm leading-relaxed mb-4">
+                            Conjunto total de contraprestações percebidas pelo empregado, incluindo o salário-base somado a adicionais, comissões, gorjetas, benefícios e recompensas variáveis.
+                        </p>
+                    </div>
+                    <div class="bg-slate-50 p-3 rounded-xl border border-slate-100 text-xs text-slate-600">
+                        <strong>Fórmula:</strong> $Remuneração Total = Salário + Incentivos + Benefícios$
+                    </div>
+                </div>
+
+                <!-- Incentivos -->
+                <div class="bg-white rounded-2xl p-6 border border-slate-200 shadow-sm flex flex-col justify-between">
+                    <div>
+                        <div class="w-10 h-10 rounded-lg bg-purple-100 text-purple-600 flex items-center justify-center mb-4 font-bold text-lg">
+                            <i class="fa-solid fa-trophy"></i>
+                        </div>
+                        <h3 class="text-lg font-bold text-slate-800 mb-2">3. Incentivos</h3>
+                        <p class="text-xs text-slate-500 font-mono mb-3 uppercase">Remuneração Variável</p>
+                        <p class="text-slate-600 text-sm leading-relaxed mb-4">
+                            Programas e recompensas vinculados diretamente ao alcance de metas específicas, resultados organizacionais ou desempenho individual e da equipe.
+                        </p>
+                    </div>
+                    <div class="bg-slate-50 p-3 rounded-xl border border-slate-100 text-xs text-slate-600">
+                        <strong>Exemplos:</strong> PLR (Lei 10.101/00), bônus por performance, comissões, Stock Options.
+                    </div>
+                </div>
+
+                <!-- Benefícios -->
+                <div class="bg-white rounded-2xl p-6 border border-slate-200 shadow-sm flex flex-col justify-between">
+                    <div>
+                        <div class="w-10 h-10 rounded-lg bg-indigo-100 text-indigo-600 flex items-center justify-center mb-4 font-bold text-lg">
+                            <i class="fa-solid fa-hand-holding-heart"></i>
+                        </div>
+                        <h3 class="text-lg font-bold text-slate-800 mb-2">4. Benefícios</h3>
+                        <p class="text-xs text-slate-500 font-mono mb-3 uppercase">Indiretos / Sociais</p>
+                        <p class="text-slate-600 text-sm leading-relaxed mb-4">
+                            Facilidades, conveniências e serviços oferecidos pela empresa para satisfazer necessidades pessoais e promover a qualidade de vida e segurança dos colaboradores.
+                        </p>
+                    </div>
+                    <div class="bg-slate-50 p-3 rounded-xl border border-slate-100 text-xs text-slate-600">
+                        <strong>Exemplos:</strong> Plano de saúde, vale-refeição, previdência privada, auxílio-creche.
+                    </div>
+                </div>
+            </div>
+
+            <!-- Tabela Comparativa Estruturada -->
+            <div class="bg-white rounded-2xl border border-slate-200 shadow-sm overflow-hidden mb-8">
+                <div class="p-4 sm:p-6 bg-slate-900 text-white">
+                    <h3 class="text-xl font-bold flex items-center gap-2">
+                        <i class="fa-solid fa-table-list text-blue-400"></i>
+                        Quadro Comparativo Integrado: Atributos & Diferenciais
+                    </h3>
+                </div>
+                <div class="overflow-x-auto">
+                    <table class="w-full text-left text-sm text-slate-600">
+                        <thead class="bg-slate-100 text-slate-700 uppercase font-bold text-xs tracking-wider border-b border-slate-200">
+                            <tr>
+                                <th class="p-4">Dimensão</th>
+                                <th class="p-4">Salário Base</th>
+                                <th class="p-4">Incentivos (Remuneração Variável)</th>
+                                <th class="p-4">Benefícios Sociais</th>
+                            </tr>
+                        </thead>
+                        <tbody class="divide-y divide-slate-200">
+                            <tr>
+                                <td class="p-4 font-bold text-slate-800 bg-slate-50">Natureza Principal</td>
+                                <td class="p-4">Monetária e Direta.</td>
+                                <td class="p-4">Monetária Contingente (atrelada a metas).</td>
+                                <td class="p-4">Não-monetária ou Indireta.</td>
+                            </tr>
+                            <tr>
+                                <td class="p-4 font-bold text-slate-800 bg-slate-50">Enquadramento Legal (CLT)</td>
+                                <td class="p-4">Obrigatório, integra o contrato e não pode sofrer redução ilícita.</td>
+                                <td class="p-4">PLR e Prêmios regulamentados (Reforma Trabalhista - Art. 457 §2º).</td>
+                                <td class="p-4">Alguns legais (Vale-transporte) e outros voluntários/convencionais.</td>
+                            </tr>
+                            <tr>
+                                <td class="p-4 font-bold text-slate-800 bg-slate-50">Objetivo Estratégico</td>
+                                <td class="p-4">Garantir atratividade no mercado e segurança financeira básica.</td>
+                                <td class="p-4">Estimular o alto desempenho, meritocracia e alinhamento a metas.</td>
+                                <td class="p-4">Promover retenção (turnover reduzido), engajamento e bem-estar.</td>
+                            </tr>
+                            <tr>
+                                <td class="p-4 font-bold text-slate-800 bg-slate-50">Visão Chiavenato</td>
+                                <td class="p-4">Recompensa o cargo e o tempo disponível.</td>
+                                <td class="p-4">Recompensa a agregação de valor e os resultados obtidos.</td>
+                                <td class="p-4">Atende necessidades indiretas e de qualidade de vida do trabalhador.</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+            <!-- Citação Chiavenato sobre o Sistema de Recompensas -->
+            <div class="quote-card bg-blue-50/50 p-6 rounded-r-2xl border-l-4 border-blue-600">
+                <p class="text-slate-800 font-medium text-base mb-2">
+                    "O pacote de remuneração total não deve ser enxergado apenas como uma despesa administrativa, mas como um poderoso sistema de incentivos e recompensas destinado a direcionar o comportamento das pessoas rumo à missão estratégica da organização."
+                </p>
+                <span class="text-xs font-semibold text-blue-700 uppercase">
+                    — CHIAVENATO, Idalberto. <i>Remuneração, Benefícios e Relações de Trabalho</i>.
+                </span>
+            </div>
+        </section>
+
+        <!-- SECTION 3: MOTIVAÇÃO E CLIMA ORGANIZACIONAL -->
+        <section id="motivacao" class="scroll-mt-8">
+            <div class="border-b border-slate-200 pb-4 mb-8">
+                <span class="text-blue-600 font-bold uppercase text-xs tracking-wider">Unidade III</span>
+                <h2 class="text-3xl font-bold text-slate-900 flex items-center gap-3">
+                    <i class="fa-solid fa-brain text-blue-600"></i>
+                    Impacto da Remuneração na Motivação e no Clima Organizacional
+                </h2>
+            </div>
+
+            <p class="text-slate-600 text-lg leading-relaxed mb-8">
+                Como a recompensa financeira afeta a mente e a motivação do trabalhador? De acordo com a literatura de Gestão de Pessoas, o dinheiro isoladamente é um motivador complexo. É preciso compreender as teorias comportamentais aplicadas ao ambiente de trabalho.
+            </p>
+
+            <!-- Cards das Teorias Motivação -->
+            <div class="grid md:grid-cols-2 gap-8 mb-12">
+                <!-- Herzberg -->
+                <div class="bg-white rounded-2xl p-6 border border-slate-200 shadow-sm hover:border-blue-300 transition">
+                    <div class="flex items-center gap-3 mb-4">
+                        <div class="p-3 bg-red-100 text-red-600 rounded-xl">
+                            <i class="fa-solid fa-temperature-three-quarters text-xl"></i>
+                        </div>
+                        <div>
+                            <h3 class="text-lg font-bold text-slate-800">Teoria dos Dois Fatores (Herzberg)</h3>
+                            <span class="text-xs text-slate-500">Fatores Higiênicos vs. Motivacionais</span>
+                        </div>
+                    </div>
+                    <p class="text-slate-600 text-sm leading-relaxed mb-4">
+                        Chiavenato destaca que o **salário é um fator higiênico** (extínseco). Quando inadequado ou percebido como injusto, ele causa **insatisfação**. Por outro lado, quando é bom, ele apenas *previne a insatisfação*, mas não gera motivação duradoura por si só.
+                    </p>
+                    <div class="bg-slate-50 p-4 rounded-xl border border-slate-100 text-xs space-y-2">
+                        <div class="flex items-center justify-between">
+                            <span class="font-bold text-slate-700">Salário / Benefícios:</span>
+                            <span class="px-2 py-0.5 rounded bg-amber-100 text-amber-800 font-semibold">Evita Insatisfação</span>
+                        </div>
+                        <div class="flex items-center justify-between">
+                            <span class="font-bold text-slate-700">Reconhecimento / Autonomia:</span>
+                            <span class="px-2 py-0.5 rounded bg-emerald-100 text-emerald-800 font-semibold">Gera Motivação Real</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Equidade (Adams) & Chiavenato -->
+                <div class="bg-white rounded-2xl p-6 border border-slate-200 shadow-sm hover:border-blue-300 transition">
+                    <div class="flex items-center gap-3 mb-4">
+                        <div class="p-3 bg-emerald-100 text-emerald-600 rounded-xl">
+                            <i class="fa-solid fa-balance-scale text-xl"></i>
+                        </div>
+                        <div>
+                            <h3 class="text-lg font-bold text-slate-800">Teoria da Equidade & Percepção de Justiça</h3>
+                            <span class="text-xs text-slate-500">Equidade Interna vs. Externa</span>
+                        </div>
+                    </div>
+                    <p class="text-slate-600 text-sm leading-relaxed mb-4">
+                        O impacto da remuneração no clima organizacional depende da sensação de justiça. Os colaboradores comparam suas contribuições e recompensas com as de seus colegas.
+                    </p>
+                    <div class="space-y-2 text-xs">
+                        <div class="p-3 bg-blue-50 text-blue-900 rounded-lg">
+                            <strong>Equidade Interna:</strong> Garantida quando cargos de complexidade similar dentro da empresa possuem salários coerentes.
+                        </div>
+                        <div class="p-3 bg-indigo-50 text-indigo-900 rounded-lg">
+                            <strong>Equidade Externa:</strong> Garantida quando os salários praticados são compatíveis com a média de mercado.
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Discussão Guiada Interativa para Empresas e Aulas -->
+            <div class="bg-slate-900 text-white rounded-2xl p-8 shadow-xl">
+                <div class="flex items-center gap-3 mb-6">
+                    <span class="p-2 bg-blue-500 rounded-lg text-white">
+                        <i class="fa-solid fa-comments text-xl"></i>
+                    </span>
+                    <div>
+                        <h3 class="text-2xl font-bold">Roteiro de Discussão Guiada para Lideranças & Equipes</h3>
+                        <p class="text-blue-300 text-sm">Utilize estes questionamentos para debates corporativos ou em sala de aula.</p>
+                    </div>
+                </div>
+
+                <div class="grid md:grid-cols-3 gap-6">
+                    <!-- Questão 1 -->
+                    <div class="bg-slate-800 p-5 rounded-xl border border-slate-700">
+                        <span class="text-blue-400 font-mono text-xs font-bold uppercase tracking-wider block mb-2">Debate 01</span>
+                        <h4 class="font-bold text-lg text-white mb-2">A "Incapacidade" do Dinheiro?</h4>
+                        <p class="text-slate-300 text-sm leading-relaxed">
+                            "Aumentar salários resolve problemas de baixo engajamento e clima organizacional ruim?"
+                        </p>
+                        <p class="text-xs text-slate-400 mt-3 pt-3 border-t border-slate-700 italic">
+                            Discuta por que o dinheiro sem liderança e reconhecimento gera apenas retornos temporários.
+                        </p>
+                    </div>
+
+                    <!-- Questão 2 -->
+                    <div class="bg-slate-800 p-5 rounded-xl border border-slate-700">
+                        <span class="text-blue-400 font-mono text-xs font-bold uppercase tracking-wider block mb-2">Debate 02</span>
+                        <h4 class="font-bold text-lg text-white mb-2">Transparência Salarial</h4>
+                        <p class="text-slate-300 text-sm leading-relaxed">
+                            "A empresa deve manter as tabelas de remuneração abertas ou secretas para preservar o clima?"
+                        </p>
+                        <p class="text-xs text-slate-400 mt-3 pt-3 border-t border-slate-700 italic">
+                            Analise os prós e contras sob a luz da equidade percebida e leis recentes de igualdade salarial.
+                        </p>
+                    </div>
+
+                    <!-- Questão 3 -->
+                    <div class="bg-slate-800 p-5 rounded-xl border border-slate-700">
+                        <span class="text-blue-400 font-mono text-xs font-bold uppercase tracking-wider block mb-2">Debate 03</span>
+                        <h4 class="font-bold text-lg text-white mb-2">Flexibilização do Pacote</h4>
+                        <p class="text-slate-300 text-sm leading-relaxed">
+                            "Como personalizar os benefícios para diferentes gerações (Gen Z, Millennials, Boomers)?"
+                        </p>
+                        <p class="text-xs text-slate-400 mt-3 pt-3 border-t border-slate-700 italic">
+                            Avalie a Remuneração Flexível (cafeteria system) como ferramenta de retenção e satisfação.
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- SECTION 4: CONCEITOS E CITAÇÕES APLICADAS CHIAVENATO -->
+        <section class="bg-white rounded-2xl border border-slate-200 p-8 shadow-sm">
+            <div class="border-b border-slate-200 pb-4 mb-6">
+                <span class="text-blue-600 font-bold uppercase text-xs tracking-wider">Glossário Teórico-Prático</span>
+                <h2 class="text-2xl font-bold text-slate-900 flex items-center gap-2">
+                    <i class="fa-solid fa-book-open text-blue-600"></i>
+                    Conceitos de Chiavenato Aplicados ao Dia a Dia Corporativo
+                </h2>
+            </div>
+
+            <div class="grid md:grid-cols-2 gap-6">
+                <div class="p-4 bg-slate-50 rounded-xl border border-slate-100">
+                    <h3 class="font-bold text-slate-800 text-base mb-2 flex items-center gap-2">
+                        <i class="fa-solid fa-check-circle text-emerald-500"></i>
+                        Remuneração por Competências
+                    </h3>
+                    <p class="text-slate-600 text-sm mb-3">
+                        Paga-se ao funcionário não pelo cargo que ocupa, mas pelo conjunto de conhecimentos, habilidades e atitudes (CHA) que ele efetivamente possui e aplica na empresa.
+                    </p>
+                    <span class="text-xs text-slate-500 italic"><strong>Aplicação no dia a dia:</strong> Acelera o aprendizado e incentiva a atualização constante da equipe.</span>
+                </div>
+
+                <div class="p-4 bg-slate-50 rounded-xl border border-slate-100">
+                    <h3 class="font-bold text-slate-800 text-base mb-2 flex items-center gap-2">
+                        <i class="fa-solid fa-check-circle text-emerald-500"></i>
+                        Remuneração Flexível ("Menu de Benefícios")
+                    </h3>
+                    <p class="text-slate-600 text-sm mb-3">
+                        Permite que cada colaborador escolha, dentro de um orçamento pré-definido, os benefícios que melhor atendam à sua etapa de vida pessoal.
+                    </p>
+                    <span class="text-xs text-slate-500 italic"><strong>Aplicação no dia a dia:</strong> Maximiza a percepção de valor dos benefícios sem aumentar o custo total do pacote.</span>
+                </div>
+
+                <div class="p-4 bg-slate-50 rounded-xl border border-slate-100">
+                    <h3 class="font-bold text-slate-800 text-base mb-2 flex items-center gap-2">
+                        <i class="fa-solid fa-check-circle text-emerald-500"></i>
+                        Participação nos Lucros e Resultados (PLR)
+                    </h3>
+                    <p class="text-slate-600 text-sm mb-3">
+                        Conecta a recompensa individual ao desempenho global da organização, transformando colaboradores estáticos em "sócios temporários" do sucesso.
+                    </p>
+                    <span class="text-xs text-slate-500 italic"><strong>Aplicação no dia a dia:</strong> Fomenta a visão sistêmica e o sentimento de donos do negócio (ownership).</span>
+                </div>
+
+                <div class="p-4 bg-slate-50 rounded-xl border border-slate-100">
+                    <h3 class="font-bold text-slate-800 text-base mb-2 flex items-center gap-2">
+                        <i class="fa-solid fa-check-circle text-emerald-500"></i>
+                        Salário Emocional
+                    </h3>
+                    <p class="text-slate-600 text-sm mb-3">
+                        Conjunto de retribuições não-financeiras, como ambiente de trabalho saudável, flexibilidade de horários, cultura inclusiva e oportunidades de aprendizado.
+                    </p>
+                    <span class="text-xs text-slate-500 italic"><strong>Aplicação no dia a dia:</strong> Fortalece a marca empregadora (Employer Branding) na atração de talentos.</span>
+                </div>
+            </div>
+        </section>
+
+        <!-- SECTION 5: ATIVIDADE PRÁTICA CRIATIVA -->
+        <section id="atividade" class="scroll-mt-8">
+            <div class="bg-gradient-to-br from-blue-900 via-indigo-900 to-slate-900 rounded-3xl p-8 sm:p-12 text-white shadow-2xl relative overflow-hidden">
+                <!-- Background Pattern -->
+                <div class="absolute -right-10 -bottom-10 w-64 h-64 bg-blue-500/10 rounded-full blur-3xl pointer-events-none"></div>
+
+                <div class="max-w-3xl">
+                    <span class="px-3 py-1 bg-amber-400 text-slate-900 text-xs font-bold rounded-full uppercase tracking-wider mb-4 inline-block">
+                        <i class="fa-solid fa-gamepad mr-1"></i> Atividade Prática de Fixação
+                    </span>
+                    <h2 class="text-3xl sm:text-4xl font-extrabold mb-4">
+                        Desafio Prático: "Laboratório de Arquitetura de Remuneração da TechVanguarda"
+                    </h2>
+                    <p class="text-blue-100 text-lg leading-relaxed mb-8">
+                        Coloque em prática os conceitos teóricos de Chiavenato e a legislação trabalhista atuando como Consultor Estratégico de Pessoas nesta simulação imersiva.
+                    </p>
+                </div>
+
+                <!-- Card de Cenário da Atividade -->
+                <div class="bg-white/10 backdrop-blur-md rounded-2xl p-6 border border-white/15 mb-8 text-slate-100 space-y-4">
+                    <h3 class="text-xl font-bold text-amber-300 flex items-center gap-2">
+                        <i class="fa-solid fa-building-triangle-exclamation"></i>
+                        O Cenário da Empresa Simulada
+                    </h3>
+                    <p class="text-sm leading-relaxed">
+                        A empresa <strong>TechVanguarda LTDA</strong> (setor de tecnologia, 150 colaboradores) está enfrentando uma crise séria: **turnover alto (28% ao ano)** nos cargos de desenvolvedores e consultores, reclamações contínuas de **desmotivação e clima pesado** na pesquisa interna, e perda de talentos para concorrentes que pagam salários-base ligeiramente maiores. A diretoria determinou que o orçamento total não pode subir mais do que 10%, mas autorizou uma reformulação completa da política de compensação.
+                    </p>
+                </div>
+
+                <!-- Etapas da Atividade -->
+                <div class="grid md:grid-cols-3 gap-6 mb-8 text-slate-800">
+                    <!-- Passo 1 -->
+                    <div class="bg-white rounded-2xl p-6 shadow-md">
+                        <div class="w-8 h-8 rounded-full bg-blue-600 text-white font-bold flex items-center justify-center mb-3">1</div>
+                        <h4 class="font-bold text-lg mb-2">Diagnóstico de Equidade</h4>
+                        <p class="text-xs text-slate-600 leading-relaxed">
+                            Analise o cenário e classifique quais falhas são de **equidade interna** (distorção entre cargos) e quais são de **equidade externa** (defasagem frente ao mercado).
+                        </p>
+                    </div>
+
+                    <!-- Passo 2 -->
+                    <div class="bg-white rounded-2xl p-6 shadow-md">
+                        <div class="w-8 h-8 rounded-full bg-blue-600 text-white font-bold flex items-center justify-center mb-3">2</div>
+                        <h4 class="font-bold text-lg mb-2">Arquitetura da Solução</h4>
+                        <p class="text-xs text-slate-600 leading-relaxed">
+                            Monte um novo pacote de **Remuneração Global** dividindo o orçamento em: Salário Base, Incentivos (PLR/Bônus) e Benefícios Flexíveis (Cafeteria).
+                        </p>
+                    </div>
+
+                    <!-- Passo 3 -->
+                    <div class="bg-white rounded-2xl p-6 shadow-md">
+                        <div class="w-8 h-8 rounded-full bg-blue-600 text-white font-bold flex items-center justify-center mb-3">3</div>
+                        <h4 class="font-bold text-lg mb-2">Plano de Clima & Motivação</h4>
+                        <p class="text-xs text-slate-600 leading-relaxed">
+                            Apresente 3 ações não-monetárias (**Salário Emocional** / Herzberg) para elevar a motivação e melhorar o clima sem impacto direto na folha.
+                        </p>
+                    </div>
+                </div>
+
+                <!-- Form / Simulação Interativa no Navegador -->
+                <div class="bg-white text-slate-800 rounded-2xl p-6 sm:p-8 shadow-xl">
+                    <h3 class="text-xl font-bold mb-4 flex items-center gap-2 text-slate-900">
+                        <i class="fa-solid fa-pen-to-square text-blue-600"></i>
+                        Simulador de Proposta Estratégica (Preencha e Avalie)
+                    </h3>
+                    
+                    <form id="activityForm" onsubmit="event.preventDefault(); evaluateSubmission();" class="space-y-6">
+                        <div>
+                            <label class="block text-sm font-bold text-slate-700 mb-2">
+                                1. Qual combinação da Remuneração Global você propõe para conter o turnover?
+                            </label>
+                            <select id="proposalType" class="w-full p-3 rounded-xl border border-slate-300 text-sm focus:ring-2 focus:ring-blue-500 outline-none">
+                                <option value="">Selecione uma estratégia de composição...</option>
+                                <option value="a">Estratégia A: Manter salário base fixo e criar PLR agressiva + Benefícios Flexíveis</option>
+                                <option value="b">Estratégia B: Aumentar 10% no Salário Base fixo de todos e manter os benefícios iguais</option>
+                                <option value="c">Estratégia C: Reduzir salários e aumentar comissões individuais sem meta coletiva</option>
+                            </select>
+                        </div>
+
+                        <div>
+                            <label class="block text-sm font-bold text-slate-700 mb-2">
+                                2. Descreva resumidamente uma ação de Salário Emocional para melhorar o clima:
+                            </label>
+                            <textarea id="emotionalSalary" rows="3" placeholder="Ex: Implantação de horário flexível, plano de desenvolvimento individual (PDI), cultura de feedback..." class="w-full p-3 rounded-xl border border-slate-300 text-sm focus:ring-2 focus:ring-blue-500 outline-none"></textarea>
+                        </div>
+
+                        <button type="submit" class="w-full bg-blue-600 hover:bg-blue-700 text-white font-bold py-3.5 rounded-xl shadow-lg transition flex items-center justify-center gap-2">
+                            <i class="fa-solid fa-paper-plane"></i>
+                            Submeter Proposta para Avaliação
+                        </button>
+                    </form>
+
+                    <!-- Resultado da Simulação -->
+                    <div id="feedbackResult" class="hidden mt-6 p-6 rounded-xl border"></div>
+                </div>
+            </div>
+        </section>
+
+    </main>
+
+    <!-- Footer -->
+    <footer class="bg-slate-900 text-slate-400 py-12 border-t border-slate-800 text-sm">
+        <div class="max-w-7xl mx-auto px-4 text-center space-y-4">
+            <p class="text-slate-300 font-semibold">Conteúdo de Gestão Estratégica de Pessoas & Remuneração Corporativa</p>
+            <p class="text-xs text-slate-500">
+                Inspirado na obra de Idalberto Chiavenato e alinhado com as exigências da CLT (Consolidação das Leis do Trabalho).
+            </p>
+        </div>
+    </footer>
+
+    <!-- Scripts da Página -->
+    <script>
+        function evaluateSubmission() {
+            const proposal = document.getElementById('proposalType').value;
+            const emotional = document.getElementById('emotionalSalary').value.trim();
+            const feedbackDiv = document.getElementById('feedbackResult');
+
+            if (!proposal || !emotional) {
+                alert('Por favor, selecione a estratégia de remuneração e descreva a ação de salário emocional!');
+                return;
+            }
+
+            feedbackDiv.classList.remove('hidden', 'bg-emerald-50', 'bg-amber-50', 'bg-red-50', 'border-emerald-200', 'border-amber-200', 'border-red-200');
+
+            if (proposal === 'a') {
+                feedbackDiv.classList.add('bg-emerald-50', 'border-emerald-300', 'text-emerald-900');
+                feedbackDiv.innerHTML = `
+                    <h4 class="font-bold text-lg mb-2 flex items-center gap-2 text-emerald-800">
+                        <i class="fa-solid fa-circle-check text-emerald-600"></i> Proposta Aprovada com Louvor!
+                    </h4>
+                    <p class="text-sm leading-relaxed mb-3">
+                        Sua escolha alinha-se perfeitamente aos ensinamentos de <strong>Chiavenato</strong>! Manteve o custo fixo sob controle através da atração por benefícios flexíveis e gerou motivação de alto desempenho vinculando a PLR aos resultados estratégicos.
+                    </p>
+                    <p class="text-xs font-semibold text-emerald-800">
+                        <strong>Feedback do Salário Emocional:</strong> Sua ação ("${emotional}") atua diretamente sobre os fatores motivacionais de Herzberg, promovendo pertencimento e melhorando significativamente o clima organizacional.
+                    </p>
+                `;
+            } else if (proposal === 'b') {
+                feedbackDiv.classList.add('bg-amber-50', 'border-amber-300', 'text-amber-900');
+                feedbackDiv.innerHTML = `
+                    <h4 class="font-bold text-lg mb-2 flex items-center gap-2 text-amber-800">
+                        <i class="fa-solid fa-triangle-exclamation text-amber-600"></i> Proposta Parcialmente Adequada (Risco de Custos)
+                    </h4>
+                    <p class="text-sm leading-relaxed mb-3">
+                        Aumentar linearmente o salário base eleva os custos fixos permanentemente sem necessariamente engajar os talentos de forma meritocrática. De acordo com Herzberg, o salário maior previne a insatisfação temporária, mas não garante retenção contínua no setor de tecnologia.
+                    </p>
+                `;
+            } else {
+                feedbackDiv.classList.add('bg-red-50', 'border-red-300', 'text-red-900');
+                feedbackDiv.innerHTML = `
+                    <h4 class="font-bold text-lg mb-2 flex items-center gap-2 text-red-800">
+                        <i class="fa-solid fa-circle-xmark text-red-600"></i> Proposta Inadequada
+                    </h4>
+                    <p class="text-sm leading-relaxed mb-3">
+                        A redução de salários fere o artigo 468 da CLT (princípio da inalterabilidade contratual lesiva) e destruiria o clima organizacional provocando um êxodo imediato de talentos.
+                    </p>
+                `;
+            }
+        }
+    </script>
 </body>
 </html>

@@ -3,61 +3,187 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Aguarde - Aula em Breve</title>
+    <title>Gestão de Pessoas - Macroprocesso: Manter Pessoas</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&display=swap" rel="stylesheet">
     <style>
-        body {
-            margin: 0;
-            padding: 0;
-            background-color: #f4f4f4; /* Cor de fundo suave */
-            font-family: Arial, sans-serif;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            height: 100vh;
+        body { font-family: 'Inter', sans-serif; background-color: #f3f4f6; }
+        .quote-box {
+            position: relative;
         }
-
-        .container {
-            background-color: #fff;
-            border-radius: 8px;
-            box-shadow: 0 4px 8px rgba(0,0,0,0.1);
-            padding: 40px;
-            text-align: center;
-        }
-
-        .container img {
-            max-width: 100%;
-            height: auto;
-            border-radius: 8px; /* Mantém as bordas arredondadas da imagem */
-            margin-bottom: 20px;
-        }
-
-        .container h1 {
-            color: #333;
-            font-size: 24px;
-            margin-bottom: 30px;
-        }
-
-        .btn-voltar {
-            display: inline-block;
-            background-color: #007bff; /* Azul para o botão */
-            color: #fff;
-            padding: 12px 24px;
-            text-decoration: none;
-            border-radius: 5px;
-            font-weight: bold;
-            transition: background-color 0.3s ease;
-        }
-
-        .btn-voltar:hover {
-            background-color: #0056b3; /* Cor mais escura no hover */
+        .quote-box::before {
+            content: "\201C";
+            font-size: 4rem;
+            color: #bfdbfe;
+            position: absolute;
+            top: -15px;
+            left: 10px;
+            font-family: serif;
+            line-height: 1;
         }
     </style>
 </head>
-<body>
-    <div class="container">
-        <img src="imagem1.png" width="320" height="240" alt="O professor em sala de aula">
-        <h1>Aguarde: em breve essa aula estará disponivel.</h1>
-        <a href="index.html" class="btn-voltar">Voltar</a>
-    </div>
+<body class="text-gray-800 antialiased flex flex-col min-h-screen">
+
+    <header class="bg-blue-900 text-white py-8 shadow-md relative overflow-hidden">
+        <div class="absolute inset-0 opacity-10 bg-[url('https://www.transparenttextures.com/patterns/cubes.png')]"></div>
+        <div class="container mx-auto px-6 relative z-10 flex flex-col md:flex-row justify-between items-center">
+            <div>
+                <h2 class="text-sm font-semibold tracking-wider text-blue-300 uppercase mb-1">EEB Colombo Machado Salles</h2>
+                <h1 class="text-3xl font-bold mb-2">Macroprocesso: Manter Pessoas</h1>
+                <p class="text-blue-100">Disciplina: Gestão de Pessoas | Prof. Luiz Alberto Brandes</p>
+                <p class="text-blue-100 text-sm mt-1">Turma: 2ª Série 1 - Técnico em Administração</p>
+            </div>
+        </div>
+    </header>
+
+    <main class="container mx-auto px-6 py-10 flex-grow">
+        
+        <section class="bg-white rounded-xl shadow-sm p-8 mb-10 border-l-4 border-blue-600">
+            <h2 class="text-2xl font-bold text-gray-800 mb-4 flex items-center">
+                <svg class="w-6 h-6 mr-2 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
+                O que é o Processo de "Manter Pessoas"?
+            </h2>
+            <div class="text-gray-600 leading-relaxed text-lg space-y-4">
+                <p>
+                    No estudo da Administração de Recursos Humanos, o macroprocesso de <strong>Manter Pessoas</strong> é vital para a sobrevivência e o crescimento sustentável da organização. Enquanto o processo de <em>Agregar</em> busca talentos no mercado, o processo de <em>Manter</em> garante que esses talentos não queiram ir embora. A retenção de capital humano é financeiramente e estrategicamente mais vantajosa do que o alto índice de rotatividade (<em>turnover</em>), que gera custos com demissões, novas seleções e treinamentos.
+                </p>
+                <p>
+                    Para reter colaboradores, a empresa precisa criar condições ambientais, psicológicas e estruturais altamente satisfatórias. Isso significa ir além do salário no fim do mês. Envolve garantir que o funcionário volte para casa com sua integridade física preservada, que tenha saúde mental para lidar com as pressões do dia a dia, que sinta que seu trabalho tem propósito (clima organizacional) e que possua canais abertos e justos para diálogo, tanto individualmente quanto por meio de seus representantes legais (sindicatos).
+                </p>
+            </div>
+        </section>
+
+        <!-- Alterado para 2 colunas para comportar textos maiores -->
+        <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
+
+            <!-- Card 1: Higiene e Segurança -->
+            <article class="bg-white rounded-xl shadow-lg hover:shadow-xl transition-shadow duration-300 overflow-hidden flex flex-col">
+                <div class="bg-red-500 p-4 text-white flex items-center justify-center">
+                    <svg class="w-10 h-10" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"></path></svg>
+                </div>
+                <div class="p-6 flex-grow flex flex-col">
+                    <h3 class="text-xl font-bold text-gray-800 mb-2 border-b pb-2">Higiene e Segurança do Trabalho</h3>
+                    
+                    <div class="quote-box bg-gray-50 p-4 rounded-lg mb-4 text-sm text-gray-700 italic border-l-4 border-red-400">
+                        "A higiene e segurança do trabalho constituem duas atividades intimamente relacionadas, orientadas para garantir condições pessoais e materiais de trabalho capazes de manter certo nível de saúde dos empregados."
+                        <span class="block mt-2 font-bold text-xs text-gray-500 text-right">— Idalberto Chiavenato</span>
+                    </div>
+
+                    <div class="text-sm text-gray-600 mb-4 space-y-2">
+                        <p><strong>Higiene do Trabalho</strong> refere-se ao conjunto de normas e procedimentos que visa à proteção da integridade física e mental do trabalhador, preservando-o dos riscos de saúde inerentes às tarefas do cargo e ao ambiente físico. O foco é a prevenção de <em>doenças ocupacionais</em> (ex: surdez, LER/DORT, estresse).</p>
+                        <p><strong>Segurança do Trabalho</strong> é o conjunto de medidas técnicas, educacionais, médicas e psicológicas empregadas para prevenir <em>acidentes de trabalho</em>. O foco é eliminar condições inseguras do ambiente e instruir as pessoas sobre práticas preventivas.</p>
+                    </div>
+
+                    <div class="mt-auto bg-gray-50 p-4 rounded-lg">
+                        <h4 class="font-bold text-gray-800 text-sm mb-3">Exemplos Práticos nas Empresas:</h4>
+                        <ul class="text-sm text-gray-700 space-y-3">
+                            <li class="flex items-start"><svg class="w-4 h-4 text-red-500 mr-2 mt-0.5 flex-shrink-0" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"></path></svg> <strong>Elaboração do PGR (Programa de Gerenciamento de Riscos):</strong> Mapeamento de ruídos (físico), vapores tóxicos (químico) e bactérias (biológico) no galpão da fábrica.</li>
+                            <li class="flex items-start"><svg class="w-4 h-4 text-red-500 mr-2 mt-0.5 flex-shrink-0" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"></path></svg> <strong>Ações da CIPA e SIPAT:</strong> Realização anual da Semana Interna de Prevenção de Acidentes de Trabalho, com palestras e dinâmicas obrigatórias.</li>
+                            <li class="flex items-start"><svg class="w-4 h-4 text-red-500 mr-2 mt-0.5 flex-shrink-0" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"></path></svg> <strong>Ergonomia Administrativa (NR-17):</strong> Fornecimento de suportes para notebook, apoio para os pés e cadeiras ajustáveis para evitar lesões por esforço repetitivo em quem trabalha no escritório.</li>
+                            <li class="flex items-start"><svg class="w-4 h-4 text-red-500 mr-2 mt-0.5 flex-shrink-0" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"></path></svg> <strong>Gestão de EPIs e EPCs:</strong> Fiscalização rigorosa do uso de capacetes e luvas, além da instalação de grades de proteção em máquinas perigosas.</li>
+                        </ul>
+                    </div>
+                </div>
+            </article>
+
+            <!-- Card 2: QVT -->
+            <article class="bg-white rounded-xl shadow-lg hover:shadow-xl transition-shadow duration-300 overflow-hidden flex flex-col">
+                <div class="bg-green-500 p-4 text-white flex items-center justify-center">
+                    <svg class="w-10 h-10" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14.828 14.828a4 4 0 01-5.656 0M9 10h.01M15 10h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
+                </div>
+                <div class="p-6 flex-grow flex flex-col">
+                    <h3 class="text-xl font-bold text-gray-800 mb-2 border-b pb-2">Qualidade de Vida no Trabalho (QVT)</h3>
+                    
+                    <div class="quote-box bg-gray-50 p-4 rounded-lg mb-4 text-sm text-gray-700 italic border-l-4 border-green-400">
+                        "A Qualidade de Vida no Trabalho (QVT) representa o grau em que os membros da organização são capazes de satisfazer suas necessidades pessoais mais importantes por meio de suas experiências na empresa."
+                        <span class="block mt-2 font-bold text-xs text-gray-500 text-right">— Idalberto Chiavenato</span>
+                    </div>
+
+                    <div class="text-sm text-gray-600 mb-4 space-y-2">
+                        <p>A QVT assimila duas visões importantes: a reivindicação dos empregados pelo bem-estar e satisfação no trabalho, e o interesse das organizações quanto aos seus efeitos na produtividade. Uma empresa com alta QVT possui um Clima Organizacional positivo, onde os funcionários sentem orgulho de pertencer (vestem a camisa).</p>
+                        <p>Envolve criar um balanço saudável entre vida pessoal e profissional, oferecendo benefícios que transcendem a obrigatoriedade da CLT e atacam diretamente o estresse, a desmotivação e o esgotamento profissional (Síndrome de Burnout).</p>
+                    </div>
+
+                    <div class="mt-auto bg-gray-50 p-4 rounded-lg">
+                        <h4 class="font-bold text-gray-800 text-sm mb-3">Exemplos Práticos nas Empresas:</h4>
+                        <ul class="text-sm text-gray-700 space-y-3">
+                            <li class="flex items-start"><svg class="w-4 h-4 text-green-500 mr-2 mt-0.5 flex-shrink-0" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"></path></svg> <strong>Flexibilidade:</strong> Implementação de banco de horas flexível, <em>day-off</em> no dia do aniversário e adoção oficial de modelos híbridos (mesclando home office e presencial).</li>
+                            <li class="flex items-start"><svg class="w-4 h-4 text-green-500 mr-2 mt-0.5 flex-shrink-0" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"></path></svg> <strong>Saúde Mental e Física:</strong> Subsídio para terapia online (ex: Zenklub, Vittude), parcerias com academias (Gympass) e promoção de ginástica laboral no meio do expediente.</li>
+                            <li class="flex items-start"><svg class="w-4 h-4 text-green-500 mr-2 mt-0.5 flex-shrink-0" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"></path></svg> <strong>Ambiente Descompressivo:</strong> Criação de salas de descanso com pufes, videogames ou mesas de sinuca, e refeitórios com opções de alimentação saudável subsidiada.</li>
+                            <li class="flex items-start"><svg class="w-4 h-4 text-green-500 mr-2 mt-0.5 flex-shrink-0" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"></path></svg> <strong>Combate a Assédios:</strong> Políticas de tolerância zero contra assédio moral e sexual, com canais de denúncia independentes para garantir a segurança psicológica.</li>
+                        </ul>
+                    </div>
+                </div>
+            </article>
+
+            <!-- Card 3: Relações Sindicais -->
+            <article class="bg-white rounded-xl shadow-lg hover:shadow-xl transition-shadow duration-300 overflow-hidden flex flex-col">
+                <div class="bg-indigo-600 p-4 text-white flex items-center justify-center">
+                    <svg class="w-10 h-10" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z"></path></svg>
+                </div>
+                <div class="p-6 flex-grow flex flex-col">
+                    <h3 class="text-xl font-bold text-gray-800 mb-2 border-b pb-2">Relações Sindicais e Trabalhistas</h3>
+                    
+                    <div class="quote-box bg-gray-50 p-4 rounded-lg mb-4 text-sm text-gray-700 italic border-l-4 border-indigo-400">
+                        "As relações trabalhistas ou sindicais representam o sistema de relações entre a organização, os seus membros e os sindicatos que os representam, baseando-se em políticas de mutuo respeito e negociação."
+                        <span class="block mt-2 font-bold text-xs text-gray-500 text-right">— Idalberto Chiavenato</span>
+                    </div>
+
+                    <div class="text-sm text-gray-600 mb-4 space-y-2">
+                        <p>Este pilar lida com a relação macro entre o "Capital" (a empresa) e o "Trabalho" (os empregados representados). Uma gestão inteligente não vê o sindicato como inimigo, mas como um parceiro de negociação para equilibrar as necessidades econômicas da empresa com as demandas sociais dos trabalhadores.</p>
+                        <p>Um bom diálogo sindical previne paralisações, greves, sabotagens e passivos trabalhistas no judiciário. É a formalização jurídica da manutenção de pessoas.</p>
+                    </div>
+
+                    <div class="mt-auto bg-gray-50 p-4 rounded-lg">
+                        <h4 class="font-bold text-gray-800 text-sm mb-3">Exemplos Práticos nas Empresas:</h4>
+                        <ul class="text-sm text-gray-700 space-y-3">
+                            <li class="flex items-start"><svg class="w-4 h-4 text-indigo-500 mr-2 mt-0.5 flex-shrink-0" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"></path></svg> <strong>Acordo Coletivo de Trabalho (ACT):</strong> Reuniões anuais na "data-base" da categoria para negociar o índice de reajuste salarial, valor do vale-alimentação e plano de saúde.</li>
+                            <li class="flex items-start"><svg class="w-4 h-4 text-indigo-500 mr-2 mt-0.5 flex-shrink-0" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"></path></svg> <strong>Negociação de PLR:</strong> Participação nos Lucros e Resultados. O RH senta com o sindicato para estipular quais metas financeiras a empresa deve bater para que os funcionários recebam o bônus no final do ano.</li>
+                            <li class="flex items-start"><svg class="w-4 h-4 text-indigo-500 mr-2 mt-0.5 flex-shrink-0" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"></path></svg> <strong>Gestão de Crise e Demissão em Massa:</strong> Caso a empresa precise fechar uma filial, o RH negocia um pacote de benefícios (extensão do plano de saúde, auxílio requalificação) com o sindicato para minimizar o impacto social.</li>
+                        </ul>
+                    </div>
+                </div>
+            </article>
+
+            <!-- Card 4: Comunicação e Gestão de Conflitos (Novo baseado no Currículo) -->
+            <article class="bg-white rounded-xl shadow-lg hover:shadow-xl transition-shadow duration-300 overflow-hidden flex flex-col">
+                <div class="bg-yellow-500 p-4 text-white flex items-center justify-center">
+                    <svg class="w-10 h-10" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 8h2a2 2 0 012 2v6a2 2 0 01-2 2h-2v4l-4-4H9a1.994 1.994 0 01-1.414-.586m0 0L11 14h4a2 2 0 002-2V6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2v4l.586-.586z"></path></svg>
+                </div>
+                <div class="p-6 flex-grow flex flex-col">
+                    <h3 class="text-xl font-bold text-gray-800 mb-2 border-b pb-2">Comunicação e Relações Interpessoais</h3>
+                    
+                    <div class="quote-box bg-gray-50 p-4 rounded-lg mb-4 text-sm text-gray-700 italic border-l-4 border-yellow-400">
+                        "As pessoas passam a maior parte do seu tempo nas organizações. Se o ambiente não proporcionar trocas saudáveis de informação e mediação justa de conflitos, a desmotivação e a saída de talentos serão inevitáveis."
+                        <span class="block mt-2 font-bold text-xs text-gray-500 text-right">— Princípio de RH</span>
+                    </div>
+
+                    <div class="text-sm text-gray-600 mb-4 space-y-2">
+                        <p>O último pilar da manutenção diz respeito ao aspecto sociológico do trabalho. Trabalhar em equipe inevitavelmente gera conflitos (por recursos, ideias ou personalidades). A liderança e o setor de Recursos Humanos precisam atuar como facilitadores.</p>
+                        <p>A comunicação interna deve ser transparente para evitar a "rádio peão" (fofocas e rumores). Quando o colaborador sente que é ouvido e que as regras são claras, a confiança na liderança aumenta, reduzindo as chances de ele buscar outra empresa.</p>
+                    </div>
+
+                    <div class="mt-auto bg-gray-50 p-4 rounded-lg">
+                        <h4 class="font-bold text-gray-800 text-sm mb-3">Exemplos Práticos nas Empresas:</h4>
+                        <ul class="text-sm text-gray-700 space-y-3">
+                            <li class="flex items-start"><svg class="w-4 h-4 text-yellow-500 mr-2 mt-0.5 flex-shrink-0" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"></path></svg> <strong>Pesquisa de Clima Organizacional:</strong> Aplicação de questionários anuais anônimos para medir a satisfação dos empregados com seus chefes, salários e ambiente de trabalho.</li>
+                            <li class="flex items-start"><svg class="w-4 h-4 text-yellow-500 mr-2 mt-0.5 flex-shrink-0" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"></path></svg> <strong>Cultura de Feedback e reuniões "1:1":</strong> Reuniões periódicas (ex: quinzenais) apenas entre o líder e o liderado (One-on-One) para alinhar expectativas, ouvir frustrações e traçar planos de desenvolvimento.</li>
+                            <li class="flex items-start"><svg class="w-4 h-4 text-yellow-500 mr-2 mt-0.5 flex-shrink-0" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"></path></svg> <strong>Comunicação Interna Estruturada:</strong> Uso de Intranet, TV Corporativa, murais físicos e boletins por e-mail para divulgar metas, aniversariantes e mudanças na empresa, evitando ruídos de comunicação.</li>
+                            <li class="flex items-start"><svg class="w-4 h-4 text-yellow-500 mr-2 mt-0.5 flex-shrink-0" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"></path></svg> <strong>Mediação de Conflitos:</strong> Intervenção do RH de forma imparcial (Business Partners) quando há atritos sérios entre colaboradores de setores diferentes.</li>
+                        </ul>
+                    </div>
+                </div>
+            </article>
+            </div>
+    </main>
+            <div style="text-align: center;">
+              <a href="recuperacao.html">👨🏽‍🤝‍👨🏼 Recuperação</a>
+            </div>
+    <footer class="bg-gray-800 text-gray-300 py-6 text-center text-sm mt-auto">
+        <p>Material de Apoio Pedagógico • Técnico em Administração • SC</p>
+        <p class="mt-1 opacity-50">Baseado nos conceitos de Gestão de Pessoas (Chiavenato) e nas Diretrizes Curriculares do Estado de Santa Catarina.</p>
+    </footer>
+
 </body>
 </html>

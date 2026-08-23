@@ -1,0 +1,858 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Operação: Manter Pessoas - O RH em Missão</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700;900&display=swap" rel="stylesheet">
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: { sans: ['Inter', 'sans-serif'] },
+                    colors: {
+                        rh: {
+                            dark: '#1e293b',
+                            primary: '#2563eb',
+                            secondary: '#0ea5e9',
+                            accent: '#f59e0b',
+                            danger: '#ef4444',
+                            success: '#10b981'
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        body { background-color: #f8fafc; color: #334155; }
+        .screen { display: none; animation: fadeIn 0.4s ease-out forwards; }
+        .screen.active { display: block; }
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        .avatar-option { cursor: pointer; transition: all 0.2s; border: 3px solid transparent; }
+        .avatar-option.selected { border-color: #2563eb; transform: scale(1.05); background-color: #eff6ff; }
+        
+        .risk-badge-fisico { background: #fee2e2; color: #ef4444; }
+        .risk-badge-ergonomico { background: #fef3c7; color: #d97706; }
+        .risk-badge-quimico { background: #d1fae5; color: #059669; }
+        .risk-badge-biologico { background: #dbeafe; color: #2563eb; }
+        .risk-badge-acidente { background: #f3f4f6; color: #374151; }
+
+        /* Custom Scrollbar */
+        ::-webkit-scrollbar { width: 8px; }
+        ::-webkit-scrollbar-track { background: #f1f1f1; }
+        ::-webkit-scrollbar-thumb { background: #cbd5e1; border-radius: 4px; }
+        ::-webkit-scrollbar-thumb:hover { background: #94a3b8; }
+    </style>
+</head>
+<body class="min-h-screen flex flex-col relative overflow-x-hidden">
+
+    <header class="bg-rh-dark text-white p-4 shadow-md sticky top-0 z-40 hidden" id="mainHeader">
+        <div class="container mx-auto flex justify-between items-center max-w-4xl">
+            <div class="flex items-center gap-2">
+                <i class="fas fa-briefcase text-rh-secondary text-2xl"></i>
+                <h1 class="font-bold text-lg hidden sm:block">MAXLOG Distribuição</h1>
+            </div>
+            <div class="flex items-center gap-4 text-sm font-semibold">
+                <div id="playerInfoHeader" class="flex items-center gap-2 bg-slate-700 px-3 py-1 rounded-full">
+                    <span id="headerAvatar" class="text-xl"></span>
+                    <span id="headerName">Consultor</span>
+                </div>
+                <button onclick="resetGame()" class="text-xs text-slate-400 hover:text-white" title="Reiniciar Missão">
+                    <i class="fas fa-power-off"></i> Sair
+                </button>
+            </div>
+        </div>
+    </header>
+
+    <main class="flex-grow flex items-center justify-center p-4 container mx-auto max-w-4xl" id="appContainer">
+        
+        <!-- SCREEN: LOGIN/PROFILE -->
+        <section id="screen-login" class="screen active w-full max-w-md bg-white rounded-2xl shadow-xl p-8 border-t-4 border-rh-primary">
+            <div class="text-center mb-6">
+                <div class="w-16 h-16 bg-blue-100 text-blue-600 rounded-full flex items-center justify-center mx-auto mb-4 text-3xl shadow-inner">
+                    <i class="fas fa-id-card"></i>
+                </div>
+                <h2 class="text-2xl font-bold text-slate-800">Operação: Manter Pessoas</h2>
+                <p class="text-sm text-slate-500 mt-1">Simulador de Consultoria de RH</p>
+            </div>
+
+            <div class="space-y-4">
+                <div>
+                    <label class="block text-sm font-semibold text-slate-700 mb-1">Seu Nome de Consultor(a):</label>
+                    <input type="text" id="playerName" class="w-full px-4 py-2 border border-slate-300 rounded-lg focus:ring-2 focus:ring-rh-primary focus:border-rh-primary outline-none transition-all" placeholder="Ex: Alex Silva">
+                </div>
+
+                <div>
+                    <label class="block text-sm font-semibold text-slate-700 mb-2">Escolha seu Avatar:</label>
+                    <div class="grid grid-cols-4 gap-2" id="avatarSelection">
+                        <!-- Avatars gerados via JS -->
+                    </div>
+                </div>
+
+                <button onclick="startGame()" class="w-full bg-rh-primary hover:bg-blue-700 text-white font-bold py-3 px-4 rounded-lg shadow-lg hover:shadow-xl transition-all transform hover:-translate-y-1 mt-4">
+                    Iniciar Missão <i class="fas fa-arrow-right ml-2"></i>
+                </button>
+            </div>
+        </section>
+
+        <!-- SCREEN: DASHBOARD -->
+        <section id="screen-dashboard" class="screen w-full bg-white rounded-2xl shadow-xl overflow-hidden border border-slate-200">
+            <div class="bg-slate-800 p-6 text-white relative overflow-hidden">
+                <div class="absolute -right-10 -top-10 opacity-10">
+                    <i class="fas fa-building text-9xl"></i>
+                </div>
+                <h2 class="text-3xl font-black mb-2 relative z-10">MAXLOG Distribuição Ltda.</h2>
+                <p class="text-blue-200 text-sm font-medium relative z-10">Dossiê da Empresa | 120 Colaboradores | Risco Crítico</p>
+            </div>
+            
+            <div class="p-6 md:p-8 flex flex-col md:flex-row gap-8">
+                <div class="md:w-1/3">
+                    <div class="bg-red-50 border border-red-200 p-4 rounded-xl shadow-sm">
+                        <h3 class="font-bold text-red-700 flex items-center gap-2 mb-3"><i class="fas fa-exclamation-triangle"></i> Sinais de Alerta</h3>
+                        <ul class="text-sm space-y-2 text-red-900 font-medium list-disc pl-4">
+                            <li>Acidentes em alta</li>
+                            <li>Dores físicas e fadiga</li>
+                            <li>Estresse e absenteísmo</li>
+                            <li>Atritos Liderança vs. Equipe</li>
+                            <li>Tensão com Sindicato</li>
+                            <li>Queda de produtividade</li>
+                        </ul>
+                    </div>
+                </div>
+                
+                <div class="md:w-2/3 space-y-6">
+                    <div class="bg-blue-50 border-l-4 border-blue-500 p-4 rounded-r-xl">
+                        <p class="italic text-slate-700">"Não queremos apenas contratar pessoas. Precisamos criar condições para que elas permaneçam, trabalhem com segurança e tenham qualidade de vida."</p>
+                        <p class="text-right font-bold text-sm mt-2 text-blue-800">— Diretor da MAXLOG</p>
+                    </div>
+
+                    <div>
+                        <h3 class="font-bold text-lg mb-3">Suas Missões</h3>
+                        <div class="space-y-3" id="missionList">
+                            <!-- Missões renderizadas via JS -->
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="bg-slate-50 p-4 border-t flex justify-between items-center px-6">
+                <span class="text-sm text-slate-500 font-medium">Progresso Geral</span>
+                <div class="w-1/2 bg-gray-200 rounded-full h-2.5">
+                    <div id="overallProgress" class="bg-rh-primary h-2.5 rounded-full" style="width: 0%"></div>
+                </div>
+            </div>
+        </section>
+
+        <!-- SCREEN: MISSION 1 - PROTEGER -->
+        <section id="screen-m1" class="screen w-full bg-white rounded-2xl shadow-xl overflow-hidden">
+            <div class="bg-red-600 p-4 text-white flex justify-between items-center">
+                <h2 class="text-xl font-bold"><i class="fas fa-shield-alt mr-2"></i> Missão 1: PROTEGER</h2>
+                <button onclick="goDashboard()" class="bg-white/20 hover:bg-white/30 px-3 py-1 rounded text-sm transition-colors">Voltar</button>
+            </div>
+            <div class="p-6">
+                <p class="mb-4 text-sm text-slate-600">Identifique pelo menos <strong>5 riscos</strong> no ambiente da empresa e proponha soluções para criar o Mapa de Riscos. <span id="m1Counter" class="font-bold text-red-600">0/5 mapeados</span></p>
+                
+                <form id="formM1" class="bg-slate-50 p-4 rounded-xl border border-slate-200 mb-6 grid grid-cols-1 md:grid-cols-2 gap-4">
+                    <div>
+                        <label class="block text-xs font-bold text-slate-500 mb-1">Tipo de Risco</label>
+                        <select id="m1Tipo" class="w-full p-2 text-sm border rounded" required>
+                            <option value="fisico">🟥 Físico (ruído, calor, etc)</option>
+                            <option value="ergonomico">🟨 Ergonômico (postura, peso)</option>
+                            <option value="quimico">🟩 Químico (poeira, gases)</option>
+                            <option value="biologico">🟦 Biológico (vírus, bactérias)</option>
+                            <option value="acidente">⚫ Acidente (máquinas, quedas)</option>
+                        </select>
+                    </div>
+                    <div>
+                        <label class="block text-xs font-bold text-slate-500 mb-1">Onde / Quem está exposto?</label>
+                        <input type="text" id="m1Local" class="w-full p-2 text-sm border rounded" placeholder="Ex: Estoque / Carregadores" required>
+                    </div>
+                    <div class="md:col-span-2">
+                        <label class="block text-xs font-bold text-slate-500 mb-1">Descrição e Consequência</label>
+                        <input type="text" id="m1Desc" class="w-full p-2 text-sm border rounded" placeholder="Ex: Levantamento de peso excessivo, causando dores nas costas." required>
+                    </div>
+                    <div class="md:col-span-2">
+                        <label class="block text-xs font-bold text-slate-500 mb-1">Solução Proposta</label>
+                        <div class="flex gap-2">
+                            <input type="text" id="m1Solucao" class="w-full p-2 text-sm border rounded" placeholder="Ex: Comprar empilhadeiras manuais." required>
+                            <button type="submit" class="bg-slate-800 text-white px-4 py-2 rounded hover:bg-slate-700 transition-colors"><i class="fas fa-plus"></i> Adicionar</button>
+                        </div>
+                    </div>
+                </form>
+
+                <div class="space-y-3 max-h-60 overflow-y-auto pr-2" id="m1List">
+                    <!-- Lista de riscos renderizada via JS -->
+                </div>
+
+                <div class="mt-6 flex justify-end">
+                    <button id="btnCompleteM1" onclick="completeMission(1)" class="bg-red-600 hover:bg-red-700 text-white font-bold py-2 px-6 rounded-lg opacity-50 cursor-not-allowed transition-all" disabled>Concluir Missão 1</button>
+                </div>
+            </div>
+        </section>
+
+        <!-- SCREEN: MISSION 2 - CUIDAR -->
+        <section id="screen-m2" class="screen w-full bg-white rounded-2xl shadow-xl overflow-hidden">
+            <div class="bg-green-600 p-4 text-white flex justify-between items-center">
+                <h2 class="text-xl font-bold"><i class="fas fa-heartbeat mr-2"></i> Missão 2: CUIDAR</h2>
+                <button onclick="goDashboard()" class="bg-white/20 hover:bg-white/30 px-3 py-1 rounded text-sm transition-colors">Voltar</button>
+            </div>
+            <div class="p-6">
+                <p class="mb-4 text-sm text-slate-600">Por que estão insatisfeitos? Crie um diagnóstico de QVT propondo <strong>5 ações de melhoria</strong>. <span id="m2Counter" class="font-bold text-green-600">0/5 propostas</span></p>
+                
+                <form id="formM2" class="bg-slate-50 p-4 rounded-xl border border-slate-200 mb-6 space-y-4">
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                        <div>
+                            <label class="block text-xs font-bold text-slate-500 mb-1">Área do Problema</label>
+                            <select id="m2Area" class="w-full p-2 text-sm border rounded" required>
+                                <option value="Ambiente Físico">Ambiente Físico</option>
+                                <option value="Relações/Comunicação">Relações/Comunicação</option>
+                                <option value="Carga de Trabalho/Descanso">Carga de Trabalho/Descanso</option>
+                                <option value="Reconhecimento">Reconhecimento</option>
+                                <option value="Desenvolvimento">Desenvolvimento Profissional</option>
+                            </select>
+                        </div>
+                        <div>
+                            <label class="block text-xs font-bold text-slate-500 mb-1">Problema Identificado (Diagnóstico)</label>
+                            <input type="text" id="m2Prob" class="w-full p-2 text-sm border rounded" placeholder="Ex: Falta de espaço para descanso nas pausas." required>
+                        </div>
+                    </div>
+                    <div>
+                        <label class="block text-xs font-bold text-slate-500 mb-1">Ação de Melhoria (Solução)</label>
+                        <div class="flex gap-2">
+                            <input type="text" id="m2Acao" class="w-full p-2 text-sm border rounded" placeholder="Ex: Criar sala de convivência com sofás e café." required>
+                            <button type="submit" class="bg-slate-800 text-white px-4 py-2 rounded hover:bg-slate-700"><i class="fas fa-plus"></i> Adicionar</button>
+                        </div>
+                    </div>
+                </form>
+
+                <div class="space-y-3 max-h-60 overflow-y-auto pr-2" id="m2List">
+                    <!-- Lista QVT -->
+                </div>
+
+                <div class="mt-6 flex justify-end">
+                    <button id="btnCompleteM2" onclick="completeMission(2)" class="bg-green-600 hover:bg-green-700 text-white font-bold py-2 px-6 rounded-lg opacity-50 cursor-not-allowed transition-all" disabled>Concluir Missão 2</button>
+                </div>
+            </div>
+        </section>
+
+        <!-- SCREEN: MISSION 3 - NEGOCIAR -->
+        <section id="screen-m3" class="screen w-full bg-white rounded-2xl shadow-xl overflow-hidden">
+            <div class="bg-blue-600 p-4 text-white flex justify-between items-center">
+                <h2 class="text-xl font-bold"><i class="fas fa-handshake mr-2"></i> Missão 3: NEGOCIAR</h2>
+                <button onclick="goDashboard()" class="bg-white/20 hover:bg-white/30 px-3 py-1 rounded text-sm transition-colors">Voltar</button>
+            </div>
+            <div class="p-6">
+                <div class="bg-amber-50 border border-amber-200 p-4 rounded-xl mb-6 flex gap-4 items-start">
+                    <i class="fas fa-bullhorn text-amber-500 text-2xl mt-1"></i>
+                    <div>
+                        <h3 class="font-bold text-amber-800">Reivindicações do Sindicato:</h3>
+                        <p class="text-sm text-amber-900 mt-1">"Exigimos aumento de 30 minutos no intervalo, troca de todos os supervisores linha dura e aumento de 50% no vale-alimentação!"</p>
+                        <p class="text-xs text-slate-500 mt-2 font-bold bg-white inline-block px-2 py-1 rounded shadow-sm">⚠️ Regra: Você não pode dizer apenas "Sim" ou "Não". Toda contraproposta exige justificativa.</p>
+                    </div>
+                </div>
+
+                <form id="formM3" class="space-y-5">
+                    <!-- Acordo 1 -->
+                    <div class="bg-slate-50 p-4 rounded border">
+                        <label class="block text-sm font-bold mb-2">Pauta 1: Aumento do Intervalo</label>
+                        <textarea id="m3R1" rows="2" class="w-full p-2 text-sm border rounded mb-2 focus:ring-1 focus:ring-blue-500" placeholder="Sua contraproposta/acordo..." required></textarea>
+                        <textarea id="m3J1" rows="2" class="w-full p-2 text-sm border rounded bg-blue-50 focus:ring-1 focus:ring-blue-500" placeholder="Justificativa da Empresa (Por que essa proposta é viável/necessária?)..." required></textarea>
+                    </div>
+                    <!-- Acordo 2 -->
+                    <div class="bg-slate-50 p-4 rounded border">
+                        <label class="block text-sm font-bold mb-2">Pauta 2: Liderança e Supervisores</label>
+                        <textarea id="m3R2" rows="2" class="w-full p-2 text-sm border rounded mb-2 focus:ring-1 focus:ring-blue-500" placeholder="Sua contraproposta/acordo..." required></textarea>
+                        <textarea id="m3J2" rows="2" class="w-full p-2 text-sm border rounded bg-blue-50 focus:ring-1 focus:ring-blue-500" placeholder="Justificativa da Empresa..." required></textarea>
+                    </div>
+                    <!-- Acordo 3 -->
+                    <div class="bg-slate-50 p-4 rounded border">
+                        <label class="block text-sm font-bold mb-2">Pauta 3: Vale-Alimentação</label>
+                        <textarea id="m3R3" rows="2" class="w-full p-2 text-sm border rounded mb-2 focus:ring-1 focus:ring-blue-500" placeholder="Sua contraproposta/acordo..." required></textarea>
+                        <textarea id="m3J3" rows="2" class="w-full p-2 text-sm border rounded bg-blue-50 focus:ring-1 focus:ring-blue-500" placeholder="Justificativa da Empresa..." required></textarea>
+                    </div>
+
+                    <div class="flex justify-end mt-4">
+                        <button type="submit" class="bg-blue-600 hover:bg-blue-700 text-white font-bold py-2 px-6 rounded-lg transition-all">Assinar Acordos e Concluir</button>
+                    </div>
+                </form>
+            </div>
+        </section>
+
+        <!-- SCREEN: PLANO 3P & PITCH -->
+        <section id="screen-plano" class="screen w-full bg-white rounded-2xl shadow-xl overflow-hidden">
+            <div class="bg-purple-700 p-4 text-white text-center">
+                <h2 class="text-2xl font-black"><i class="fas fa-chess-knight mr-2"></i> DESAFIO FINAL: PLANO 3P</h2>
+                <p class="text-sm opacity-80">Proteger, Promover e Pacificar</p>
+            </div>
+            <div class="p-6">
+                <p class="mb-4 text-sm text-slate-600">Reúna as 3 ações mais importantes (uma de cada missão) para formar o plano estratégico a ser apresentado à diretoria.</p>
+                
+                <form id="formPlano">
+                    <div class="space-y-4 mb-6">
+                        <!-- Proteger -->
+                        <div class="bg-red-50 p-3 rounded border border-red-200">
+                            <h4 class="font-bold text-red-700 text-sm mb-2"><i class="fas fa-shield-alt"></i> Pilar PROTEGER (Missão 1)</h4>
+                            <div class="grid grid-cols-2 gap-2">
+                                <input type="text" id="p1Problema" class="p-2 text-xs border rounded" placeholder="Problema Prioritário" required>
+                                <input type="text" id="p1Solucao" class="p-2 text-xs border rounded" placeholder="Solução/Ação Preventiva" required>
+                                <input type="text" id="p1Resp" class="p-2 text-xs border rounded" placeholder="Responsável (Ex: SESMT)" required>
+                                <input type="text" id="p1Prazo" class="p-2 text-xs border rounded" placeholder="Prazo (Ex: 15 dias)" required>
+                            </div>
+                        </div>
+                        <!-- Promover -->
+                        <div class="bg-green-50 p-3 rounded border border-green-200">
+                            <h4 class="font-bold text-green-700 text-sm mb-2"><i class="fas fa-heartbeat"></i> Pilar PROMOVER (Missão 2)</h4>
+                            <div class="grid grid-cols-2 gap-2">
+                                <input type="text" id="p2Problema" class="p-2 text-xs border rounded" placeholder="Problema Prioritário" required>
+                                <input type="text" id="p2Solucao" class="p-2 text-xs border rounded" placeholder="Programa de QVT" required>
+                                <input type="text" id="p2Resp" class="p-2 text-xs border rounded" placeholder="Responsável (Ex: RH)" required>
+                                <input type="text" id="p2Prazo" class="p-2 text-xs border rounded" placeholder="Prazo (Ex: 30 dias)" required>
+                            </div>
+                        </div>
+                        <!-- Pacificar -->
+                        <div class="bg-blue-50 p-3 rounded border border-blue-200">
+                            <h4 class="font-bold text-blue-700 text-sm mb-2"><i class="fas fa-handshake"></i> Pilar PACIFICAR (Missão 3)</h4>
+                            <div class="grid grid-cols-2 gap-2">
+                                <input type="text" id="p3Problema" class="p-2 text-xs border rounded" placeholder="Conflito Prioritário" required>
+                                <input type="text" id="p3Solucao" class="p-2 text-xs border rounded" placeholder="Acordo/Solução" required>
+                                <input type="text" id="p3Resp" class="p-2 text-xs border rounded" placeholder="Responsável (Ex: Diretoria)" required>
+                                <input type="text" id="p3Prazo" class="p-2 text-xs border rounded" placeholder="Prazo (Ex: Imediato)" required>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="bg-slate-800 text-white p-5 rounded-xl">
+                        <h3 class="font-bold text-lg mb-3 text-purple-300">🎤 Pitch para a Diretoria (RH Sob Pressão)</h3>
+                        <p class="text-xs text-slate-300 mb-4">Responda brevemente para se preparar para as perguntas difíceis do Diretor.</p>
+                        
+                        <div class="space-y-3">
+                            <div>
+                                <label class="text-xs font-semibold">1. Qual problema escolhemos resolver PRIMEIRO e por quê?</label>
+                                <textarea id="pitch1" rows="1" class="w-full p-2 text-sm text-slate-900 rounded" required></textarea>
+                            </div>
+                            <div>
+                                <label class="text-xs font-semibold">2. Por que a empresa deve investir tempo/dinheiro nisso?</label>
+                                <textarea id="pitch2" rows="1" class="w-full p-2 text-sm text-slate-900 rounded" required></textarea>
+                            </div>
+                            <div>
+                                <label class="text-xs font-semibold">3. O que acontece se não fizermos nada?</label>
+                                <textarea id="pitch3" rows="1" class="w-full p-2 text-sm text-slate-900 rounded" required></textarea>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="flex justify-end mt-6">
+                        <button type="submit" class="bg-purple-600 hover:bg-purple-700 text-white font-bold py-3 px-8 rounded-lg shadow-lg text-lg w-full md:w-auto">Finalizar Consultoria e Apresentar</button>
+                    </div>
+                </form>
+            </div>
+        </section>
+
+        <!-- SCREEN: RESULTADO -->
+        <section id="screen-result" class="screen w-full max-w-2xl bg-white rounded-2xl shadow-2xl overflow-hidden text-center p-10 border-t-8 border-green-500">
+            <i class="fas fa-trophy text-6xl text-yellow-400 mb-6 drop-shadow-md"></i>
+            <h2 class="text-3xl font-black text-slate-800 mb-2">Missão Cumprida!</h2>
+            <p class="text-lg text-slate-600 mb-6">Parabéns, <span id="resName" class="font-bold text-slate-800"></span>! Você apresentou o Plano de Emergência da MAXLOG.</p>
+            
+            <div class="bg-slate-50 p-6 rounded-xl text-left border mb-8">
+                <h3 class="font-bold text-slate-700 mb-2 border-b pb-2">Feedback da Diretoria:</h3>
+                <p class="text-sm italic text-slate-600">"Excelente trabalho analítico. Percebemos agora que manter pessoas não é apenas evitar demissões, mas criar um sistema de trabalho seguro, saudável e baseado no diálogo."</p>
+                <div class="mt-4 flex justify-between items-center bg-green-100 p-3 rounded font-bold text-green-800">
+                    <span>Nota Avaliada:</span>
+                    <span class="text-2xl">10,0 / 10,0</span>
+                </div>
+                <div class="mt-2 text-xs text-slate-500 flex flex-col gap-1">
+                    <p>✓ Identificação de Riscos: 2,0 pts</p>
+                    <p>✓ Propostas de QVT: 2,0 pts</p>
+                    <p>✓ Estratégia Sindical: 2,0 pts</p>
+                    <p>✓ Qualidade Plano 3P: 1,5 pts</p>
+                    <p>✓ Criatividade: 1,0 pts</p>
+                    <p>✓ Apresentação/Pitch: 1,5 pts</p>
+                </div>
+            </div>
+
+            <div class="flex flex-col sm:flex-row justify-center gap-4">
+                <button onclick="downloadRelatorio()" class="bg-blue-600 hover:bg-blue-700 text-white font-bold py-3 px-6 rounded-lg shadow transition-all flex items-center justify-center gap-2">
+                    <i class="fas fa-download"></i> Baixar Relatório (TXT)
+                </button>
+                <button onclick="resetGame()" class="bg-slate-200 hover:bg-slate-300 text-slate-700 font-bold py-3 px-6 rounded-lg transition-all">
+                    Iniciar Nova Consultoria
+                </button>
+            </div>
+        </section>
+
+    </main>
+
+    <!-- MODAL: CARTA EVENTO -->
+    <div id="eventModal" class="fixed inset-0 bg-black/60 z-50 hidden flex items-center justify-center p-4 backdrop-blur-sm">
+        <div class="bg-white rounded-xl shadow-2xl max-w-sm w-full transform transition-all scale-95 opacity-0" id="eventModalContent" style="transition: all 0.3s ease;">
+            <div class="bg-red-500 p-3 rounded-t-xl text-white text-center border-b-4 border-red-700 relative overflow-hidden">
+                <div class="absolute inset-0 bg-[url('data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSI0IiBoZWlnaHQ9IjQiPjxyZWN0IHdpZHRoPSI0IiBoZWlnaHQ9IjQiIGZpbGw9IiNmZmYiIGZpbGwtb3BhY2l0eT0iMC4xIi8+PC9zdmc+')] opacity-30"></div>
+                <h3 class="font-black text-lg relative z-10 flex items-center justify-center gap-2"><i class="fas fa-bolt"></i> CARTA DE EVENTO</h3>
+            </div>
+            <div class="p-6 text-center">
+                <div class="text-5xl mb-4" id="eventIcon">🚨</div>
+                <h4 class="font-bold text-xl mb-2 text-slate-800" id="eventTitle">Título</h4>
+                <p class="text-sm text-slate-600 mb-6" id="eventDesc">Descrição do evento que ocorreu na empresa.</p>
+                <button onclick="closeEventModal()" class="w-full bg-slate-800 hover:bg-slate-900 text-white font-bold py-2 rounded shadow">Ciente, continuar missão</button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // --- ESTADO DO JOGO ---
+        const STORAGE_KEY = 'hr_game_state';
+        
+        const defaultState = {
+            player: { name: '', avatar: '' },
+            missions: {
+                m1: { completed: false, items: [] },
+                m2: { completed: false, items: [] },
+                m3: { completed: false, data: {} },
+                plano: { completed: false, data: {} }
+            },
+            eventsSeen: []
+        };
+
+        let gameState = JSON.parse(localStorage.getItem(STORAGE_KEY)) || JSON.parse(JSON.stringify(defaultState));
+
+        // --- AVATARES ---
+        const avatars = [
+            { id: 'm1', icon: '👨‍💼', bg: 'bg-blue-100' },
+            { id: 'f1', icon: '👩‍💼', bg: 'bg-pink-100' },
+            { id: 'm2', icon: '🧔', bg: 'bg-green-100' },
+            { id: 'f2', icon: '🧕', bg: 'bg-purple-100' },
+            { id: 'm3', icon: '👨‍🔬', bg: 'bg-yellow-100' },
+            { id: 'f3', icon: '👩‍🏫', bg: 'bg-red-100' }
+        ];
+
+        // --- EVENTOS (Cartas) ---
+        const eventCards = [
+            { id: 1, title: "Acidente na Expedição", icon: "🩹", desc: "Um funcionário escorregou e fraturou o braço. A direção exige respostas imediatas sobre segurança.", type: "danger" },
+            { id: 2, title: "Pico de Estresse", icon: "🤯", desc: "Pesquisa interna vazou: 65% consideram pedir demissão por exaustão mental.", type: "warning" },
+            { id: 3, title: "Ameaça de Greve", icon: "🛑", desc: "Sindicato publicou edital de paralisação caso não haja reunião nas próximas 24 horas.", type: "danger" },
+            { id: 4, title: "Efeito Dominó", icon: "🚪", desc: "Cinco funcionários da mesma equipe pediram demissão no mesmo mês alegando liderança tóxica.", type: "warning" },
+            { id: 5, title: "Corte de Verba", icon: "💰", desc: "O Diretor avisou: Você tem apenas R$ 20.000 para implementar todas as ações deste plano. Priorize!", type: "info" }
+        ];
+
+        // --- INICIALIZAÇÃO ---
+        function init() {
+            renderAvatars();
+            
+            if (gameState.player.name) {
+                updateHeader();
+                if (gameState.missions.plano.completed) {
+                    showScreen('screen-result');
+                } else {
+                    goDashboard();
+                }
+            } else {
+                showScreen('screen-login');
+            }
+        }
+
+        function saveData() {
+            localStorage.setItem(STORAGE_KEY, JSON.stringify(gameState));
+        }
+
+        // --- NAVEGAÇÃO ---
+        function showScreen(id) {
+            document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
+            document.getElementById(id).classList.add('active');
+            
+            const header = document.getElementById('mainHeader');
+            if (id === 'screen-login') header.classList.add('hidden');
+            else header.classList.remove('hidden');
+        }
+
+        function goDashboard() {
+            renderDashboard();
+            showScreen('screen-dashboard');
+            saveData();
+        }
+
+        // --- PERFIL ---
+        function renderAvatars() {
+            const container = document.getElementById('avatarSelection');
+            container.innerHTML = avatars.map(a => `
+                <div onclick="selectAvatar('${a.id}')" id="av-${a.id}" class="avatar-option ${a.bg} h-16 rounded-xl flex items-center justify-center text-3xl shadow-sm">
+                    ${a.icon}
+                </div>
+            `).join('');
+        }
+
+        let tempAvatar = '';
+        function selectAvatar(id) {
+            document.querySelectorAll('.avatar-option').forEach(el => el.classList.remove('selected'));
+            document.getElementById(`av-${id}`).classList.add('selected');
+            tempAvatar = avatars.find(a => a.id === id).icon;
+        }
+
+        function startGame() {
+            const name = document.getElementById('playerName').value.trim();
+            if (!name || !tempAvatar) {
+                alert("Por favor, digite seu nome e escolha um avatar.");
+                return;
+            }
+            gameState.player.name = name;
+            gameState.player.avatar = tempAvatar;
+            saveData();
+            updateHeader();
+            goDashboard();
+        }
+
+        function updateHeader() {
+            document.getElementById('headerName').textContent = gameState.player.name;
+            document.getElementById('headerAvatar').textContent = gameState.player.avatar;
+            document.getElementById('resName').textContent = gameState.player.name;
+        }
+
+        function resetGame() {
+            if(confirm("Tem certeza? Todo o progresso será apagado.")) {
+                localStorage.removeItem(STORAGE_KEY);
+                gameState = JSON.parse(JSON.stringify(defaultState));
+                location.reload();
+            }
+        }
+
+        // --- DASHBOARD ---
+        function renderDashboard() {
+            const missions = [
+                { id: 'm1', title: 'Missão 1: Proteger', desc: 'Mapa de Riscos (Higiene e Segurança)', color: 'red', icon: 'shield-alt', unlock: true },
+                { id: 'm2', title: 'Missão 2: Cuidar', desc: 'Diagnóstico de QVT', color: 'green', icon: 'heartbeat', unlock: gameState.missions.m1.completed },
+                { id: 'm3', title: 'Missão 3: Negociar', desc: 'Relações Sindicais', color: 'blue', icon: 'handshake', unlock: gameState.missions.m2.completed },
+                { id: 'plano', title: 'Desafio Final: Plano 3P', desc: 'Apresentação p/ Diretoria', color: 'purple', icon: 'chess-knight', unlock: gameState.missions.m3.completed }
+            ];
+
+            const list = document.getElementById('missionList');
+            list.innerHTML = missions.map((m, index) => {
+                const status = gameState.missions[m.id].completed;
+                const lockedStyle = !m.unlock ? 'opacity-50 grayscale cursor-not-allowed' : 'hover:-translate-y-1 hover:shadow-md cursor-pointer';
+                const action = m.unlock ? `onclick="openMission('${m.id}')"` : '';
+                const btnText = status ? '<i class="fas fa-check-circle text-green-500 text-xl"></i>' : (m.unlock ? 'Iniciar' : '<i class="fas fa-lock text-slate-400"></i>');
+
+                return `
+                <div ${action} class="bg-white border p-3 rounded-lg flex items-center justify-between transition-all ${lockedStyle}">
+                    <div class="flex items-center gap-3">
+                        <div class="w-10 h-10 rounded bg-${m.color}-100 text-${m.color}-600 flex items-center justify-center text-lg">
+                            <i class="fas fa-${m.icon}"></i>
+                        </div>
+                        <div>
+                            <h4 class="font-bold text-sm text-slate-800">${m.title}</h4>
+                            <p class="text-xs text-slate-500">${m.desc}</p>
+                        </div>
+                    </div>
+                    <div class="font-bold text-sm text-${m.color}-600">${btnText}</div>
+                </div>
+                `;
+            }).join('');
+
+            // Calcular progresso
+            let completedCount = Object.values(gameState.missions).filter(m => m.completed).length;
+            let percent = (completedCount / 4) * 100;
+            document.getElementById('overallProgress').style.width = percent + '%';
+        }
+
+        function openMission(id) {
+            triggerRandomEvent(() => {
+                showScreen(`screen-${id}`);
+                if (id === 'm1') renderM1List();
+                if (id === 'm2') renderM2List();
+            });
+        }
+
+        // --- SISTEMA DE EVENTOS ---
+        function triggerRandomEvent(callback) {
+            // Chance de 30% de evento se ainda houver eventos não vistos e não estiver no fim
+            const unseen = eventCards.filter(e => !gameState.eventsSeen.includes(e.id));
+            if (unseen.length > 0 && Math.random() < 0.35 && !gameState.missions.plano.completed) {
+                const event = unseen[Math.floor(Math.random() * unseen.length)];
+                
+                document.getElementById('eventIcon').textContent = event.icon;
+                document.getElementById('eventTitle').textContent = event.title;
+                document.getElementById('eventDesc').textContent = event.desc;
+                
+                const modal = document.getElementById('eventModal');
+                const content = document.getElementById('eventModalContent');
+                
+                modal.classList.remove('hidden');
+                setTimeout(() => {
+                    content.classList.remove('scale-95', 'opacity-0');
+                    content.classList.add('scale-100', 'opacity-100');
+                }, 50);
+
+                gameState.eventsSeen.push(event.id);
+                saveData();
+
+                // Salva callback no botão fechar
+                window.currentEventCallback = callback;
+            } else {
+                callback();
+            }
+        }
+
+        function closeEventModal() {
+            const modal = document.getElementById('eventModal');
+            const content = document.getElementById('eventModalContent');
+            content.classList.remove('scale-100', 'opacity-100');
+            content.classList.add('scale-95', 'opacity-0');
+            setTimeout(() => {
+                modal.classList.add('hidden');
+                if (window.currentEventCallback) {
+                    window.currentEventCallback();
+                    window.currentEventCallback = null;
+                }
+            }, 300);
+        }
+
+
+        // --- MISSÃO 1: PROTEGER ---
+        document.getElementById('formM1').addEventListener('submit', function(e) {
+            e.preventDefault();
+            if(gameState.missions.m1.items.length >= 5) return alert("Você já mapeou os 5 riscos necessários!");
+            
+            const tipo = document.getElementById('m1Tipo').value;
+            const local = document.getElementById('m1Local').value;
+            const desc = document.getElementById('m1Desc').value;
+            const solucao = document.getElementById('m1Solucao').value;
+
+            gameState.missions.m1.items.push({ tipo, local, desc, solucao });
+            saveData();
+            
+            this.reset();
+            renderM1List();
+        });
+
+        function renderM1List() {
+            const list = document.getElementById('m1List');
+            const btn = document.getElementById('btnCompleteM1');
+            const counter = document.getElementById('m1Counter');
+            
+            const items = gameState.missions.m1.items;
+            
+            list.innerHTML = items.map((i, index) => `
+                <div class="bg-white p-3 rounded border text-sm flex flex-col gap-2 relative">
+                    <button onclick="removeM1Item(${index})" class="absolute top-2 right-2 text-red-400 hover:text-red-600"><i class="fas fa-times"></i></button>
+                    <div class="flex items-center gap-2">
+                        <span class="px-2 py-1 rounded text-xs font-bold uppercase risk-badge-${i.tipo}">${i.tipo}</span>
+                        <span class="font-semibold text-slate-700">${i.local}</span>
+                    </div>
+                    <p class="text-slate-600"><strong>Risco:</strong> ${i.desc}</p>
+                    <p class="text-green-700 bg-green-50 p-1 rounded inline-block text-xs"><strong>Solução:</strong> ${i.solucao}</p>
+                </div>
+            `).join('');
+
+            counter.textContent = `${items.length}/5 mapeados`;
+            
+            if (items.length >= 5) {
+                btn.disabled = false;
+                btn.classList.remove('opacity-50', 'cursor-not-allowed');
+                counter.classList.replace('text-red-600', 'text-green-600');
+            } else {
+                btn.disabled = true;
+                btn.classList.add('opacity-50', 'cursor-not-allowed');
+                counter.classList.replace('text-green-600', 'text-red-600');
+            }
+        }
+
+        function removeM1Item(index) {
+            gameState.missions.m1.items.splice(index, 1);
+            saveData();
+            renderM1List();
+        }
+
+        // --- MISSÃO 2: CUIDAR ---
+        document.getElementById('formM2').addEventListener('submit', function(e) {
+            e.preventDefault();
+            if(gameState.missions.m2.items.length >= 5) return alert("Você já propôs as 5 ações!");
+            
+            const area = document.getElementById('m2Area').value;
+            const prob = document.getElementById('m2Prob').value;
+            const acao = document.getElementById('m2Acao').value;
+
+            gameState.missions.m2.items.push({ area, prob, acao });
+            saveData();
+            
+            this.reset();
+            renderM2List();
+        });
+
+        function renderM2List() {
+            const list = document.getElementById('m2List');
+            const btn = document.getElementById('btnCompleteM2');
+            const counter = document.getElementById('m2Counter');
+            
+            const items = gameState.missions.m2.items;
+            
+            list.innerHTML = items.map((i, index) => `
+                <div class="bg-white p-3 rounded border border-l-4 border-l-green-500 text-sm relative">
+                    <button onclick="removeM2Item(${index})" class="absolute top-2 right-2 text-red-400 hover:text-red-600"><i class="fas fa-times"></i></button>
+                    <span class="text-xs font-bold text-slate-400 uppercase tracking-wider">${i.area}</span>
+                    <p class="text-slate-700 mt-1 mb-1">👎 ${i.prob}</p>
+                    <p class="text-green-700 font-medium">💡 ${i.acao}</p>
+                </div>
+            `).join('');
+
+            counter.textContent = `${items.length}/5 propostas`;
+            
+            if (items.length >= 5) {
+                btn.disabled = false;
+                btn.classList.remove('opacity-50', 'cursor-not-allowed');
+                counter.classList.replace('text-green-600', 'text-blue-600');
+            } else {
+                btn.disabled = true;
+                btn.classList.add('opacity-50', 'cursor-not-allowed');
+                counter.classList.replace('text-blue-600', 'text-green-600');
+            }
+        }
+
+        function removeM2Item(index) {
+            gameState.missions.m2.items.splice(index, 1);
+            saveData();
+            renderM2List();
+        }
+
+        // --- MISSÃO 3: NEGOCIAR ---
+        document.getElementById('formM3').addEventListener('submit', function(e) {
+            e.preventDefault();
+            
+            const data = {
+                r1: document.getElementById('m3R1').value,
+                j1: document.getElementById('m3J1').value,
+                r2: document.getElementById('m3R2').value,
+                j2: document.getElementById('m3J2').value,
+                r3: document.getElementById('m3R3').value,
+                j3: document.getElementById('m3J3').value,
+            };
+
+            // Validação simples para evitar só "sim/não"
+            const allText = Object.values(data).join(' ').toLowerCase();
+            if(allText.length < 50 || (allText.includes('sim') && allText.length < 60) || (allText.includes('não') && allText.length < 60)){
+               if(!confirm("Suas respostas parecem muito curtas ou apenas 'sim/não'. Lembre-se que precisa justificar as propostas. Deseja continuar assim mesmo?")) {
+                   return;
+               }
+            }
+
+            gameState.missions.m3.data = data;
+            completeMission(3);
+        });
+
+        // --- PLANO FINAL ---
+        document.getElementById('formPlano').addEventListener('submit', function(e) {
+            e.preventDefault();
+            
+            gameState.missions.plano.data = {
+                p1: { prob: document.getElementById('p1Problema').value, sol: document.getElementById('p1Solucao').value, resp: document.getElementById('p1Resp').value, prazo: document.getElementById('p1Prazo').value },
+                p2: { prob: document.getElementById('p2Problema').value, sol: document.getElementById('p2Solucao').value, resp: document.getElementById('p2Resp').value, prazo: document.getElementById('p2Prazo').value },
+                p3: { prob: document.getElementById('p3Problema').value, sol: document.getElementById('p3Solucao').value, resp: document.getElementById('p3Resp').value, prazo: document.getElementById('p3Prazo').value },
+                pitch: { q1: document.getElementById('pitch1').value, q2: document.getElementById('pitch2').value, q3: document.getElementById('pitch3').value }
+            };
+            
+            gameState.missions.plano.completed = true;
+            saveData();
+            showScreen('screen-result');
+        });
+
+        // --- RELATÓRIO TXT ---
+        function downloadRelatorio() {
+            let relatorio = `=======================================================\n`;
+            relatorio += `  RELATÓRIO DE CONSULTORIA: OPERAÇÃO MANTER PESSOAS\n`;
+            relatorio += `=======================================================\n\n`;
+            
+            relatorio += `Consultor(a): ${gameState.player.name}\n`;
+            relatorio += `Empresa Cliente: MAXLOG Distribuição Ltda.\n`;
+            relatorio += `Data do Relatório: ${new Date().toLocaleDateString('pt-BR')}\n\n`;
+
+            relatorio += `-------------------------------------------------------\n`;
+            relatorio += `MISSÃO 1: PROTEGER (Mapa de Riscos)\n`;
+            relatorio += `-------------------------------------------------------\n`;
+            gameState.missions.m1.items.forEach((item, index) => {
+                relatorio += `Risco ${index + 1}: [${item.tipo.toUpperCase()}] no setor: ${item.local}\n`;
+                relatorio += `  - Problema: ${item.desc}\n`;
+                relatorio += `  - Solução:  ${item.solucao}\n\n`;
+            });
+
+            relatorio += `-------------------------------------------------------\n`;
+            relatorio += `MISSÃO 2: CUIDAR (Diagnóstico de QVT)\n`;
+            relatorio += `-------------------------------------------------------\n`;
+            gameState.missions.m2.items.forEach((item, index) => {
+                relatorio += `Ação ${index + 1}: Área [${item.area}]\n`;
+                relatorio += `  - Diagnóstico: ${item.prob}\n`;
+                relatorio += `  - Proposta:    ${item.acao}\n\n`;
+            });
+
+            relatorio += `-------------------------------------------------------\n`;
+            relatorio += `MISSÃO 3: NEGOCIAR (Relações Sindicais)\n`;
+            relatorio += `-------------------------------------------------------\n`;
+            const m3 = gameState.missions.m3.data;
+            relatorio += `Pauta 1 (Intervalo):\n  - Proposta: ${m3.r1}\n  - Justificativa: ${m3.j1}\n\n`;
+            relatorio += `Pauta 2 (Liderança):\n  - Proposta: ${m3.r2}\n  - Justificativa: ${m3.j2}\n\n`;
+            relatorio += `Pauta 3 (Vale-Alimentação):\n  - Proposta: ${m3.r3}\n  - Justificativa: ${m3.j3}\n\n`;
+
+            relatorio += `-------------------------------------------------------\n`;
+            relatorio += `DESAFIO FINAL: PLANO 3P E PITCH\n`;
+            relatorio += `-------------------------------------------------------\n`;
+            const plano = gameState.missions.plano.data;
+            relatorio += `[Pilar PROTEGER]\n  - Problema: ${plano.p1.prob}\n  - Solução: ${plano.p1.sol}\n  - Resp: ${plano.p1.resp} | Prazo: ${plano.p1.prazo}\n\n`;
+            relatorio += `[Pilar PROMOVER]\n  - Problema: ${plano.p2.prob}\n  - Solução: ${plano.p2.sol}\n  - Resp: ${plano.p2.resp} | Prazo: ${plano.p2.prazo}\n\n`;
+            relatorio += `[Pilar PACIFICAR]\n  - Problema: ${plano.p3.prob}\n  - Solução: ${plano.p3.sol}\n  - Resp: ${plano.p3.resp} | Prazo: ${plano.p3.prazo}\n\n`;
+            
+            relatorio += `Respostas do Pitch (RH sob Pressão):\n`;
+            relatorio += `1. Qual problema escolhemos resolver PRIMEIRO e por quê?\n   R: ${plano.pitch.q1}\n\n`;
+            relatorio += `2. Por que a empresa deve investir tempo/dinheiro nisso?\n   R: ${plano.pitch.q2}\n\n`;
+            relatorio += `3. O que acontece se não fizermos nada?\n   R: ${plano.pitch.q3}\n\n`;
+
+            relatorio += `-------------------------------------------------------\n`;
+            relatorio += `EVENTOS ENFRENTADOS\n`;
+            relatorio += `-------------------------------------------------------\n`;
+            if (gameState.eventsSeen.length === 0) {
+                relatorio += `Nenhum evento surpresa ocorreu nesta simulação.\n`;
+            } else {
+                gameState.eventsSeen.forEach(eventId => {
+                    const event = eventCards.find(e => e.id === eventId);
+                    if (event) relatorio += `- ${event.title}: ${event.desc}\n`;
+                });
+            }
+            relatorio += `\n`;
+
+            relatorio += `=======================================================\n`;
+            relatorio += `RESULTADO FINAL\n`;
+            relatorio += `=======================================================\n`;
+            relatorio += `Feedback da Diretoria:\n`;
+            relatorio += `"Excelente trabalho analítico. Percebemos agora que manter pessoas não é apenas evitar demissões, mas criar um sistema de trabalho seguro, saudável e baseado no diálogo."\n\n`;
+            relatorio += `NOTA AVALIADA: 10,0 / 10,0\n`;
+            relatorio += `(Distribuição: Riscos 2.0 | QVT 2.0 | Sindicato 2.0 | Plano 3P 1.5 | Criatividade 1.0 | Pitch 1.5)\n`;
+            relatorio += `=======================================================\n`;
+
+            // Criar o arquivo e iniciar o download
+            const blob = new Blob([relatorio], { type: 'text/plain;charset=utf-8' });
+            const url = URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = `Relatorio_MAXLOG_${gameState.player.name.replace(/\s+/g, '_')}.txt`;
+            document.body.appendChild(a);
+            a.click();
+            document.body.removeChild(a);
+            URL.revokeObjectURL(url);
+        }
+
+        // --- AUXILIARES ---
+        function completeMission(missionNumber) {
+            gameState.missions[`m${missionNumber}`].completed = true;
+            saveData();
+            alert(`Missão ${missionNumber} concluída com sucesso! Retornando ao dossiê.`);
+            goDashboard();
+        }
+
+        // Inicializa o app
+        window.onload = init;
+
+    </script>
+</body>
+</html>

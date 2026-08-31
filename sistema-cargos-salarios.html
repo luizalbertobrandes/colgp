@@ -1,0 +1,956 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Plano de Cargos &amp; Salários — Simulador Orçamentário</title>
+<style>
+:root{
+  --azul:#2563eb; --azul-escuro:#1e40af; --ambar:#d97706; --roxo:#7c3aed; --verde:#059669;
+  --bg:#f1f5f9; --card:#ffffff; --texto:#0f172a; --texto2:#475569; --borda:#e2e8f0;
+  --sombra:0 1px 3px rgba(15,23,42,.08);
+}
+*{box-sizing:border-box; margin:0; padding:0;}
+body{font-family:"Segoe UI",system-ui,-apple-system,Roboto,Arial,sans-serif; background:var(--bg); color:var(--texto); font-size:14px;}
+header{background:linear-gradient(135deg,#1e3a8a,#2563eb); color:#fff; padding:18px 24px;}
+header h1{font-size:20px; font-weight:600;}
+header p{font-size:12px; opacity:.85; margin-top:2px;}
+nav{background:#fff; border-bottom:1px solid var(--borda); display:flex; flex-wrap:wrap; gap:4px; padding:0 16px; position:sticky; top:0; z-index:50;}
+.tab-btn{padding:12px 16px; border:none; background:transparent; font-weight:600; font-size:14px; color:var(--texto2); cursor:pointer; border-bottom:3px solid transparent;}
+.tab-btn:hover{color:var(--azul);}
+.tab-btn.active{color:var(--azul); border-bottom-color:var(--azul);}
+main{max-width:1180px; margin:0 auto; padding:20px 16px 60px;}
+.tab-panel{display:none;}
+.tab-panel.active{display:block;}
+h2{font-size:17px; margin-bottom:4px;}
+.sub{color:var(--texto2); font-size:12.5px; margin-bottom:16px;}
+.card{background:var(--card); border:1px solid var(--borda); border-radius:10px; box-shadow:var(--sombra); padding:18px; margin-bottom:16px;}
+.card h3{font-size:14px; margin-bottom:12px; color:var(--azul-escuro);}
+.grid3{display:grid; grid-template-columns:repeat(auto-fit,minmax(230px,1fr)); gap:12px; margin-bottom:16px;}
+.maior{color:var(--verde); font-weight:600;}
+.maior2{padding:6px 10px; border-radius:8px; font-size:12px;}
+.badge{display:inline-block; padding:3px 10px; border-radius:99px; font-size:11.5px; font-weight:600;}
+.badge.Op{background:#dbeafe; color:#1d4ed8;}
+.badge.Ta{background:#fef3c7; color:#b45309;}
+.badge.Es{background:#ede9fe; color:#6d28d9;}
+.badge.green{background:#d1fae5; color:#065f46;}
+button.btn{background:var(--azul); color:#fff; border:none; border-radius:8px; padding:9px 16px; font-weight:600; font-size:13px; cursor:pointer;}
+button.btn:hover{background:var(--azul-escuro);}
+button.btn.sec{background:#e2e8f0; color:var(--texto);}
+button.btn.sec:hover{background:#cbd5e1;}
+button.btn.danger{background:#fee2e2; color:#b91c1c;}
+button.btn.danger:hover{background:#fecaca;}
+button.btn.sm{padding:5px 10px; font-size:12px;}
+.toolbar{display:flex; gap:10px; align-items:center; flex-wrap:wrap; margin-bottom:12px;}
+.toolbar input[type=text], .toolbar select{padding:8px 10px; border:1px solid var(--borda); border-radius:8px; font-size:13px;}
+.tbl{width:100%; border-collapse:collapse; font-size:13px;}
+.tbl th{background:#f8fafc; text-align:left; padding:9px 10px; border-bottom:2px solid var(--borda); font-size:12px; text-transform:uppercase; letter-spacing:.03em; color:var(--texto2); white-space:nowrap;}
+.tbl td{padding:8px 10px; border-bottom:1px solid var(--borda); vertical-align:middle;}
+.tbl tr:hover{background:#f8fafc;}
+.tbl .num{text-align:right; font-variant-numeric:tabular-nums; white-space:nowrap;}
+.tbl .tot td{background:#eff6ff; font-weight:700;}
+.chips{display:flex; gap:10px; flex-wrap:wrap;}
+.kpi{background:var(--card); border:1px solid var(--borda); border-radius:10px; padding:14px 16px; box-shadow:var(--sombra);}
+.kpi .lbl{font-size:11.5px; color:var(--texto2); font-weight:600; text-transform:uppercase; letter-spacing:.04em;}
+.kpi .val{font-size:20px; font-weight:700; margin-top:4px;}
+.kpi .det{font-size:11.5px; color:var(--texto2); margin-top:3px;}
+.modal-backdrop{position:fixed; inset:0; background:rgba(15,23,42,.55); display:none; align-items:flex-start; justify-content:center; z-index:100; overflow:auto; padding:30px 12px;}
+.modal-backdrop.open{display:flex;}
+.modal{background:#fff; border-radius:12px; max-width:560px; width:100%; padding:22px; box-shadow:0 20px 50px rgba(0,0,0,.25);}
+.modal h3{font-size:16px; margin-bottom:16px;}
+.frm{display:grid; grid-template-columns:1fr 1fr; gap:12px;}
+.frm .full{grid-column:1/-1;}
+.frm label{display:block; font-size:12px; font-weight:600; color:var(--texto2); margin-bottom:4px;}
+.frm input,.frm select,.frm textarea{width:100%; padding:8px 10px; border:1px solid var(--borda); border-radius:8px; font-size:13px; background:#fff;}
+.modal-actions{display:flex; justify-content:flex-end; gap:10px; margin-top:18px;}
+.range-row{margin-bottom:16px;}
+.range-row .top{display:flex; justify-content:space-between; align-items:center; margin-bottom:6px;}
+.range-row label{font-weight:600; font-size:13px;}
+.range-row .val{font-weight:700; color:var(--azul); background:#dbeafe; padding:2px 10px; border-radius:99px; font-size:13px;}
+.range-row input[type=range]{width:100%; accent-color:var(--azul);}
+.premissas li{margin:6px 0 6px 18px; color:var(--texto2); font-size:13px; line-height:1.45;}
+.recap{background:#eff6ff; border-left:4px solid var(--azul); padding:12px 16px; border-radius:8px; margin:14px 0; font-size:13.5px;}
+.chart-box{overflow-x:auto;}
+svg text{font-family:inherit;}
+.note{font-size:11.5px; color:var(--texto2);}
+.muted{color:var(--texto2);}
+.empty{color:var(--texto2); text-align:center; padding:30px;}
+.year-sel{display:flex; gap:8px; flex-wrap:wrap; margin-bottom:12px;}
+.year-sel button{padding:7px 14px; border:1px solid var(--borda); background:#fff; border-radius:8px; cursor:pointer; font-weight:600; font-size:13px; color:var(--texto2);}
+.year-sel button.active{background:var(--azul); color:#fff; border-color:var(--azul);}
+@media print{
+  nav,.toolbar,button,.modal-backdrop{display:none !important;}
+  .tab-panel{display:block !important;}
+  body{background:#fff;}
+  main{max-width:100%;}
+}
+</style>
+</head>
+<body>
+
+<header>
+  <h1>Plano de Cargos &amp; Salários</h1>
+  <p>Implantação de cargos e salários para comércio (20 → 100 colaboradores) com simulação de impacto orçamentário de 1 a 5 anos</p>
+</header>
+
+<nav>
+  <button class="tab-btn active" data-tab="cargos" onclick="tab('cargos')">Cargos</button>
+  <button class="tab-btn" data-tab="func" onclick="tab('func')">Funcionários</button>
+  <button class="tab-btn" data-tab="sim" onclick="tab('sim')">Simulação</button>
+  <button class="tab-btn" data-tab="res" onclick="tab('res')">Resultados</button>
+  <div style="flex:1"></div>
+  <button class="tab-btn" onclick="resetDados()">Restaurar dados padrão</button>
+</nav>
+
+<main>
+
+<!-- ============ ABA CARGOS ============ -->
+<section id="tab-cargos" class="tab-panel active">
+  <h2>Plano de Cargos</h2>
+  <p class="sub">Catálogo de cargos do comércio — do operacional ao estratégico — com faixa salarial e enquadramento. Clique em "Cargo novo" para adaptar à sua empresa.</p>
+
+  <div class="card">
+    <div class="grid3">
+      <div class="kpi"><div class="lbl">Cargos cadastrados</div><div class="val" id="kp-cargos">0</div></div>
+      <div class="kpi"><div class="lbl">Nível operacional</div><div class="val" id="kp-op">0</div></div>
+      <div class="kpi"><div class="lbl">Nível tático</div><div class="val" id="kp-ta">0</div></div>
+      <div class="kpi"><div class="lbl">Nível estratégico</div><div class="val" id="kp-es">0</div></div>
+    </div>
+
+    <div class="toolbar">
+      <input type="text" id="cx-cargo" placeholder="Buscar cargo..." oninput="renderCargos()">
+      <select id="fl-nivel" onchange="renderCargos()">
+        <option value="">Todos os níveis</option>
+        <option value="Operacional">Operacional</option>
+        <option value="Tático">Tático</option>
+        <option value="Estratégico">Estratégico</option>
+      </select>
+      <div style="flex:1"></div>
+      <button class="btn" onclick="abreModalCargo()">+ Novo cargo</button>
+    </div>
+    <div style="overflow-x:auto">
+      <table class="tbl">
+        <thead>
+          <tr><th>Cargo</th><th>Nível</th><th class="num">Piso</th><th class="num">Médio</th><th class="num">Teto</th><th class="num">Colab.</th><th>Descrição</th><th></th></tr>
+        </thead>
+        <tbody id="tb-cargos"></tbody>
+      </table>
+    </div>
+  </div>
+</section>
+
+<!-- ============ ABA FUNCIONÁRIOS ============ -->
+<section id="tab-func" class="tab-panel">
+  <h2>Funcionários</h2>
+  <p class="sub">Quadro atual da empresa (base da simulação). Cadastre sua equipe: os dados de hoje definem o Ano 0 do orçamento.</p>
+
+  <div class="card">
+    <div class="grid3">
+      <div class="kpi"><div class="lbl">Colaboradores ativos</div><div class="val" id="kp-func">0</div></div>
+      <div class="kpi"><div class="lbl">Folha mensal</div><div class="val" id="kp-folha">R$ 0,00</div></div>
+      <div class="kpi"><div class="lbl">Folha anual (estimada)</div><div class="val" id="kp-folha-ano">R$ 0,00</div></div>
+    </div>
+
+    <div class="toolbar">
+      <input type="text" id="cx-func" placeholder="Buscar funcionário..." oninput="renderFunc()">
+      <select id="fl-func-nivel" onchange="renderFunc()">
+        <option value="">Todos os níveis</option>
+        <option value="Operacional">Operacional</option>
+        <option value="Tático">Tático</option>
+        <option value="Estratégico">Estratégico</option>
+      </select>
+      <div style="flex:1"></div>
+      <button class="btn" onclick="abreModalFunc()">+ Adicionar funcionário</button>
+    </div>
+    <div style="overflow-x:auto">
+      <table class="tbl">
+        <thead>
+          <tr><th>Nome</th><th>Cargo</th><th>Nível</th><th class="num">Salário</th><th>Admissão</th><th>Enquadr.</th><th>Status</th><th></th></tr>
+        </thead>
+        <tbody id="tb-func"></tbody>
+      </table>
+    </div>
+    <p class="note" style="margin-top:10px">A simulação considera apenas funcionários com status <b>Ativo</b>.</p>
+  </div>
+</section>
+
+<!-- ============ ABA SIMULAÇÃO ============ -->
+<section id="tab-sim" class="tab-panel">
+  <h2>Modo Simulado — impacto no orçamento</h2>
+  <p class="sub">Configure as premissas de crescimento, reajuste, promoções e encargos. O sistema projetará o orçamento de pessoal para 1, 2, 3, 4 e 5 anos.</p>
+
+  <div class="card">
+    <div class="range-row">
+      <div class="top"><label>Meta de colaboradores no 5º ano (Ano 5)</label><span class="val" id="v_meta">100</span></div>
+      <input type="range" id="p_meta" min="20" max="120" step="5" value="100" oninput="v_meta.textContent=this.value">
+      <p class="note">Parte do quadro atual e cresce de forma composta até atingir a meta.</p>
+    </div>
+    <div class="range-row">
+      <div class="top"><label>Reajuste salarial anual — dissídio (%)</label><span class="val" id="v_reaj">6</span></div>
+      <input type="range" id="p_reaj" min="0" max="20" step="0.5" value="6" oninput="v_reaj.textContent=(+this.value).toFixed(1).replace('.',',')">
+    </div>
+    <div class="range-row">
+      <div class="top"><label>Índice de promoções por ano (% da equipe promovida)</label><span class="val" id="v_pro">5</span></div>
+      <input type="range" id="p_pro" min="0" max="15" step="1" value="5" oninput="v_pro.textContent=this.value">
+      <p class="note">Operacional→Tático e Tático→Estratégico.</p>
+    </div>
+    <div class="range-row">
+      <div class="top"><label>Aumento salarial por promoção (%)</label><span class="val" id="v_aprom">15</span></div>
+      <input type="range" id="p_aprom" min="0" max="50" step="1" value="15" oninput="v_aprom.textContent=this.value">
+    </div>
+    <hr style="border:none;border-top:1px solid var(--borda);margin:16px 0">
+    <p style="font-weight:600;font-size:13px;margin-bottom:8px">Distribuição das novas contratações por nível (%)</p>
+    <div class="range-row">
+      <div class="top"><label>Operacional</label><span class="val" id="v_dop">60</span></div>
+      <input type="range" id="p_dop" min="0" max="100" step="5" value="60" oninput="v_dop.textContent=this.value">
+    </div>
+    <div class="range-row">
+      <div class="top"><label>Tático</label><span class="val" id="v_dta">30</span></div>
+      <input type="range" id="p_dta" min="0" max="100" step="5" value="30" oninput="v_dta.textContent=this.value">
+    </div>
+    <div class="range-row">
+      <div class="top"><label>Estratégico</label><span class="val" id="v_des">10</span></div>
+      <input type="range" id="p_des" min="0" max="100" step="5" value="10" oninput="v_des.textContent=this.value">
+    </div>
+    <hr style="border:none;border-top:1px solid var(--borda);margin:16px 0">
+    <div class="range-row">
+      <div class="top"><label>INSS patronal (%)</label><span class="val" id="v_inss">20</span></div>
+      <input type="range" id="p_inss" min="10" max="30" step="1" value="20" oninput="v_inss.textContent=this.value">
+    </div>
+    <div class="range-row">
+      <div class="top"><label>FGTS (%)</label><span class="val" id="v_fgts">8</span></div>
+      <input type="range" id="p_fgts" min="0" max="12" step="0.5" value="8" oninput="v_fgts.textContent=(+this.value).toFixed(1).replace('.',',')">
+    </div>
+    <div class="range-row">
+      <div class="top"><label>Benefícios por colaborador/mês (R$)</label><span class="val" id="v_ben">R$ 350</span></div>
+      <input type="range" id="p_ben" min="0" max="1000" step="50" value="350" oninput="v_ben.textContent='R$ '+Number(this.value).toLocaleString('pt-BR')">
+    </div>
+    <hr style="border:none;border-top:1px solid var(--borda);margin:16px 0">
+    <div class="range-row">
+      <div class="top"><label>Faturamento anual atual (R$) — para medir peso da folha</label><span class="val" id="v_fat">R$ 6.000.000</span></div>
+      <input type="range" id="p_fat" min="1000000" max="50000000" step="100000" value="6000000" oninput="v_fat.textContent='R$ '+Number(this.value).toLocaleString('pt-BR')">
+    </div>
+    <div class="range-row">
+      <div class="top"><label>Crescimento da receita anual (%)</label><span class="val" id="v_cres">15</span></div>
+      <input type="range" id="p_cres" min="0" max="50" step="1" value="15" oninput="v_cres.textContent=this.value">
+    </div>
+  </div>
+
+  <div class="card">
+    <h3>Premissas do modelo</h3>
+    <ul class="premissas">
+      <li>O <b>Ano 0</b> (base) usa a folha atual dos funcionários ativos cadastrados.</li>
+      <li>O efetivo cresce de forma <b>composta</b> até a meta do 5º ano.</li>
+      <li>Novas contratações são distribuídas por nível conforme os percentuais acima e recebem o <b>salário médio do cargo</b> (catálogo).</li>
+      <li>O <b>dissídio (reajuste)</b> é aplicado sobre toda a folha a cada ano.</li>
+      <li>Promoções movem parte da equipe para o nível seguinte com o aumento configurado.</li>
+      <li>Encargos estimados: <b>FGTS 8%</b> e <b>INSS patronal</b> sobre salários + 13º; <b>férias + 1/3</b> por ano.</li>
+      <li>O <b>impacto no orçamento</b> é a diferença entre o custo anual projetado e o custo do Ano 0, em R$ e %.</li>
+    </ul>
+  </div>
+
+  <button class="btn" style="width:100%;padding:14px;font-size:15px" onclick="executar()">Executar simulação e ver resultados</button>
+</section>
+
+<!-- ============ ABA RESULTADOS ============ -->
+<section id="tab-res" class="tab-panel">
+  <h2>Resultados da Simulação</h2>
+  <p class="sub">Impacto no orçamento de pessoal projetado para 1, 2, 3, 4 e 5 anos.</p>
+
+  <div id="area-resultados"></div>
+</section>
+
+</main>
+
+<!-- ============ MODAIS ============ -->
+<div class="modal-backdrop" id="modal">
+  <div class="modal">
+    <h3 id="modal-titulo">Título</h3>
+    <div id="modal-corpo"></div>
+    <div class="modal-actions">
+      <button class="btn sec" onclick="fechaModal()">Cancelar</button>
+      <button class="btn" id="modal-salvar" onclick="modalSalvar()">Salvar</button>
+    </div>
+  </div>
+</div>
+
+<script>
+"use strict";
+var NIVEIS = ["Operacional","Tático","Estratégico"];
+var TIPO_MODAL = "";
+
+var CATALOGO = [
+  {id:"op01", nome:"Vendedor", nivel:"Operacional", min:1512, max:3200, med:2100, desc:"Atendimento e vendas no salão e PDV."},
+  {id:"op02", nome:"Operador de Caixa", nivel:"Operacional", min:1512, max:2600, med:1850, desc:"Registro de vendas, transações e troco."},
+  {id:"op03", nome:"Atendente de Loja", nivel:"Operacional", min:1500, max:2600, med:1850, desc:"Recepção, orientação e suporte ao cliente."},
+  {id:"op04", nome:"Repositor de Mercadorias", nivel:"Operacional", min:1500, max:2500, med:1750, desc:"Reposição, frente de loja e validade."},
+  {id:"op05", nome:"Auxiliar de Estoque", nivel:"Operacional", min:1500, max:2600, med:1800, desc:"Movimentação e organização do estoque."},
+  {id:"op06", nome:"Estoquista / Conferente", nivel:"Operacional", min:1600, max:2700, med:2000, desc:"Conferência de entrada/saída e inventário."},
+  {id:"op07", nome:"Fiscal de Loja", nivel:"Operacional", min:1600, max:2800, med:2000, desc:"Prevenção de perdas e segurança da loja."},
+  {id:"op08", nome:"Empacotador", nivel:"Operacional", min:1450, max:2000, med:1600, desc:"Acondicionamento de mercadorias."},
+  {id:"op09", nome:"Auxiliar de Serviços Gerais", nivel:"Operacional", min:1450, max:2200, med:1600, desc:"Limpeza e conservação das instalações."},
+  {id:"op10", nome:"Motorista Entregador", nivel:"Operacional", min:1800, max:3200, med:2200, desc:"Entregas e apoio logístico."},
+  {id:"op11", nome:"Açougueiro", nivel:"Operacional", min:1800, max:3200, med:2200, desc:"Corte, preparo e balcão de carnes."},
+  {id:"op12", nome:"Padeiro / Confeiteiro", nivel:"Operacional", min:1700, max:3000, med:2100, desc:"Produção de panificação e confeitaria."},
+  {id:"op13", nome:"Operador de Empilhadeira", nivel:"Operacional", min:1800, max:2900, med:2100, desc:"Movimentação de estoque com empilhadeira."},
+  {id:"ta01", nome:"Líder de Setor", nivel:"Tático", min:2600, max:4000, med:3300, desc:"Coordenação do time de um setor."},
+  {id:"ta02", nome:"Supervisor de Loja", nivel:"Tático", min:3200, max:5200, med:4000, desc:"Gestão da operação e da equipe da loja."},
+  {id:"ta03", nome:"Supervisor de Vendas", nivel:"Tático", min:3500, max:6000, med:4500, desc:"Metas, treinamento e performance de vendas."},
+  {id:"ta04", nome:"Supervisor de Estoque / Logística", nivel:"Tático", min:3200, max:5200, med:4000, desc:"Fluxo do estoque e recebimento."},
+  {id:"ta05", nome:"Assistente Administrativo", nivel:"Tático", min:2100, max:3400, med:2700, desc:"Rotinas administrativas e documentação."},
+  {id:"ta06", nome:"Analista Financeiro", nivel:"Tático", min:3500, max:6500, med:4800, desc:"Fluxo de caixa, custos e relatórios."},
+  {id:"ta07", nome:"Analista de Pessoal / RH", nivel:"Tático", min:3200, max:5800, med:4300, desc:"Folha, rotinas trabalhistas e admissões."},
+  {id:"ta08", nome:"Analista de Marketing", nivel:"Tático", min:3200, max:5800, med:4300, desc:"Campanhas, mídias e pontos de venda."},
+  {id:"ta09", nome:"Comprador", nivel:"Tático", min:3200, max:5800, med:4500, desc:"Negociação e suprimentos."},
+  {id:"ta10", nome:"Coordenador de Logística", nivel:"Tático", min:4500, max:7500, med:5500, desc:"Planejamento da distribuição."},
+  {id:"ta11", nome:"Coordenador de TI", nivel:"Tático", min:5000, max:8500, med:6000, desc:"Sistemas, PDV e infraestrutura."},
+  {id:"es01", nome:"Gerente de Loja", nivel:"Estratégico", min:6000, max:10500, med:8000, desc:"Resultado geral da unidade."},
+  {id:"es02", nome:"Gerente Comercial", nivel:"Estratégico", min:8000, max:14000, med:10500, desc:"Estratégia comercial e expansão."},
+  {id:"es03", nome:"Gerente Financeiro", nivel:"Estratégico", min:9000, max:15000, med:11500, desc:"Orçamento, investimento e resultado."},
+  {id:"es04", nome:"Gerente de RH", nivel:"Estratégico", min:8500, max:14500, med:11000, desc:"Gente, cultura e cargos & salários."},
+  {id:"es05", nome:"Gerente de Logística", nivel:"Estratégico", min:8500, max:14500, med:11000, desc:"Cadeia de suprimentos e distribuição."},
+  {id:"es06", nome:"Gerente de Marketing", nivel:"Estratégico", min:8500, max:14500, med:11000, desc:"Marca e relacionamento com clientes."},
+  {id:"es07", nome:"Controller", nivel:"Estratégico", min:10000, max:18000, med:13500, desc:"Controladoria e compliance fiscal."},
+  {id:"es08", nome:"Diretor Financeiro", nivel:"Estratégico", min:15000, max:26000, med:19000, desc:"Estratégia financeira e capital."},
+  {id:"es09", nome:"Diretor Comercial", nivel:"Estratégico", min:14000, max:25000, med:18500, desc:"Vendas, expansão e canais."},
+  {id:"es10", nome:"Diretor de Operações", nivel:"Estratégico", min:15000, max:26000, med:19500, desc:"Operações, lojas e logística."},
+  {id:"es11", nome:"CEO / Diretor-Presidente", nivel:"Estratégico", min:20000, max:40000, med:28000, desc:"Condução estratégica da empresa."}
+];
+
+var FUNC_INICIAL = [
+  {nome:"Ana Souza", cargoId:"op01", salario:1900, admissao:"2022-05-10", enquad:"Jr", status:"Ativo"},
+  {nome:"Bruno Lima", cargoId:"op01", salario:2100, admissao:"2021-03-02", enquad:"Pl", status:"Ativo"},
+  {nome:"Carla Mendes", cargoId:"op01", salario:1850, admissao:"2023-01-15", enquad:"Jr", status:"Ativo"},
+  {nome:"Diego Rocha", cargoId:"op02", salario:1750, admissao:"2021-11-08", enquad:"Pl", status:"Ativo"},
+  {nome:"Fernanda Alves", cargoId:"op02", salario:1600, admissao:"2024-02-20", enquad:"Jr", status:"Ativo"},
+  {nome:"Gabriel Santos", cargoId:"op04", salario:1650, admissao:"2023-06-12", enquad:"Jr", status:"Ativo"},
+  {nome:"Helena Costa", cargoId:"op04", salario:1750, admissao:"2022-09-01", enquad:"Pl", status:"Ativo"},
+  {nome:"Igor Pereira", cargoId:"op05", salario:1700, admissao:"2023-04-18", enquad:"Jr", status:"Ativo"},
+  {nome:"Juliana Nunes", cargoId:"op03", salario:1600, admissao:"2024-01-09", enquad:"Jr", status:"Ativo"},
+  {nome:"Lucas Martins", cargoId:"op06", salario:1950, admissao:"2022-08-22", enquad:"Pl", status:"Ativo"},
+  {nome:"Mariana Duarte", cargoId:"op07", salario:1900, admissao:"2022-02-14", enquad:"Pl", status:"Ativo"},
+  {nome:"Nicolas Barbosa", cargoId:"op10", salario:2300, admissao:"2021-07-05", enquad:"Pl", status:"Ativo"},
+  {nome:"Olivia Ferreira", cargoId:"op09", salario:1550, admissao:"2024-03-25", enquad:"Jr", status:"Ativo"},
+  {nome:"Paulo Castro", cargoId:"op11", salario:2200, admissao:"2020-12-01", enquad:"Pl", status:"Ativo"},
+  {nome:"Rafaela Ribeiro", cargoId:"ta02", salario:3800, admissao:"2021-06-16", enquad:"Pl", status:"Ativo"},
+  {nome:"Samuel Costa", cargoId:"ta02", salario:4000, admissao:"2019-10-03", enquad:"Sr", status:"Ativo"},
+  {nome:"Tatiane Moreira", cargoId:"ta06", salario:4500, admissao:"2020-04-27", enquad:"Pl", status:"Ativo"},
+  {nome:"Vinicius Xavier", cargoId:"ta07", salario:4200, admissao:"2021-09-13", enquad:"Pl", status:"Ativo"},
+  {nome:"Beatriz Cavalcanti", cargoId:"es01", salario:7500, admissao:"2018-05-21", enquad:"Sr", status:"Ativo"},
+  {nome:"Rodrigo Nogueira", cargoId:"es02", salario:10000, admissao:"2017-08-09", enquad:"Sr", status:"Ativo"}
+];
+
+function uid(){ return "id" + Math.random().toString(36).slice(2,9); }
+
+var DB_KEY = "pcs_sistema_v1";
+var db = { cargos: [], funcionarios: [], params: {} };
+var PARAMS_DEFAULT = {
+  metaColaboradores:100, reajusteAnual:6, promocaoAnual:5, aumentoPromocao:15,
+  distOp:60, distTat:30, distEst:10,
+  fgts:8, inss:20, beneficiosMensal:350,
+  faturamentoAnual:6000000, crescReceita:15
+};
+var HISTORICO = [];
+
+function carregar(){
+  try{
+    var raw = localStorage.getItem(DB_KEY);
+    if(raw){ db = JSON.parse(raw); }
+    else{ seed(); }
+  }catch(e){ seed(); }
+}
+function salvar(){
+  try{ localStorage.setItem(DB_KEY, JSON.stringify(db)); }catch(e){}
+}
+function seed(){
+  db.cargos = CATALOGO.map(function(c){
+    return {id:c.id, nome:c.nome, nivel:c.nivel, salarioMin:c.min, salarioMax:c.max, salarioMedio:c.med, descricao:c.desc};
+  });
+  db.funcionarios = FUNC_INICIAL.map(function(f){
+    return {id:uid(), nome:f.nome, cargoId:f.cargoId, salario:f.salario, admissao:f.admissao, enquad:f.enquad, status:f.status};
+  });
+  db.params = JSON.parse(JSON.stringify(PARAMS_DEFAULT));
+  salvar();
+}
+function resetDados(){
+  if(confirm("Restaurar todos os dados padrão (cargos, funcionários e parâmetros)? Alterações serão perdidas.")){
+    localStorage.removeItem(DB_KEY);
+    seed(); renderAll();
+  }
+}
+function cargoPorId(id){ for(var i=0;i<db.cargos.length;i++){ if(db.cargos[i].id===id) return db.cargos[i]; } return null; }
+function nivelOrdem(n){ return n==="Operacional"?0:(n==="Tático"?1:2); }
+function cargosOrdenados(){ return db.cargos.slice().sort(function(a,b){ return nivelOrdem(a.nivel)-nivelOrdem(b.nivel) || a.nome.localeCompare(b.nome); }); }
+
+function fmt(v){
+  return Number(v).toLocaleString("pt-BR",{style:"currency",currency:"BRL"});
+}
+function fmtCompact(v){
+  var n = Number(v); if(n>=1e6){ return "R$ "+(n/1e6).toFixed(2)+" mi"; }
+  if(n>=1e3){ return "R$ "+(n/1e3).toFixed(0)+" mil"; }
+  return fmt(n);
+}
+function fmtInt(v){ return Math.round(v).toLocaleString("pt-BR"); }
+
+/* ---------- abas ---------- */
+function tab(nome){
+  var bts = document.querySelectorAll(".tab-btn");
+  for(var i=0;i<bts.length;i++){ bts[i].classList.remove("active"); if(bts[i].getAttribute("data-tab")===nome) bts[i].classList.add("active"); }
+  var ps = document.querySelectorAll(".tab-panel");
+  for(var j=0;j<ps.length;j++){ ps[j].classList.remove("active"); if(ps[j].id==="tab-"+nome) ps[j].classList.add("active"); }
+  if(nome==="res"){ renderResultados(); }
+  window.scrollTo({top:0, behavior:"smooth"});
+}
+
+/* ---------- modal ---------- */
+function abreModal(html, titulo, tipo){
+  TIPO_MODAL = tipo;
+  document.getElementById("modal-titulo").textContent = titulo;
+  document.getElementById("modal-corpo").innerHTML = html;
+  document.getElementById("modal").classList.add("open");
+}
+function fechaModal(){ document.getElementById("modal").classList.remove("open"); }
+function modalSalvar(){
+  if(TIPO_MODAL==="cargo"){ salvarCargo(); }
+  else if(TIPO_MODAL==="func"){ salvarFunc(); }
+}
+
+/* ---------- cargos ---------- */
+var cargoEditId = null;
+function renderCargos(){
+  var busca = ($("cx-cargo")?$("cx-cargo").value:"").toLowerCase();
+  var fn = $("fl-nivel")?$("fl-nivel").value:"";
+  var lista = cargosOrdenados();
+  var html = ""; var cOp=0, cTa=0, cEs=0;
+  for(var i=0;i<lista.length;i++){
+    var c = lista[i];
+    if(fn && c.nivel!==fn) continue;
+    if(busca && c.nome.toLowerCase().indexOf(busca)<0 && (c.descricao||"").toLowerCase().indexOf(busca)<0) continue;
+    if(c.nivel==="Operacional") cOp++; else if(c.nivel==="Tático") cTa++; else cEs++;
+    var qtd = countPorCargo(c.id);
+    html += "<tr>"+
+      "<td><b>"+esc(c.nome)+"</b></td>"+
+      "<td><span class='badge "+nivelCls(c.nivel)+"'>"+c.nivel+"</span></td>"+
+      "<td class='num'>"+fmt(c.salarioMin)+"</td>"+
+      "<td class='num'>"+fmt(c.salarioMedio)+"</td>"+
+      "<td class='num'>"+fmt(c.salarioMax)+"</td>"+
+      "<td class='num'>"+qtd+"</td>"+
+      "<td style='color:var(--texto2)' class='note'>"+esc(c.descricao||"")+"</td>"+
+      "<td style='white-space:nowrap'>"+
+        "<button class='btn sec sm' onclick='abreModalCargo(\""+c.id+"\")'>Editar</button> "+
+        "<button class='btn danger sm' onclick='excluirCargo(\""+c.id+"\")'>Excluir</button>"+
+      "</td></tr>";
+  }
+  if(!html) html = "<tr><td colspan='8' class='empty'>Nenhum cargo encontrado.</td></tr>";
+  $("tb-cargos").innerHTML = html;
+  $("kp-cargos").textContent = lista.length;
+  $("kp-op").textContent = cOp;
+  $("kp-ta").textContent = cTa;
+  $("kp-es").textContent = cEs;
+}
+function countPorCargo(id){
+  var n=0; for(var i=0;i<db.funcionarios.length;i++){ if(db.funcionarios[i].cargoId===id && db.funcionarios[i].status==="Ativo") n++; }
+  return n;
+}
+function nivelCls(n){ return n==="Operacional"?"Op":(n==="Tático"?"Ta":"Es"); }
+function optionsNivel(sel){
+  var s=""; for(var i=0;i<NIVEIS.length;i++){ s+="<option value='"+NIVEIS[i]+"' "+(NIVEIS[i]===sel?"selected":"")+">"+NIVEIS[i]+"</option>"; }
+  return s;
+}
+function abreModalCargo(id){
+  var c = cargoEditId = null;
+  var nome="",nivel="Operacional",mn=1500,mx=3000,md=2100,desc="";
+  if(id){ c = cargoPorId(id); cargoEditId = id;
+    nome=c.nome; nivel=c.nivel; mn=c.salarioMin; mx=c.salarioMax; md=c.salarioMedio; desc=c.descricao||"";
+  }
+  var html =
+    "<div class='frm'>"+
+      "<div class='full'><label>Nome do cargo</label><input id='f-cnome' value='"+esc(nome)+"'></div>"+
+      "<div><label>Nível</label><select id='f-cnivel'>"+optionsNivel(nivel)+"</select></div>"+
+      "<div><label>Salário médio (R$)</label><input id='f-cmed' type='number' min='0' step='50' value='"+md+"'></div>"+
+      "<div><label>Piso salarial (R$)</label><input id='f-cmin' type='number' min='0' step='50' value='"+mn+"'></div>"+
+      "<div><label>Teto salarial (R$)</label><input id='f-cmax' type='number' min='0' step='50' value='"+mx+"'></div>"+
+      "<div class='full'><label>Descrição / atribuições</label><textarea id='f-cdesc' rows='2'>"+esc(desc)+"</textarea></div>"+
+    "</div>";
+  abreModal(html, id?"Editar cargo":"Novo cargo", "cargo");
+}
+function salvarCargo(){
+  var nome = $("f-cnome").value.trim();
+  var nivel = $("f-cnivel").value;
+  var mn = parseFloat($("f-cmin").value), mx = parseFloat($("f-cmax").value), md = parseFloat($("f-cmed").value);
+  if(!nome){ alert("Informe o nome do cargo."); return; }
+  if(isNaN(mn)||isNaN(mx)||isNaN(md)){ alert("Informe os valores salariais."); return; }
+  if(mn>mx){ alert("O piso não pode ser maior que o teto."); return; }
+  if(md<mn || md>mx){ md = (mn+mx)/2; }
+  if(cargoEditId){
+    var c = cargoPorId(cargoEditId);
+    c.nome=nome; c.nivel=nivel; c.salarioMin=mn; c.salarioMax=mx; c.salarioMedio=md; c.descricao=$("f-cdesc").value.trim();
+  }else{
+    db.cargos.push({id:uid(), nome:nome, nivel:nivel, salarioMin:mn, salarioMax:mx, salarioMedio:md, descricao:$("f-cdesc").value.trim()});
+  }
+  salvar(); renderCargos(); featMsg(); fechaModal();
+}
+function excluirCargo(id){
+  var emUso = db.funcionarios.some(function(f){ return f.cargoId===id; });
+  if(emUso){ alert("Este cargo possui funcionários vinculados. Reatribua ou exclua os funcionários primeiro."); return; }
+  if(!confirm("Excluir este cargo?")) return;
+  db.cargos = db.cargos.filter(function(c){ return c.id!==id; });
+  salvar(); renderCargos(); renderFunc();
+}
+
+/* ---------- funcionarios ---------- */
+var funcEditId = null;
+function renderFunc(){
+  var busca = ($("cx-func")?$("cx-func").value:"").toLowerCase();
+  var fl = $("fl-func-nivel")?$("fl-func-nivel").value:"";
+  var html=""; var total=0, folha=0;
+  var lista = db.funcionarios.slice().sort(function(a,b){ return a.nome.localeCompare(b.nome); });
+  for(var i=0;i<lista.length;i++){
+    var f = lista[i]; var c = cargoPorId(f.cargoId);
+    if(!c) continue;
+    if(fl && c.nivel!==fl) continue;
+    if(busca && f.nome.toLowerCase().indexOf(busca)<0 && c.nome.toLowerCase().indexOf(busca)<0) continue;
+    if(f.status==="Ativo"){ total++; folha+=f.salario; }
+    html += "<tr>"+
+      "<td><b>"+esc(f.nome)+"</b></td>"+
+      "<td>"+esc(c.nome)+"</td>"+
+      "<td><span class='badge "+nivelCls(c.nivel)+"'>"+c.nivel+"</span></td>"+
+      "<td class='num'>"+fmt(f.salario)+"</td>"+
+      "<td>"+fmtData(f.admissao)+"</td>"+
+      "<td>"+esc(f.enquad||"")+"</td>"+
+      "<td>"+(f.status==="Ativo"?"<span class='badge green'>Ativo</span>":"<span class='badge Op'>Inativo</span>")+"</td>"+
+      "<td style='white-space:nowrap'>"+
+        "<button class='btn sec sm' onclick='abreModalFunc(\""+f.id+"\")'>Editar</button> "+
+        "<button class='btn danger sm' onclick='excluirFunc(\""+f.id+"\")'>Excluir</button>"+
+      "</td></tr>";
+  }
+  if(!html) html = "<tr><td colspan='8' class='empty'>Nenhum funcionário encontrado.</td></tr>";
+  $("tb-func").innerHTML = html;
+  $("kp-func").textContent = total.toLocaleString("pt-BR");
+  $("kp-folha").textContent = fmt(folha);
+  $("kp-folha-ano").textContent = fmt(folha*14.33);
+}
+function optionsCargo(idSel){
+  var s=""; var lista = cargosOrdenados();
+  for(var i=0;i<lista.length;i++){ s+="<option value='"+lista[i].id+"' "+(lista[i].id===idSel?"selected":"")+">"+lista[i].nome+" — "+lista[i].nivel+"</option>"; }
+  return s;
+}
+function optionsEnquad(sel){
+  var opts=["Jr","Pl","Sr"];
+  var s=""; for(var i=0;i<opts.length;i++){ s+="<option "+(opts[i]===sel?"selected":"")+">"+opts[i]+"</option>"; }
+  return s;
+}
+function hoje(){ var d=new Date(); return d.getFullYear()+"-"+String(d.getMonth()+1).padStart(2,"0")+"-"+String(d.getDate()).padStart(2,"0"); }
+function abreModalFunc(id){
+  funcEditId = null;
+  var nome="",cargoId=null,sal=2000,ad=hoje(),enq="Jr",status="Ativo";
+  if(id){ var f = db.funcionarios.find(function(x){return x.id===id;}); funcEditId=id;
+    nome=f.nome; cargoId=f.cargoId; sal=f.salario; ad=f.admissao||hoje(); enq=f.enquad||"Jr"; status=f.status||"Ativo";
+  }
+  if(!cargoId && db.cargos.length) cargoId = db.cargos[0].id;
+  var html =
+    "<div class='frm'>"+
+      "<div class='full'><label>Nome completo</label><input id='f-fnome' value='"+esc(nome)+"'></div>"+
+      "<div class='full'><label>Cargo</label><select id='f-fcargo'>"+optionsCargo(cargoId)+"</select></div>"+
+      "<div><label>Salário mensal (R$)</label><input id='f-fsal' type='number' min='0' step='50' value='"+sal+"'></div>"+
+      "<div><label>Data de admissão</label><input id='f-fad' type='date' value='"+ad+"'></div>"+
+      "<div><label>Enquadramento</label><select id='f-fenq'>"+optionsEnquad(enq)+"</select></div>"+
+      "<div><label>Status</label><select id='f-fstatus'><option "+(status==="Ativo"?"selected":"")+">Ativo</option><option "+(status!=="Ativo"?"selected":"")+">Inativo</option></select></div>"+
+    "</div>";
+  abreModal(html, id?"Editar funcionário":"Novo funcionário", "func");
+}
+function salvarFunc(){
+  var nome = $("f-fnome").value.trim();
+  var cargoId = $("f-fcargo").value;
+  var sal = parseFloat($("f-fsal").value);
+  if(!nome){ alert("Informe o nome."); return; }
+  if(!cargoId){ alert("Selecione o cargo."); return; }
+  if(isNaN(sal)||sal<=0){ alert("Informe o salário."); return; }
+  if(funcEditId){
+    var f = db.funcionarios.find(function(x){ return x.id===funcEditId; });
+    f.nome=nome; f.cargoId=cargoId; f.salario=sal; f.admissao=$("f-fad").value; f.enquad=$("f-fenq").value; f.status=$("f-fstatus").value;
+  }else{
+    db.funcionarios.push({id:uid(), nome:nome, cargoId:cargoId, salario:sal, admissao:$("f-fad").value||hoje(), enquad:$("f-fenq").value, status:$("f-fstatus").value});
+  }
+  salvar(); renderFunc(); featMsg(); fechaModal();
+}
+function excluirFunc(id){
+  if(!confirm("Excluir este funcionário?")) return;
+  db.funcionarios = db.funcionarios.filter(function(f){ return f.id!==id; });
+  salvar(); renderFunc();
+}
+
+/* ---------- motores de simulação ---------- */
+function totalEmp(est){ var t=0; for(var k in est){ t+=est[k].count; } return t; }
+function cloneEst(est){
+  var novo={}; for(var k in est){ novo[k]={count:est[k].count, folha:est[k].folha}; }
+  return novo;
+}
+function cargosDoNivel(nivel){ return db.cargos.filter(function(c){ return c.nivel===nivel; }); }
+function argmax(arr){ var bi=0; for(var i=1;i<arr.length;i++){ if(arr[i]>arr[bi]) bi=i; } return bi; }
+
+function alocarHeads(est, cargos, qtd){
+  var head={};
+  if(qtd<=0 || !cargos.length) return head;
+  var counts = cargos.map(function(c){ return est[c.id]?est[c.id].count:0; });
+  var tot = counts.reduce(function(a,b){ return a+b; },0);
+  var props;
+  if(tot>0){ props = counts.map(function(c){ return c/tot; }); }
+  else{ props = cargos.map(function(){ return 1/cargos.length; }); }
+  var raw = props.map(function(p){ return p*qtd; });
+  var floor = raw.map(function(r){ return Math.floor(r); });
+  var rems = raw.map(function(r,i){ return r-floor[i]; });
+  var sobra = qtd - floor.reduce(function(a,b){ return a+b; },0);
+  while(sobra>0){
+    var i = argmax(rems);
+    if(rems[i]<=0) break;
+    floor[i]++; rems[i]=-1; sobra--;
+  }
+  var k=0;
+  while(sobra>0){ floor[k%cargos.length]++; sobra--; k++; }
+  cargos.forEach(function(c,i){ head[c.id]=floor[i]; });
+  return head;
+}
+
+function removeHeads(est, cargos, qtd){
+  var folha = 0;
+  var active = cargos.filter(function(c){ return est[c.id] && est[c.id].count>0; });
+  if(qtd<=0 || !active.length) return 0;
+  var total = active.reduce(function(a,c){ return a+est[c.id].count; },0);
+  var q = Math.min(qtd, total);
+  var n = active.length;
+  var raw = active.map(function(c){ return est[c.id].count/total*q; });
+  var floor = raw.map(function(r){ return Math.floor(r); });
+  var rems = raw.map(function(r,i){ return r-floor[i]; });
+  var sobra = q - floor.reduce(function(a,b){ return a+b; },0);
+  while(sobra>0){
+    var i = argmax(rems);
+    if(rems[i]<=0) break;
+    floor[i]++; rems[i]=-1; sobra--;
+  }
+  var k=0;
+  while(sobra>0){
+    var idx = k%n;
+    if(est[active[idx].id].count - floor[idx] > 0){ floor[idx]++; }
+    sobra--; k++;
+  }
+  active.forEach(function(c,i){
+    var rem = Math.min(floor[i], est[c.id].count);
+    if(rem>0){
+      var avg = est[c.id].folha/est[c.id].count;
+      est[c.id].count -= rem;
+      est[c.id].folha -= avg*rem;
+      folha += avg*rem;
+      if(est[c.id].count<=0){ est[c.id].count=0; est[c.id].folha=0; }
+    }
+  });
+  return folha;
+}
+
+function promover(est, p, nivelFonte, nivelAlvo){
+  var fonte = cargosDoNivel(nivelFonte).filter(function(c){ return est[c.id] && est[c.id].count>0; });
+  var alvo = cargosDoNivel(nivelAlvo);
+  if(!fonte.length || !alvo.length) return;
+  var tot = fonte.reduce(function(a,c){ return a+est[c.id].count; },0);
+  var k = Math.max(0, Math.round(tot * p.promocaoAnual/100));
+  if(k<=0) return;
+  var folhaRem = removeHeads(est, fonte, k);
+  var head = alocarHeads(est, alvo, k);
+  var pessoa = folhaRem/k;
+  alvo.forEach(function(c){
+    var q = head[c.id] || 0;
+    if(q<=0) return;
+    if(!est[c.id]) est[c.id]={count:0, folha:0};
+    est[c.id].count += q;
+    est[c.id].folha += q*pessoa*(1+p.aumentoPromocao/100);
+  });
+}
+
+function avancarAno(est, p, g){
+  var cid, key;
+  for(cid in est){
+    est[cid].folha *= (1+p.reajusteAnual/100);
+  }
+  promover(est, p, "Operacional", "Tático");
+  promover(est, p, "Tático", "Estratégico");
+  var atual = totalEmp(est);
+  var novo = Math.round(atual*(1+g));
+  var add = novo - atual;
+  if(add>0){
+    var pesos = {
+      "Operacional": p.distOp,
+      "Tático": p.distTat,
+      "Estratégico": p.distEst
+    };
+    var nr = [];
+    NIVEIS.forEach(function(nv){ nr.push({id:nv, peso:pesos[nv]||0}); });
+    var somaP = nr.reduce(function(a,x){ return a+x.peso; },0);
+    if(somaP<=0){ nr.forEach(function(x){ x.peso=1; }); somaP=nr.length; }
+    var pseudo = {};
+    nr.forEach(function(x){ pseudo[x.id]={count:x.peso, folha:0}; });
+    var headNivel = alocarHeads(pseudo, nr, add);
+    NIVEIS.forEach(function(nv){
+      var q = headNivel[nv] || 0;
+      if(q<=0) return;
+      var cargos = cargosDoNivel(nv);
+      if(!cargos.length) return;
+      var head = alocarHeads(est, cargos, q);
+      cargos.forEach(function(c){
+        var qn = head[c.id] || 0;
+        if(qn<=0) return;
+        if(!est[c.id]) est[c.id]={count:0, folha:0};
+        est[c.id].count += qn;
+        est[c.id].folha += qn*c.salarioMedio;
+      });
+    });
+  }
+  return est;
+}
+
+function estimarAno(est, ano, p){
+  var rows = [];
+  db.cargos.forEach(function(c){
+    var s = est[c.id] || {count:0, folha:0};
+    if(s.count>0){ rows.push({id:c.id, nome:c.nome, nivel:c.nivel, count:s.count, folha:s.folha}); }
+  });
+  var totalE = rows.reduce(function(a,r){ return a+r.count; },0);
+  var mensal = rows.reduce(function(a,r){ return a+r.folha; },0);
+  var folha12 = mensal*12;
+  var decT = mensal;
+  var ferias = mensal*4/3;
+  var baseE = folha12 + decT;
+  var fgts = baseE*p.fgts/100;
+  var inss = baseE*p.inss/100;
+  var benef = p.beneficiosMensal*totalE*12;
+  var custoTotal = folha12+decT+ferias+fgts+inss+benef;
+  var receita = p.faturamentoAnual*Math.pow(1+p.crescReceita/100, ano);
+  return {
+    ano:ano, rows:rows, totalE:totalE, mensal:mensal, folha12:folha12, decT:decT,
+    ferias:ferias, fgts:fgts, inss:inss, benef:benef, custoTotal:custoTotal,
+    custoMensal:custoTotal/12, receita:receita, pesoFolha:custoTotal/receita*100
+  };
+}
+
+function coletarParams(){
+  return {
+    metaColaboradores: parseFloat($("p_meta").value),
+    reajusteAnual: parseFloat($("p_reaj").value),
+    promocaoAnual: parseFloat($("p_pro").value),
+    aumentoPromocao: parseFloat($("p_aprom").value),
+    distOp: parseFloat($("p_dop").value),
+    distTat: parseFloat($("p_dta").value),
+    distEst: parseFloat($("p_des").value),
+    fgts: parseFloat($("p_fgts").value),
+    inss: parseFloat($("p_inss").value),
+    beneficiosMensal: parseFloat($("p_ben").value),
+    faturamentoAnual: parseFloat($("p_fat").value),
+    crescReceita: parseFloat($("p_cres").value)
+  };
+}
+
+function simulacao(){
+  var p = coletarParams();
+  db.params = p; salvar();
+  var ativos = db.funcionarios.filter(function(f){ return f.status==="Ativo"; });
+  var est = {};
+  ativos.forEach(function(f){
+    var c = cargoPorId(f.cargoId);
+    if(!c) return;
+    if(!est[c.id]) est[c.id]={count:0, folha:0};
+    est[c.id].count++;
+    est[c.id].folha += f.salario;
+  });
+  var hist = [];
+  hist.push(estimarAno(cloneEst(est), 0, p));
+  var total0 = totalEmp(est);
+  if(total0<=0){ total0 = 1; est = {fake:{count:1, folha:0}}; }
+  var meta = Math.max(p.metaColaboradores, total0);
+  var g = Math.pow(meta/total0, 1/5) - 1;
+  var estA = cloneEst(est);
+  for(var y=1; y<=5; y++){
+    estA = avancarAno(estA, p, g);
+    hist.push(estimarAno(cloneEst(estA), y, p));
+  }
+  return hist;
+}
+
+/* ---------- resultados ---------- */
+function executar(){
+  HISTORICO = simulacao();
+  tab("res");
+}
+function renderResultados(){
+  if(!HISTORICO.length){ HISTORICO = simulacao(); }
+  var h = HISTORICO;
+  var base = h[0]; var ult = h[5];
+  var custoAdic = 0;
+  for(var i=1;i<=5;i++){ custoAdic += h[i].custoTotal - base.custoTotal; }
+
+  var html = "";
+  html += "<div class='grid3'>"+
+    "<div class='kpi'><div class='lbl'>Colaboradores no Ano 5</div><div class='val'>"+fmtInt(ult.totalE)+"</div><div class='det'>Ano 0: "+fmtInt(base.totalE)+"</div></div>"+
+    "<div class='kpi'><div class='lbl'>Folha mensal (Ano 0)</div><div class='val'>"+fmtCompact(base.mensal)+"</div><div class='det'>Salários atuais</div></div>"+
+    "<div class='kpi'><div class='lbl'>Folha mensal (Ano 5)</div><div class='val'>"+fmtCompact(ult.mensal)+"</div><div class='det'>Ajustada com dissídio, promoções e contratações</div></div>"+
+    "<div class='kpi'><div class='lbl'>Custo total anual (Ano 5)</div><div class='val'>"+fmtCompact(ult.custoTotal)+"</div><div class='det'>Com 13º, férias, FGTS, INSS e benefícios</div></div>"+
+    "<div class='kpi'><div class='lbl'>Investimento adicional (5 anos)</div><div class='val'>"+fmtCompact(custoAdic)+"</div><div class='det'>Soma do custo extra vs Ano 0 (anos 1 a 5)</div></div>"+
+    "<div class='kpi'><div class='lbl'>Peso da folha / receita</div><div class='val'>"+base.pesoFolha.toFixed(1).replace(".",",")+"% → "+ult.pesoFolha.toFixed(1).replace(".",",")+"%</div><div class='det'>Ano 0 → Ano 5</div></div>"+
+  "</div>";
+
+  html += "<div class='card'><h3>Evolução dos colaboradores</h3><div class='chart-box' id='g-colab'></div></div>";
+  html += "<div class='card'><h3>Custo total anual por período</h3><div class='chart-box' id='g-custo'></div></div>";
+
+  html += "<div class='card'>"+
+    "<h3>Resumo anual do orçamento de pessoal</h3>"+
+    "<div style='overflow-x:auto'><table class='tbl'>"+
+    "<thead><tr><th>Período</th><th class='num'>Colab.</th><th class='num'>Folha mensal</th><th class='num'>Folha anual (12x)</th><th class='num'>13º + Férias</th><th class='num'>FGTS + INSS</th><th class='num'>Benefícios</th><th class='num'>Custo anual total</th><th class='num'>Impacto vs Ano 0</th><th class='num'>Receita</th><th class='num'>Folha/Rec.</th></tr></thead><tbody>";
+  for(var i=0;i<h.length;i++){
+    var e = h[i];
+    var impacto = e.custoTotal - base.custoTotal;
+    var pctIc = e.ano===0 ? 0 : impacto/base.custoTotal*100;
+    html += "<tr>"+
+      "<td><b>"+(e.ano===0?"Ano 0 (base)":"Ano "+e.ano)+"</b></td>"+
+      "<td class='num'>"+fmtInt(e.totalE)+"</td>"+
+      "<td class='num'>"+fmt(e.mensal)+"</td>"+
+      "<td class='num'>"+fmt(e.folha12)+"</td>"+
+      "<td class='num'>"+fmt(e.decT+e.ferias)+"</td>"+
+      "<td class='num'>"+fmt(e.fgts+e.inss)+"</td>"+
+      "<td class='num'>"+fmt(e.benef)+"</td>"+
+      "<td class='num'><b>"+fmt(e.custoTotal)+"</b></td>"+
+      "<td class='num' "+(impacto>0?"style='color:var(--verde)'":"")+">"+fmtsinal(impacto)+" ("+(pctIc>=0?"+":"")+pctIc.toFixed(1).replace(".",",")+"%)</td>"+
+      "<td class='num'>"+fmtCompact(e.receita)+"</td>"+
+      "<td class='num'>"+e.pesoFolha.toFixed(1).replace(".",",")+"%</td>"+
+    "</tr>";
+  }
+  html += "</tbody></table></div></div>";
+
+  html += "<div class='card'>"+
+    "<h3>Detalhamento por cargo</h3>"+
+    "<div class='year-sel' id='ano-sel'>"+
+      "<button class='active' data-y='0' onclick='selAno(0)'>Ano 0 (base)</button>"+
+      "<button data-y='1' onclick='selAno(1)'>Ano 1</button>"+
+      "<button data-y='2' onclick='selAno(2)'>Ano 2</button>"+
+      "<button data-y='3' onclick='selAno(3)'>Ano 3</button>"+
+      "<button data-y='4' onclick='selAno(4)'>Ano 4</button>"+
+      "<button data-y='5' onclick='selAno(5)'>Ano 5</button>"+
+    "</div>"+
+    "<div id='det-cargo'></div>"+
+  "</div>";
+
+  html += "<div class='toolbar' style='margin-top:8px'>"+
+    "<button class='btn sec' onclick='exportCSV()'>Exportar CSV</button>"+
+    "<button class='btn sec' onclick='window.print()'>Imprimir / PDF</button>"+
+  "</div>";
+
+  $("area-resultados").innerHTML = html;
+  renderGrafColab(h);
+  renderGrafCusto(h);
+  selAno(0);
+}
+
+function fmtsinal(v){
+  return (v>=0? "+":"−") + fmt(Math.abs(v));
+}
+
+function selAno(y){
+  var bts = document.querySelectorAll("#ano-sel button");
+  for(var i=0;i<bts.length;i++){ bts[i].classList.remove("active"); if(parseInt(bts[i].getAttribute("data-y"),10)===y) bts[i].classList.add("active"); }
+  var e = HISTORICO[y];
+  var html = "";
+  var visivel = false;
+  db.cargos.slice().sort(function(a,b){ return nivelOrdem(a.nivel)-nivelOrdem(b.nivel) || a.nome.localeCompare(b.nome); }).forEach(function(c){
+    var r = e.rows.filter(function(x){ return x.id===c.id; })[0];
+    if(!r) return;
+    visivel = true;
+    var med = r.folha/r.count;
+    html += "<tr><td>"+esc(c.nome)+"</td><td><span class='badge "+nivelCls(c.nivel)+"'>"+c.nivel+"</span></td><td class='num'>"+r.count+"</td><td class='num'>"+fmt(med)+"</td><td class='num'>"+fmt(r.folha)+"</td><td class='num'>"+fmt(r.folha*12)+"</td></tr>";
+  });
+  if(!visivel) html = "<tr><td colspan='6' class='empty'>Sem dados para este cargo.</td></tr>";
+  var tot = "<tr class='tot'><td>Total da folha</td><td></td><td class='num'>"+e.totalE+"</td><td class='num'></td><td class='num'>"+fmt(e.mensal)+"</td><td class='num'>"+fmt(e.mensal*12)+"</td></tr>";
+  $("det-cargo").innerHTML =
+    "<div style='overflow-x:auto'><table class='tbl'><thead><tr><th>Cargo</th><th>Nível</th><th class='num'>Qt.</th><th class='num'>Sal. médio</th><th class='num'>Folha mensal</th><th class='num'>Folha anual</th></tr></thead><tbody>"+html+tot+"</tbody></table></div>";
+}
+
+function renderGrafColab(h){
+  var items = h.map(function(e){ return {label: e.ano===0?"Ano 0":"A"+e.ano, value:e.totalE}; });
+  $("g-colab").innerHTML = barChart(items, {color:"#2563eb", compact:false});
+}
+function renderGrafCusto(h){
+  var items = h.map(function(e){ return {label: e.ano===0?"Ano 0":"A"+e.ano, value:e.custoTotal}; });
+  $("g-custo").innerHTML = barChart(items, {color:"#059669", compact:true});
+}
+
+function barChart(items, opt){
+  var W = 840, H = 300, padL = 80, padB = 34, padT = 26, padR = 12;
+  var max = Math.max.apply(null, items.map(function(it){ return it.value; })) * 1.12;
+  if(max<=0) max = 1;
+  var plotW = W - padL - padR, plotH = H - padT - padB;
+  var n = items.length, slot = plotW/n, bw = Math.min(70, slot*0.55);
+  var s = "<svg viewBox='0 0 "+W+" "+H+"' style='min-width:720px;width:100%;height:auto'>";
+  for(var gl=0;gl<=4;gl++){
+    var yv = max/4*gl;
+    var yy = padT + plotH - (yv/max)*plotH;
+    s += "<line x1='"+padL+"' y1='"+yy+"' x2='"+(W-padR)+"' y2='"+yy+"' stroke='#e2e8f0' stroke-width='1'/>";
+    s += "<text x='"+(padL-8)+"' y='"+(yy+4)+"' text-anchor='end' font-size='11' fill='#64748b'>"+fmtCompact(yv)+"</text>";
+  }
+  for(var i=0;i<n;i++){
+    var it = items[i];
+    var x0 = padL + i*slot + (slot-bw)/2;
+    var bh = (it.value/max)*plotH;
+    var y0 = padT + plotH - bh;
+    s += "<rect x='"+x0+"' y='"+y0+"' width='"+bw+"' height='"+bh+"' fill='"+opt.color+"' rx='4'/>";
+    s += "<text x='"+(x0+bw/2)+"' y='"+(y0-7)+"' text-anchor='middle' font-size='11.5' font-weight='600' fill='#0f172a'>"+ (opt.compact?fmtCompact(it.value):fmtInt(it.value)) +"</text>";
+    s += "<text x='"+(x0+bw/2)+"' y='"+(H-12)+"' text-anchor='middle' font-size='11.5' fill='#475569'>"+it.label+"</text>";
+  }
+  s += "</svg>";
+  return s;
+}
+
+/* ---------- exportação ---------- */
+function esc(v){
+  return String(v==null?"":v).replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;").replace(/"/g,"&quot;");
+}
+function exportCSV(){
+  if(!HISTORICO.length) return;
+  var rows = [["Período","Colaboradores","Folha mensal","Folha anual","Custo total anual","Receita","Folha/Receita(%)"]];
+  HISTORICO.forEach(function(e){
+    rows.push([(e.ano===0?"Ano 0":"Ano "+e.ano), e.totalE, e.mensal.toFixed(2), e.folha12.toFixed(2), e.custoTotal.toFixed(2), e.receita.toFixed(2), e.pesoFolha.toFixed(2).replace(".",",")]);
+  });
+  rows.push([]);
+  rows.push(["Cargo","Nível","Qt.","Salário médio","Folha mensal"]);
+  var ano = HISTORICO[5];
+  db.cargos.slice().sort(function(a,b){ return nivelOrdem(a.nivel)-nivelOrdem(b.nivel) || a.nome.localeCompare(b.nome); }).forEach(function(c){
+    var r = ano.rows.filter(function(x){ return x.id===c.id; })[0];
+    if(r && r.count>0){ rows.push([c.nome, c.nivel, r.count, (r.folha/r.count).toFixed(2), r.folha.toFixed(2)]); }
+  });
+  var csv = rows.map(function(r){
+    return r.map(function(x){ return '"'+(x==null?"":String(x).replace(/"/g,'""'))+'"'; }).join(";");
+  }).join("\r\n");
+  var blob = new Blob(["\ufeff"+csv], {type:"text/csv;charset=utf-8;"});
+  var a = document.createElement("a");
+  a.href = URL.createObjectURL(blob);
+  a.download = "simulacao-cargos-salarios.csv";
+  a.click();
+  alert("CSV exportado com sucesso.");
+}
+
+/* ---------- utilitários ---------- */
+function $(id){ return document.getElementById(id); }
+function featMsg(){
+  var b = document.querySelector("#modal-salvar");
+  if(!b) return;
+  var t = b.textContent;
+  b.textContent = "✓ Salvo";
+  setTimeout(function(){ if(b) b.textContent = t; }, 900);
+}
+function fmtData(d){ if(!d) return ""; var p = d.split("-"); if(p.length!==3) return d; return p[2]+"/"+p[1]+"/"+p[0]; }
+
+function renderAll(){ renderCargos(); renderFunc(); }
+function iniciar(){
+  carregar();
+  renderAll();
+}
+if(document.readyState==="loading"){ document.addEventListener("DOMContentLoaded", iniciar); }
+else{ iniciar(); }
+</script>
+</body>
+</html>

@@ -3,61 +3,643 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Aguarde - Aula em Breve</title>
+    <title>Hub Interativo de Remuneração e PCS</title>
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Chart.js -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <!-- Font Awesome Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
-        body {
-            margin: 0;
-            padding: 0;
-            background-color: #f4f4f4; /* Cor de fundo suave */
-            font-family: Arial, sans-serif;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            height: 100vh;
-        }
-
-        .container {
-            background-color: #fff;
-            border-radius: 8px;
-            box-shadow: 0 4px 8px rgba(0,0,0,0.1);
-            padding: 40px;
-            text-align: center;
-        }
-
-        .container img {
-            max-width: 100%;
-            height: auto;
-            border-radius: 8px; /* Mantém as bordas arredondadas da imagem */
-            margin-bottom: 20px;
-        }
-
-        .container h1 {
-            color: #333;
-            font-size: 24px;
-            margin-bottom: 30px;
-        }
-
-        .btn-voltar {
-            display: inline-block;
-            background-color: #007bff; /* Azul para o botão */
-            color: #fff;
-            padding: 12px 24px;
-            text-decoration: none;
-            border-radius: 5px;
-            font-weight: bold;
-            transition: background-color 0.3s ease;
-        }
-
-        .btn-voltar:hover {
-            background-color: #0056b3; /* Cor mais escura no hover */
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap');
+        body { font-family: 'Inter', sans-serif; }
+        .tab-btn.active {
+            border-bottom-color: #4f46e5;
+            color: #4f46e5;
+            font-weight: 600;
         }
     </style>
 </head>
-<body>
-    <div class="container">
-        <img src="imagem1.png" width="320" height="240" alt="O professor em sala de aula">
-        <h1>Aguarde: em breve essa aula estará disponivel.</h1>
-        <a href="index.html" class="btn-voltar">Voltar</a>
+<body class="bg-slate-50 text-slate-800 min-h-screen flex flex-col">
+
+    <!-- Header / Navbar -->
+    <header class="bg-indigo-900 text-white shadow-lg sticky top-0 z-50">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4 flex flex-col sm:flex-row justify-between items-center gap-4">
+            <div class="flex items-center space-x-3">
+                <div class="p-2 bg-indigo-600 rounded-lg">
+                    <i class="fa-solid me-1 fa-chart-pie text-xl text-white"></i>
+                </div>
+                <div>
+                    <h1 class="text-xl font-bold tracking-tight">Gestão de Remuneração & PCS</h1>
+                    <p class="text-xs text-indigo-200">Plataforma Interativa de Estruturas Salariais & Total Rewards</p>
+                </div>
+            </div>
+            <div class="text-xs bg-indigo-800/80 px-3 py-1.5 rounded-full border border-indigo-700">
+                <i class="fa-solid fa-book-bookmark text-indigo-300 mr-1"></i>  Práticas de RH
+                <a href="sistema-cargos-salarios.html">💾</a> 
+            </div>
+        </div>
+    </header>
+
+    <!-- Main Container -->
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6 flex-1 w-full">
+
+        <!-- Navigation Tabs -->
+        <nav class="flex border-b border-slate-200 space-x-2 sm:space-x-8 overflow-x-auto mb-6 bg-white p-2 rounded-xl shadow-sm">
+            <button onclick="switchTab('fundamentacao')" id="tab-btn-fundamentacao" class="tab-btn active text-slate-600 hover:text-indigo-600 py-3 px-4 text-sm font-medium border-b-2 border-transparent transition-all whitespace-nowrap flex items-center gap-2">
+                <i class="fa-solid fa-graduation-cap"></i> 1. Fundamentação Teórica
+            </button>
+            <button onclick="switchTab('total-rewards')" id="tab-btn-total-rewards" class="tab-btn text-slate-600 hover:text-indigo-600 py-3 px-4 text-sm font-medium border-b-2 border-transparent transition-all whitespace-nowrap flex items-center gap-2">
+                <i class="fa-solid fa-award"></i> 2. Total Rewards
+            </button>
+            <button onclick="switchTab('equidade')" id="tab-btn-equidade" class="tab-btn text-slate-600 hover:text-indigo-600 py-3 px-4 text-sm font-medium border-b-2 border-transparent transition-all whitespace-nowrap flex items-center gap-2">
+                <i class="fa-solid fa-scale-balanced"></i> 3. Equidade & Faixas Salariais
+            </button>
+            <button onclick="switchTab('simulador-pcs')" id="tab-btn-simulador-pcs" class="tab-btn text-slate-600 hover:text-indigo-600 py-3 px-4 text-sm font-medium border-b-2 border-transparent transition-all whitespace-nowrap flex items-center gap-2">
+                <i class="fa-solid fa-sliders"></i> 4. Simulador do Método de Pontos
+            </button>
+        </nav>
+
+        <!-- TAB 1: FUNDAMENTAÇÃO TEÓRICA -->
+        <section id="tab-fundamentacao" class="tab-content block space-y-6">
+            <!-- Hero Card Chiavenato -->
+            <div class="bg-white rounded-2xl p-6 sm:p-8 shadow-sm border border-slate-200">
+                <div class="flex items-start gap-4">
+                    <div class="p-3 bg-indigo-100 text-indigo-700 rounded-xl hidden sm:block">
+                        <i class="fa-solid fa-quote-left text-2xl"></i>
+                    </div>
+                    <div class="space-y-3">
+                        <span class="inline-block px-2.5 py-0.5 text-xs font-semibold bg-indigo-100 text-indigo-800 rounded-full">Conceito Fundamental</span>
+                        <blockquote class="text-slate-700 italic text-base sm:text-lg leading-relaxed">
+                            "A remuneração refere-se à recompensa que a pessoa recebe em troca da execução de tarefas organizacionais. Cada funcionário troca seu trabalho (tempo, dedicação, habilidades e conhecimentos) por recompensas financeiras e não financeiras."
+                        </blockquote>
+                        <p class="text-sm font-medium text-slate-500">— Idalberto Chiavenato (2020, p. 284)</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Grid de Tipos de Remuneração -->
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                <!-- Direta vs Indireta -->
+                <div class="bg-white p-6 rounded-2xl shadow-sm border border-slate-200 space-y-4">
+                    <h3 class="text-lg font-bold text-slate-800 flex items-center gap-2">
+                        <i class="fa-solid fa-money-bill-transfer text-emerald-600"></i> Remuneração Direta vs. Indireta
+                    </h3>
+                    <div class="space-y-3">
+                        <div class="p-4 bg-emerald-50/50 rounded-xl border border-emerald-100">
+                            <h4 class="font-semibold text-emerald-900 text-sm">Remuneração Direta</h4>
+                            <p class="text-xs text-emerald-700 mt-1">Pagamento feito em dinheiro diretamente ao colaborador como contraprestação pelo serviço.</p>
+                            <div class="mt-2 flex flex-wrap gap-1.5">
+                                <span class="text-xs bg-white text-emerald-800 px-2 py-0.5 rounded border border-emerald-200">Salário Base</span>
+                                <span class="text-xs bg-white text-emerald-800 px-2 py-0.5 rounded border border-emerald-200">Comissões</span>
+                                <span class="text-xs bg-white text-emerald-800 px-2 py-0.5 rounded border border-emerald-200">Bônus & Adicionais</span>
+                            </div>
+                        </div>
+                        <div class="p-4 bg-sky-50/50 rounded-xl border border-sky-100">
+                            <h4 class="font-semibold text-sky-900 text-sm">Remuneração Indireta (Benefícios)</h4>
+                            <p class="text-xs text-sky-700 mt-1">Benefícios sociais e regalias com foco em bem-estar, qualidade de vida e segurança.</p>
+                            <div class="mt-2 flex flex-wrap gap-1.5">
+                                <span class="text-xs bg-white text-sky-800 px-2 py-0.5 rounded border border-sky-200">Plano de Saúde</span>
+                                <span class="text-xs bg-white text-sky-800 px-2 py-0.5 rounded border border-sky-200">Vale-Refeição</span>
+                                <span class="text-xs bg-white text-sky-800 px-2 py-0.5 rounded border border-sky-200">Previdência Privada</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Fixa vs Variável -->
+                <div class="bg-white p-6 rounded-2xl shadow-sm border border-slate-200 space-y-4">
+                    <h3 class="text-lg font-bold text-slate-800 flex items-center gap-2">
+                        <i class="fa-solid fa-chart-line text-indigo-600"></i> Remuneração Fixa vs. Variável
+                    </h3>
+                    <div class="space-y-3">
+                        <div class="p-4 bg-slate-50 rounded-xl border border-slate-200">
+                            <h4 class="font-semibold text-slate-900 text-sm">Remuneração Fixa</h4>
+                            <p class="text-xs text-slate-600 mt-1">Valor contratual garantido pago periodicamente. Atrelado às responsabilidades e complexidade do cargo.</p>
+                        </div>
+                        <div class="p-4 bg-amber-50/50 rounded-xl border border-amber-100">
+                            <h4 class="font-semibold text-amber-900 text-sm">Remuneração Variável</h4>
+                            <p class="text-xs text-amber-700 mt-1">Recompensa atrelada ao cumprimento de metas organizacionais, de equipe ou individuais.</p>
+                            <div class="mt-2 flex flex-wrap gap-1.5">
+                                <span class="text-xs bg-white text-amber-800 px-2 py-0.5 rounded border border-amber-200">PLR</span>
+                                <span class="text-xs bg-white text-amber-800 px-2 py-0.5 rounded border border-amber-200">Campanhas de Vendas</span>
+                                <span class="text-xs bg-white text-amber-800 px-2 py-0.5 rounded border border-amber-200">Bônus de Desempenho</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Card Remuneração por Competências (CHA) -->
+            <div class="bg-white p-6 rounded-2xl shadow-sm border border-slate-200 space-y-4">
+                <h3 class="text-lg font-bold text-slate-800 flex items-center gap-2">
+                    <i class="fa-solid fa-brain text-purple-600"></i> Remuneração por Competências & Habilidades (Modelo CHA)
+                </h3>
+                <p class="text-sm text-slate-600">Compensa o indivíduo pelo seu repertório e capacidade de entrega, estimulando o aprendizado contínuo.</p>
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-4 pt-2">
+                    <div class="p-4 rounded-xl bg-purple-50 border border-purple-100 text-center">
+                        <div class="w-10 h-10 mx-auto bg-purple-600 text-white rounded-full flex items-center justify-center font-bold mb-2">C</div>
+                        <h4 class="font-bold text-purple-900 text-sm">Conhecimento</h4>
+                        <p class="text-xs text-purple-700 mt-1">Saber o quê. Formação acadêmica, cursos e bagagem técnica.</p>
+                    </div>
+                    <div class="p-4 rounded-xl bg-indigo-50 border border-indigo-100 text-center">
+                        <div class="w-10 h-10 mx-auto bg-indigo-600 text-white rounded-full flex items-center justify-center font-bold mb-2">H</div>
+                        <h4 class="font-bold text-indigo-900 text-sm">Habilidade</h4>
+                        <p class="text-xs text-indigo-700 mt-1">Saber como fazer. Prática, experiência técnica e capacidade operacional.</p>
+                    </div>
+                    <div class="p-4 rounded-xl bg-pink-50 border border-pink-100 text-center">
+                        <div class="w-10 h-10 mx-auto bg-pink-600 text-white rounded-full flex items-center justify-center font-bold mb-2">A</div>
+                        <h4 class="font-bold text-pink-900 text-sm">Atitude</h4>
+                        <p class="text-xs text-pink-700 mt-1">Querer fazer. Comportamento, proatividade e inteligência emocional.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- TAB 2: TOTAL REWARDS -->
+        <section id="tab-total-rewards" class="tab-content hidden space-y-6">
+            <div class="bg-white p-6 rounded-2xl shadow-sm border border-slate-200">
+                <div class="max-w-3xl">
+                    <h2 class="text-xl font-bold text-slate-900">Ecossistema Total Rewards (Recompensas Totais)</h2>
+                    <p class="text-sm text-slate-600 mt-1">O Total Rewards integra recompensas financeiras tangíveis com elementos intangíveis (clima, carreira, autonomia), proporcionando uma proposta de valor atrativa ao empregado (EVP).</p>
+                </div>
+            </div>
+
+            <div class="grid grid-cols-1 lg:grid-cols-12 gap-6">
+                <!-- Gráfico de Radar -->
+                <div class="lg:col-span-5 bg-white p-6 rounded-2xl shadow-sm border border-slate-200 flex flex-col items-center justify-center">
+                    <h3 class="text-sm font-semibold text-slate-700 mb-4 text-center">Dimensões do Total Rewards</h3>
+                    <div class="w-full max-w-xs aspect-square">
+                        <canvas id="totalRewardsChart"></canvas>
+                    </div>
+                </div>
+
+                <!-- Botões de Seleção Interativa de Recompensas -->
+                <div class="lg:col-span-7 space-y-4">
+                    <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                        <button id="reward-btn-1" onclick="showRewardsDetail(1)" class="reward-btn p-4 rounded-xl border border-slate-200 bg-white hover:border-indigo-300 text-left transition-all">
+                            <div class="flex items-center space-x-3">
+                                <div class="p-2.5 bg-indigo-100 text-indigo-700 rounded-lg">
+                                    <i class="fa-solid fa-coins"></i>
+                                </div>
+                                <div>
+                                    <h4 class="font-semibold text-slate-800 text-sm">1. Remuneração Dinâmica</h4>
+                                    <p class="text-xs text-slate-500">Salário Fixo & Variável</p>
+                                </div>
+                            </div>
+                        </button>
+                        <button id="reward-btn-2" onclick="showRewardsDetail(2)" class="reward-btn p-4 rounded-xl border border-slate-200 bg-white hover:border-indigo-300 text-left transition-all">
+                            <div class="flex items-center space-x-3">
+                                <div class="p-2.5 bg-emerald-100 text-emerald-700 rounded-lg">
+                                    <i class="fa-solid fa-shield-heart"></i>
+                                </div>
+                                <div>
+                                    <h4 class="font-semibold text-slate-800 text-sm">2. Benefícios Integrados</h4>
+                                    <p class="text-xs text-slate-500">Saúde, Previdência & Auxílios</p>
+                                </div>
+                            </div>
+                        </button>
+                        <button id="reward-btn-3" onclick="showRewardsDetail(3)" class="reward-btn p-4 rounded-xl border border-slate-200 bg-white hover:border-indigo-300 text-left transition-all">
+                            <div class="flex items-center space-x-3">
+                                <div class="p-2.5 bg-amber-100 text-amber-700 rounded-lg">
+                                    <i class="fa-solid fa-trophy"></i>
+                                </div>
+                                <div>
+                                    <h4 class="font-semibold text-slate-800 text-sm">3. Reconhecimento</h4>
+                                    <p class="text-xs text-slate-500">Elogios & Prêmios Pontuais</p>
+                                </div>
+                            </div>
+                        </button>
+                        <button id="reward-btn-4" onclick="showRewardsDetail(4)" class="reward-btn p-4 rounded-xl border border-slate-200 bg-white hover:border-indigo-300 text-left transition-all">
+                            <div class="flex items-center space-x-3">
+                                <div class="p-2.5 bg-purple-100 text-purple-700 rounded-lg">
+                                    <i class="fa-solid fa-seedling"></i>
+                                </div>
+                                <div>
+                                    <h4 class="font-semibold text-slate-800 text-sm">4. Oportunidades de Carreira</h4>
+                                    <p class="text-xs text-slate-500">Desenvolvimento & Promoção</p>
+                                </div>
+                            </div>
+                        </button>
+                    </div>
+
+                    <!-- Detalhes Expansíveis Dinâmicos -->
+                    <div class="bg-white p-6 rounded-2xl border border-slate-200 shadow-sm min-h-[160px] flex items-center">
+                        <div id="reward-detail-1" class="reward-detail-card space-y-2">
+                            <span class="text-xs font-semibold text-indigo-600 uppercase tracking-wider">Aspecto Financeiro Direto</span>
+                            <h4 class="text-base font-bold text-slate-900">Remuneração Dinâmica e Competitiva</h4>
+                            <p class="text-sm text-slate-600">Engloba o salário base alinhado com o mercado, somado a bônus por resultados corporativos e incentivos de curto/longo prazo. Garante sustentabilidade e atração de profissionais de alto desempenho.</p>
+                        </div>
+                        <div id="reward-detail-2" class="reward-detail-card space-y-2 hidden">
+                            <span class="text-xs font-semibold text-emerald-600 uppercase tracking-wider">Aspecto Financeiro Indireto</span>
+                            <h4 class="text-base font-bold text-slate-900">Benefícios e Segurança do Trabalhador</h4>
+                            <p class="text-sm text-slate-600">Cria uma rede de proteção e suporte com plano de saúde estendido, previdência complementar, vales e apoio à família, reduzindo o estresse financeiro e gerando engajamento sustentável.</p>
+                        </div>
+                        <div id="reward-detail-3" class="reward-detail-card space-y-2 hidden">
+                            <span class="text-xs font-semibold text-amber-600 uppercase tracking-wider">Aspecto Intangível / Psicológico</span>
+                            <h4 class="text-base font-bold text-slate-900">Reconhecimento e Valorização do Talento</h4>
+                            <p class="text-sm text-slate-600">Práticas de feedback contínuo, prêmios de tempo de casa e programas de elogios entre pares. O reconhecimento reforça os comportamentos desejados pela cultura organizacional.</p>
+                        </div>
+                        <div id="reward-detail-4" class="reward-detail-card space-y-2 hidden">
+                            <span class="text-xs font-semibold text-purple-600 uppercase tracking-wider">Crescimento Pessoal & Profissional</span>
+                            <h4 class="text-base font-bold text-slate-900">Desenvolvimento de Carreira e Aprendizado</h4>
+                            <p class="text-sm text-slate-600">Trilhas claras de carreira no PCS, planos de sucessão, investimento em cursos e mentorias. A percepção de futuro na empresa é um dos fatores mais decisivos para retenção.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- TAB 3: EQUIDADE E FAIXAS SALARIAIS -->
+        <section id="tab-equidade" class="tab-content hidden space-y-6">
+            <!-- Conceito Dupla Equidade -->
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                <div class="bg-white p-6 rounded-2xl shadow-sm border border-slate-200 space-y-3">
+                    <div class="flex items-center gap-3">
+                        <div class="p-2.5 bg-blue-100 text-blue-700 rounded-lg">
+                            <i class="fa-solid fa-scale-balanced"></i>
+                        </div>
+                        <h3 class="font-bold text-slate-900 text-base">Equidade Interna</h3>
+                    </div>
+                    <p class="text-xs sm:text-sm text-slate-600 leading-relaxed">
+                        Garante que cargos de complexidade, responsabilidade e requisitos equivalentes tenham faixas salariais coerentes dentro da mesma organização. Estabelecida via <strong>Avaliação e Classificação de Cargos</strong>.
+                    </p>
+                </div>
+
+                <div class="bg-white p-6 rounded-2xl shadow-sm border border-slate-200 space-y-3">
+                    <div class="flex items-center gap-3">
+                        <div class="p-2.5 bg-emerald-100 text-emerald-700 rounded-lg">
+                            <i class="fa-solid fa-globe"></i>
+                        </div>
+                        <h3 class="font-bold text-slate-900 text-base">Equidade Externa</h3>
+                    </div>
+                    <p class="text-xs sm:text-sm text-slate-600 leading-relaxed">
+                        Assegura que a remuneração paga pela empresa seja competitiva em relação ao mercado de trabalho para posições semelhantes. Mapeada por meio de <strong>Pesquisa Salarial</strong>.
+                    </p>
+                </div>
+            </div>
+
+            <!-- Calculadora de Amplitude Salarial & Gráfico -->
+            <div class="bg-white p-6 rounded-2xl shadow-sm border border-slate-200 space-y-6">
+                <div>
+                    <h3 class="text-lg font-bold text-slate-900">Calculadora e Visualizador de Faixa Salarial (Salary Bands)</h3>
+                    <p class="text-xs text-slate-500">Altere o Piso e a Amplitude Salarial para observar o cálculo dinâmico do Midpoint e do Teto.</p>
+                </div>
+
+                <div class="grid grid-cols-1 lg:grid-cols-12 gap-8 items-center">
+                    <!-- Painel de Inputs -->
+                    <div class="lg:col-span-5 space-y-4 bg-slate-50 p-5 rounded-xl border border-slate-200">
+                        <div>
+                            <label class="block text-xs font-semibold text-slate-700 mb-1">Piso Salarial (R$)</label>
+                            <input id="inputPiso" type="number" value="4000" step="500" class="w-full bg-white border border-slate-300 rounded-lg px-3 py-2 text-sm focus:ring-2 focus:ring-indigo-500 outline-none" oninput="updateSalaryBand()">
+                        </div>
+
+                        <div>
+                            <label class="block text-xs font-semibold text-slate-700 mb-1">Amplitude da Faixa (%)</label>
+                            <input id="inputAmplitude" type="range" min="20" max="80" value="50" step="5" class="w-full h-2 bg-slate-200 rounded-lg appearance-none cursor-pointer accent-indigo-600" oninput="updateSalaryBand()">
+                            <div class="flex justify-between text-xs text-slate-500 mt-1">
+                                <span>20% (Estreita)</span>
+                                <span id="amplitudeVal" class="font-bold text-indigo-600">50%</span>
+                                <span>80% (Ampla)</span>
+                            </div>
+                        </div>
+
+                        <div class="pt-2 border-t border-slate-200 space-y-2">
+                            <div class="flex justify-between text-xs text-slate-600">
+                                <span>Piso (Mínimo):</span>
+                                <span id="resPiso" class="font-semibold text-slate-800">R$ 4.000,00</span>
+                            </div>
+                            <div class="flex justify-between text-xs text-indigo-700 font-medium">
+                                <span>Midpoint (Ponto Médio):</span>
+                                <span id="resMidpoint" class="font-bold text-indigo-700">R$ 5.000,00</span>
+                            </div>
+                            <div class="flex justify-between text-xs text-slate-600">
+                                <span>Teto (Máximo):</span>
+                                <span id="resTeto" class="font-semibold text-slate-800">R$ 6.000,00</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Gráfico de Faixas por Nível -->
+                    <div class="lg:col-span-7">
+                        <div class="h-64">
+                            <canvas id="salaryBandChart"></canvas>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- TAB 4: SIMULADOR DE PCS (MÉTODO DE PONTOS) -->
+        <section id="tab-simulador-pcs" class="tab-content hidden space-y-6">
+            <div class="bg-white p-6 rounded-2xl shadow-sm border border-slate-200">
+                <h2 class="text-xl font-bold text-slate-900">Simulador de Avaliação de Cargos (Método de Pontos)</h2>
+                <p class="text-sm text-slate-600 mt-1">Selecione o nível de exigência para cada fator compensável e veja a pontuação total do cargo e sua classe equivalente na tabela salarial do PCS.</p>
+            </div>
+
+            <div class="grid grid-cols-1 lg:grid-cols-12 gap-6">
+                <!-- Formulário de Avaliação -->
+                <div class="lg:col-span-7 bg-white p-6 rounded-2xl shadow-sm border border-slate-200 space-y-5">
+                    <h3 class="text-base font-bold text-slate-800 border-b border-slate-100 pb-3">Fatores Compensáveis</h3>
+
+                    <!-- Fator 1 -->
+                    <div>
+                        <label class="block text-xs font-semibold text-slate-700 mb-1">1. Escolaridade e Conhecimento Técnico</label>
+                        <select id="factor1" onchange="calculatePoints()" class="w-full bg-slate-50 border border-slate-300 rounded-lg p-2.5 text-sm outline-none focus:ring-2 focus:ring-indigo-500">
+                            <option value="50">Nível Médio Completo (50 pts)</option>
+                            <option value="100" selected>Nível Superior em Andamento / Técnico (100 pts)</option>
+                            <option value="180">Nível Superior Completo (180 pts)</option>
+                            <option value="250">Pós-Graduação / Especialização (250 pts)</option>
+                        </select>
+                    </div>
+
+                    <!-- Fator 2 -->
+                    <div>
+                        <label class="block text-xs font-semibold text-slate-700 mb-1">2. Solução de Problemas & Complexidade</label>
+                        <select id="factor2" onchange="calculatePoints()" class="w-full bg-slate-50 border border-slate-300 rounded-lg p-2.5 text-sm outline-none focus:ring-2 focus:ring-indigo-500">
+                            <option value="40">Rotineiro e Padronizado (40 pts)</option>
+                            <option value="80" selected>Complexidade Média / Solução Diversificada (80 pts)</option>
+                            <option value="150">Alta Complexidade / Resolução de Problemas Inéditos (150 pts)</option>
+                        </select>
+                    </div>
+
+                    <!-- Fator 3 -->
+                    <div>
+                        <label class="block text-xs font-semibold text-slate-700 mb-1">3. Responsabilidade por Resultados e Gestão</label>
+                        <select id="factor3" onchange="calculatePoints()" class="w-full bg-slate-50 border border-slate-300 rounded-lg p-2.5 text-sm outline-none focus:ring-2 focus:ring-indigo-500">
+                            <option value="30">Supervisão Direta Constante (30 pts)</option>
+                            <option value="70" selected>Autonomia Operacional / Impacto na Equipe (70 pts)</option>
+                            <option value="140">Liderança de Projetos / Gestão de Pessoas (140 pts)</option>
+                            <option value="220">Responsabilidade Estratégica Organizacional (220 pts)</option>
+                        </select>
+                    </div>
+
+                    <!-- Fator 4 -->
+                    <div>
+                        <label class="block text-xs font-semibold text-slate-700 mb-1">4. Impacto Financeiro e Erros</label>
+                        <select id="factor4" onchange="calculatePoints()" class="w-full bg-slate-50 border border-slate-300 rounded-lg p-2.5 text-sm outline-none focus:ring-2 focus:ring-indigo-500">
+                            <option value="20">Baixo Impacto Financeiro (20 pts)</option>
+                            <option value="50" selected>Impacto Moderado / Danos Corrigíveis (50 pts)</option>
+                            <option value="100">Alto Impacto em Custos / Clientes Estratégicos (100 pts)</option>
+                        </select>
+                    </div>
+                </div>
+
+                <!-- Resultado do Cálculo -->
+                <div class="lg:col-span-5 bg-gradient-to-br from-indigo-900 to-slate-900 text-white p-6 rounded-2xl shadow-md flex flex-col justify-between space-y-6">
+                    <div>
+                        <span class="text-xs font-semibold text-indigo-300 uppercase tracking-widest">Resultado da Avaliação</span>
+                        <h4 class="text-xl font-bold mt-1 text-white">Pontuação Total do Cargo</h4>
+
+                        <div class="mt-6 flex items-baseline gap-2">
+                            <span id="scoreDisplay" class="text-5xl font-extrabold text-indigo-400">300</span>
+                            <span class="text-sm text-indigo-200">pontos acumulados</span>
+                        </div>
+                    </div>
+
+                    <div class="p-4 bg-white/10 rounded-xl backdrop-blur-sm border border-white/10 space-y-2">
+                        <span class="text-xs text-indigo-200">Enquadramento no PCS:</span>
+                        <div id="classResult" class="text-lg font-bold text-emerald-400">Classe III — Analista Pleno</div>
+                        <p id="classDesc" class="text-xs text-slate-300">Faixa Salarial Estimada: R$ 4.500,00 a R$ 6.750,00</p>
+                    </div>
+
+                    <div class="text-xs text-indigo-300 space-y-1">
+                        <p><i class="fa-solid fa-circle-check text-emerald-400 mr-1"></i> Baseado no Método de Pontos de Avaliação de Cargos.</p>
+                        <p><i class="fa-solid fa-circle-check text-emerald-400 mr-1"></i> Garante Equidade Interna no PCS.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
     </div>
+
+    <!-- Footer -->
+    <footer class="bg-white border-t border-slate-200 py-4 mt-auto text-center text-xs text-slate-500">
+        <div class="max-w-7xl mx-auto px-4">
+            Hub de Gestão de Remuneração e PCS &bull; Desenvolvido para Estudo e Aplicação Prática
+            <a href="sistema-cargos-salarios.html">🖨</a>
+        </div>
+    </footer>
+
+    <!-- JavaScript Application Logic -->
+    <script>
+        // Navegação de Tabs
+        function switchTab(tabId) {
+            const tabs = document.querySelectorAll('.tab-content');
+            tabs.forEach(tab => {
+                if (tab && tab.classList) {
+                    tab.classList.add('hidden');
+                }
+            });
+
+            const btns = document.querySelectorAll('.tab-btn');
+            btns.forEach(btn => {
+                if (btn && btn.classList) {
+                    btn.classList.remove('active');
+                }
+            });
+
+            const selectedTab = document.getElementById('tab-' + tabId);
+            if (selectedTab && selectedTab.classList) {
+                selectedTab.classList.remove('hidden');
+            }
+
+            const selectedBtn = document.getElementById('tab-btn-' + tabId);
+            if (selectedBtn && selectedBtn.classList) {
+                selectedBtn.classList.add('active');
+            }
+        }
+
+        // Detalhes do Total Rewards com verificação segura
+        function showRewardsDetail(id) {
+            const allButtons = document.querySelectorAll('.reward-btn');
+            allButtons.forEach(btn => {
+                if (btn && btn.classList) {
+                    btn.classList.remove('ring-2', 'ring-indigo-600', 'bg-indigo-50/50');
+                }
+            });
+
+            const selectedBtn = document.getElementById('reward-btn-' + id);
+            if (selectedBtn && selectedBtn.classList) {
+                selectedBtn.classList.add('ring-2', 'ring-indigo-600', 'bg-indigo-50/50');
+            }
+
+            const details = document.querySelectorAll('.reward-detail-card');
+            details.forEach(card => {
+                if (card && card.classList) {
+                    card.classList.add('hidden');
+                }
+            });
+
+            const targetDetail = document.getElementById('reward-detail-' + id);
+            if (targetDetail && targetDetail.classList) {
+                targetDetail.classList.remove('hidden');
+            }
+        }
+
+        // Inicialização de Gráficos
+        let radarChartInstance = null;
+        let salaryChartInstance = null;
+
+        function initCharts() {
+            // Radar Chart (Total Rewards)
+            const radarCtx = document.getElementById('totalRewardsChart');
+            if (radarCtx) {
+                radarChartInstance = new Chart(radarCtx, {
+                    type: 'radar',
+                    data: {
+                        labels: ['Remuneração', 'Benefícios', 'Reconhecimento', 'Carreira', 'Qualidade de Vida'],
+                        datasets: [{
+                            label: 'Proposta de Valor (EVP)',
+                            data: [85, 75, 70, 80, 75],
+                            backgroundColor: 'rgba(79, 70, 229, 0.2)',
+                            borderColor: '#4f46e5',
+                            pointBackgroundColor: '#4f46e5',
+                            pointBorderColor: '#fff',
+                        }]
+                    },
+                    options: {
+                        responsive: true,
+                        maintainAspectRatio: true,
+                        scales: {
+                            r: {
+                                angleLines: { color: '#e2e8f0' },
+                                grid: { color: '#f1f5f9' },
+                                pointLabels: { font: { size: 10, family: 'Inter' } },
+                                min: 0,
+                                max: 100,
+                                ticks: { display: false }
+                            }
+                        },
+                        plugins: {
+                            legend: { display: false }
+                        }
+                    }
+                });
+            }
+
+            // Salary Band Chart
+            updateSalaryBand();
+        }
+
+        // Atualização Dinâmica da Faixa Salarial
+        function updateSalaryBand() {
+            const pisoInput = document.getElementById('inputPiso');
+            const ampInput = document.getElementById('inputAmplitude');
+
+            if (!pisoInput || !ampInput) return;
+
+            const piso = parseFloat(pisoInput.value) || 4000;
+            const ampPercent = parseFloat(ampInput.value) || 50;
+
+            const teto = piso * (1 + (ampPercent / 100));
+            const midpoint = (piso + teto) / 2;
+
+            // Atualiza labels de texto
+            const ampVal = document.getElementById('amplitudeVal');
+            const resPiso = document.getElementById('resPiso');
+            const resMid = document.getElementById('resMidpoint');
+            const resTeto = document.getElementById('resTeto');
+
+            if (ampVal) ampVal.innerText = ampPercent + '%';
+            if (resPiso) resPiso.innerText = piso.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' });
+            if (resMid) resMid.innerText = midpoint.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' });
+            if (resTeto) resTeto.innerText = teto.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' });
+
+            // Atualiza Gráfico de Barras
+            const salaryCtx = document.getElementById('salaryBandChart');
+            if (salaryCtx) {
+                if (salaryChartInstance) {
+                    salaryChartInstance.destroy();
+                }
+
+                salaryChartInstance = new Chart(salaryCtx, {
+                    type: 'bar',
+                    data: {
+                        labels: ['Júnior (Piso)', 'Pleno (Midpoint)', 'Sênior (Teto)'],
+                        datasets: [{
+                            label: 'Valor Salarial (R$)',
+                            data: [piso, midpoint, teto],
+                            backgroundColor: ['#94a3b8', '#6366f1', '#10b981'],
+                            borderRadius: 8
+                        }]
+                    },
+                    options: {
+                        responsive: true,
+                        maintainAspectRatio: false,
+                        plugins: {
+                            legend: { display: false },
+                            tooltip: {
+                                callbacks: {
+                                    label: function(context) {
+                                        return ' ' + context.parsed.y.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' });
+                                    }
+                                }
+                            }
+                        },
+                        scales: {
+                            y: {
+                                beginAtZero: false,
+                                grid: { color: '#f1f5f9' },
+                                ticks: {
+                                    callback: function(value) {
+                                        return 'R$ ' + value;
+                                    }
+                                }
+                            },
+                            x: { grid: { display: false } }
+                        }
+                    }
+                });
+            }
+        }
+
+        // Simulador de Método de Pontos
+        function calculatePoints() {
+            const f1 = parseInt(document.getElementById('factor1')?.value || '100');
+            const f2 = parseInt(document.getElementById('factor2')?.value || '80');
+            const f3 = parseInt(document.getElementById('factor3')?.value || '70');
+            const f4 = parseInt(document.getElementById('factor4')?.value || '50');
+
+            const total = f1 + f2 + f3 + f4;
+
+            const scoreDisplay = document.getElementById('scoreDisplay');
+            const classResult = document.getElementById('classResult');
+            const classDesc = document.getElementById('classDesc');
+
+            if (scoreDisplay) scoreDisplay.innerText = total;
+
+            if (classResult && classDesc) {
+                if (total < 220) {
+                    classResult.innerText = 'Classe I — Assistente / Operacional';
+                    classResult.className = 'text-lg font-bold text-sky-400';
+                    classDesc.innerText = 'Faixa Salarial Estimada: R$ 2.200,00 a R$ 3.300,00';
+                } else if (total < 320) {
+                    classResult.innerText = 'Classe II — Analista Júnior';
+                    classResult.className = 'text-lg font-bold text-indigo-400';
+                    classDesc.innerText = 'Faixa Salarial Estimada: R$ 3.500,00 a R$ 5.250,00';
+                } else if (total < 450) {
+                    classResult.innerText = 'Classe III — Analista Pleno / Especialista I';
+                    classResult.className = 'text-lg font-bold text-emerald-400';
+                    classDesc.innerText = 'Faixa Salarial Estimada: R$ 5.500,00 a R$ 8.250,00';
+                } else if (total < 580) {
+                    classResult.innerText = 'Classe IV — Analista Sênior / Coordenador';
+                    classResult.className = 'text-lg font-bold text-amber-400';
+                    classDesc.innerText = 'Faixa Salarial Estimada: R$ 8.500,00 a R$ 12.750,00';
+                } else {
+                    classResult.innerText = 'Classe V — Gerente / Espec. Executivo';
+                    classResult.className = 'text-lg font-bold text-purple-400';
+                    classDesc.innerText = 'Faixa Salarial Estimada: R$ 13.000,00 a R$ 20.000,00+';
+                }
+            }
+        }
+
+        // Inicialização ao carregar o DOM
+        document.addEventListener('DOMContentLoaded', function() {
+            showRewardsDetail(1);
+            initCharts();
+            calculatePoints();
+        });
+    </script>
 </body>
 </html>

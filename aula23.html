@@ -1,63 +1,1812 @@
-<!DOCTYPE html>
-<html lang="pt-BR">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Aguarde - Aula em Breve</title>
-    <style>
-        body {
-            margin: 0;
-            padding: 0;
-            background-color: #f4f4f4; /* Cor de fundo suave */
-            font-family: Arial, sans-serif;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            height: 100vh;
-        }
+import React, { useState, useEffect, useMemo } from 'react';
+import {
+  Building2,
+  Users,
+  Briefcase,
+  TrendingUp,
+  DollarSign,
+  AlertTriangle,
+  CheckCircle2,
+  Clock,
+  Layers,
+  Sliders,
+  FileSpreadsheet,
+  Plus,
+  Search,
+  Filter,
+  Download,
+  ArrowRight,
+  ChevronRight,
+  Award,
+  Sparkles,
+  Calculator,
+  Settings,
+  RefreshCw,
+  UserPlus,
+  X,
+  Edit3,
+  Check,
+  Eye,
+  HelpCircle,
+  BarChart3,
+  PieChart,
+  ArrowUpRight,
+  ShieldAlert,
+  ArrowRightLeft,
+  ChevronDown
+} from 'lucide-react';
 
-        .container {
-            background-color: #fff;
-            border-radius: 8px;
-            box-shadow: 0 4px 8px rgba(0,0,0,0.1);
-            padding: 40px;
-            text-align: center;
-        }
+const INITIAL_POLICIES = {
+  letterStepPercent: 5.0, // 5% entre letras
+  letters: ['A', 'B', 'C', 'D', 'E', 'F'],
+  progressionMonths: 24, // 2 anos
+  minPerformanceScore: 3.5, // nota mínima 3.5 de 5
+  minPromotionIncreasePercent: 8.0, // aumento mínimo na promoção
+  annualAdjustmentMonth: 'Outubro',
+  annualAdjustmentPercent: 4.5,
+  pisoSalarial: 1500.0,
+  tetoSalarial: 25000.0,
+  allowAutomaticProgression: false
+};
 
-        .container img {
-            max-width: 100%;
-            height: auto;
-            border-radius: 8px; /* Mantém as bordas arredondadas da imagem */
-            margin-bottom: 20px;
-        }
+const INITIAL_DEPARTMENTS = [
+  { id: 'dep-1', name: 'Tecnologia da Informação', code: 'TI', costCenter: 'CC-101' },
+  { id: 'dep-2', name: 'Recursos Humanos', code: 'RH', costCenter: 'CC-102' },
+  { id: 'dep-3', name: 'Financeiro & Controladoria', code: 'FIN', costCenter: 'CC-103' },
+  { id: 'dep-4', name: 'Comercial & Vendas', code: 'COM', costCenter: 'CC-104' },
+  { id: 'dep-5', name: 'Operações & Logística', code: 'OPS', costCenter: 'CC-105' }
+];
 
-        .container h1 {
-            color: #333;
-            font-size: 24px;
-            margin-bottom: 30px;
-        }
+const INITIAL_FAMILIES = [
+  { id: 'fam-1', name: 'Desenvolvimento & Software', deptId: 'dep-1', description: 'Cargos focados na criação e manutenção de sistemas' },
+  { id: 'fam-2', name: 'Gestão de Pessoas', deptId: 'dep-2', description: 'Atração, desenvolvimento e retenção de talentos' },
+  { id: 'fam-3', name: 'Análise Financeira', deptId: 'dep-3', description: 'Planejamento, tesouraria e controladoria' },
+  { id: 'fam-4', name: 'Vendas & Relacionamento', deptId: 'dep-4', description: 'Atendimento ao cliente e prospecção de negócios' }
+];
 
-        .btn-voltar {
-            display: inline-block;
-            background-color: #007bff; /* Azul para o botão */
-            color: #fff;
-            padding: 12px 24px;
-            text-decoration: none;
-            border-radius: 5px;
-            font-weight: bold;
-            transition: background-color 0.3s ease;
-        }
+const INITIAL_LEVELS = [
+  { id: 'lvl-1', name: 'Auxiliar', rank: 1, type: 'Operacional' },
+  { id: 'lvl-2', name: 'Assistente', rank: 2, type: 'Operacional' },
+  { id: 'lvl-3', name: 'Analista I (Júnior)', rank: 3, type: 'Tático' },
+  { id: 'lvl-4', name: 'Analista II (Pleno)', rank: 4, type: 'Tático' },
+  { id: 'lvl-5', name: 'Analista III (Sênior)', rank: 5, type: 'Tático' },
+  { id: 'lvl-6', name: 'Especialista', rank: 6, type: 'Especialista' },
+  { id: 'lvl-7', name: 'Coordenador', rank: 7, type: 'Liderança' },
+  { id: 'lvl-8', name: 'Gerente', rank: 8, type: 'Estratégico' }
+];
 
-        .btn-voltar:hover {
-            background-color: #0056b3; /* Cor mais escura no hover */
+const INITIAL_JOBS = [
+  {
+    id: 'job-1',
+    familyId: 'fam-2',
+    family: 'Gestão de Pessoas',
+    title: 'Assistente Administrativo',
+    levelId: 'lvl-2',
+    levelName: 'Assistente',
+    baseSalaryA: 2200.0,
+    cbo: '4110-10',
+    description: 'Apoio em rotinas de departamento pessoal, planilhas e atendimento interno.',
+    requirements: 'Ensino Médio Completo ou Superior em Andamento. Excel Intermediário.'
+  },
+  {
+    id: 'job-2',
+    familyId: 'fam-1',
+    family: 'Desenvolvimento & Software',
+    title: 'Analista de Sistemas I',
+    levelId: 'lvl-3',
+    levelName: 'Analista I (Júnior)',
+    baseSalaryA: 3800.0,
+    cbo: '2124-05',
+    description: 'Desenvolvimento de funcionalidades e correção de bugs em aplicações.',
+    requirements: 'Graduação em Computação ou áreas afins. Conhecimentos em JS/React.'
+  },
+  {
+    id: 'job-3',
+    familyId: 'fam-1',
+    family: 'Desenvolvimento & Software',
+    title: 'Analista de Sistemas II',
+    levelId: 'lvl-4',
+    levelName: 'Analista II (Pleno)',
+    baseSalaryA: 5200.0,
+    cbo: '2124-10',
+    description: 'Arquitetura de soluções, code review e refatoração de sistemas legados.',
+    requirements: '3+ anos de experiência, domínio de arquitetura web e bancos de dados.'
+  },
+  {
+    id: 'job-4',
+    familyId: 'fam-3',
+    family: 'Análise Financeira',
+    title: 'Analista Financeiro II',
+    levelId: 'lvl-4',
+    levelName: 'Analista II (Pleno)',
+    baseSalaryA: 4800.0,
+    cbo: '2525-15',
+    description: 'Gestão de fluxo de caixa, DRE, conciliação e relatórios de projeção.',
+    requirements: 'Superior completo em Ciências Contábeis, Economia ou Administração.'
+  },
+  {
+    id: 'job-5',
+    familyId: 'fam-1',
+    family: 'Desenvolvimento & Software',
+    title: 'Especialista em Software',
+    levelId: 'lvl-6',
+    levelName: 'Especialista',
+    baseSalaryA: 9500.0,
+    cbo: '2124-20',
+    description: 'Liderança técnica, arquitetura de nuvem e segurança da informação.',
+    requirements: '6+ anos de experiência, domínio de microsserviços e DevOps.'
+  },
+  {
+    id: 'job-6',
+    familyId: 'fam-4',
+    family: 'Vendas & Relacionamento',
+    title: 'Coordenador Comercial',
+    levelId: 'lvl-7',
+    levelName: 'Coordenador',
+    baseSalaryA: 7800.0,
+    cbo: '1423-05',
+    description: 'Gestão da equipe de vendas, alcance de metas e estratégia de prospecção.',
+    requirements: 'Experiência prévia em liderança de vendas B2B e indicadores KPI.'
+  }
+];
+
+const INITIAL_EMPLOYEES = [
+  {
+    id: 'emp-101',
+    registration: 'MAT-00101',
+    name: 'Carlos Eduardo Silva',
+    departmentId: 'dep-1',
+    department: 'Tecnologia da Informação',
+    jobId: 'job-3',
+    jobTitle: 'Analista de Sistemas II',
+    levelName: 'Analista II (Pleno)',
+    letter: 'B',
+    currentSalary: 5460.0, // Correto para Letra B (5200 * 1.05)
+    hireDate: '2021-03-15',
+    lastProgressionDate: '2022-04-01', // Apt a progredir! (>24 meses)
+    performanceScore: 4.2,
+    avatar: 'https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=150'
+  },
+  {
+    id: 'emp-102',
+    registration: 'MAT-00102',
+    name: 'Mariana Costa Oliveira',
+    departmentId: 'dep-2',
+    department: 'Recursos Humanos',
+    jobId: 'job-1',
+    jobTitle: 'Assistente Administrativo',
+    levelName: 'Assistente',
+    letter: 'A',
+    currentSalary: 1950.0, // Abaixo da faixa (Faixa começa em 2200) -> ALERTA ABAIXO
+    hireDate: '2023-01-10',
+    lastProgressionDate: '2023-01-10',
+    performanceScore: 4.5,
+    avatar: 'https://images.unsplash.com/photo-1494790108377-be9c29b29330?w=150'
+  },
+  {
+    id: 'emp-103',
+    registration: 'MAT-00103',
+    name: 'Roberto Santos Andrade',
+    departmentId: 'dep-3',
+    department: 'Financeiro & Controladoria',
+    jobId: 'job-4',
+    jobTitle: 'Analista Financeiro II',
+    levelName: 'Analista II (Pleno)',
+    letter: 'C',
+    currentSalary: 5292.0, // Correto para Letra C
+    hireDate: '2020-08-01',
+    lastProgressionDate: '2022-09-01', // Apt a progredir! (>24 meses)
+    performanceScore: 4.8,
+    avatar: 'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=150'
+  },
+  {
+    id: 'emp-104',
+    registration: 'MAT-00104',
+    name: 'Beatriz Lima Fernandes',
+    departmentId: 'dep-1',
+    department: 'Tecnologia da Informação',
+    jobId: 'job-5',
+    jobTitle: 'Especialista em Software',
+    levelName: 'Especialista',
+    letter: 'D',
+    currentSalary: 12500.0, // Acima da faixa regular da Letra D (D = 11000) -> ALERTA ACIMA
+    hireDate: '2019-05-20',
+    lastProgressionDate: '2023-06-01',
+    performanceScore: 3.9,
+    avatar: 'https://images.unsplash.com/photo-1517841905240-472988babdf9?w=150'
+  },
+  {
+    id: 'emp-105',
+    registration: 'MAT-00105',
+    name: 'Gabriel Souza Rocha',
+    departmentId: 'dep-4',
+    department: 'Comercial & Vendas',
+    jobId: 'job-6',
+    jobTitle: 'Coordenador Comercial',
+    levelName: 'Coordenador',
+    letter: 'A',
+    currentSalary: 7800.0, // Correto para Letra A
+    hireDate: '2022-11-10',
+    lastProgressionDate: '2022-11-10',
+    performanceScore: 4.0,
+    avatar: 'https://images.unsplash.com/photo-1500648767791-00dcc994a43e?w=150'
+  },
+  {
+    id: 'emp-106',
+    registration: 'MAT-00106',
+    name: 'Fernanda Martins Pereira',
+    departmentId: 'dep-2',
+    department: 'Recursos Humanos',
+    jobId: 'job-1',
+    jobTitle: 'Assistente Administrativo',
+    levelName: 'Assistente',
+    letter: 'C',
+    currentSalary: 2425.5, // Correto para Letra C
+    hireDate: '2020-02-01',
+    lastProgressionDate: '2022-02-15', // Apt a progredir!
+    performanceScore: 3.8,
+    avatar: 'https://images.unsplash.com/photo-1544005313-94ddf0286df2?w=150'
+  }
+];
+
+function calculateSalaryForLetter(baseSalary, letterIndex, stepPercent) {
+  return baseSalary * Math.pow(1 + stepPercent / 100, letterIndex);
+}
+
+function getSalaryBandForJob(job, policies) {
+  if (!job) return { min: 0, max: 0, steps: [] };
+  const steps = policies.letters.map((letra, index) => ({
+    letter: letra,
+    salary: calculateSalaryForLetter(job.baseSalaryA, index, policies.letterStepPercent)
+  }));
+  return {
+    min: steps[0].salary,
+    max: steps[steps.length - 1].salary,
+    steps
+  };
+}
+
+function getEmployeeFramingStatus(employee, job, policies) {
+  if (!job) return { code: 'UNKNOWN', label: 'Desconhecido', color: 'bg-slate-100 text-slate-700' };
+  const band = getSalaryBandForJob(job, policies);
+  const salary = employee.currentSalary;
+
+  // Tolerância pequena para arredondamentos de ponto flutuante
+  if (salary < band.min - 1) {
+    return {
+      code: 'BELOW',
+      label: 'Abaixo da faixa',
+      color: 'bg-red-100 text-red-800 border-red-300',
+      badgeClass: 'bg-red-500 text-white',
+      diff: band.min - salary
+    };
+  } else if (salary > band.max + 1) {
+    return {
+      code: 'ABOVE',
+      label: 'Acima da faixa',
+      color: 'bg-amber-100 text-amber-800 border-amber-300',
+      badgeClass: 'bg-amber-500 text-white',
+      diff: salary - band.max
+    };
+  } else {
+    return {
+      code: 'WITHIN',
+      label: 'Dentro da faixa',
+      color: 'bg-emerald-100 text-emerald-800 border-emerald-300',
+      badgeClass: 'bg-emerald-600 text-white',
+      diff: 0
+    };
+  }
+}
+
+function isAptForProgression(employee, policies) {
+  if (!employee.lastProgressionDate) return false;
+  const lastDate = new Date(employee.lastProgressionDate);
+  const now = new Date();
+  const diffMonths = (now.getFullYear() - lastDate.getFullYear()) * 12 + (now.getMonth() - lastDate.getMonth());
+  const meetsTime = diffMonths >= policies.progressionMonths;
+  const meetsScore = (employee.performanceScore || 0) >= policies.minPerformanceScore;
+  return meetsTime && meetsScore;
+}
+
+function formatCurrency(val) {
+  return new Intl.NumberFormat('pt-BR', { style: 'currency', currency: 'BRL' }).format(val || 0);
+}
+
+export default function App() {
+  const [activeTab, setActiveTab] = useState('dashboard');
+  const [policies, setPolicies] = useState(INITIAL_POLICIES);
+  const [departments, setDepartments] = useState(INITIAL_DEPARTMENTS);
+  const [families, setFamilies] = useState(INITIAL_FAMILIES);
+  const [jobs, setJobs] = useState(INITIAL_JOBS);
+  const [employees, setEmployees] = useState(INITIAL_EMPLOYEES);
+
+  // Notifications Toast
+  const [toastMessage, setToastMessage] = useState(null);
+
+  // Modals state
+  const [activeModal, setActiveModal] = useState(null); // 'add_employee' | 'edit_employee' | 'promote' | 'job_detail' | 'builder_wizard'
+  const [selectedItem, setSelectedItem] = useState(null);
+
+  const showToast = (msg) => {
+    setToastMessage(msg);
+    setTimeout(() => setToastMessage(null), 4000);
+  };
+
+  const metrics = useMemo(() => {
+    const totalEmployees = employees.length;
+    const totalJobs = jobs.length;
+    const currentPayroll = employees.reduce((acc, curr) => acc + (curr.currentSalary || 0), 0);
+
+    // Colaboradores aptos
+    const aptEmployees = employees.filter((e) => isAptForProgression(e, policies));
+
+    // Inconsistências de enquadramento
+    const framedList = employees.map((e) => {
+      const job = jobs.find((j) => j.id === e.jobId);
+      return { ...e, framing: getEmployeeFramingStatus(e, job, policies) };
+    });
+
+    const belowCount = framedList.filter((f) => f.framing.code === 'BELOW').length;
+    const aboveCount = framedList.filter((f) => f.framing.code === 'ABOVE').length;
+    const inconsistenciesCount = belowCount + aboveCount;
+
+    // Projected payroll with upcoming 1-year progressions
+    const projectedPayroll = currentPayroll + aptEmployees.length * (currentPayroll / (totalEmployees || 1) * 0.05);
+
+    return {
+      totalEmployees,
+      totalJobs,
+      currentPayroll,
+      projectedPayroll,
+      aptEmployeesCount: aptEmployees.length,
+      aptEmployees,
+      belowCount,
+      aboveCount,
+      inconsistenciesCount,
+      framedList
+    };
+  }, [employees, jobs, policies]);
+
+  const handleExecuteProgression = (empId) => {
+    setEmployees((prev) =>
+      prev.map((emp) => {
+        if (emp.id === empId) {
+          const currentIdx = policies.letters.indexOf(emp.letter);
+          const nextIdx = Math.min(currentIdx + 1, policies.letters.length - 1);
+          const nextLetter = policies.letters[nextIdx];
+          const job = jobs.find((j) => j.id === emp.jobId);
+          const newSalary = job
+            ? calculateSalaryForLetter(job.baseSalaryA, nextIdx, policies.letterStepPercent)
+            : emp.currentSalary * 1.05;
+
+          return {
+            ...emp,
+            letter: nextLetter,
+            currentSalary: newSalary,
+            lastProgressionDate: new Date().toISOString().split('T')[0]
+          };
         }
-    </style>
-</head>
-<body>
-    <div class="container">
-        <img src="imagem1.png" width="320" height="240" alt="O professor em sala de aula">
-        <h1>Aguarde: em breve essa aula estará disponivel.</h1>
-        <a href="index.html" class="btn-voltar">Voltar</a>
+        return emp;
+      })
+    );
+    showToast('Progressão horizontal realizada com sucesso!');
+  };
+
+  const handleAlignSalary = (empId) => {
+    setEmployees((prev) =>
+      prev.map((emp) => {
+        if (emp.id === empId) {
+          const job = jobs.find((j) => j.id === emp.jobId);
+          if (!job) return emp;
+          const band = getSalaryBandForJob(job, policies);
+          return {
+            ...emp,
+            currentSalary: band.min,
+            letter: 'A'
+          };
+        }
+        return emp;
+      })
+    );
+    showToast('Enquadramento salarial ajustado para o piso da faixa (Letra A)!');
+  };
+
+  return (
+    <div className="min-h-screen bg-slate-50 text-slate-800 flex flex-col font-sans">
+      {/* Toast Notification Container */}
+      {toastMessage && (
+        <div className="fixed top-5 right-5 z-50 bg-emerald-700 text-white px-5 py-3 rounded-lg shadow-xl flex items-center gap-3 animate-bounce">
+          <CheckCircle2 className="w-5 h-5 text-emerald-200" />
+          <span className="font-medium text-sm">{toastMessage}</span>
+        </div>
+      )}
+
+      {/* Top Header Navbar */}
+      <header className="bg-slate-900 text-white sticky top-0 z-40 border-b border-slate-800 shadow-md">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-16 flex items-center justify-between">
+          <div className="flex items-center gap-3">
+            <div className="bg-gradient-to-tr from-blue-600 to-indigo-500 p-2 rounded-xl text-white shadow-lg">
+              <Layers className="w-6 h-6" />
+            </div>
+            <div>
+              <h1 className="font-bold text-lg leading-tight tracking-wide flex items-center gap-2">
+                PCS Master <span className="text-xs bg-blue-500/20 text-blue-300 border border-blue-400/30 px-2 py-0.5 rounded-full">v2.5 Enterprise</span>
+              </h1>
+              <p className="text-xs text-slate-400">Plano de Cargos & Salários Inteligente</p>
+            </div>
+          </div>
+
+          {/* Quick Actions & Wizard Button */}
+          <div className="flex items-center gap-3">
+            <button
+              onClick={() => setActiveTab('builder')}
+              className="bg-gradient-to-r from-amber-500 to-amber-600 hover:from-amber-600 hover:to-amber-700 text-slate-950 font-semibold text-xs sm:text-sm px-3 py-2 rounded-lg transition shadow flex items-center gap-2"
+            >
+              <Sparkles className="w-4 h-4" />
+              <span>Construtor do PCS</span>
+            </button>
+            <button
+              onClick={() => setActiveModal('add_employee')}
+              className="bg-blue-600 hover:bg-blue-700 text-white font-medium text-xs sm:text-sm px-3 py-2 rounded-lg transition shadow flex items-center gap-2"
+            >
+              <UserPlus className="w-4 h-4" />
+              <span className="hidden sm:inline">Novo Colaborador</span>
+            </button>
+          </div>
+        </div>
+
+        {/* Tab Navigation Menu */}
+        <div className="bg-slate-800 border-t border-slate-700/60 overflow-x-auto scrollbar-none">
+          <div className="max-w-7xl mx-auto px-4 flex space-x-1 sm:space-x-2 text-xs sm:text-sm font-medium">
+            {[
+              { id: 'dashboard', label: 'Dashboard', icon: BarChart3 },
+              { id: 'organizational', label: 'Estrutura', icon: Building2 },
+              { id: 'salary_table', label: 'Tabela Salarial', icon: FileSpreadsheet },
+              { id: 'employees', label: 'Colaboradores', icon: Users },
+              { id: 'simulator', label: 'Simulador 5 Anos', icon: Calculator },
+              { id: 'enquadramento', label: 'Enquadramento', icon: ShieldAlert, badge: metrics.inconsistenciesCount },
+              { id: 'promotions', label: 'Progressões & Promoções', icon: ArrowRightLeft, badge: metrics.aptEmployeesCount },
+              { id: 'policies', label: 'Políticas PCS', icon: Sliders },
+              { id: 'reports', label: 'Relatórios', icon: PieChart }
+            ].map((tab) => {
+              const Icon = tab.icon;
+              const isActive = activeTab === tab.id;
+              return (
+                <button
+                  key={tab.id}
+                  onClick={() => setActiveTab(tab.id)}
+                  className={`flex items-center gap-2 py-3 px-3 border-b-2 whitespace-nowrap transition ${
+                    isActive
+                      ? 'border-blue-500 text-blue-400 bg-slate-700/40 font-semibold'
+                      : 'border-transparent text-slate-300 hover:text-white hover:bg-slate-700/20'
+                  }`}
+                >
+                  <Icon className="w-4 h-4" />
+                  <span>{tab.label}</span>
+                  {tab.badge > 0 && (
+                    <span className={`text-[10px] font-bold px-1.5 py-0.5 rounded-full ${isActive ? 'bg-blue-500 text-white' : 'bg-slate-600 text-slate-200'}`}>
+                      {tab.badge}
+                    </span>
+                  )}
+                </button>
+              );
+            })}
+          </div>
+        </div>
+      </header>
+
+      {/* Main Body Content View Router */}
+      <main className="flex-1 max-w-7xl w-full mx-auto p-4 sm:p-6 lg:p-8">
+        {activeTab === 'dashboard' && <DashboardView metrics={metrics} jobs={jobs} employees={employees} setActiveTab={setActiveTab} />}
+        {activeTab === 'organizational' && <OrganizationalView departments={departments} families={families} jobs={jobs} setJobs={setJobs} />}
+        {activeTab === 'salary_table' && <SalaryTableView jobs={jobs} policies={policies} />}
+        {activeTab === 'employees' && (
+          <EmployeesView
+            employees={employees}
+            jobs={jobs}
+            departments={departments}
+            policies={policies}
+            setEmployees={setEmployees}
+            setActiveModal={setActiveModal}
+            setSelectedItem={setSelectedItem}
+          />
+        )}
+        {activeTab === 'simulator' && <SimulatorView employees={employees} jobs={jobs} policies={policies} />}
+        {activeTab === 'enquadramento' && (
+          <EnquadramentoView framedList={metrics.framedList} handleAlignSalary={handleAlignSalary} />
+        )}
+        {activeTab === 'promotions' && (
+          <PromotionsView
+            employees={employees}
+            jobs={jobs}
+            policies={policies}
+            handleExecuteProgression={handleExecuteProgression}
+            setActiveModal={setActiveModal}
+            setSelectedItem={setSelectedItem}
+          />
+        )}
+        {activeTab === 'policies' && <PoliciesView policies={policies} setPolicies={setPolicies} showToast={showToast} />}
+        {activeTab === 'reports' && <ReportsView employees={employees} jobs={jobs} departments={departments} policies={policies} />}
+        {activeTab === 'builder' && <PCSBuilderWizard setPolicies={setPolicies} setJobs={setJobs} setActiveTab={setActiveTab} showToast={showToast} />}
+      </main>
+
+      {/* Modal Dialogs */}
+      {activeModal === 'add_employee' && (
+        <ModalAddEmployee
+          jobs={jobs}
+          departments={departments}
+          policies={policies}
+          onClose={() => setActiveModal(null)}
+          onAdd={(newEmp) => {
+            setEmployees((prev) => [...prev, { ...newEmp, id: `emp-${Date.now()}` }]);
+            setActiveModal(null);
+            showToast('Colaborador cadastrado com sucesso!');
+          }}
+        />
+      )}
+
+      {activeModal === 'promote' && selectedItem && (
+        <ModalPromoteEmployee
+          employee={selectedItem}
+          jobs={jobs}
+          policies={policies}
+          onClose={() => {
+            setActiveModal(null);
+            setSelectedItem(null);
+          }}
+          onPromote={(updatedEmp) => {
+            setEmployees((prev) => prev.map((e) => (e.id === updatedEmp.id ? updatedEmp : e)));
+            setActiveModal(null);
+            setSelectedItem(null);
+            showToast('Promoção realizada e novo salário calculado!');
+          }}
+        />
+      )}
+
+      {/* Global Footer */}
+      <footer className="bg-slate-900 border-t border-slate-800 text-slate-400 text-xs py-6 mt-12">
+        <div className="max-w-7xl mx-auto px-4 flex flex-col sm:flex-row items-center justify-between gap-4">
+          <div>
+            <p className="font-medium text-slate-300">Sistema de Gestão de Plano de Cargos e Salários (PCS)</p>
+            <p className="text-slate-500">Conforme normas trabalhistas CLT, Equidade Salarial e Metodologia Hay/Mercer</p>
+          </div>
+          <div className="flex gap-4">
+            <span className="hover:text-white cursor-pointer transition">Documentação do PCS</span>
+            <span className="hover:text-white cursor-pointer transition">Política de Remuneração</span>
+            <span className="hover:text-white cursor-pointer transition">Suporte RH</span>
+          </div>
+        </div>
+      </footer>
     </div>
-</body>
-</html>
+  );
+}
+
+function DashboardView({ metrics, jobs, employees, setActiveTab }) {
+  return (
+    <div className="space-y-6">
+      {/* Overview Cards */}
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+        <div className="bg-white p-5 rounded-xl border border-slate-200 shadow-sm flex items-center justify-between">
+          <div>
+            <p className="text-xs font-semibold text-slate-500 uppercase tracking-wider">Total de Cargos</p>
+            <h3 className="text-2xl font-bold text-slate-900 mt-1">{metrics.totalJobs}</h3>
+            <span className="text-xs text-blue-600 font-medium inline-flex items-center gap-1 mt-2">
+              <Layers className="w-3.5 h-3.5" /> Mapeados na estrutura
+            </span>
+          </div>
+          <div className="p-3 bg-blue-50 text-blue-600 rounded-xl">
+            <Briefcase className="w-6 h-6" />
+          </div>
+        </div>
+
+        <div className="bg-white p-5 rounded-xl border border-slate-200 shadow-sm flex items-center justify-between">
+          <div>
+            <p className="text-xs font-semibold text-slate-500 uppercase tracking-wider">Total de Colaboradores</p>
+            <h3 className="text-2xl font-bold text-slate-900 mt-1">{metrics.totalEmployees}</h3>
+            <span className="text-xs text-emerald-600 font-medium inline-flex items-center gap-1 mt-2">
+              <Users className="w-3.5 h-3.5" /> Ativos na folha
+            </span>
+          </div>
+          <div className="p-3 bg-emerald-50 text-emerald-600 rounded-xl">
+            <Users className="w-6 h-6" />
+          </div>
+        </div>
+
+        <div className="bg-white p-5 rounded-xl border border-slate-200 shadow-sm flex items-center justify-between">
+          <div>
+            <p className="text-xs font-semibold text-slate-500 uppercase tracking-wider">Massa Salarial Atual</p>
+            <h3 className="text-2xl font-bold text-slate-900 mt-1">{formatCurrency(metrics.currentPayroll)}</h3>
+            <span className="text-xs text-slate-500 mt-2 block">Custo mensal bruto</span>
+          </div>
+          <div className="p-3 bg-indigo-50 text-indigo-600 rounded-xl">
+            <DollarSign className="w-6 h-6" />
+          </div>
+        </div>
+
+        <div className="bg-white p-5 rounded-xl border border-slate-200 shadow-sm flex items-center justify-between">
+          <div>
+            <p className="text-xs font-semibold text-slate-500 uppercase tracking-wider">Aptos à Progressão</p>
+            <h3 className="text-2xl font-bold text-amber-600 mt-1">{metrics.aptEmployeesCount}</h3>
+            <button
+              onClick={() => setActiveTab('promotions')}
+              className="text-xs text-amber-700 font-semibold hover:underline mt-2 inline-flex items-center gap-1"
+            >
+              Ver elegíveis <ArrowRight className="w-3 h-3" />
+            </button>
+          </div>
+          <div className="p-3 bg-amber-50 text-amber-600 rounded-xl">
+            <Award className="w-6 h-6" />
+          </div>
+        </div>
+      </div>
+
+      {/* Alert Banner for Salary Inconsistencies */}
+      {metrics.inconsistenciesCount > 0 && (
+        <div className="bg-gradient-to-r from-red-500 to-amber-600 text-white p-4 rounded-xl shadow-md flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
+          <div className="flex items-center gap-3">
+            <div className="p-2 bg-white/20 rounded-lg backdrop-blur-sm">
+              <ShieldAlert className="w-6 h-6 text-white" />
+            </div>
+            <div>
+              <h4 className="font-bold text-base">Alertas de Inconsistência Salarial Detectados!</h4>
+              <p className="text-xs text-red-100 mt-0.5">
+                Existem <strong>{metrics.belowCount}</strong> colaboradores abaixo do piso do cargo e{' '}
+                <strong>{metrics.aboveCount}</strong> acima do teto da faixa.
+              </p>
+            </div>
+          </div>
+          <button
+            onClick={() => setActiveTab('enquadramento')}
+            className="bg-white text-slate-900 hover:bg-slate-100 font-semibold text-xs px-4 py-2 rounded-lg transition shadow whitespace-nowrap"
+          >
+            Analisar e Corrigir Enquadramento
+          </button>
+        </div>
+      )}
+
+      {/* Section Grid: Apt Employees + Distribution */}
+      <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
+        {/* Next Progressions Panel */}
+        <div className="lg:col-span-2 bg-white p-5 rounded-xl border border-slate-200 shadow-sm">
+          <div className="flex items-center justify-between mb-4">
+            <div className="flex items-center gap-2">
+              <Clock className="w-5 h-5 text-amber-600" />
+              <h3 className="font-bold text-slate-800 text-base">Próximas Progressões Elegíveis</h3>
+            </div>
+            <button
+              onClick={() => setActiveTab('promotions')}
+              className="text-xs font-semibold text-blue-600 hover:text-blue-800 flex items-center gap-1"
+            >
+              Ver todas <ChevronRight className="w-4 h-4" />
+            </button>
+          </div>
+
+          {metrics.aptEmployees.length === 0 ? (
+            <p className="text-sm text-slate-500 py-6 text-center">Nenhum colaborador elegível para progressão no momento.</p>
+          ) : (
+            <div className="overflow-x-auto">
+              <table className="w-full text-left text-xs text-slate-700">
+                <thead className="bg-slate-50 text-slate-500 uppercase font-semibold border-b border-slate-200">
+                  <tr>
+                    <th className="py-2 px-3">Colaborador</th>
+                    <th className="py-2 px-3">Cargo / Nível</th>
+                    <th className="py-2 px-3">Letra Atual</th>
+                    <th className="py-2 px-3">Desempenho</th>
+                    <th className="py-2 px-3 text-right">Ação</th>
+                  </tr>
+                </thead>
+                <tbody className="divide-y divide-slate-100">
+                  {metrics.aptEmployees.slice(0, 4).map((emp) => (
+                    <tr key={emp.id} className="hover:bg-slate-50/80 transition">
+                      <td className="py-3 px-3 font-medium text-slate-900 flex items-center gap-2">
+                        <img src={emp.avatar} alt={emp.name} className="w-7 h-7 rounded-full object-cover" />
+                        <div>
+                          <p className="font-semibold">{emp.name}</p>
+                          <p className="text-[10px] text-slate-400">{emp.department}</p>
+                        </div>
+                      </td>
+                      <td className="py-3 px-3">{emp.jobTitle}</td>
+                      <td className="py-3 px-3">
+                        <span className="bg-slate-100 text-slate-800 font-bold px-2 py-0.5 rounded border border-slate-200">
+                          {emp.letter}
+                        </span>
+                      </td>
+                      <td className="py-3 px-3 font-semibold text-emerald-600">
+                        ⭐ {emp.performanceScore.toFixed(1)}
+                      </td>
+                      <td className="py-3 px-3 text-right">
+                        <button
+                          onClick={() => setActiveTab('promotions')}
+                          className="bg-amber-500 hover:bg-amber-600 text-white font-medium px-2.5 py-1 rounded text-[11px] shadow-sm"
+                        >
+                          Avançar Letra
+                        </button>
+                      </td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            </div>
+          )}
+        </div>
+
+        {/* Level Distribution Summary */}
+        <div className="bg-white p-5 rounded-xl border border-slate-200 shadow-sm flex flex-col justify-between">
+          <div>
+            <h3 className="font-bold text-slate-800 text-base mb-3 flex items-center gap-2">
+              <BarChart3 className="w-5 h-5 text-indigo-600" /> Cargos por Nível Hierárquico
+            </h3>
+            <div className="space-y-3">
+              {[
+                { label: 'Operacional', count: 2, percent: 25, color: 'bg-slate-500' },
+                { label: 'Tático / Analistas', count: 3, percent: 45, color: 'bg-blue-600' },
+                { label: 'Especialistas', count: 1, percent: 15, color: 'bg-purple-600' },
+                { label: 'Liderança & Gestão', count: 1, percent: 15, color: 'bg-emerald-600' }
+              ].map((item) => (
+                <div key={item.label} className="text-xs">
+                  <div className="flex justify-between font-medium mb-1">
+                    <span className="text-slate-700">{item.label}</span>
+                    <span className="text-slate-500">{item.count} cargos ({item.percent}%)</span>
+                  </div>
+                  <div className="w-full bg-slate-100 h-2 rounded-full overflow-hidden">
+                    <div className={`${item.color} h-full rounded-full`} style={{ width: `${item.percent}%` }}></div>
+                  </div>
+                </div>
+              ))}
+            </div>
+          </div>
+
+          <div className="mt-6 p-3 bg-blue-50 border border-blue-100 rounded-lg text-xs text-blue-900 flex items-start gap-2">
+            <Sparkles className="w-4 h-4 text-blue-600 mt-0.5 shrink-0" />
+            <p>
+              <strong>Dica de Gestão:</strong> O equilíbrio ideal para empresas de tecnologia e serviços é ter 60% da força em níveis táticos e especialistas.
+            </p>
+          </div>
+        </div>
+      </div>
+    </div>
+  );
+}
+
+function OrganizationalView({ departments, families, jobs, setJobs }) {
+  const [searchTerm, setSearchTerm] = useState('');
+  const [selectedFamilyFilter, setSelectedFamilyFilter] = useState('ALL');
+
+  const filteredJobs = jobs.filter((job) => {
+    const matchSearch =
+      job.title.toLowerCase().includes(searchTerm.toLowerCase()) ||
+      job.levelName.toLowerCase().includes(searchTerm.toLowerCase());
+    const matchFamily = selectedFamilyFilter === 'ALL' || job.familyId === selectedFamilyFilter;
+    return matchSearch && matchFamily;
+  });
+
+  return (
+    <div className="space-y-6">
+      <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 bg-white p-5 rounded-xl border border-slate-200 shadow-sm">
+        <div>
+          <h2 className="text-xl font-bold text-slate-900 flex items-center gap-2">
+            <Building2 className="w-6 h-6 text-blue-600" /> Estrutura Organizacional
+          </h2>
+          <p className="text-xs text-slate-500 mt-0.5">
+            Mapeamento de Departamentos, Famílias de Cargos, Descrições e Requisitos de Função.
+          </p>
+        </div>
+
+        <div className="flex flex-wrap items-center gap-3 w-full sm:w-auto">
+          <div className="relative flex-1 sm:w-64">
+            <Search className="w-4 h-4 absolute left-3 top-2.5 text-slate-400" />
+            <input
+              type="text"
+              placeholder="Buscar por cargo ou nível..."
+              value={searchTerm}
+              onChange={(e) => setSearchTerm(e.target.value)}
+              className="w-full pl-9 pr-3 py-1.5 text-xs rounded-lg border border-slate-300 focus:outline-none focus:ring-2 focus:ring-blue-500"
+            />
+          </div>
+          <select
+            value={selectedFamilyFilter}
+            onChange={(e) => setSelectedFamilyFilter(e.target.value)}
+            className="text-xs py-1.5 px-3 rounded-lg border border-slate-300 bg-white focus:outline-none focus:ring-2 focus:ring-blue-500"
+          >
+            <option value="ALL">Todas as Famílias</option>
+            {families.map((f) => (
+              <option key={f.id} value={f.id}>
+                {f.name}
+              </option>
+            ))}
+          </select>
+        </div>
+      </div>
+
+      {/* Grid of Jobs */}
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5">
+        {filteredJobs.map((job) => (
+          <div key={job.id} className="bg-white border border-slate-200 rounded-xl p-5 shadow-sm hover:shadow-md transition flex flex-col justify-between">
+            <div>
+              <div className="flex justify-between items-start gap-2 mb-2">
+                <span className="text-[10px] font-bold text-blue-700 bg-blue-50 px-2 py-0.5 rounded border border-blue-200">
+                  {job.family}
+                </span>
+                <span className="text-[10px] font-mono text-slate-400">CBO: {job.cbo}</span>
+              </div>
+              <h3 className="font-bold text-slate-900 text-base">{job.title}</h3>
+              <p className="text-xs font-medium text-slate-600 mt-0.5 mb-3">Nível: {job.levelName}</p>
+
+              <div className="border-t border-slate-100 pt-3 space-y-2">
+                <div>
+                  <span className="text-[11px] font-semibold text-slate-500 block">Descrição Sumária:</span>
+                  <p className="text-xs text-slate-600 line-clamp-2">{job.description}</p>
+                </div>
+                <div>
+                  <span className="text-[11px] font-semibold text-slate-500 block">Requisitos do Cargo:</span>
+                  <p className="text-xs text-slate-600 line-clamp-2">{job.requirements}</p>
+                </div>
+              </div>
+            </div>
+
+            <div className="mt-4 pt-3 border-t border-slate-100 flex items-center justify-between">
+              <div>
+                <span className="text-[10px] text-slate-400 block">Salário Base (Letra A):</span>
+                <span className="font-bold text-emerald-700 text-sm">{formatCurrency(job.baseSalaryA)}</span>
+              </div>
+              <button
+                onClick={() => {
+                  /* Modal para ver/editar requisitos */
+                }}
+                className="text-xs font-semibold text-blue-600 hover:text-blue-800 flex items-center gap-1"
+              >
+                Ver Requisitos <ChevronRight className="w-3.5 h-3.5" />
+              </button>
+            </div>
+          </div>
+        ))}
+      </div>
+    </div>
+  );
+}
+
+function SalaryTableView({ jobs, policies }) {
+  const [stepFilterPercent, setStepFilterPercent] = useState(policies.letterStepPercent);
+
+  // Recalcular tabela salarial dinâmica
+  const salaryMatrix = useMemo(() => {
+    return jobs.map((job) => {
+      const lettersSalary = policies.letters.map((letra, idx) => ({
+        letter: letra,
+        salary: calculateSalaryForLetter(job.baseSalaryA, idx, stepFilterPercent)
+      }));
+      return {
+        ...job,
+        lettersSalary
+      };
+    });
+  }, [jobs, policies.letters, stepFilterPercent]);
+
+  return (
+    <div className="space-y-6">
+      <div className="bg-white p-5 rounded-xl border border-slate-200 shadow-sm flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
+        <div>
+          <h2 className="text-xl font-bold text-slate-900 flex items-center gap-2">
+            <FileSpreadsheet className="w-6 h-6 text-blue-600" /> Tabela Salarial Vigente (Matriz Cargo x Letras)
+          </h2>
+          <p className="text-xs text-slate-500 mt-0.5">
+            Progressão Horizontal calculada automaticamente com base na percentagem entre letras ({stepFilterPercent}%).
+          </p>
+        </div>
+
+        <div className="flex items-center gap-3 bg-slate-50 p-2 rounded-lg border border-slate-200">
+          <label className="text-xs font-semibold text-slate-700 whitespace-nowrap">Percentual entre Letras:</label>
+          <input
+            type="number"
+            step="0.5"
+            min="1"
+            max="20"
+            value={stepFilterPercent}
+            onChange={(e) => setStepFilterPercent(parseFloat(e.target.value) || 0)}
+            className="w-16 text-xs p-1 border border-slate-300 rounded text-center font-bold text-blue-600"
+          />
+          <span className="text-xs font-bold">%</span>
+        </div>
+      </div>
+
+      <div className="bg-white rounded-xl border border-slate-200 shadow-sm overflow-hidden">
+        <div className="overflow-x-auto">
+          <table className="w-full text-left text-xs border-collapse">
+            <thead>
+              <tr className="bg-slate-900 text-white font-semibold uppercase text-[11px] tracking-wider">
+                <th className="py-3 px-4 border-b border-slate-800">Cargo</th>
+                <th className="py-3 px-4 border-b border-slate-800">Nível</th>
+                {policies.letters.map((letra) => (
+                  <th key={letra} className="py-3 px-4 border-b border-slate-800 text-center">
+                    Letra {letra}
+                  </th>
+                ))}
+              </tr>
+            </thead>
+            <tbody className="divide-y divide-slate-200 text-slate-800">
+              {salaryMatrix.map((item, idx) => (
+                <tr key={item.id} className={idx % 2 === 0 ? 'bg-white' : 'bg-slate-50/50 hover:bg-slate-100/60'}>
+                  <td className="py-3 px-4 font-bold text-slate-900 border-r border-slate-100">{item.title}</td>
+                  <td className="py-3 px-4 border-r border-slate-100 font-medium text-slate-600">{item.levelName}</td>
+                  {item.lettersSalary.map((ls) => (
+                    <td key={ls.letter} className="py-3 px-4 text-center border-r border-slate-100 font-mono">
+                      <span className={ls.letter === 'A' ? 'font-bold text-slate-900' : 'text-slate-700'}>
+                        {formatCurrency(ls.salary)}
+                      </span>
+                    </td>
+                  ))}
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  );
+}
+
+function EmployeesView({ employees, jobs, departments, policies, setEmployees, setActiveModal, setSelectedItem }) {
+  const [searchTerm, setSearchTerm] = useState('');
+
+  const filteredEmployees = employees.filter(
+    (e) =>
+      e.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
+      e.registration.toLowerCase().includes(searchTerm.toLowerCase()) ||
+      e.jobTitle.toLowerCase().includes(searchTerm.toLowerCase())
+  );
+
+  return (
+    <div className="space-y-6">
+      <div className="bg-white p-5 rounded-xl border border-slate-200 shadow-sm flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
+        <div>
+          <h2 className="text-xl font-bold text-slate-900 flex items-center gap-2">
+            <Users className="w-6 h-6 text-blue-600" /> Cadastro de Colaboradores & Histórico
+          </h2>
+          <p className="text-xs text-slate-500 mt-0.5">
+            Gestão individual de cargos, salários atuais, letras e pontuação de desempenho.
+          </p>
+        </div>
+
+        <div className="flex items-center gap-3 w-full sm:w-auto">
+          <div className="relative flex-1 sm:w-64">
+            <Search className="w-4 h-4 absolute left-3 top-2.5 text-slate-400" />
+            <input
+              type="text"
+              placeholder="Buscar nome, matrícula ou cargo..."
+              value={searchTerm}
+              onChange={(e) => setSearchTerm(e.target.value)}
+              className="w-full pl-9 pr-3 py-1.5 text-xs rounded-lg border border-slate-300 focus:outline-none focus:ring-2 focus:ring-blue-500"
+            />
+          </div>
+          <button
+            onClick={() => setActiveModal('add_employee')}
+            className="bg-blue-600 hover:bg-blue-700 text-white font-medium text-xs px-3 py-2 rounded-lg transition shadow flex items-center gap-1.5 whitespace-nowrap"
+          >
+            <UserPlus className="w-4 h-4" /> Novo Colaborador
+          </button>
+        </div>
+      </div>
+
+      <div className="bg-white rounded-xl border border-slate-200 shadow-sm overflow-hidden">
+        <div className="overflow-x-auto">
+          <table className="w-full text-left text-xs text-slate-700">
+            <thead className="bg-slate-50 text-slate-500 uppercase font-semibold border-b border-slate-200">
+              <tr>
+                <th className="py-3 px-4">Colaborador / Matrícula</th>
+                <th className="py-3 px-4">Departamento</th>
+                <th className="py-3 px-4">Cargo / Nível</th>
+                <th className="py-3 px-4 text-center">Letra</th>
+                <th className="py-3 px-4">Salário Atual</th>
+                <th className="py-3 px-4">Última Progressão</th>
+                <th className="py-3 px-4 text-center">Status Faixa</th>
+                <th className="py-3 px-4 text-right">Ações</th>
+              </tr>
+            </thead>
+            <tbody className="divide-y divide-slate-100">
+              {filteredEmployees.map((emp) => {
+                const job = jobs.find((j) => j.id === emp.jobId);
+                const framing = getEmployeeFramingStatus(emp, job, policies);
+
+                return (
+                  <tr key={emp.id} className="hover:bg-slate-50/80 transition">
+                    <td className="py-3 px-4 font-medium text-slate-900 flex items-center gap-3">
+                      <img src={emp.avatar} alt="" className="w-8 h-8 rounded-full object-cover border border-slate-200" />
+                      <div>
+                        <p className="font-semibold text-slate-900">{emp.name}</p>
+                        <p className="text-[10px] font-mono text-slate-400">{emp.registration}</p>
+                      </div>
+                    </td>
+                    <td className="py-3 px-4">{emp.department}</td>
+                    <td className="py-3 px-4 font-medium">{emp.jobTitle}</td>
+                    <td className="py-3 px-4 text-center">
+                      <span className="bg-slate-100 text-slate-800 font-bold px-2 py-1 rounded border border-slate-200">
+                        {emp.letter}
+                      </span>
+                    </td>
+                    <td className="py-3 px-4 font-mono font-bold text-slate-900">{formatCurrency(emp.currentSalary)}</td>
+                    <td className="py-3 px-4">{emp.lastProgressionDate || 'Admissão'}</td>
+                    <td className="py-3 px-4 text-center">
+                      <span className={`text-[10px] font-semibold px-2 py-0.5 rounded-full border ${framing.color}`}>
+                        {framing.label}
+                      </span>
+                    </td>
+                    <td className="py-3 px-4 text-right space-x-2">
+                      <button
+                        onClick={() => {
+                          setSelectedItem(emp);
+                          setActiveModal('promote');
+                        }}
+                        className="bg-indigo-50 text-indigo-700 hover:bg-indigo-100 font-semibold px-2.5 py-1 rounded text-[11px] transition border border-indigo-200"
+                      >
+                        Promover
+                      </button>
+                    </td>
+                  </tr>
+                );
+              })}
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  );
+}
+
+function SimulatorView({ employees, jobs, policies }) {
+  const [simulationYears, setSimulationYears] = useState(5);
+  const [annualInflationPercent, setAnnualInflationPercent] = useState(4.0);
+
+  // Generates 5-year simulation projection data
+  const simulationData = useMemo(() => {
+    let currentPayroll = employees.reduce((acc, e) => acc + e.currentSalary, 0);
+    const startYear = new Date().getFullYear();
+    const rows = [];
+
+    for (let i = 0; i < simulationYears; i++) {
+      const year = startYear + i;
+      // Estimativa: 25% dos colaboradores progridem de letra a cada ano
+      const progressionCount = Math.round(employees.length * 0.25);
+      const progressionImpact = currentPayroll * 0.25 * (policies.letterStepPercent / 100);
+      const inflationImpact = currentPayroll * (annualInflationPercent / 100);
+
+      const projectedSalary = currentPayroll + progressionImpact + inflationImpact;
+
+      rows.push({
+        year,
+        employeesCount: employees.length,
+        progressionCount,
+        startPayroll: currentPayroll,
+        projectedPayroll: projectedSalary,
+        delta: projectedSalary - currentPayroll,
+        increasePercent: ((projectedSalary - currentPayroll) / currentPayroll) * 100
+      });
+
+      currentPayroll = projectedSalary; // cascata para o ano seguinte
+    }
+
+    return rows;
+  }, [employees, policies, simulationYears, annualInflationPercent]);
+
+  return (
+    <div className="space-y-6">
+      <div className="bg-white p-5 rounded-xl border border-slate-200 shadow-sm flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
+        <div>
+          <h2 className="text-xl font-bold text-slate-900 flex items-center gap-2">
+            <Calculator className="w-6 h-6 text-blue-600" /> Simulador de Impacto Financeiro Futuro
+          </h2>
+          <p className="text-xs text-slate-500 mt-0.5">
+            Projeção orçamentária do impacto de progressões horizontais e reajustes anuais na folha.
+          </p>
+        </div>
+
+        <div className="flex items-center gap-4 bg-slate-50 p-2.5 rounded-lg border border-slate-200">
+          <div>
+            <label className="text-[11px] font-semibold text-slate-500 block">Anos na Projeção:</label>
+            <select
+              value={simulationYears}
+              onChange={(e) => setSimulationYears(parseInt(e.target.value))}
+              className="text-xs py-1 px-2 border border-slate-300 rounded bg-white font-medium"
+            >
+              <option value={3}>3 Anos</option>
+              <option value={5}>5 Anos</option>
+              <option value={7}>7 Anos</option>
+            </select>
+          </div>
+          <div>
+            <label className="text-[11px] font-semibold text-slate-500 block">Reajuste Anual Est. (%):</label>
+            <input
+              type="number"
+              step="0.5"
+              value={annualInflationPercent}
+              onChange={(e) => setAnnualInflationPercent(parseFloat(e.target.value) || 0)}
+              className="w-16 text-xs py-1 px-2 border border-slate-300 rounded font-bold text-blue-600"
+            />
+          </div>
+        </div>
+      </div>
+
+      <div className="bg-white rounded-xl border border-slate-200 shadow-sm overflow-hidden p-5">
+        <h3 className="font-bold text-slate-800 text-sm mb-4">Projeção Ano a Ano da Folha Salarial</h3>
+
+        <div className="overflow-x-auto">
+          <table className="w-full text-left text-xs border-collapse">
+            <thead>
+              <tr className="bg-slate-900 text-white font-semibold uppercase text-[11px]">
+                <th className="py-3 px-4">Ano</th>
+                <th className="py-3 px-4 text-center">Colaboradores</th>
+                <th className="py-3 px-4 text-center">Est. Progressões</th>
+                <th className="py-3 px-4">Salário Inicial do Ano</th>
+                <th className="py-3 px-4">Salário Projetado (Final)</th>
+                <th className="py-3 px-4">Aumento Anual (R$)</th>
+                <th className="py-3 px-4 text-right">Crescimento %</th>
+              </tr>
+            </thead>
+            <tbody className="divide-y divide-slate-200 text-slate-800">
+              {simulationData.map((row) => (
+                <tr key={row.year} className="hover:bg-slate-50">
+                  <td className="py-3.5 px-4 font-bold text-blue-700">{row.year}</td>
+                  <td className="py-3.5 px-4 text-center font-medium">{row.employeesCount}</td>
+                  <td className="py-3.5 px-4 text-center font-bold text-amber-600">{row.progressionCount}</td>
+                  <td className="py-3.5 px-4 font-mono">{formatCurrency(row.startPayroll)}</td>
+                  <td className="py-3.5 px-4 font-mono font-bold text-slate-900">{formatCurrency(row.projectedPayroll)}</td>
+                  <td className="py-3.5 px-4 font-mono text-emerald-700 font-medium">+{formatCurrency(row.delta)}</td>
+                  <td className="py-3.5 px-4 text-right font-bold text-blue-600">+{row.increasePercent.toFixed(2)}%</td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  );
+}
+
+function EnquadramentoView({ framedList, handleAlignSalary }) {
+  const belowList = framedList.filter((item) => item.framing.code === 'BELOW');
+  const aboveList = framedList.filter((item) => item.framing.code === 'ABOVE');
+  const withinList = framedList.filter((item) => item.framing.code === 'WITHIN');
+
+  return (
+    <div className="space-y-6">
+      <div className="bg-white p-5 rounded-xl border border-slate-200 shadow-sm">
+        <h2 className="text-xl font-bold text-slate-900 flex items-center gap-2">
+          <ShieldAlert className="w-6 h-6 text-amber-600" /> Análise de Enquadramento Salarial (Distorções)
+        </h2>
+        <p className="text-xs text-slate-500 mt-0.5">
+          Identificação de salários fora das faixas salariais homologadas pelo PCS e plano de adequação.
+        </p>
+      </div>
+
+      <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+        <div className="bg-red-50 border border-red-200 p-4 rounded-xl">
+          <div className="flex justify-between items-center">
+            <span className="text-xs font-bold text-red-800 uppercase">Abaixo da Faixa</span>
+            <span className="bg-red-600 text-white font-bold text-xs px-2 py-0.5 rounded-full">{belowList.length}</span>
+          </div>
+          <p className="text-xs text-red-700 mt-1">Colaboradores recebendo menos que a Letra A do cargo.</p>
+        </div>
+
+        <div className="bg-emerald-50 border border-emerald-200 p-4 rounded-xl">
+          <div className="flex justify-between items-center">
+            <span className="text-xs font-bold text-emerald-800 uppercase">Dentro da Faixa</span>
+            <span className="bg-emerald-600 text-white font-bold text-xs px-2 py-0.5 rounded-full">{withinList.length}</span>
+          </div>
+          <p className="text-xs text-emerald-700 mt-1">Colaboradores com salário alinhado às réguas salariais.</p>
+        </div>
+
+        <div className="bg-amber-50 border border-amber-200 p-4 rounded-xl">
+          <div className="flex justify-between items-center">
+            <span className="text-xs font-bold text-amber-800 uppercase">Acima da Faixa</span>
+            <span className="bg-amber-600 text-white font-bold text-xs px-2 py-0.5 rounded-full">{aboveList.length}</span>
+          </div>
+          <p className="text-xs text-amber-700 mt-1">Colaboradores que excedem a Letra teto da faixa.</p>
+        </div>
+      </div>
+
+      {/* Detailed Table for Below Band */}
+      {belowList.length > 0 && (
+        <div className="bg-white rounded-xl border border-slate-200 shadow-sm overflow-hidden p-5">
+          <h3 className="font-bold text-red-700 text-sm mb-3 flex items-center gap-2">
+            <AlertTriangle className="w-4 h-4" /> Colaboradores Abaixo da Faixa (Ação Necessária)
+          </h3>
+          <div className="overflow-x-auto">
+            <table className="w-full text-left text-xs">
+              <thead className="bg-slate-50 text-slate-500 uppercase font-semibold border-b">
+                <tr>
+                  <th className="py-2.5 px-3">Colaborador</th>
+                  <th className="py-2.5 px-3">Cargo</th>
+                  <th className="py-2.5 px-3">Salário Atual</th>
+                  <th className="py-2.5 px-3">Piso da Faixa (Letra A)</th>
+                  <th className="py-2.5 px-3">Diferença / Defasagem</th>
+                  <th className="py-2.5 px-3 text-right">Ação Recomendada</th>
+                </tr>
+              </thead>
+              <tbody className="divide-y divide-slate-100">
+                {belowList.map((emp) => (
+                  <tr key={emp.id} className="hover:bg-slate-50">
+                    <td className="py-3 px-3 font-semibold text-slate-900">{emp.name}</td>
+                    <td className="py-3 px-3">{emp.jobTitle}</td>
+                    <td className="py-3 px-3 font-mono font-bold text-red-600">{formatCurrency(emp.currentSalary)}</td>
+                    <td className="py-3 px-3 font-mono text-slate-800">{formatCurrency(emp.currentSalary + emp.framing.diff)}</td>
+                    <td className="py-3 px-3 font-mono text-red-700 font-bold">-{formatCurrency(emp.framing.diff)}</td>
+                    <td className="py-3 px-3 text-right">
+                      <button
+                        onClick={() => handleAlignSalary(emp.id)}
+                        className="bg-emerald-600 hover:bg-emerald-700 text-white font-medium text-xs px-3 py-1 rounded shadow-sm transition"
+                      >
+                        Enquadrar para Piso
+                      </button>
+                    </td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
+        </div>
+      )}
+    </div>
+  );
+}
+
+function PromotionsView({ employees, jobs, policies, handleExecuteProgression, setActiveModal, setSelectedItem }) {
+  const aptEmployees = employees.filter((e) => isAptForProgression(e, policies));
+
+  return (
+    <div className="space-y-6">
+      <div className="bg-white p-5 rounded-xl border border-slate-200 shadow-sm">
+        <h2 className="text-xl font-bold text-slate-900 flex items-center gap-2">
+          <ArrowRightLeft className="w-6 h-6 text-blue-600" /> Central de Progressões e Promoções
+        </h2>
+        <p className="text-xs text-slate-500 mt-0.5">
+          <strong>Progressão Horizontal:</strong> Avanço de Letra na mesma faixa salarial por tempo/desempenho.{' '}
+          <strong>Promoção Vertical:</strong> Mudança para um nível ou cargo superior.
+        </p>
+      </div>
+
+      <div className="bg-white rounded-xl border border-slate-200 shadow-sm p-5">
+        <h3 className="font-bold text-slate-900 text-sm mb-4 flex items-center gap-2">
+          <Award className="w-5 h-5 text-amber-500" /> Colaboradores Elegíveis para Progressão Horizontal (Avançar Letra)
+        </h3>
+
+        {aptEmployees.length === 0 ? (
+          <p className="text-xs text-slate-500 py-4">Nenhum colaborador cumpre os requisitos de tempo e pontuação no momento.</p>
+        ) : (
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+            {aptEmployees.map((emp) => (
+              <div key={emp.id} className="border border-slate-200 rounded-xl p-4 bg-slate-50/50 flex justify-between items-center">
+                <div>
+                  <h4 className="font-bold text-slate-900 text-sm">{emp.name}</h4>
+                  <p className="text-xs text-slate-500">{emp.jobTitle}</p>
+                  <div className="flex items-center gap-2 mt-2">
+                    <span className="text-[10px] bg-slate-200 font-bold px-2 py-0.5 rounded">Letra Atual: {emp.letter}</span>
+                    <span className="text-[10px] bg-emerald-100 text-emerald-800 font-semibold px-2 py-0.5 rounded">
+                      Desempenho: {emp.performanceScore} / 5.0
+                    </span>
+                  </div>
+                </div>
+
+                <button
+                  onClick={() => handleExecuteProgression(emp.id)}
+                  className="bg-amber-500 hover:bg-amber-600 text-white font-bold text-xs px-3 py-2 rounded-lg transition shadow flex items-center gap-1"
+                >
+                  Progredir Letra <ArrowRight className="w-3.5 h-3.5" />
+                </button>
+              </div>
+            ))}
+          </div>
+        )}
+      </div>
+    </div>
+  );
+}
+
+function PoliciesView({ policies, setPolicies, showToast }) {
+  const [formData, setFormData] = useState(policies);
+
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    setPolicies(formData);
+    showToast('Políticas do PCS atualizadas com sucesso!');
+  };
+
+  return (
+    <div className="max-w-3xl mx-auto bg-white p-6 rounded-xl border border-slate-200 shadow-sm space-y-6">
+      <div>
+        <h2 className="text-xl font-bold text-slate-900 flex items-center gap-2">
+          <Sliders className="w-6 h-6 text-blue-600" /> Parâmetros e Políticas do PCS
+        </h2>
+        <p className="text-xs text-slate-500 mt-0.5">Definição das regras de progressão, intervalos e reajustes contratuais.</p>
+      </div>
+
+      <form onSubmit={handleSubmit} className="space-y-5 text-xs text-slate-700">
+        <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+          <div>
+            <label className="font-semibold block mb-1">Percentual entre Letras (%):</label>
+            <input
+              type="number"
+              step="0.1"
+              value={formData.letterStepPercent}
+              onChange={(e) => setFormData({ ...formData, letterStepPercent: parseFloat(e.target.value) || 0 })}
+              className="w-full p-2 border border-slate-300 rounded-lg text-sm font-bold text-blue-600"
+            />
+          </div>
+
+          <div>
+            <label className="font-semibold block mb-1">Tempo Mínimo para Progressão (Meses):</label>
+            <input
+              type="number"
+              value={formData.progressionMonths}
+              onChange={(e) => setFormData({ ...formData, progressionMonths: parseInt(e.target.value) || 0 })}
+              className="w-full p-2 border border-slate-300 rounded-lg text-sm font-bold text-slate-800"
+            />
+          </div>
+
+          <div>
+            <label className="font-semibold block mb-1">Nota Mínima na Avaliação (0 a 5.0):</label>
+            <input
+              type="number"
+              step="0.1"
+              value={formData.minPerformanceScore}
+              onChange={(e) => setFormData({ ...formData, minPerformanceScore: parseFloat(e.target.value) || 0 })}
+              className="w-full p-2 border border-slate-300 rounded-lg text-sm font-bold text-slate-800"
+            />
+          </div>
+
+          <div>
+            <label className="font-semibold block mb-1">Aumento Mínimo na Promoção (%):</label>
+            <input
+              type="number"
+              step="0.5"
+              value={formData.minPromotionIncreasePercent}
+              onChange={(e) => setFormData({ ...formData, minPromotionIncreasePercent: parseFloat(e.target.value) || 0 })}
+              className="w-full p-2 border border-slate-300 rounded-lg text-sm font-bold text-slate-800"
+            />
+          </div>
+        </div>
+
+        <div className="pt-4 border-t border-slate-200 flex justify-end">
+          <button type="submit" className="bg-blue-600 hover:bg-blue-700 text-white font-semibold px-5 py-2.5 rounded-lg shadow">
+            Salvar Alterações das Políticas
+          </button>
+        </div>
+      </form>
+    </div>
+  );
+}
+
+function ReportsView({ employees, jobs, departments, policies }) {
+  return (
+    <div className="space-y-6">
+      <div className="bg-white p-5 rounded-xl border border-slate-200 shadow-sm flex justify-between items-center">
+        <div>
+          <h2 className="text-xl font-bold text-slate-900 flex items-center gap-2">
+            <PieChart className="w-6 h-6 text-blue-600" /> Relatórios Executivos de Remuneração
+          </h2>
+          <p className="text-xs text-slate-500 mt-0.5">Exportação e análise comparativa da folha salarial.</p>
+        </div>
+        <button
+          onClick={() => window.print()}
+          className="bg-slate-800 hover:bg-slate-900 text-white font-medium text-xs px-3 py-2 rounded-lg transition shadow flex items-center gap-1.5"
+        >
+          <Download className="w-4 h-4" /> Exportar Relatório (PDF)
+        </button>
+      </div>
+
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+        <div className="bg-white p-5 rounded-xl border border-slate-200 shadow-sm">
+          <h3 className="font-bold text-slate-900 text-sm mb-3">Relatório de Equidade Salarial por Gênero/Cargo</h3>
+          <p className="text-xs text-slate-600 mb-4">
+            Em conformidade com a Lei nº 14.611/2023 de Igualdade Salarial.
+          </p>
+          <div className="p-3 bg-emerald-50 text-emerald-800 text-xs rounded-lg border border-emerald-200">
+            ✅ Nenhuma disparidade salarial injustificada detectada para o mesmo cargo e nível.
+          </div>
+        </div>
+
+        <div className="bg-white p-5 rounded-xl border border-slate-200 shadow-sm">
+          <h3 className="font-bold text-slate-900 text-sm mb-3">Massa Salarial por Departamento</h3>
+          <div className="space-y-2 text-xs">
+            {departments.map((dept) => {
+              const deptPayroll = employees
+                .filter((e) => e.departmentId === dept.id)
+                .reduce((acc, curr) => acc + curr.currentSalary, 0);
+              return (
+                <div key={dept.id} className="flex justify-between py-1 border-b border-slate-100">
+                  <span>{dept.name}</span>
+                  <span className="font-mono font-bold">{formatCurrency(deptPayroll)}</span>
+                </div>
+              );
+            })}
+          </div>
+        </div>
+      </div>
+    </div>
+  );
+}
+
+function PCSBuilderWizard({ setPolicies, setJobs, setActiveTab, showToast }) {
+  const [step, setStep] = useState(1);
+  const [wizardData, setWizardData] = useState({
+    companyName: 'Minha Empresa S.A.',
+    stepPercent: 5.0,
+    lettersCount: 5,
+    minMonths: 24
+  });
+
+  const nextStep = () => setStep((prev) => Math.min(prev + 1, 8));
+  const prevStep = () => setStep((prev) => Math.max(prev - 1, 1));
+
+  const handleFinish = () => {
+    showToast('Novo Plano de Cargos e Salários construído e publicado com sucesso!');
+    setActiveTab('dashboard');
+  };
+
+  return (
+    <div className="max-w-4xl mx-auto bg-white rounded-2xl border border-slate-200 shadow-xl overflow-hidden">
+      <div className="bg-slate-900 text-white p-6">
+        <span className="text-xs text-amber-400 font-bold uppercase tracking-wider">Assistente Guiado</span>
+        <h2 className="text-2xl font-extrabold mt-1">Construtor do Plano de Cargos e Salários (PCS)</h2>
+        <p className="text-xs text-slate-400 mt-1">Siga o passo a passo em 8 etapas para estruturar seu plano salarial do zero.</p>
+
+        {/* Wizard Progress Bar */}
+        <div className="flex items-center justify-between mt-6 border-t border-slate-800 pt-4 text-xs">
+          {[1, 2, 3, 4, 5, 6, 7, 8].map((s) => (
+            <div key={s} className="flex flex-col items-center">
+              <div
+                className={`w-7 h-7 rounded-full flex items-center justify-center font-bold text-xs ${
+                  s === step ? 'bg-amber-500 text-slate-950' : s < step ? 'bg-emerald-600 text-white' : 'bg-slate-800 text-slate-500'
+                }`}
+              >
+                {s < step ? '✓' : s}
+              </div>
+            </div>
+          ))}
+        </div>
+      </div>
+
+      <div className="p-8 space-y-6 text-sm text-slate-800">
+        {step === 1 && (
+          <div className="space-y-4">
+            <h3 className="font-bold text-lg text-slate-900">Etapa 1: Dados da Organização</h3>
+            <p className="text-xs text-slate-600">Informe a razão social da empresa para vincular à política salarial.</p>
+            <input
+              type="text"
+              value={wizardData.companyName}
+              onChange={(e) => setWizardData({ ...wizardData, companyName: e.target.value })}
+              className="w-full p-3 border border-slate-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-amber-500"
+            />
+          </div>
+        )}
+
+        {step === 2 && (
+          <div className="space-y-4">
+            <h3 className="font-bold text-lg text-slate-900">Etapa 2: Mapeamento de Cargos e Famílias</h3>
+            <p className="text-xs text-slate-600">Os cargos padrão serão carregados com descrições e CBOs atualizados.</p>
+            <div className="p-4 bg-slate-50 rounded-lg border border-slate-200 text-xs">
+              ✅ 6 Cargos e 4 Famílias pré-configurados com base nas boas práticas do mercado.
+            </div>
+          </div>
+        )}
+
+        {step === 3 && (
+          <div className="space-y-4">
+            <h3 className="font-bold text-lg text-slate-900">Etapa 3: Definição de Níveis Hierárquicos</h3>
+            <p className="text-xs text-slate-600">Estrutura de Níveis: Operacional, Assistente, Analista I, II, III, Especialista, Coordenador e Gerente.</p>
+          </div>
+        )}
+
+        {step === 4 && (
+          <div className="space-y-4">
+            <h3 className="font-bold text-lg text-slate-900">Etapa 4: Amplitude das Letras (Faixa Salarial)</h3>
+            <p className="text-xs text-slate-600">Quantas letras de progressão horizontal cada cargo terá (ex: A, B, C, D, E)?</p>
+            <input
+              type="number"
+              value={wizardData.lettersCount}
+              onChange={(e) => setWizardData({ ...wizardData, lettersCount: parseInt(e.target.value) || 5 })}
+              className="w-full p-3 border border-slate-300 rounded-lg text-sm"
+            />
+          </div>
+        )}
+
+        {step === 5 && (
+          <div className="space-y-4">
+            <h3 className="font-bold text-lg text-slate-900">Etapa 5: Percentual Entre Letras</h3>
+            <p className="text-xs text-slate-600">Defina o percentual de aumento de cada letra (recomendado pelo mercado: 5.0%).</p>
+            <input
+              type="number"
+              step="0.5"
+              value={wizardData.stepPercent}
+              onChange={(e) => setWizardData({ ...wizardData, stepPercent: parseFloat(e.target.value) || 0 })}
+              className="w-full p-3 border border-slate-300 rounded-lg text-sm font-bold text-blue-600"
+            />
+          </div>
+        )}
+
+        {step === 6 && (
+          <div className="space-y-4">
+            <h3 className="font-bold text-lg text-slate-900">Etapa 6: Interstício e Regras de Progressão</h3>
+            <p className="text-xs text-slate-600">Tempo mínimo de permanência no cargo para ter direito à progressão (em meses):</p>
+            <input
+              type="number"
+              value={wizardData.minMonths}
+              onChange={(e) => setWizardData({ ...wizardData, minMonths: parseInt(e.target.value) || 24 })}
+              className="w-full p-3 border border-slate-300 rounded-lg text-sm"
+            />
+          </div>
+        )}
+
+        {step === 7 && (
+          <div className="space-y-4">
+            <h3 className="font-bold text-lg text-slate-900">Etapa 7: Simulação de Impacto Financeiro</h3>
+            <p className="text-xs text-slate-600">O impacto estimado de aplicar as regras propostas é de aproximadamente +4.8% no orçamento anual.</p>
+          </div>
+        )}
+
+        {step === 8 && (
+          <div className="space-y-4 text-center py-4">
+            <div className="w-16 h-16 bg-emerald-100 text-emerald-600 rounded-full flex items-center justify-center mx-auto text-2xl">
+              🎉
+            </div>
+            <h3 className="font-bold text-xl text-slate-900">Pronto para Publicar o PCS!</h3>
+            <p className="text-xs text-slate-600 max-w-md mx-auto">
+              Ao publicar, todas as regras de faixas, percentuais e critérios serão homologadas para a empresa {wizardData.companyName}.
+            </p>
+          </div>
+        )}
+
+        {/* Wizard Controls */}
+        <div className="flex justify-between items-center pt-6 border-t border-slate-200">
+          <button
+            onClick={prevStep}
+            disabled={step === 1}
+            className="px-4 py-2 text-xs font-semibold rounded-lg border border-slate-300 disabled:opacity-40"
+          >
+            Anterior
+          </button>
+
+          {step < 8 ? (
+            <button
+              onClick={nextStep}
+              className="px-5 py-2 text-xs font-semibold rounded-lg bg-amber-500 hover:bg-amber-600 text-slate-950 shadow"
+            >
+              Próximo
+            </button>
+          ) : (
+            <button
+              onClick={handleFinish}
+              className="px-6 py-2.5 text-xs font-bold rounded-lg bg-emerald-600 hover:bg-emerald-700 text-white shadow-lg"
+            >
+              Publicar Plano de Cargos e Salários
+            </button>
+          )}
+        </div>
+      </div>
+    </div>
+  );
+}
+
+function ModalAddEmployee({ jobs, departments, policies, onClose, onAdd }) {
+  const [formData, setFormData] = useState({
+    name: '',
+    registration: `MAT-${Math.floor(10000 + Math.random() * 90000)}`,
+    departmentId: departments[0]?.id || '',
+    jobId: jobs[0]?.id || '',
+    letter: 'A',
+    currentSalary: jobs[0]?.baseSalaryA || 3000,
+    hireDate: new Date().toISOString().split('T')[0],
+    performanceScore: 4.0,
+    avatar: 'https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?w=150'
+  });
+
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    const job = jobs.find((j) => j.id === formData.jobId);
+    const dept = departments.find((d) => d.id === formData.departmentId);
+
+    onAdd({
+      ...formData,
+      jobTitle: job ? job.title : '',
+      levelName: job ? job.levelName : '',
+      department: dept ? dept.name : '',
+      lastProgressionDate: formData.hireDate
+    });
+  };
+
+  return (
+    <div className="fixed inset-0 z-50 bg-slate-900/60 backdrop-blur-sm flex items-center justify-center p-4">
+      <div className="bg-white rounded-xl border border-slate-200 shadow-2xl max-w-lg w-full p-6 space-y-4 animate-in fade-in zoom-in duration-150">
+        <div className="flex justify-between items-center border-b pb-3">
+          <h3 className="font-bold text-slate-900 text-base flex items-center gap-2">
+            <UserPlus className="w-5 h-5 text-blue-600" /> Cadastrar Novo Colaborador
+          </h3>
+          <button onClick={onClose} className="text-slate-400 hover:text-slate-600">
+            <X className="w-5 h-5" />
+          </button>
+        </div>
+
+        <form onSubmit={handleSubmit} className="space-y-4 text-xs text-slate-700">
+          <div>
+            <label className="font-semibold block mb-1">Nome Completo:</label>
+            <input
+              type="text"
+              required
+              value={formData.name}
+              onChange={(e) => setFormData({ ...formData, name: e.target.value })}
+              className="w-full p-2 border border-slate-300 rounded-lg"
+            />
+          </div>
+
+          <div className="grid grid-cols-2 gap-3">
+            <div>
+              <label className="font-semibold block mb-1">Departamento:</label>
+              <select
+                value={formData.departmentId}
+                onChange={(e) => setFormData({ ...formData, departmentId: e.target.value })}
+                className="w-full p-2 border border-slate-300 rounded-lg bg-white"
+              >
+                {departments.map((d) => (
+                  <option key={d.id} value={d.id}>
+                    {d.name}
+                  </option>
+                ))}
+              </select>
+            </div>
+
+            <div>
+              <label className="font-semibold block mb-1">Cargo:</label>
+              <select
+                value={formData.jobId}
+                onChange={(e) => {
+                  const selectedJob = jobs.find((j) => j.id === e.target.value);
+                  setFormData({
+                    ...formData,
+                    jobId: e.target.value,
+                    currentSalary: selectedJob ? selectedJob.baseSalaryA : formData.currentSalary
+                  });
+                }}
+                className="w-full p-2 border border-slate-300 rounded-lg bg-white"
+              >
+                {jobs.map((j) => (
+                  <option key={j.id} value={j.id}>
+                    {j.title} ({j.levelName})
+                  </option>
+                ))}
+              </select>
+            </div>
+          </div>
+
+          <div className="grid grid-cols-2 gap-3">
+            <div>
+              <label className="font-semibold block mb-1">Salário Inicial (R$):</label>
+              <input
+                type="number"
+                step="50"
+                value={formData.currentSalary}
+                onChange={(e) => setFormData({ ...formData, currentSalary: parseFloat(e.target.value) || 0 })}
+                className="w-full p-2 border border-slate-300 rounded-lg font-bold text-slate-900"
+              />
+            </div>
+
+            <div>
+              <label className="font-semibold block mb-1">Data de Admissão:</label>
+              <input
+                type="date"
+                value={formData.hireDate}
+                onChange={(e) => setFormData({ ...formData, hireDate: e.target.value })}
+                className="w-full p-2 border border-slate-300 rounded-lg"
+              />
+            </div>
+          </div>
+
+          <div className="flex justify-end gap-2 pt-3 border-t">
+            <button type="button" onClick={onClose} className="px-4 py-2 border rounded-lg hover:bg-slate-50 font-medium">
+              Cancelar
+            </button>
+            <button type="submit" className="px-4 py-2 bg-blue-600 hover:bg-blue-700 text-white rounded-lg font-bold shadow">
+              Cadastrar Colaborador
+            </button>
+          </div>
+        </form>
+      </div>
+    </div>
+  );
+}
+
+function ModalPromoteEmployee({ employee, jobs, policies, onClose, onPromote }) {
+  const [selectedJobId, setSelectedJobId] = useState(jobs[0]?.id || '');
+  const [selectedLetter, setSelectedLetter] = useState('A');
+
+  const selectedJob = jobs.find((j) => j.id === selectedJobId);
+  const newSalary = selectedJob
+    ? calculateSalaryForLetter(
+        selectedJob.baseSalaryA,
+        policies.letters.indexOf(selectedLetter),
+        policies.letterStepPercent
+      )
+    : employee.currentSalary;
+
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    if (!selectedJob) return;
+
+    onPromote({
+      ...employee,
+      jobId: selectedJob.id,
+      jobTitle: selectedJob.title,
+      levelName: selectedJob.levelName,
+      letter: selectedLetter,
+      currentSalary: newSalary,
+      lastProgressionDate: new Date().toISOString().split('T')[0]
+    });
+  };
+
+  return (
+    <div className="fixed inset-0 z-50 bg-slate-900/60 backdrop-blur-sm flex items-center justify-center p-4">
+      <div className="bg-white rounded-xl border border-slate-200 shadow-2xl max-w-md w-full p-6 space-y-4">
+        <div className="flex justify-between items-center border-b pb-3">
+          <h3 className="font-bold text-slate-900 text-base flex items-center gap-2">
+            <Award className="w-5 h-5 text-indigo-600" /> Promover Colaborador
+          </h3>
+          <button onClick={onClose} className="text-slate-400 hover:text-slate-600">
+            <X className="w-5 h-5" />
+          </button>
+        </div>
+
+        <div className="bg-slate-50 p-3 rounded-lg text-xs space-y-1">
+          <p className="font-bold text-slate-900">{employee.name}</p>
+          <p className="text-slate-500">
+            Cargo Atual: {employee.jobTitle} ({employee.letter})
+          </p>
+          <p className="font-mono text-slate-700">Salário Atual: {formatCurrency(employee.currentSalary)}</p>
+        </div>
+
+        <form onSubmit={handleSubmit} className="space-y-4 text-xs">
+          <div>
+            <label className="font-semibold block mb-1">Novo Cargo / Nível:</label>
+            <select
+              value={selectedJobId}
+              onChange={(e) => setSelectedJobId(e.target.value)}
+              className="w-full p-2 border border-slate-300 rounded-lg bg-white"
+            >
+              {jobs.map((j) => (
+                <option key={j.id} value={j.id}>
+                  {j.title} ({j.levelName})
+                </option>
+              ))}
+            </select>
+          </div>
+
+          <div>
+            <label className="font-semibold block mb-1">Nova Letra da Faixa:</label>
+            <select
+              value={selectedLetter}
+              onChange={(e) => setSelectedLetter(e.target.value)}
+              className="w-full p-2 border border-slate-300 rounded-lg bg-white"
+            >
+              {policies.letters.map((l) => (
+                <option key={l} value={l}>
+                  Letra {l}
+                </option>
+              ))}
+            </select>
+          </div>
+
+          <div className="p-3 bg-indigo-50 border border-indigo-100 rounded-lg">
+            <span className="text-[11px] text-indigo-700 block font-semibold">Novo Salário Calculado:</span>
+            <span className="text-lg font-extrabold font-mono text-indigo-900">{formatCurrency(newSalary)}</span>
+          </div>
+
+          <div className="flex justify-end gap-2 pt-3 border-t">
+            <button type="button" onClick={onClose} className="px-4 py-2 border rounded-lg hover:bg-slate-50">
+              Cancelar
+            </button>
+            <button type="submit" className="px-4 py-2 bg-indigo-600 hover:bg-indigo-700 text-white rounded-lg font-bold shadow">
+              Confirmar Promoção
+            </button>
+          </div>
+        </form>
+      </div>
+    </div>
+  );
+}

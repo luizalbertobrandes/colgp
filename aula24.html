@@ -1,63 +1,1294 @@
 <!DOCTYPE html>
-<html lang="pt-BR">
+<html lang="pt-BR" class="scroll-smooth">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Aguarde - Aula em Breve</title>
+    <title>Portal de Gestão de Pessoas - EEB Colombo Machado Salles</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: {
+                        sans: ['Inter', 'sans-serif'],
+                    },
+                    colors: {
+                        brand: {
+                            50: '#f0f7ff',
+                            100: '#e0effe',
+                            500: '#2563eb',
+                            600: '#1d4ed8',
+                            700: '#1e40af',
+                            800: '#1e3a8a',
+                            900: '#0f172a',
+                        }
+                    }
+                }
+            }
+        }
+    </script>
     <style>
-        body {
-            margin: 0;
-            padding: 0;
-            background-color: #f4f4f4; /* Cor de fundo suave */
-            font-family: Arial, sans-serif;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            height: 100vh;
+        .tab-btn.active {
+            border-bottom-color: #2563eb;
+            color: #2563eb;
+            font-weight: 600;
         }
-
-        .container {
-            background-color: #fff;
-            border-radius: 8px;
-            box-shadow: 0 4px 8px rgba(0,0,0,0.1);
-            padding: 40px;
-            text-align: center;
+        @media print {
+            body * {
+                visibility: hidden;
+            }
+            #printable-holerite, #printable-holerite * {
+                visibility: visible;
+            }
+            #printable-holerite {
+                position: absolute;
+                left: 0;
+                top: 0;
+                width: 100%;
+            }
         }
-
-        .container img {
-            max-width: 100%;
-            height: auto;
-            border-radius: 8px; /* Mantém as bordas arredondadas da imagem */
-            margin-bottom: 20px;
+        .custom-scrollbar::-webkit-scrollbar {
+            width: 6px;
+            height: 6px;
         }
-
-        .container h1 {
-            color: #333;
-            font-size: 24px;
-            margin-bottom: 30px;
+        .custom-scrollbar::-webkit-scrollbar-track {
+            background: #f1f5f9;
         }
-
-        .btn-voltar {
-            display: inline-block;
-            background-color: #007bff; /* Azul para o botão */
-            color: #fff;
-            padding: 12px 24px;
-            text-decoration: none;
-            border-radius: 5px;
-            font-weight: bold;
-            transition: background-color 0.3s ease;
-        }
-
-        .btn-voltar:hover {
-            background-color: #0056b3; /* Cor mais escura no hover */
+        .custom-scrollbar::-webkit-scrollbar-thumb {
+            background: #cbd5e1;
+            border-radius: 4px;
         }
     </style>
 </head>
-<body>
-    <div class="container">
-        <img src="imagem1.png" width="320" height="240" alt="O professor em sala de aula">
-        <h1>Aguarde: em breve essa aula estará disponivel.</h1>
-        <a href="index.html" class="btn-voltar">Voltar</a>
+<body class="bg-slate-50 text-slate-800 font-sans antialiased selection:bg-blue-200 selection:text-blue-900">
+
+    <!-- Top Navigation Bar -->
+    <header class="bg-slate-900 text-white sticky top-0 z-50 shadow-md">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex items-center justify-between h-16">
+                <div class="flex items-center space-x-3">
+                    <div class="w-10 h-10 rounded-lg bg-blue-600 flex items-center justify-center font-bold text-xl shadow-lg shadow-blue-500/30">
+                        <i class="fa-solid font-bold text-white text-lg">DP</i>
+                    </div>
+                    <div>
+                        <span class="text-xs uppercase tracking-widest font-semibold text-blue-400 block">EEB Colombo Machado Salles</span>
+                        <h1 class="text-sm font-bold sm:text-base leading-tight">Gestão de Pessoas &bull; Rotinas Trabalhistas</h1>
+                    </div>
+                </div>
+                <nav class="hidden md:flex space-x-6 text-sm font-medium">
+                    <a href="#teoria" class="hover:text-blue-400 transition-colors">Fundamentação</a>
+                    <a href="#laboratorio" class="hover:text-blue-400 transition-colors">Prática Excel</a>
+                    <a href="#simulador" class="hover:text-blue-400 transition-colors">Simulador</a>
+                    <a href="#detetive" class="hover:text-blue-400 transition-colors">Detetive do DP</a>
+                    <a href="#incidencias" class="hover:text-blue-400 transition-colors">Incidências</a>
+                </nav>
+                <div class="flex items-center space-x-2 text-xs bg-slate-800 px-3 py-1.5 rounded-full border border-slate-700">
+                    <i class="fa-solid fa-chalkboard-user text-blue-400"></i>
+                    <span class="hidden sm:inline text-slate-300">Prof. Luiz Alberto Brandes</span>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <!-- Hero Banner -->
+    <section class="bg-gradient-to-br from-slate-900 via-brand-900 to-slate-800 text-white py-12 px-4 sm:px-6 lg:px-8 relative overflow-hidden">
+        <div class="absolute inset-0 opacity-10 bg-[radial-gradient(#3b82f6_1px,transparent_1px)] [background-size:16px_16px]"></div>
+        <div class="max-w-7xl mx-auto relative z-10">
+            <div class="grid grid-cols-1 lg:grid-cols-12 gap-8 items-center">
+                <div class="lg:col-span-8 space-y-4">
+                    <div class="inline-flex items-center gap-2 bg-blue-500/10 border border-blue-500/30 text-blue-300 px-3 py-1 rounded-full text-xs font-semibold">
+                        <i class="fa-solid fa-book-open"></i> Módulo 2026 - Folha de Pagamento & Encargos
+                    </div>
+                    <h2 class="text-3xl sm:text-4xl lg:text-5xl font-extrabold tracking-tight text-white leading-tight">
+                        Desvendando Encargos, Descontos e Rotinas Trabalhistas
+                    </h2>
+                    <p class="text-slate-300 text-base sm:text-lg max-w-3xl leading-relaxed">
+                        Plataforma interativa de aprendizagem desenvolvida para os estudantes de Gestão de Pessoas da <strong>EEB Colombo Machado Salles</strong>. Explore os conceitos da CLT, construa folhas no Excel, simule holerites e teste suas habilidades de auditoria!
+                    </p>
+                    <div class="flex flex-wrap gap-3 pt-2">
+                        <a href="#simulador" class="inline-flex items-center gap-2 bg-blue-600 hover:bg-blue-500 text-white font-semibold px-5 py-2.5 rounded-lg transition shadow-lg shadow-blue-600/30">
+                            <i class="fa-solid fa-calculator"></i> Acessar Simulador de Holerite
+                        </a>
+                        <a href="#detetive" class="inline-flex items-center gap-2 bg-amber-500 hover:bg-amber-400 text-slate-950 font-bold px-5 py-2.5 rounded-lg transition shadow-lg shadow-amber-500/20">
+                            <i class="fa-solid fa-user-ninja"></i> Jogar "Detetive do DP"
+                        </a>
+                    </div>
+                </div>
+                <div class="lg:col-span-4 hidden lg:block">
+                    <div class="bg-slate-800/80 backdrop-blur border border-slate-700 p-6 rounded-2xl shadow-2xl space-y-4">
+                        <div class="flex items-center justify-between border-b border-slate-700 pb-3">
+                            <span class="text-xs uppercase tracking-wider text-slate-400 font-semibold">Resumo Rápido da Aula</span>
+                            <i class="fa-solid fa-graduation-cap text-blue-400"></i>
+                        </div>
+                        <ul class="space-y-3 text-sm text-slate-300">
+                            <li class="flex items-start gap-3">
+                                <i class="fa-solid fa-check text-emerald-400 mt-1"></i>
+                                <span><strong>Diferença de Salários:</strong> Bruto (pactuado) vs. Líquido (efetivamente recebido).</span>
+                            </li>
+                            <li class="flex items-start gap-3">
+                                <i class="fa-solid fa-check text-emerald-400 mt-1"></i>
+                                <span><strong>Proventos:</strong> Horas Extras (+50%/100%), DSR, Insalubridade e Periculosidade.</span>
+                            </li>
+                            <li class="flex items-start gap-3">
+                                <i class="fa-solid fa-check text-emerald-400 mt-1"></i>
+                                <span><strong>Encargo Exclusivo:</strong> FGTS (8%) é pago pela empresa e <u>NUNCA</u> descontado do funcionário.</span>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Main Content Container -->
+    <main class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-10 space-y-16">
+
+        <!-- SECTION 1: FUNDAMENTAÇÃO TEÓRICA -->
+        <section id="teoria" class="bg-white rounded-2xl p-6 sm:p-8 shadow-sm border border-slate-200">
+            <div class="flex flex-col md:flex-row md:items-center justify-between mb-6 pb-4 border-b border-slate-100 gap-4">
+                <div>
+                    <span class="text-xs font-extrabold tracking-wider text-blue-600 uppercase">Unidade 1</span>
+                    <h3 class="text-2xl font-bold text-slate-900">Fundamentação Teórica Trabalhista</h3>
+                    <p class="text-sm text-slate-500">Conceitos basilares da Consolidação das Leis do Trabalho (CLT)</p>
+                </div>
+                <!-- Theory Tab Buttons -->
+                <div class="flex flex-wrap gap-2 border-b md:border-b-0 border-slate-200 pb-2 md:pb-0">
+                    <button onclick="switchTheoryTab('tab-bruto-liquido')" class="theory-tab-btn px-4 py-2 text-sm font-medium rounded-lg text-blue-600 bg-blue-50 transition" id="btn-tab-bruto-liquido">Salário Bruto vs Líquido</button>
+                    <button onclick="switchTheoryTab('tab-proventos')" class="theory-tab-btn px-4 py-2 text-sm font-medium rounded-lg text-slate-600 hover:bg-slate-100 transition" id="btn-tab-proventos">Proventos</button>
+                    <button onclick="switchTheoryTab('tab-descontos')" class="theory-tab-btn px-4 py-2 text-sm font-medium rounded-lg text-slate-600 hover:bg-slate-100 transition" id="btn-tab-descontos">Descontos</button>
+                    <button onclick="switchTheoryTab('tab-encargos')" class="theory-tab-btn px-4 py-2 text-sm font-medium rounded-lg text-slate-600 hover:bg-slate-100 transition" id="btn-tab-encargos">Encargos Patronais</button>
+                </div>
+            </div>
+
+            <!-- Tab Content 1: Salário Bruto vs Líquido -->
+            <div id="tab-bruto-liquido" class="theory-content space-y-6">
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    <div class="bg-gradient-to-br from-blue-50 to-indigo-50 border border-blue-200 rounded-xl p-6 space-y-3">
+                        <div class="flex items-center gap-3">
+                            <div class="w-10 h-10 rounded-full bg-blue-600 text-white flex items-center justify-center font-bold">
+                                <i class="fa-solid fa-file-contract"></i>
+                            </div>
+                            <div>
+                                <h4 class="font-bold text-lg text-slate-900">Salário Bruto (Nominal)</h4>
+                                <span class="text-xs text-blue-700 font-semibold uppercase">Valor Contratual / CTPS</span>
+                            </div>
+                        </div>
+                        <p class="text-sm text-slate-600 leading-relaxed">
+                            É o valor total registrado na Carteira de Trabalho (CTPS) e formalizado no contrato de trabalho, sem qualquer dedução. Ele serve como a <strong>base de cálculo oficial</strong> para tributos (INSS, IRRF) e direitos (FGTS, 13º salário, férias).
+                        </p>
+                        <div class="bg-white/80 p-3 rounded-lg border border-blue-100 text-xs text-slate-700">
+                            <strong>Exemplo:</strong> João Silva assinou um contrato de R$ 2.200,00 mensais. Este é seu Salário Bruto.
+                        </div>
+                    </div>
+
+                    <div class="bg-gradient-to-br from-emerald-50 to-teal-50 border border-emerald-200 rounded-xl p-6 space-y-3">
+                        <div class="flex items-center gap-3">
+                            <div class="w-10 h-10 rounded-full bg-emerald-600 text-white flex items-center justify-center font-bold">
+                                <i class="fa-solid fa-wallet"></i>
+                            </div>
+                            <div>
+                                <h4 class="font-bold text-lg text-slate-900">Salário Líquido</h4>
+                                <span class="text-xs text-emerald-700 font-semibold uppercase">Valor Efetivamente Percebido</span>
+                            </div>
+                        </div>
+                        <p class="text-sm text-slate-600 leading-relaxed">
+                            É o montante final depositado na conta bancária do colaborador após somar todos os adicionais e proventos e subtrair os descontos autorizados e obrigatórios por lei.
+                        </p>
+                        <div class="bg-white/80 p-3 rounded-lg border border-emerald-100 text-xs text-slate-700">
+                            <strong>Fórmula Básica:</strong> <code class="bg-emerald-100 px-1 py-0.5 rounded text-emerald-800 font-mono">Salário Líquido = (Salário Base + Proventos) - (Descontos Legais)</code>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Visual Equation Graphic -->
+                <div class="bg-slate-900 text-white p-6 rounded-xl space-y-4">
+                    <h4 class="text-sm font-semibold uppercase tracking-wider text-blue-400 text-center">Estrutura de Formação do Pagamento</h4>
+                    <div class="grid grid-cols-1 sm:grid-cols-5 gap-3 text-center items-center">
+                        <div class="bg-slate-800 p-3 rounded-lg border border-slate-700">
+                            <span class="block text-xs text-slate-400">Salário Base</span>
+                            <span class="font-bold text-sm text-blue-300">R$ 2.200,00</span>
+                        </div>
+                        <div class="text-emerald-400 font-bold text-xl">+</div>
+                        <div class="bg-slate-800 p-3 rounded-lg border border-slate-700">
+                            <span class="block text-xs text-slate-400">Proventos (HE + DSR)</span>
+                            <span class="font-bold text-sm text-emerald-300">R$ 173,08</span>
+                        </div>
+                        <div class="text-rose-400 font-bold text-xl">-</div>
+                        <div class="bg-slate-800 p-3 rounded-lg border border-slate-700">
+                            <span class="block text-xs text-slate-400">Descontos (INSS + VT)</span>
+                            <span class="font-bold text-sm text-rose-300">R$ 345,58</span>
+                        </div>
+                    </div>
+                    <div class="text-center pt-2 border-t border-slate-800">
+                        <span class="text-xs text-slate-400">Resultado Líquido do João: </span>
+                        <strong class="text-lg text-emerald-400 ml-2">R$ 2.027,50</strong>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Tab Content 2: Proventos -->
+            <div id="tab-proventos" class="theory-content hidden space-y-4">
+                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+                    <div class="border border-slate-200 rounded-xl p-4 hover:border-blue-300 transition bg-slate-50/50 space-y-2">
+                        <div class="flex items-center gap-2 text-blue-600 font-bold text-base">
+                            <i class="fa-regular fa-clock"></i> Horas Extras (HE)
+                        </div>
+                        <p class="text-xs text-slate-600">
+                            Horas trabalhadas além da jornada contratual ordinária.
+                        </p>
+                        <ul class="text-xs text-slate-700 space-y-1 list-disc list-inside bg-white p-2.5 rounded border border-slate-200">
+                            <li><strong>Dias úteis / Sábados:</strong> Adicional mínimo de 50%.</li>
+                            <li><strong>Domingos e Feriados:</strong> Adicional de 100%.</li>
+                            <li><strong>Fórmula 50%:</strong> <code class="font-mono text-blue-700">(Valor Hora × 1,5) × Qtd Horas</code></li>
+                        </ul>
+                    </div>
+
+                    <div class="border border-slate-200 rounded-xl p-4 hover:border-blue-300 transition bg-slate-50/50 space-y-2">
+                        <div class="flex items-center gap-2 text-indigo-600 font-bold text-base">
+                            <i class="fa-solid fa-calendar-day"></i> DSR sobre Horas Extras
+                        </div>
+                        <p class="text-xs text-slate-600">
+                            Descanso Semanal Remunerado. Reflexo financeiro obrigatório do pagamento de horas extras sobre o dia de descanso.
+                        </p>
+                        <div class="bg-white p-2.5 rounded border border-slate-200 text-xs">
+                            <strong>Fórmula de Cálculo:</strong>
+                            <div class="font-mono text-indigo-700 mt-1 bg-indigo-50 p-1 rounded text-center">
+                                DSR = (Total de HE no Mês / Dias Úteis) × Domingos e Feriados
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="border border-slate-200 rounded-xl p-4 hover:border-blue-300 transition bg-slate-50/50 space-y-2">
+                        <div class="flex items-center gap-2 text-amber-600 font-bold text-base">
+                            <i class="fa-solid fa-biohazard"></i> Adicional de Insalubridade
+                        </div>
+                        <p class="text-xs text-slate-600">
+                            Pago a trabalhadores expostos a agentes nocivos à saúde (químicos, ruído, etc.), conforme laudo técnico (LTCAT).
+                        </p>
+                        <div class="bg-white p-2.5 rounded border border-slate-200 text-xs space-y-1">
+                            <span class="block font-semibold">Base de cálculo: Salário Mínimo Nacional</span>
+                            <div class="flex justify-between text-[11px] text-slate-600">
+                                <span>Mínimo: 10%</span>
+                                <span>Médio: 20%</span>
+                                <span>Máximo: 40%</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="border border-slate-200 rounded-xl p-4 hover:border-blue-300 transition bg-slate-50/50 space-y-2">
+                        <div class="flex items-center gap-2 text-rose-600 font-bold text-base">
+                            <i class="fa-solid fa-triangle-exclamation"></i> Adicional de Periculosidade
+                        </div>
+                        <p class="text-xs text-slate-600">
+                            Devido aos profissionais que atuam em atividades com risco iminente de morte (ex: eletricistas de alta tensão, vigilantes armados, inflamáveis).
+                        </p>
+                        <div class="bg-white p-2.5 rounded border border-slate-200 text-xs">
+                            <strong>Alíquota:</strong> 30% fixos calculados sobre o <strong>Salário Base</strong> do funcionário (não inclui prêmios ou gratificações).
+                        </div>
+                    </div>
+
+                    <div class="border border-slate-200 rounded-xl p-4 hover:border-blue-300 transition bg-slate-50/50 space-y-2 md:col-span-2 lg:col-span-2">
+                        <div class="flex items-center gap-2 text-emerald-600 font-bold text-base">
+                            <i class="fa-solid fa-lightbulb"></i> Regra Geral de Proventos
+                        </div>
+                        <p class="text-xs text-slate-600">
+                            Todos os proventos pagos com habitualidade (como horas extras frequentes e adicionais de insalubridade/periculosidade) entram na base de cálculo de férias, 13º salário, INSS, IRRF e FGTS!
+                        </p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Tab Content 3: Descontos -->
+            <div id="tab-descontos" class="theory-content hidden space-y-6">
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+                    <!-- INSS -->
+                    <div class="bg-slate-50 border border-slate-200 rounded-xl p-5 space-y-3">
+                        <div class="flex items-center justify-between">
+                            <h4 class="font-bold text-slate-900">INSS (Previdência Social)</h4>
+                            <span class="bg-blue-100 text-blue-800 text-xs font-bold px-2 py-0.5 rounded">Obrigatório</span>
+                        </div>
+                        <p class="text-xs text-slate-600 leading-relaxed">
+                            Contribuição previdenciária descontada mensalmente dos empregados. Garante aposentadoria, auxílio-doença, salário-maternidade e pensão por morte.
+                        </p>
+                        <div class="bg-amber-50 border border-amber-200 p-2.5 rounded text-xs text-amber-900">
+                            <strong>Nota pedagógica:</strong> No exercício simplificado do Prof. Luiz, utilizamos uma alíquota média de <strong>9%</strong> para facilitar os cálculos manuais em sala.
+                        </div>
+                    </div>
+
+                    <!-- IRRF -->
+                    <div class="bg-slate-50 border border-slate-200 rounded-xl p-5 space-y-3">
+                        <div class="flex items-center justify-between">
+                            <h4 class="font-bold text-slate-900">IRRF (Imposto de Renda)</h4>
+                            <span class="bg-blue-100 text-blue-800 text-xs font-bold px-2 py-0.5 rounded">Federal</span>
+                        </div>
+                        <p class="text-xs text-slate-600 leading-relaxed">
+                            Imposto retido na fonte incidente sobre rendimentos. Sua base de cálculo é ajustada subtraindo o valor do INSS descontado e o valor legal por dependente (R$ 189,59 por dependente).
+                        </p>
+                        <div class="bg-white p-2.5 rounded border border-slate-200 font-mono text-[11px] text-slate-700">
+                            Base IRRF = Proventos - INSS - (Depend. × 189,59)
+                        </div>
+                    </div>
+
+                    <!-- Vale Transport -->
+                    <div class="bg-slate-50 border border-slate-200 rounded-xl p-5 space-y-3">
+                        <div class="flex items-center justify-between">
+                            <h4 class="font-bold text-slate-900">Vale-Transporte (VT)</h4>
+                            <span class="bg-emerald-100 text-emerald-800 text-xs font-bold px-2 py-0.5 rounded">Teto Legal 6%</span>
+                        </div>
+                        <p class="text-xs text-slate-600 leading-relaxed">
+                            Benefício para deslocamento residência-trabalho. O desconto em folha é limitado por lei a no máximo <strong>6% do Salário Base</strong>. A empresa arca com o excedente!
+                        </p>
+                        <div class="bg-rose-50 border border-rose-200 p-2.5 rounded text-xs text-rose-900">
+                            <strong>Atenção:</strong> O VT incide apenas sobre o Salário Base, <u>NUNCA</u> sobre horas extras ou adicionais.
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Tab Content 4: Encargos Patronais -->
+            <div id="tab-encargos" class="theory-content hidden space-y-6">
+                <div class="bg-gradient-to-r from-blue-900 via-indigo-900 to-slate-900 text-white rounded-xl p-6 shadow-md relative overflow-hidden">
+                    <div class="flex flex-col md:flex-row items-start md:items-center justify-between gap-6 relative z-10">
+                        <div class="space-y-2 max-w-2xl">
+                            <div class="inline-block bg-amber-400 text-slate-950 font-extrabold text-xs px-2.5 py-1 rounded">
+                                REGRA DE OURO TRABALHISTA
+                            </div>
+                            <h4 class="text-xl font-bold">FGTS (8%) é Encargo Patronal Exclusivo!</h4>
+                            <p class="text-xs sm:text-sm text-slate-300 leading-relaxed">
+                                O Fundo de Garantia do Tempo de Serviço (FGTS) é um depósito bancário compulsório que o <strong>empregador deve realizar</strong> até o dia 20 do mês subsequente (via FGTS Digital). Ele é calculado aplicadamente em 8% sobre a soma dos proventos (salário + horas extras + adicionais).
+                            </p>
+                        </div>
+                        <div class="bg-rose-500/20 border-2 border-rose-400 p-4 rounded-xl text-center min-w-[220px]">
+                            <i class="fa-solid fa-ban text-rose-400 text-3xl mb-1"></i>
+                            <span class="block text-xs uppercase font-bold text-rose-300">NUNCA DESCONTAR</span>
+                            <span class="text-xs text-slate-200">Jamais subtraia o FGTS do salário líquido do colaborador!</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 text-xs">
+                    <div class="border border-slate-200 p-4 rounded-xl bg-slate-50 space-y-2">
+                        <span class="font-bold text-slate-900 text-sm block">INSS Patronal (Cota da Empresa)</span>
+                        <p class="text-slate-600">Empresas do regime Lucro Presumido/Real recolhem 20% sobre o total da folha de pagamento bruta a título de contribuição patronal direta.</p>
+                    </div>
+                    <div class="border border-slate-200 p-4 rounded-xl bg-slate-50 space-y-2">
+                        <span class="font-bold text-slate-900 text-sm block">RAT + Terceiros (Sistema S)</span>
+                        <p class="text-slate-600">Adicional de 1% a 3% relativo aos Riscos Ambientais do Trabalho (RAT) somado às contribuições a entidades terceiras (SESI, SENAI, SESC, SENAC, INCRA).</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- SECTION 2: TABELA DE INCIDÊNCIAS INTERATIVA -->
+        <section id="incidencias" class="bg-white rounded-2xl p-6 sm:p-8 shadow-sm border border-slate-200">
+            <div class="flex flex-col sm:flex-row sm:items-center justify-between mb-6 gap-4">
+                <div>
+                    <span class="text-xs font-extrabold tracking-wider text-blue-600 uppercase">Consulta Rápida</span>
+                    <h3 class="text-2xl font-bold text-slate-900">Tabela Sintética de Incidências Tributárias</h3>
+                    <p class="text-sm text-slate-500">Verifique se cada verba trabalhista sofre retenção de INSS, IRRF ou FGTS</p>
+                </div>
+                <div class="relative max-w-xs w-full">
+                    <i class="fa-solid fa-magnifying-glass absolute left-3 top-3 text-slate-400 text-xs"></i>
+                    <input type="text" id="table-search" onkeyup="filterIncidenceTable()" placeholder="Buscar verba..." class="w-full pl-9 pr-3 py-2 text-xs border border-slate-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500">
+                </div>
+            </div>
+
+            <div class="overflow-x-auto custom-scrollbar border border-slate-200 rounded-xl">
+                <table class="w-full text-left text-xs text-slate-700" id="incidence-table">
+                    <thead class="bg-slate-900 text-white uppercase text-[11px] tracking-wider">
+                        <tr>
+                            <th class="py-3.5 px-4 font-semibold">Verba / Rubrica Trabalhista</th>
+                            <th class="py-3.5 px-4 font-semibold text-center">Incide INSS?</th>
+                            <th class="py-3.5 px-4 font-semibold text-center">Incide FGTS?</th>
+                            <th class="py-3.5 px-4 font-semibold text-center">Incide IRRF?</th>
+                            <th class="py-3.5 px-4 font-semibold">Fundamento / Observação Legal</th>
+                        </tr>
+                    </thead>
+                    <tbody class="divide-y divide-slate-200 bg-white">
+                        <tr class="hover:bg-slate-50 transition">
+                            <td class="py-3 px-4 font-bold text-slate-900">Salário Base Mensal</td>
+                            <td class="text-center py-3"><span class="bg-emerald-100 text-emerald-800 font-bold px-2 py-0.5 rounded">SIM</span></td>
+                            <td class="text-center py-3"><span class="bg-emerald-100 text-emerald-800 font-bold px-2 py-0.5 rounded">SIM</span></td>
+                            <td class="text-center py-3"><span class="bg-emerald-100 text-emerald-800 font-bold px-2 py-0.5 rounded">SIM</span></td>
+                            <td class="py-3 px-4 text-slate-500">Remuneração principal contratual.</td>
+                        </tr>
+                        <tr class="hover:bg-slate-50 transition">
+                            <td class="py-3 px-4 font-bold text-slate-900">Horas Extras & DSR</td>
+                            <td class="text-center py-3"><span class="bg-emerald-100 text-emerald-800 font-bold px-2 py-0.5 rounded">SIM</span></td>
+                            <td class="text-center py-3"><span class="bg-emerald-100 text-emerald-800 font-bold px-2 py-0.5 rounded">SIM</span></td>
+                            <td class="text-center py-3"><span class="bg-emerald-100 text-emerald-800 font-bold px-2 py-0.5 rounded">SIM</span></td>
+                            <td class="py-3 px-4 text-slate-500">Natureza remuneratória habitual.</td>
+                        </tr>
+                        <tr class="hover:bg-slate-50 transition">
+                            <td class="py-3 px-4 font-bold text-slate-900">Adicional de Insalubridade / Periculosidade</td>
+                            <td class="text-center py-3"><span class="bg-emerald-100 text-emerald-800 font-bold px-2 py-0.5 rounded">SIM</span></td>
+                            <td class="text-center py-3"><span class="bg-emerald-100 text-emerald-800 font-bold px-2 py-0.5 rounded">SIM</span></td>
+                            <td class="text-center py-3"><span class="bg-emerald-100 text-emerald-800 font-bold px-2 py-0.5 rounded">SIM</span></td>
+                            <td class="py-3 px-4 text-slate-500">Integra o salário para todos os efeitos fiscais.</td>
+                        </tr>
+                        <tr class="hover:bg-slate-50 transition bg-slate-50/50">
+                            <td class="py-3 px-4 font-bold text-slate-900">Vale-Transporte (Desconto 6%)</td>
+                            <td class="text-center py-3"><span class="bg-rose-100 text-rose-800 font-bold px-2 py-0.5 rounded">NÃO</span></td>
+                            <td class="text-center py-3"><span class="bg-rose-100 text-rose-800 font-bold px-2 py-0.5 rounded">NÃO</span></td>
+                            <td class="text-center py-3"><span class="bg-rose-100 text-rose-800 font-bold px-2 py-0.5 rounded">NÃO</span></td>
+                            <td class="py-3 px-4 text-slate-500">Benefício indenizatório estrito para deslocamento.</td>
+                        </tr>
+                        <tr class="hover:bg-slate-50 transition bg-slate-50/50">
+                            <td class="py-3 px-4 font-bold text-slate-900">Vale-Refeição / Alimentação (PAT)</td>
+                            <td class="text-center py-3"><span class="bg-rose-100 text-rose-800 font-bold px-2 py-0.5 rounded">NÃO</span></td>
+                            <td class="text-center py-3"><span class="bg-rose-100 text-rose-800 font-bold px-2 py-0.5 rounded">NÃO</span></td>
+                            <td class="text-center py-3"><span class="bg-rose-100 text-rose-800 font-bold px-2 py-0.5 rounded">NÃO</span></td>
+                            <td class="py-3 px-4 text-slate-500">Se concedido conforme regras do PAT (não pago em dinheiro).</td>
+                        </tr>
+                        <tr class="hover:bg-slate-50 transition">
+                            <td class="py-3 px-4 font-bold text-slate-900">13º Salário (Gratificação Natalina)</td>
+                            <td class="text-center py-3"><span class="bg-emerald-100 text-emerald-800 font-bold px-2 py-0.5 rounded">SIM</span></td>
+                            <td class="text-center py-3"><span class="bg-emerald-100 text-emerald-800 font-bold px-2 py-0.5 rounded">SIM</span></td>
+                            <td class="text-center py-3"><span class="bg-emerald-100 text-emerald-800 font-bold px-2 py-0.5 rounded">SIM</span></td>
+                            <td class="py-3 px-4 text-slate-500">Tributação exclusiva na 2ª parcela (Dezembro).</td>
+                        </tr>
+                        <tr class="hover:bg-slate-50 transition bg-slate-50/50">
+                            <td class="py-3 px-4 font-bold text-slate-900">Aviso Prévio Indenizado</td>
+                            <td class="text-center py-3"><span class="bg-rose-100 text-rose-800 font-bold px-2 py-0.5 rounded">NÃO</span></td>
+                            <td class="text-center py-3"><span class="bg-emerald-100 text-emerald-800 font-bold px-2 py-0.5 rounded">SIM</span></td>
+                            <td class="text-center py-3"><span class="bg-rose-100 text-rose-800 font-bold px-2 py-0.5 rounded">NÃO</span></td>
+                            <td class="py-3 px-4 text-slate-500">Natureza indenizatória (isento de INSS e IRRF).</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </section>
+
+        <!-- SECTION 3: ROTEIRO PRÁTICO EM LABORATÓRIO (EXCEL / SHEETS) -->
+        <section id="laboratorio" class="bg-white rounded-2xl p-6 sm:p-8 shadow-sm border border-slate-200">
+            <div class="mb-6 pb-4 border-b border-slate-100">
+                <span class="text-xs font-extrabold tracking-wider text-blue-600 uppercase">Unidade 2</span>
+                <h3 class="text-2xl font-bold text-slate-900">Roteiro do Laboratório de Informática (Excel / Sheets)</h3>
+                <p class="text-sm text-slate-500">Acompanhe passo a passo a montagem da folha do colaborador fictício <strong>João Silva</strong></p>
+            </div>
+
+            <!-- Colaborador Fictício Summary Card -->
+            <div class="bg-blue-900 text-white rounded-xl p-5 mb-8 flex flex-col md:flex-row items-center justify-between gap-4">
+                <div class="flex items-center gap-4">
+                    <div class="w-12 h-12 rounded-full bg-blue-600 flex items-center justify-center font-bold text-xl">
+                        JS
+                    </div>
+                    <div>
+                        <h4 class="font-bold text-lg">João Silva &bull; Assistente de Operações</h4>
+                        <p class="text-xs text-blue-200">Dados do Exercício: Salário Base R$ 2.200,00 | 220h mensais | 10h Extras (50%) | Opta por VT</p>
+                    </div>
+                </div>
+                <button onclick="fillSimulatorWithJoão()" class="bg-amber-400 hover:bg-amber-300 text-slate-950 font-bold text-xs px-4 py-2.5 rounded-lg transition flex items-center gap-2 whitespace-nowrap shadow-md">
+                    <i class="fa-solid fa-bolt"></i> Carregar Dados no Simulador
+                </button>
+            </div>
+
+            <!-- Interactive Grid of Step-by-Step Blocks -->
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                <!-- Bloco 1 -->
+                <div class="border border-slate-200 rounded-xl p-5 bg-slate-50 hover:bg-white hover:shadow-md transition space-y-3">
+                    <div class="flex items-center justify-between border-b border-slate-200 pb-2">
+                        <span class="font-bold text-xs text-blue-600 uppercase">Bloco 1 &bull; Cadastro & Hora</span>
+                        <span class="text-xs bg-slate-200 text-slate-700 font-mono px-2 py-0.5 rounded">Células B2:B4</span>
+                    </div>
+                    <ul class="text-xs space-y-2 text-slate-700">
+                        <li><strong>B2:</strong> Salário Base <span class="font-mono text-blue-700">2200</span></li>
+                        <li><strong>B3:</strong> Carga Horária <span class="font-mono text-blue-700">220</span></li>
+                        <li><strong>B4:</strong> Valor da Hora Trabalhada</li>
+                    </ul>
+                    <div class="bg-slate-900 text-emerald-400 p-2.5 rounded font-mono text-xs flex justify-between items-center">
+                        <span>Fórmula: =B2/B3</span>
+                        <button onclick="copyToClipboard('=B2/B3')" title="Copiar fórmula" class="text-slate-400 hover:text-white"><i class="fa-regular fa-copy"></i></button>
+                    </div>
+                    <span class="text-[11px] text-slate-500 block">Resultado: R$ 10,00 / hora</span>
+                </div>
+
+                <!-- Bloco 2 -->
+                <div class="border border-slate-200 rounded-xl p-5 bg-slate-50 hover:bg-white hover:shadow-md transition space-y-3">
+                    <div class="flex items-center justify-between border-b border-slate-200 pb-2">
+                        <span class="font-bold text-xs text-blue-600 uppercase">Bloco 2 &bull; Proventos</span>
+                        <span class="text-xs bg-slate-200 text-slate-700 font-mono px-2 py-0.5 rounded">Células C7:C10</span>
+                    </div>
+                    <ul class="text-xs space-y-1.5 text-slate-700">
+                        <li><strong>C7 (Salário Base):</strong> <code class="font-mono text-blue-700">=B2</code> (R$ 2.200,00)</li>
+                        <li><strong>C8 (Hora Extra 50%):</strong> <code class="font-mono text-blue-700">=(B4*1,5)*10</code> (R$ 150,00)</li>
+                        <li><strong>C9 (DSR sobre HE):</strong> <code class="font-mono text-blue-700">=C8/26*4</code> (R$ 23,08)</li>
+                    </ul>
+                    <div class="bg-slate-900 text-emerald-400 p-2.5 rounded font-mono text-xs flex justify-between items-center">
+                        <span>Total C10: =SOMA(C7:C9)</span>
+                        <button onclick="copyToClipboard('=SOMA(C7:C9)')" title="Copiar fórmula" class="text-slate-400 hover:text-white"><i class="fa-regular fa-copy"></i></button>
+                    </div>
+                    <span class="text-[11px] text-slate-500 block">Total Proventos: R$ 2.373,08</span>
+                </div>
+
+                <!-- Bloco 3 -->
+                <div class="border border-slate-200 rounded-xl p-5 bg-slate-50 hover:bg-white hover:shadow-md transition space-y-3">
+                    <div class="flex items-center justify-between border-b border-slate-200 pb-2">
+                        <span class="font-bold text-xs text-rose-600 uppercase">Bloco 3 &bull; Descontos</span>
+                        <span class="text-xs bg-slate-200 text-slate-700 font-mono px-2 py-0.5 rounded">Células F7:F9</span>
+                    </div>
+                    <ul class="text-xs space-y-1.5 text-slate-700">
+                        <li><strong>F7 (Vale-Transporte 6%):</strong> <code class="font-mono text-blue-700">=B2*0,06</code> (R$ 132,00)</li>
+                        <li><strong>F8 (INSS 9% simplificado):</strong> <code class="font-mono text-blue-700">=C10*0,09</code> (R$ 213,58)</li>
+                    </ul>
+                    <div class="bg-slate-900 text-rose-300 p-2.5 rounded font-mono text-xs flex justify-between items-center">
+                        <span>Total F9: =SOMA(F7:F8)</span>
+                        <button onclick="copyToClipboard('=SOMA(F7:F8)')" title="Copiar fórmula" class="text-slate-400 hover:text-white"><i class="fa-regular fa-copy"></i></button>
+                    </div>
+                    <span class="text-[11px] text-slate-500 block">Total Descontos: R$ 345,58</span>
+                </div>
+
+                <!-- Bloco 4 -->
+                <div class="border border-slate-200 rounded-xl p-5 bg-slate-50 hover:bg-white hover:shadow-md transition space-y-3">
+                    <div class="flex items-center justify-between border-b border-slate-200 pb-2">
+                        <span class="font-bold text-xs text-emerald-600 uppercase">Bloco 4 &bull; Salário Líquido</span>
+                        <span class="text-xs bg-slate-200 text-slate-700 font-mono px-2 py-0.5 rounded">Célula C13</span>
+                    </div>
+                    <p class="text-xs text-slate-600">Subtração simples do total de vencimentos pelo total de deduções.</p>
+                    <div class="bg-slate-900 text-emerald-400 p-2.5 rounded font-mono text-xs flex justify-between items-center">
+                        <span>Fórmula C13: =C10-F9</span>
+                        <button onclick="copyToClipboard('=C10-F9')" title="Copiar fórmula" class="text-slate-400 hover:text-white"><i class="fa-regular fa-copy"></i></button>
+                    </div>
+                    <span class="text-xs font-bold text-emerald-700 block">Resultado Final: R$ 2.027,50</span>
+                </div>
+
+                <!-- Bloco 5 -->
+                <div class="border border-slate-200 rounded-xl p-5 bg-slate-50 hover:bg-white hover:shadow-md transition space-y-3 md:col-span-2 lg:col-span-2">
+                    <div class="flex items-center justify-between border-b border-slate-200 pb-2">
+                        <span class="font-bold text-xs text-amber-600 uppercase">Bloco 5 &bull; Encargos Patronais (Fora do Holerite)</span>
+                        <span class="text-xs bg-slate-200 text-slate-700 font-mono px-2 py-0.5 rounded">Célula C16</span>
+                    </div>
+                    <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                        <div class="space-y-2">
+                            <span class="text-xs text-slate-700 font-semibold block">Recolhimento FGTS (8%):</span>
+                            <div class="bg-slate-900 text-amber-300 p-2.5 rounded font-mono text-xs flex justify-between items-center">
+                                <span>Fórmula: =C10*0,08</span>
+                                <button onclick="copyToClipboard('=C10*0,08')" title="Copiar fórmula" class="text-slate-400 hover:text-white"><i class="fa-regular fa-copy"></i></button>
+                            </div>
+                            <span class="text-xs text-slate-500 block">Valor a depositar: R$ 189,85</span>
+                        </div>
+                        <div class="bg-amber-50 border border-amber-200 p-3 rounded-lg text-xs text-amber-900 space-y-1">
+                            <strong>Dica do Professor Brandes:</strong>
+                            <p>Reforce sempre com seus colegas: Este valor de R$ 189,85 sai do caixa da empresa e vai direto para a conta vinculada do FGTS do colaborador na Caixa Econômica. Ele <strong>não entra e não sai</strong> do contracheque do trabalhador!</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- SECTION 4: SIMULADOR INTERATIVO DE HOLERITE -->
+        <section id="simulador" class="bg-white rounded-2xl p-6 sm:p-8 shadow-sm border border-slate-200">
+            <div class="flex flex-col md:flex-row md:items-center justify-between mb-6 pb-4 border-b border-slate-100 gap-4">
+                <div>
+                    <span class="text-xs font-extrabold tracking-wider text-blue-600 uppercase">Ferramenta Prática</span>
+                    <h3 class="text-2xl font-bold text-slate-900">Simulador de Folha de Pagamento & Holerite</h3>
+                    <p class="text-sm text-slate-500">Calcule instantaneamente proventos, descontos, salário líquido e encargos da empresa</p>
+                </div>
+
+                <!-- Calculation Mode Selector -->
+                <div class="flex items-center bg-slate-100 p-1 rounded-xl border border-slate-200 text-xs font-semibold">
+                    <button id="mode-school" onclick="setCalcMode('school')" class="px-3 py-1.5 rounded-lg bg-white text-blue-700 shadow-sm transition">
+                        <i class="fa-solid fa-graduation-cap mr-1"></i> Modo Exercício (INSS 9%)
+                    </button>
+                    <button id="mode-real" onclick="setCalcMode('real')" class="px-3 py-1.5 rounded-lg text-slate-600 hover:text-slate-900 transition">
+                        <i class="fa-solid fa-briefcase mr-1"></i> Modo Real (Tabela Progressiva)
+                    </button>
+                </div>
+            </div>
+
+            <div class="grid grid-cols-1 lg:grid-cols-12 gap-8">
+                <!-- Form Inputs (5 cols) -->
+                <div class="lg:col-span-5 bg-slate-50 p-6 rounded-xl border border-slate-200 space-y-4">
+                    <h4 class="font-bold text-sm text-slate-900 flex items-center gap-2 border-b border-slate-200 pb-2">
+                        <i class="fa-solid fa-sliders text-blue-600"></i> Parâmetros de Entrada
+                    </h4>
+
+                    <!-- Input Fields -->
+                    <div class="space-y-3 text-xs">
+                        <div>
+                            <label class="font-semibold text-slate-700 block mb-1">Nome do Colaborador</label>
+                            <input type="text" id="sim-nome" value="João Silva" class="w-full px-3 py-2 border border-slate-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:outline-none">
+                        </div>
+
+                        <div>
+                            <label class="font-semibold text-slate-700 block mb-1">Cargo</label>
+                            <input type="text" id="sim-cargo" value="Assistente de Operações" class="w-full px-3 py-2 border border-slate-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:outline-none">
+                        </div>
+
+                        <div class="grid grid-cols-2 gap-3">
+                            <div>
+                                <label class="font-semibold text-slate-700 block mb-1">Salário Base (R$)</label>
+                                <input type="number" id="sim-salario" value="2200" step="50" class="w-full px-3 py-2 border border-slate-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:outline-none font-semibold text-slate-900">
+                            </div>
+                            <div>
+                                <label class="font-semibold text-slate-700 block mb-1">Jornada Mensal (Horas)</label>
+                                <input type="number" id="sim-jornada" value="220" class="w-full px-3 py-2 border border-slate-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:outline-none">
+                            </div>
+                        </div>
+
+                        <div class="grid grid-cols-2 gap-3">
+                            <div>
+                                <label class="font-semibold text-slate-700 block mb-1">Horas Extras 50% (Qtd)</label>
+                                <input type="number" id="sim-he50" value="10" step="1" class="w-full px-3 py-2 border border-slate-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:outline-none">
+                            </div>
+                            <div>
+                                <label class="font-semibold text-slate-700 block mb-1">Horas Extras 100% (Qtd)</label>
+                                <input type="number" id="sim-he100" value="0" step="1" class="w-full px-3 py-2 border border-slate-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:outline-none">
+                            </div>
+                        </div>
+
+                        <div class="grid grid-cols-2 gap-3">
+                            <div>
+                                <label class="font-semibold text-slate-700 block mb-1">Dias Úteis no Mês</label>
+                                <input type="number" id="sim-dias-uteis" value="26" class="w-full px-3 py-2 border border-slate-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:outline-none">
+                            </div>
+                            <div>
+                                <label class="font-semibold text-slate-700 block mb-1">Domingos / Feriados</label>
+                                <input type="number" id="sim-domingos" value="4" class="w-full px-3 py-2 border border-slate-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:outline-none">
+                            </div>
+                        </div>
+
+                        <div>
+                            <label class="font-semibold text-slate-700 block mb-1">Opta por Vale-Transporte?</label>
+                            <select id="sim-vt-opt" class="w-full px-3 py-2 border border-slate-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:outline-none bg-white">
+                                <option value="sim" selected>Sim (Desconto legal de até 6%)</option>
+                                <option value="nao">Não (Não utiliza transporte coletivo)</option>
+                            </select>
+                        </div>
+
+                        <div class="grid grid-cols-2 gap-3">
+                            <div>
+                                <label class="font-semibold text-slate-700 block mb-1">Insalubridade</label>
+                                <select id="sim-insalubridade" class="w-full px-3 py-2 border border-slate-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:outline-none bg-white">
+                                    <option value="0">Não (0%)</option>
+                                    <option value="10">Grau Mínimo (10% SM)</option>
+                                    <option value="20">Grau Médio (20% SM)</option>
+                                    <option value="40">Grau Máximo (40% SM)</option>
+                                </select>
+                            </div>
+                            <div>
+                                <label class="font-semibold text-slate-700 block mb-1">Periculosidade</label>
+                                <select id="sim-periculosidade" class="w-full px-3 py-2 border border-slate-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:outline-none bg-white">
+                                    <option value="0">Não (0%)</option>
+                                    <option value="30">Sim (30% Salário Base)</option>
+                                </select>
+                            </div>
+                        </div>
+
+                        <div>
+                            <label class="font-semibold text-slate-700 block mb-1">Número de Dependentes (para IRRF)</label>
+                            <input type="number" id="sim-dependentes" value="0" min="0" class="w-full px-3 py-2 border border-slate-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:outline-none">
+                        </div>
+                    </div>
+
+                    <div class="pt-2">
+                        <button onclick="calculatePayroll()" class="w-full bg-blue-600 hover:bg-blue-700 text-white font-bold py-3 px-4 rounded-xl transition shadow-lg shadow-blue-600/30 flex items-center justify-center gap-2 text-sm">
+                            <i class="fa-solid fa-calculator"></i> Calcular Holerite Completo
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Display Holerite Output (7 cols) -->
+                <div class="lg:col-span-7 space-y-6">
+                    <div id="printable-holerite" class="bg-white border-2 border-slate-800 rounded-xl p-6 shadow-xl space-y-4">
+                        <!-- Holerite Header -->
+                        <div class="border-b-2 border-slate-800 pb-3 flex justify-between items-start">
+                            <div>
+                                <h4 class="font-extrabold text-slate-900 text-base uppercase tracking-wider">EMPRESA FICTÍCIA DEMO LTDA.</h4>
+                                <span class="text-xs text-slate-600">CNPJ: 00.123.456/0001-89 &bull; Canoinhas / SC</span>
+                            </div>
+                            <div class="text-right">
+                                <span class="font-bold text-xs bg-slate-900 text-white px-3 py-1 rounded uppercase">Recibo de Pagamento</span>
+                                <span class="block text-[11px] text-slate-500 mt-1">Competência: Mensal</span>
+                            </div>
+                        </div>
+
+                        <!-- Employee Info Table Header -->
+                        <div class="grid grid-cols-1 sm:grid-cols-3 gap-2 text-xs bg-slate-100 p-2.5 rounded-lg border border-slate-300">
+                            <div><strong>Nome:</strong> <span id="res-nome">João Silva</span></div>
+                            <div><strong>Cargo:</strong> <span id="res-cargo">Assistente de Operações</span></div>
+                            <div><strong>Carga Horária:</strong> <span id="res-jornada">220h</span> (R$ <span id="res-valor-hora">10,00</span>/h)</div>
+                        </div>
+
+                        <!-- Payroll Items Table -->
+                        <div class="overflow-x-auto">
+                            <table class="w-full text-left text-xs">
+                                <thead>
+                                    <tr class="border-b-2 border-slate-800 text-slate-800 uppercase font-bold text-[11px]">
+                                        <th class="py-2 px-2">Cód.</th>
+                                        <th class="py-2 px-2">Descrição da Rubrica</th>
+                                        <th class="py-2 px-2 text-right">Proventos (R$)</th>
+                                        <th class="py-2 px-2 text-right">Descontos (R$)</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="holerite-items" class="divide-y divide-slate-200">
+                                    <!-- Dynamic rows via JavaScript -->
+                                </tbody>
+                            </table>
+                        </div>
+
+                        <!-- Totals Section -->
+                        <div class="border-t-2 border-slate-800 pt-3 grid grid-cols-3 gap-2 text-center text-xs font-bold">
+                            <div class="bg-emerald-50 border border-emerald-200 p-2 rounded-lg">
+                                <span class="block text-[10px] uppercase text-emerald-800">Total Proventos</span>
+                                <span id="res-total-proventos" class="text-emerald-700 text-sm font-extrabold">R$ 2.373,08</span>
+                            </div>
+                            <div class="bg-rose-50 border border-rose-200 p-2 rounded-lg">
+                                <span class="block text-[10px] uppercase text-rose-800">Total Descontos</span>
+                                <span id="res-total-descontos" class="text-rose-700 text-sm font-extrabold">R$ 345,58</span>
+                            </div>
+                            <div class="bg-blue-600 text-white p-2 rounded-lg shadow">
+                                <span class="block text-[10px] uppercase text-blue-100">Valor Líquido a Receber</span>
+                                <span id="res-salario-liquido" class="text-white text-base font-extrabold">R$ 2.027,50</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Employer Liability Cards (Highlighted Outside Holerite) -->
+                    <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                        <div class="bg-blue-900 text-white p-5 rounded-xl border border-blue-800 space-y-2 shadow-md">
+                            <div class="flex items-center justify-between">
+                                <span class="text-xs uppercase font-bold text-blue-300 tracking-wider">FGTS a Recolher (Empresa)</span>
+                                <i class="fa-solid fa-piggy-bank text-amber-400 text-lg"></i>
+                            </div>
+                            <div class="text-2xl font-extrabold text-amber-400" id="res-fgts-valor">R$ 189,85</div>
+                            <p class="text-[11px] text-blue-200 leading-snug">
+                                Calculado em 8% sobre o Total de Proventos (<span id="res-fgts-base">R$ 2.373,08</span>). <strong>Encargo 100% patronal.</strong>
+                            </p>
+                        </div>
+
+                        <div class="bg-slate-800 text-white p-5 rounded-xl border border-slate-700 space-y-2 shadow-md">
+                            <div class="flex items-center justify-between">
+                                <span class="text-xs uppercase font-bold text-slate-400 tracking-wider">Estimativa INSS Patronal (20%)</span>
+                                <i class="fa-solid fa-building-columns text-blue-400 text-lg"></i>
+                            </div>
+                            <div class="text-2xl font-extrabold text-blue-300" id="res-inss-patronal">R$ 474,62</div>
+                            <p class="text-[11px] text-slate-300 leading-snug">
+                                Valor recolhido pela empresa para a Seguridade Social (sem considerar RAT/Terceiros).
+                            </p>
+                        </div>
+                    </div>
+
+                    <!-- Print / Download Button -->
+                    <div class="flex justify-end gap-3">
+                        <button onclick="window.print()" class="bg-slate-800 hover:bg-slate-700 text-white text-xs font-bold px-4 py-2.5 rounded-lg transition flex items-center gap-2">
+                            <i class="fa-solid fa-print"></i> Imprimir / Salvar Holerite PDF
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- SECTION 5: ATIVIDADE PRÁTICA: DETETIVE DO DP -->
+        <section id="detetive" class="bg-gradient-to-br from-slate-900 via-slate-800 to-indigo-950 text-white rounded-2xl p-6 sm:p-8 shadow-xl relative overflow-hidden">
+            <div class="max-w-4xl mx-auto space-y-8 relative z-10">
+                <div class="text-center space-y-3">
+                    <div class="inline-flex items-center gap-2 bg-amber-400 text-slate-950 font-extrabold text-xs px-3 py-1 rounded-full uppercase tracking-wider">
+                        <i class="fa-solid fa-user-ninja"></i> Atividade Interativa de Fixação
+                    </div>
+                    <h3 class="text-3xl font-extrabold tracking-tight">"Auditoria do DP — O Detetive Trabalhista"</h3>
+                    <p class="text-slate-300 text-sm max-w-2xl mx-auto">
+                        A empresa fictícia <strong>"Empresa Erro Zero Ltda."</strong> emitiu o holerite abaixo para o colaborador Carlos. Sua missão como auditor é encontrar as <strong>3 falhas graves</strong> e notificar a empresa!
+                    </p>
+                </div>
+
+                <!-- Case Holerite with Errors -->
+                <div class="bg-white text-slate-900 rounded-xl p-5 shadow-2xl border-2 border-amber-400 space-y-4">
+                    <div class="flex justify-between items-center border-b pb-2 text-xs font-bold">
+                        <span class="text-rose-700 uppercase"><i class="fa-solid fa-bug"></i> Holerite Notificado para Auditoria</span>
+                        <span class="text-slate-500">Colaborador: Carlos (Salário Base: R$ 2.000,00 | HE Realizadas: R$ 200,00)</span>
+                    </div>
+
+                    <div class="overflow-x-auto">
+                        <table class="w-full text-left text-xs">
+                            <thead class="bg-slate-100 text-slate-700 uppercase">
+                                <tr>
+                                    <th class="py-2 px-3">Código</th>
+                                    <th class="py-2 px-3">Descrição da Rubrica</th>
+                                    <th class="py-2 px-3 text-right">Proventos (R$)</th>
+                                    <th class="py-2 px-3 text-right">Descontos (R$)</th>
+                                </tr>
+                            </thead>
+                            <tbody class="divide-y divide-slate-200">
+                                <tr>
+                                    <td class="py-2 px-3 font-mono">001</td>
+                                    <td class="py-2 px-3 font-semibold">Salário Base</td>
+                                    <td class="py-2 px-3 text-right">R$ 2.000,00</td>
+                                    <td class="py-2 px-3 text-right">-</td>
+                                </tr>
+                                <tr>
+                                    <td class="py-2 px-3 font-mono">002</td>
+                                    <td class="py-2 px-3 font-semibold">Horas Extras (50%)</td>
+                                    <td class="py-2 px-3 text-right">R$ 200,00</td>
+                                    <td class="py-2 px-3 text-right">-</td>
+                                </tr>
+                                <tr class="bg-rose-50/70">
+                                    <td class="py-2 px-3 font-mono text-rose-700 font-bold">003</td>
+                                    <td class="py-2 px-3 font-bold text-rose-800">Desconto de FGTS (8%)</td>
+                                    <td class="py-2 px-3 text-right">-</td>
+                                    <td class="py-2 px-3 text-right font-bold text-rose-700">R$ 176,00</td>
+                                </tr>
+                                <tr class="bg-rose-50/70">
+                                    <td class="py-2 px-3 font-mono text-rose-700 font-bold">004</td>
+                                    <td class="py-2 px-3 font-bold text-rose-800">Desconto de Vale-Transporte</td>
+                                    <td class="py-2 px-3 text-right">-</td>
+                                    <td class="py-2 px-3 text-right font-bold text-rose-700">R$ 200,00</td>
+                                </tr>
+                                <tr class="bg-slate-900 text-white font-bold">
+                                    <td colspan="2" class="py-2 px-3">TOTAL DA FOLHA</td>
+                                    <td class="py-2 px-3 text-right text-emerald-400">R$ 2.200,00</td>
+                                    <td class="py-2 px-3 text-right text-rose-400">R$ 376,00</td>
+                                </tr>
+                                <tr class="bg-blue-900 text-white font-extrabold text-sm">
+                                    <td colspan="3" class="py-2.5 px-3">VALOR LÍQUIDO PAGO AO CARLOS</td>
+                                    <td class="py-2.5 px-3 text-right text-amber-300">R$ 1.824,00</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+
+                <!-- Interactive Quiz Questions -->
+                <div class="space-y-6" id="quiz-container">
+                    <!-- Question 1 -->
+                    <div class="bg-slate-800/90 border border-slate-700 rounded-xl p-5 space-y-3">
+                        <span class="text-xs font-bold text-amber-400 uppercase tracking-wider">Desafio 1 de 3</span>
+                        <h4 class="font-bold text-base text-white">1. Qual a inconformidade legal presente no Item 003 (Desconto de FGTS R$ 176,00)?</h4>
+                        <div class="space-y-2 text-xs">
+                            <button onclick="answerQuiz(1, 'A')" id="q1-opt-A" class="w-full text-left p-3 rounded-lg border border-slate-700 hover:bg-slate-700 transition flex items-center justify-between">
+                                <span>A) O valor do FGTS deveria ter sido calculado em 10% sobre o salário.</span>
+                                <i class="fa-regular fa-circle text-slate-400"></i>
+                            </button>
+                            <button onclick="answerQuiz(1, 'B')" id="q1-opt-B" class="w-full text-left p-3 rounded-lg border border-slate-700 hover:bg-slate-700 transition flex items-center justify-between">
+                                <span>B) O FGTS é encargo exclusivo do empregador e JAMAIS pode ser descontado do funcionário.</span>
+                                <i class="fa-regular fa-circle text-slate-400"></i>
+                            </button>
+                            <button onclick="answerQuiz(1, 'C')" id="q1-opt-C" class="w-full text-left p-3 rounded-lg border border-slate-700 hover:bg-slate-700 transition flex items-center justify-between">
+                                <span>C) O FGTS só pode ser descontado de colaboradores com mais de 1 ano de empresa.</span>
+                                <i class="fa-regular fa-circle text-slate-400"></i>
+                            </button>
+                        </div>
+                        <div id="q1-feedback" class="hidden p-3 rounded-lg text-xs leading-relaxed"></div>
+                    </div>
+
+                    <!-- Question 2 -->
+                    <div class="bg-slate-800/90 border border-slate-700 rounded-xl p-5 space-y-3">
+                        <span class="text-xs font-bold text-amber-400 uppercase tracking-wider">Desafio 2 de 3</span>
+                        <h4 class="font-bold text-base text-white">2. Analise o Item 004 (Desconto de Vale-Transporte R$ 200,00 sobre Salário Base de R$ 2.000,00). Qual o erro?</h4>
+                        <div class="space-y-2 text-xs">
+                            <button onclick="answerQuiz(2, 'A')" id="q2-opt-A" class="w-full text-left p-3 rounded-lg border border-slate-700 hover:bg-slate-700 transition flex items-center justify-between">
+                                <span>A) O desconto do VT é limitado por lei a 6% do salário-base (R$ 120,00). O valor de R$ 200,00 (10%) foi abusivo.</span>
+                                <i class="fa-regular fa-circle text-slate-400"></i>
+                            </button>
+                            <button onclick="answerQuiz(2, 'B')" id="q2-opt-B" class="w-full text-left p-3 rounded-lg border border-slate-700 hover:bg-slate-700 transition flex items-center justify-between">
+                                <span>B) O Vale-Transporte deveria ter incidido também sobre as Horas Extras (10% de R$ 2.200,00).</span>
+                                <i class="fa-regular fa-circle text-slate-400"></i>
+                            </button>
+                            <button onclick="answerQuiz(2, 'C')" id="q2-opt-C" class="w-full text-left p-3 rounded-lg border border-slate-700 hover:bg-slate-700 transition flex items-center justify-between">
+                                <span>C) O VT não pode ser descontado em folha em nenhuma hipótese.</span>
+                                <i class="fa-regular fa-circle text-slate-400"></i>
+                            </button>
+                        </div>
+                        <div id="q2-feedback" class="hidden p-3 rounded-lg text-xs leading-relaxed"></div>
+                    </div>
+
+                    <!-- Question 3 -->
+                    <div class="bg-slate-800/90 border border-slate-700 rounded-xl p-5 space-y-3">
+                        <span class="text-xs font-bold text-amber-400 uppercase tracking-wider">Desafio 3 de 3</span>
+                        <h4 class="font-bold text-base text-white">3. Qual verba obrigatória foi OMITIDA nos proventos de Carlos pela empresa?</h4>
+                        <div class="space-y-2 text-xs">
+                            <button onclick="answerQuiz(3, 'A')" id="q3-opt-A" class="w-full text-left p-3 rounded-lg border border-slate-700 hover:bg-slate-700 transition flex items-center justify-between">
+                                <span>A) O Adicional Noturno de 20%.</span>
+                                <i class="fa-regular fa-circle text-slate-400"></i>
+                            </button>
+                            <button onclick="answerQuiz(3, 'B')" id="q3-opt-B" class="w-full text-left p-3 rounded-lg border border-slate-700 hover:bg-slate-700 transition flex items-center justify-between">
+                                <span>B) O reflexo do Descanso Semanal Remunerado (DSR) sobre as Horas Extras prestadas.</span>
+                                <i class="fa-regular fa-circle text-slate-400"></i>
+                            </button>
+                            <button onclick="answerQuiz(3, 'C')" id="q3-opt-C" class="w-full text-left p-3 rounded-lg border border-slate-700 hover:bg-slate-700 transition flex items-center justify-between">
+                                <span>C) O Vale-Alimentação em pecúnia.</span>
+                                <i class="fa-regular fa-circle text-slate-400"></i>
+                            </button>
+                        </div>
+                        <div id="q3-feedback" class="hidden p-3 rounded-lg text-xs leading-relaxed"></div>
+                    </div>
+                </div>
+
+                <!-- Audit Result & Certificate Modal Trigger -->
+                <div id="audit-score-card" class="hidden bg-emerald-950/80 border border-emerald-500/50 rounded-xl p-6 text-center space-y-4">
+                    <div class="w-16 h-16 rounded-full bg-emerald-500 text-slate-950 flex items-center justify-center font-bold text-2xl mx-auto shadow-lg shadow-emerald-500/30">
+                        <i class="fa-solid fa-award"></i>
+                    </div>
+                    <h4 class="text-2xl font-bold text-emerald-300">Auditoria Concluída com Sucesso!</h4>
+                    <p class="text-xs text-slate-300 max-w-xl mx-auto">
+                        Você identificou todos os erros da Empresa Erro Zero Ltda. e garantiu o cumprimento da legislação trabalhista para o colaborador Carlos!
+                    </p>
+                    <button onclick="showCertificateModal()" class="inline-flex items-center gap-2 bg-amber-400 hover:bg-amber-300 text-slate-950 font-bold px-6 py-3 rounded-xl transition shadow-lg text-xs uppercase tracking-wider">
+                        <i class="fa-solid fa-certificate"></i> Gerar Certificado do Detetive Trabalhista
+                    </button>
+                </div>
+            </div>
+        </section>
+
+    </main>
+
+    <!-- Footer Section -->
+    <footer class="bg-slate-900 text-slate-400 border-t border-slate-800 py-10 px-4 sm:px-6 lg:px-8 text-xs">
+        <div class="max-w-7xl mx-auto grid grid-cols-1 md:grid-cols-3 gap-8">
+            <div class="space-y-3">
+                <div class="flex items-center space-x-2 text-white font-bold text-sm">
+                    <div class="w-7 h-7 rounded bg-blue-600 flex items-center justify-center">
+                        <i class="fa-solid font-bold text-white text-xs">DP</i>
+                    </div>
+                    <span>EEB Colombo Machado Salles</span>
+                </div>
+                <p class="text-slate-400 leading-relaxed">
+                    Material didático desenvolvido para a disciplina de <strong>Gestão de Pessoas</strong>. Ministrada pelo <strong>Professor Luiz Alberto Brandes</strong>.
+                </p>
+            </div>
+
+            <div class="space-y-2">
+                <h5 class="text-slate-200 font-bold text-xs uppercase tracking-wider">Módulos de Estudo</h5>
+                <ul class="space-y-1">
+                    <li><a href="#teoria" class="hover:text-blue-400 transition">Fundamentação Teórica da CLT</a></li>
+                    <li><a href="#laboratorio" class="hover:text-blue-400 transition">Roteiro de Planilhas em Excel</a></li>
+                    <li><a href="#simulador" class="hover:text-blue-400 transition">Calculadora de Holerite</a></li>
+                    <li><a href="#detetive" class="hover:text-blue-400 transition">Auditoria Prática (Detetive DP)</a></li>
+                </ul>
+            </div>
+
+            <div class="space-y-2">
+                <h5 class="text-slate-200 font-bold text-xs uppercase tracking-wider">Legislação de Referência</h5>
+                <ul class="space-y-1">
+                    <li>&bull; Consolidação das Leis do Trabalho (CLT)</li>
+                    <li>&bull; Lei nº 8.036/1990 (FGTS / FGTS Digital)</li>
+                    <li>&bull; Lei nº 7.418/1985 (Vale-Transporte)</li>
+                    <li>&bull; Decreto nº 10.854/2021 (Regulamento do Trabalho)</li>
+                </ul>
+            </div>
+        </div>
+        <div class="max-w-7xl mx-auto mt-8 pt-6 border-t border-slate-800 text-center text-[11px] text-slate-500">
+            &copy; 2026 EEB Colombo Machado Salles &bull; Canoinhas/SC &bull; Desenvolvido para Fins Educacionais
+        </div>
+    </footer>
+
+    <!-- Certificate Modal -->
+    <div id="cert-modal" class="fixed inset-0 bg-slate-950/80 backdrop-blur-sm z-50 hidden flex items-center justify-center p-4">
+        <div class="bg-white text-slate-900 rounded-2xl p-8 max-w-2xl w-full border-4 border-amber-400 shadow-2xl relative space-y-6">
+            <button onclick="closeCertificateModal()" class="absolute right-4 top-4 text-slate-400 hover:text-slate-700 text-lg">
+                <i class="fa-solid fa-xmark"></i>
+            </button>
+
+            <div class="text-center space-y-2 border-b-2 border-slate-200 pb-4">
+                <span class="text-xs font-bold text-blue-600 tracking-widest uppercase">EEB Colombo Machado Salles</span>
+                <h3 class="text-2xl font-extrabold text-slate-900 uppercase tracking-tight">Certificado de Auditor Trabalhista</h3>
+                <span class="text-xs text-slate-500">Disciplina de Gestão de Pessoas &bull; Prof. Luiz Alberto Brandes</span>
+            </div>
+
+            <div class="text-center space-y-4 py-2">
+                <p class="text-sm text-slate-700 leading-relaxed">
+                    Certificamos que o(a) aluno(a) concluiu com êxito a atividade prática <strong>"Auditoria do DP - O Detetive Trabalhista"</strong>, demonstrando pleno domínio na identificação de incorreções em folhas de pagamento, cálculo de descontos e cumprimento das diretrizes da CLT.
+                </p>
+
+                <div class="bg-slate-50 p-4 rounded-xl border border-slate-200 text-xs font-mono inline-block">
+                    Código de Validação: DP-AUDIT-2026-COLOMBO
+                </div>
+            </div>
+
+            <div class="flex justify-between items-end border-t border-slate-200 pt-4 text-xs text-slate-600">
+                <div class="text-center">
+                    <span class="block font-bold text-slate-900">Prof. Luiz Alberto Brandes</span>
+                    <span class="text-[10px]">Docente de Gestão de Pessoas</span>
+                </div>
+                <button onclick="window.print()" class="bg-blue-600 hover:bg-blue-700 text-white font-bold px-4 py-2 rounded-lg transition">
+                    <i class="fa-solid fa-print"></i> Imprimir Certificado
+                </button>
+            </div>
+        </div>
     </div>
+
+    <script>
+        // Global State for Calculator Mode
+        let calcMode = 'school'; // 'school' (9% INSS) or 'real' (progressive tables)
+        const quizAnswers = { 1: false, 2: false, 3: false };
+
+        // DOM Loaded Init
+        window.addEventListener('DOMContentLoaded', () => {
+            calculatePayroll();
+        });
+
+        // Tab Switcher for Theory Section
+        function switchTheoryTab(tabId) {
+            document.querySelectorAll('.theory-content').forEach(el => el.classList.add('hidden'));
+            document.querySelectorAll('.theory-tab-btn').forEach(btn => {
+                btn.classList.remove('bg-blue-50', 'text-blue-600');
+                btn.classList.add('text-slate-600');
+            });
+
+            document.getElementById(tabId).classList.remove('hidden');
+            const activeBtn = document.getElementById('btn-' + tabId);
+            activeBtn.classList.add('bg-blue-50', 'text-blue-600');
+            activeBtn.classList.remove('text-slate-600');
+        }
+
+        // Search Filter for Incidence Table
+        function filterIncidenceTable() {
+            const query = document.getElementById('table-search').value.toLowerCase();
+            const rows = document.querySelectorAll('#incidence-table tbody tr');
+            rows.forEach(row => {
+                const text = row.textContent.toLowerCase();
+                row.style.display = text.includes(query) ? '' : 'none';
+            });
+        }
+
+        // Copy Formula Helper
+        function copyToClipboard(text) {
+            if (navigator.clipboard) {
+                navigator.clipboard.writeText(text);
+            } else {
+                const input = document.createElement('input');
+                input.value = text;
+                document.body.appendChild(input);
+                input.select();
+                document.execCommand('copy');
+                document.body.removeChild(input);
+            }
+            alert('Fórmula copiada para a área de transferência: ' + text);
+        }
+
+        // Populate Simulator with João Silva's Exercise Data
+        function fillSimulatorWithJoão() {
+            document.getElementById('sim-nome').value = "João Silva";
+            document.getElementById('sim-cargo').value = "Assistente de Operações";
+            document.getElementById('sim-salario').value = 2200;
+            document.getElementById('sim-jornada').value = 220;
+            document.getElementById('sim-he50').value = 10;
+            document.getElementById('sim-he100').value = 0;
+            document.getElementById('sim-dias-uteis').value = 26;
+            document.getElementById('sim-domingos').value = 4;
+            document.getElementById('sim-vt-opt').value = "sim";
+            document.getElementById('sim-insalubridade').value = "0";
+            document.getElementById('sim-periculosidade').value = "0";
+            document.getElementById('sim-dependentes').value = 0;
+            setCalcMode('school');
+            calculatePayroll();
+            document.getElementById('simulador').scrollIntoView({ behavior: 'smooth' });
+        }
+
+        // Toggle Calculation Mode
+        function setCalcMode(mode) {
+            calcMode = mode;
+            const btnSchool = document.getElementById('mode-school');
+            const btnReal = document.getElementById('mode-real');
+            if (mode === 'school') {
+                btnSchool.className = "px-3 py-1.5 rounded-lg bg-white text-blue-700 shadow-sm transition font-semibold";
+                btnReal.className = "px-3 py-1.5 rounded-lg text-slate-600 hover:text-slate-900 transition font-semibold";
+            } else {
+                btnReal.className = "px-3 py-1.5 rounded-lg bg-white text-blue-700 shadow-sm transition font-semibold";
+                btnSchool.className = "px-3 py-1.5 rounded-lg text-slate-600 hover:text-slate-900 transition font-semibold";
+            }
+            calculatePayroll();
+        }
+
+        // Payroll Calculation Core Engine
+        function calculatePayroll() {
+            const nome = document.getElementById('sim-nome').value || "Colaborador";
+            const cargo = document.getElementById('sim-cargo').value || "Cargo";
+            const salarioBase = parseFloat(document.getElementById('sim-salario').value) || 0;
+            const jornada = parseFloat(document.getElementById('sim-jornada').value) || 220;
+            const he50Qtd = parseFloat(document.getElementById('sim-he50').value) || 0;
+            const he100Qtd = parseFloat(document.getElementById('sim-he100').value) || 0;
+            const diasUteis = parseFloat(document.getElementById('sim-dias-uteis').value) || 26;
+            const domingos = parseFloat(document.getElementById('sim-domingos').value) || 4;
+            const vtOpt = document.getElementById('sim-vt-opt').value === "sim";
+            const pctInsalubridade = parseFloat(document.getElementById('sim-insalubridade').value) || 0;
+            const pctPericulosidade = parseFloat(document.getElementById('sim-periculosidade').value) || 0;
+            const dependentes = parseInt(document.getElementById('sim-dependentes').value) || 0;
+
+            const salarioMinimo2026 = 1518.00; // Reference minimum wage
+
+            // 1. Hourly Rate
+            const valorHora = salarioBase / jornada;
+
+            // 2. Proventos
+            const valHE50 = (valorHora * 1.5) * he50Qtd;
+            const valHE100 = (valorHora * 2.0) * he100Qtd;
+            const totalHE = valHE50 + valHE100;
+            const valDSR = diasUteis > 0 ? (totalHE / diasUteis) * domingos : 0;
+            const valInsalubridade = (pctInsalubridade / 100) * salarioMinimo2026;
+            const valPericulosidade = (pctPericulosidade / 100) * salarioBase;
+
+            const totalProventos = salarioBase + valHE50 + valHE100 + valDSR + valInsalubridade + valPericulosidade;
+
+            // 3. Descontos
+            let valVT = 0;
+            if (vtOpt) {
+                valVT = salarioBase * 0.06; // Standard 6% legal discount
+            }
+
+            let valINSS = 0;
+            if (calcMode === 'school') {
+                // Simplified 9% approximation as taught in class exercise
+                valINSS = totalProventos * 0.09;
+            } else {
+                // Real Progressive INSS 2026 Table
+                valINSS = calcProgressiveINSS(totalProventos);
+            }
+
+            // Real IRRF calculation
+            let valIRRF = 0;
+            if (calcMode === 'real') {
+                const baseIRRF = totalProventos - valINSS - (dependentes * 189.59);
+                valIRRF = calcIRRF(baseIRRF);
+            }
+
+            const totalDescontos = valVT + valINSS + valIRRF;
+            const salarioLiquido = totalProventos - totalDescontos;
+
+            // 4. Employer Obligations
+            const valFGTS = totalProventos * 0.08;
+            const valINSSPatronal = totalProventos * 0.20;
+
+            // 5. Update UI DOM Elements
+            document.getElementById('res-nome').textContent = nome;
+            document.getElementById('res-cargo').textContent = cargo;
+            document.getElementById('res-jornada').textContent = jornada + 'h';
+            document.getElementById('res-valor-hora').textContent = valorHora.toFixed(2).replace('.', ',');
+
+            document.getElementById('res-total-proventos').textContent = formatBRL(totalProventos);
+            document.getElementById('res-total-descontos').textContent = formatBRL(totalDescontos);
+            document.getElementById('res-salario-liquido').textContent = formatBRL(salarioLiquido);
+
+            document.getElementById('res-fgts-valor').textContent = formatBRL(valFGTS);
+            document.getElementById('res-fgts-base').textContent = formatBRL(totalProventos);
+            document.getElementById('res-inss-patronal').textContent = formatBRL(valINSSPatronal);
+
+            // Populate Holerite Items Table
+            const tbody = document.getElementById('holerite-items');
+            tbody.innerHTML = '';
+
+            addHoleriteRow(tbody, '001', 'Salário Base', totalProventos > 0 ? salarioBase : 0, 0);
+
+            if (he50Qtd > 0) {
+                addHoleriteRow(tbody, '010', `Horas Extras 50% (${he50Qtd}h)`, valHE50, 0);
+            }
+            if (he100Qtd > 0) {
+                addHoleriteRow(tbody, '011', `Horas Extras 100% (${he100Qtd}h)`, valHE100, 0);
+            }
+            if (valDSR > 0) {
+                addHoleriteRow(tbody, '015', 'Reflexo DSR s/ Horas Extras', valDSR, 0);
+            }
+            if (valInsalubridade > 0) {
+                addHoleriteRow(tbody, '020', `Adicional Insalubridade (${pctInsalubridade}%)`, valInsalubridade, 0);
+            }
+            if (valPericulosidade > 0) {
+                addHoleriteRow(tbody, '025', 'Adicional Periculosidade (30%)', valPericulosidade, 0);
+            }
+            if (valVT > 0) {
+                addHoleriteRow(tbody, '101', 'Vale-Transporte (6% Sal. Base)', 0, valVT);
+            }
+
+            const inssDesc = calcMode === 'school' ? 'INSS Previdência (Alíquota 9% Exercício)' : 'INSS Previdência (Tabela Progressiva)';
+            addHoleriteRow(tbody, '102', inssDesc, 0, valINSS);
+
+            if (valIRRF > 0) {
+                addHoleriteRow(tbody, '103', 'IRRF Retido na Fonte', 0, valIRRF);
+            }
+        }
+
+        function addHoleriteRow(tbody, code, desc, prov, descValue) {
+            const tr = document.createElement('tr');
+            tr.className = "hover:bg-slate-50 transition";
+            tr.innerHTML = `
+                <td class="py-2 px-2 font-mono text-slate-500">${code}</td>
+                <td class="py-2 px-2 font-medium text-slate-800">${desc}</td>
+                <td class="py-2 px-2 text-right text-emerald-700 font-semibold">${prov > 0 ? formatBRL(prov) : '-'}</td>
+                <td class="py-2 px-2 text-right text-rose-700 font-semibold">${descValue > 0 ? formatBRL(descValue) : '-'}</td>
+            `;
+            tbody.appendChild(tr);
+        }
+
+        // Real Progressive INSS Calculation Table (2026 reference)
+        function calcProgressiveINSS(base) {
+            let inss = 0;
+            if (base <= 1518.00) {
+                inss = base * 0.075;
+            } else if (base <= 2793.88) {
+                inss = (1518.00 * 0.075) + ((base - 1518.00) * 0.09);
+            } else if (base <= 4190.83) {
+                inss = (1518.00 * 0.075) + ((2793.88 - 1518.00) * 0.09) + ((base - 2793.88) * 0.12);
+            } else if (base <= 8157.41) {
+                inss = (1518.00 * 0.075) + ((2793.88 - 1518.00) * 0.09) + ((4190.83 - 2793.88) * 0.12) + ((base - 4190.83) * 0.14);
+            } else {
+                // Teto INSS
+                inss = (1518.00 * 0.075) + ((2793.88 - 1518.00) * 0.09) + ((4190.83 - 2793.88) * 0.12) + ((8157.41 - 4190.83) * 0.14);
+            }
+            return inss;
+        }
+
+        // IRRF Calculation
+        function calcIRRF(base) {
+            if (base <= 2259.20) return 0;
+            if (base <= 2826.65) return (base * 0.075) - 169.44;
+            if (base <= 3751.05) return (base * 0.15) - 381.44;
+            if (base <= 4664.68) return (base * 0.225) - 662.77;
+            return (base * 0.275) - 896.00;
+        }
+
+        function formatBRL(val) {
+            return val.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' });
+        }
+
+        // Quiz / Audit Game Engine
+        function answerQuiz(qNum, selectedOpt) {
+            const feedbackEl = document.getElementById(`q${qNum}-feedback`);
+            feedbackEl.classList.remove('hidden', 'bg-emerald-900/40', 'text-emerald-300', 'bg-rose-900/40', 'text-rose-300', 'border-emerald-500', 'border-rose-500');
+
+            const correctAnswers = { 1: 'B', 2: 'A', 3: 'B' };
+            const isCorrect = selectedOpt === correctAnswers[qNum];
+
+            // Reset buttons style for this question
+            ['A', 'B', 'C'].forEach(opt => {
+                const btn = document.getElementById(`q${qNum}-opt-${opt}`);
+                btn.className = "w-full text-left p-3 rounded-lg border border-slate-700 hover:bg-slate-700 transition flex items-center justify-between";
+            });
+
+            const activeBtn = document.getElementById(`q${qNum}-opt-${selectedOpt}`);
+
+            if (isCorrect) {
+                quizAnswers[qNum] = true;
+                activeBtn.className = "w-full text-left p-3 rounded-lg border-2 border-emerald-500 bg-emerald-900/30 text-emerald-200 font-semibold flex items-center justify-between";
+                feedbackEl.className = "p-3 rounded-lg text-xs leading-relaxed bg-emerald-950/80 border border-emerald-500/50 text-emerald-300 block";
+                
+                if (qNum === 1) {
+                    feedbackEl.innerHTML = "<strong><i class='fa-solid fa-circle-check'></i> EXCELENTE AUDITORIA!</strong><br>O FGTS (8%) é um encargo 100% patronal e jamais pode ser deduzido do funcionário.";
+                } else if (qNum === 2) {
+                    feedbackEl.innerHTML = "<strong><i class='fa-solid fa-circle-check'></i> CORRETO!</strong><br>O desconto legal do VT é limitado a no máximo 6% do salário-base (R$ 2.000,00 × 6% = R$ 120,00). O valor de R$ 200,00 descontado foi ilegal.";
+                } else if (qNum === 3) {
+                    feedbackEl.innerHTML = "<strong><i class='fa-solid fa-circle-check'></i> PERFEITO!</strong><br>As Horas Extras prestadas de forma habitual geram obrigatoriamente o reflexo financeiro do Descanso Semanal Remunerado (DSR).";
+                }
+            } else {
+                quizAnswers[qNum] = false;
+                activeBtn.className = "w-full text-left p-3 rounded-lg border-2 border-rose-500 bg-rose-900/30 text-rose-200 font-semibold flex items-center justify-between";
+                feedbackEl.className = "p-3 rounded-lg text-xs leading-relaxed bg-rose-950/80 border border-rose-500/50 text-rose-300 block";
+                feedbackEl.innerHTML = "<strong><i class='fa-solid fa-triangle-exclamation'></i> INCONFORMIDADE INCORRETA.</strong> Tente novamente e lembre-se das regras da CLT discutidas pelo Prof. Luiz Alberto Brandes!";
+            }
+
+            // Check if all answered correctly to unlock certificate
+            if (quizAnswers[1] && quizAnswers[2] && quizAnswers[3]) {
+                document.getElementById('audit-score-card').classList.remove('hidden');
+            }
+        }
+
+        function showCertificateModal() {
+            document.getElementById('cert-modal').classList.remove('hidden');
+        }
+
+        function closeCertificateModal() {
+            document.getElementById('cert-modal').classList.add('hidden');
+        }
+    </script>
 </body>
 </html>

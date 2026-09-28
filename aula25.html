@@ -1,63 +1,957 @@
 <!DOCTYPE html>
-<html lang="pt-BR">
+<html lang="pt-BR" class="scroll-smooth">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Aguarde - Aula em Breve</title>
+    <title>Gestão de Pessoas: Do Diagnóstico à Transferência do Aprendizado</title>
+
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        brand: {
+                            50: '#f0fdfa',
+                            100: '#ccfbf1',
+                            500: '#14b8a6',
+                            600: '#0d9488',
+                            700: '#0f766e',
+                            800: '#115e59',
+                            900: '#134e4a',
+                            navy: '#0f172a',
+                            slate: '#1e293b'
+                        }
+                    },
+                    fontFamily: {
+                        sans: ['Inter', 'sans-serif']
+                    }
+                }
+            }
+        }
+    </script>
+    <!-- FontAwesome CDN -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Google Fonts Inter -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+
     <style>
-        body {
-            margin: 0;
-            padding: 0;
-            background-color: #f4f4f4; /* Cor de fundo suave */
-            font-family: Arial, sans-serif;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            height: 100vh;
+        body { font-family: 'Inter', sans-serif; }
+        
+        /* Print Stylesheet */
+        @media print {
+            .no-print { display: none !important; }
+            .tab-content { display: block !important; page-break-after: always; }
+            body { background: white !important; color: black !important; }
+            .shadow-xl, .shadow-md, .shadow-lg { box-shadow: none !important; }
+            .border { border-color: #cbd5e1 !important; }
         }
 
-        .container {
-            background-color: #fff;
-            border-radius: 8px;
-            box-shadow: 0 4px 8px rgba(0,0,0,0.1);
-            padding: 40px;
-            text-align: center;
+        .tab-btn.active {
+            border-bottom-color: #10b981;
+            color: #10b981;
+            background-color: rgba(16, 185, 129, 0.08);
+            font-weight: 700;
         }
 
-        .container img {
-            max-width: 100%;
-            height: auto;
-            border-radius: 8px; /* Mantém as bordas arredondadas da imagem */
-            margin-bottom: 20px;
-        }
-
-        .container h1 {
-            color: #333;
-            font-size: 24px;
-            margin-bottom: 30px;
-        }
-
-        .btn-voltar {
-            display: inline-block;
-            background-color: #007bff; /* Azul para o botão */
-            color: #fff;
-            padding: 12px 24px;
-            text-decoration: none;
-            border-radius: 5px;
-            font-weight: bold;
-            transition: background-color 0.3s ease;
-        }
-
-        .btn-voltar:hover {
-            background-color: #0056b3; /* Cor mais escura no hover */
-        }
+        /* Custom scrollbar for tables */
+        ::-webkit-scrollbar { width: 6px; height: 6px; }
+        ::-webkit-scrollbar-track { background: #f1f5f9; }
+        ::-webkit-scrollbar-thumb { background: #cbd5e1; border-radius: 4px; }
+        ::-webkit-scrollbar-thumb:hover { background: #94a3b8; }
     </style>
 </head>
-<body>
-    <div class="container">
-        <img src="imagem1.png" width="320" height="240" alt="O professor em sala de aula">
-        <h1>Aguarde: em breve essa aula estará disponivel.</h1>
-        <a href="index.html" class="btn-voltar">Voltar</a>
-    </div>
+<body class="bg-slate-50 text-slate-800 min-h-screen flex flex-col justify-between antialiased">
+
+    <!-- HEADER -->
+    <header class="bg-gradient-to-r from-slate-900 via-brand-900 to-teal-900 text-white shadow-xl relative overflow-hidden">
+        <div class="absolute -right-10 -bottom-10 opacity-10 text-9xl font-black select-none pointer-events-none">
+            <i class="fa-solid fa-graduation-cap"></i>
+        </div>
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 md:py-10 relative z-10">
+            <div class="flex flex-col md:flex-row items-start md:items-center justify-between gap-6">
+                <div>
+                    <div class="inline-flex items-center gap-2 bg-teal-500/20 border border-teal-400/30 text-teal-300 text-xs md:text-sm font-semibold px-3 py-1 rounded-full mb-3">
+                        <i class="fa-solid fa-school"></i> EEB Colombo Machado Salles | Técnico em Administração
+                    </div>
+                    <h1 class="text-2xl sm:text-3xl md:text-4xl font-extrabold tracking-tight text-white leading-tight">
+                        Gestão de Pessoas: <span class="text-teal-400">Do Diagnóstico à Transferência do Aprendizado</span>
+                    </h1>
+                    <p class="mt-2 text-slate-300 text-sm sm:text-base max-w-3xl">
+                        Plano Didático Interativo, Fundamentação Teórica, Metodologias Ativas e Simuladores Práticos de T&D.
+                    </p>
+                </div>
+                <div class="flex items-center gap-3 no-print">
+                    <button onclick="window.print()" class="bg-teal-600 hover:bg-teal-500 text-white text-sm font-medium px-4 py-2.5 rounded-lg transition shadow-md flex items-center gap-2">
+                        <i class="fa-solid fa-print"></i> Imprimir / PDF
+                    </button>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <!-- NAVIGATION TABS -->
+    <nav class="bg-white border-b border-slate-200 sticky top-0 z-30 shadow-sm no-print">
+        <div class="max-w-7xl mx-auto px-2 sm:px-6 lg:px-8">
+            <div class="flex space-x-1 sm:space-x-4 overflow-x-auto py-2 no-scrollbar">
+                <button onclick="switchTab('visao-geral')" id="tab-btn-visao-geral" class="tab-btn active px-4 py-2.5 text-xs sm:text-sm font-medium rounded-lg text-slate-600 hover:text-teal-600 hover:bg-slate-100 transition whitespace-nowrap border-b-2 border-transparent flex items-center gap-2">
+                    <i class="fa-solid fa-compass"></i> Visão Geral & Metodologia
+                </button>
+                <button onclick="switchTab('modulo-1')" id="tab-btn-modulo-1" class="tab-btn px-4 py-2.5 text-xs sm:text-sm font-medium rounded-lg text-slate-600 hover:text-teal-600 hover:bg-slate-100 transition whitespace-nowrap border-b-2 border-transparent flex items-center gap-2">
+                    <i class="fa-solid fa-magnifying-glass-chart"></i> Módulo 1: LNT & Diagnóstico
+                </button>
+                <button onclick="switchTab('modulo-2')" id="tab-btn-modulo-2" class="tab-btn px-4 py-2.5 text-xs sm:text-sm font-medium rounded-lg text-slate-600 hover:text-teal-600 hover:bg-slate-100 transition whitespace-nowrap border-b-2 border-transparent flex items-center gap-2">
+                    <i class="fa-solid fa-chalkboard-user"></i> Módulo 2: Capacitação & Suporte
+                </button>
+                <button onclick="switchTab('modulo-3')" id="tab-btn-modulo-3" class="tab-btn px-4 py-2.5 text-xs sm:text-sm font-medium rounded-lg text-slate-600 hover:text-teal-600 hover:bg-slate-100 transition whitespace-nowrap border-b-2 border-transparent flex items-center gap-2">
+                    <i class="fa-solid fa-chart-line"></i> Módulo 3: Avaliação & ROI
+                </button>
+                <button onclick="switchTab('simuladores')" id="tab-btn-simuladores" class="tab-btn px-4 py-2.5 text-xs sm:text-sm font-medium rounded-lg text-slate-600 hover:text-teal-600 hover:bg-slate-100 transition whitespace-nowrap border-b-2 border-transparent flex items-center gap-2 bg-teal-50/50 text-teal-700 font-semibold">
+                    <i class="fa-solid fa-laptop-code text-teal-600"></i> Simuladores Interativos
+                </button>
+            </div>
+        </div>
+    </nav>
+
+    <!-- MAIN CONTENT CONTAINER -->
+    <main class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 flex-grow w-full">
+
+        <!-- ================= TAB 1: VISÃO GERAL & METODOLOGIA ================= -->
+        <section id="visao-geral" class="tab-content space-y-8">
+            <div class="bg-white p-6 sm:p-8 rounded-2xl border border-slate-200 shadow-sm">
+                <div class="flex items-center gap-3 mb-4">
+                    <div class="w-10 h-10 rounded-xl bg-teal-100 text-teal-700 flex items-center justify-center font-bold text-lg">
+                        <i class="fa-solid fa-book-open"></i>
+                    </div>
+                    <div>
+                        <h2 class="text-xl sm:text-2xl font-bold text-slate-900">Apresentação da Ementa e Propósito Pedagógico</h2>
+                        <p class="text-xs sm:text-sm text-slate-500">Componente Curricular: Gestão de Pessoas | Formação Técnica Profissional</p>
+                    </div>
+                </div>
+                <p class="text-slate-700 text-sm sm:text-base leading-relaxed mb-6">
+                    Esta unidade curricular foi estruturada para capacitar os futuros <strong>Técnicos em Administração</strong> a atuarem estrategicamente nas etapas do ciclo de Treinamento, Desenvolvimento e Educação (TD&E). Indo além da simples execução de cursos, o foco está na investigação das necessidades reais da organização, na identificação de restrições ambientais, no suporte efetivo para aplicação do aprendizado e no cálculo rigoroso de impacto e retorno financeiro.
+                </p>
+
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-6 my-6">
+                    <div class="bg-slate-50 p-5 rounded-xl border border-slate-200">
+                        <span class="text-teal-600 font-bold text-xs uppercase tracking-wider block mb-1">Eixo 1</span>
+                        <h3 class="font-bold text-slate-800 text-base mb-2">Diagnóstico Preciso (LNT)</h3>
+                        <p class="text-slate-600 text-xs sm:text-sm">Distinguir lacunas de competências (CHA) de gargalos estruturais e ambientais antes de prescrever treinamentos.</p>
+                    </div>
+                    <div class="bg-slate-50 p-5 rounded-xl border border-slate-200">
+                        <span class="text-teal-600 font-bold text-xs uppercase tracking-wider block mb-1">Eixo 2</span>
+                        <h3 class="font-bold text-slate-800 text-base mb-2">Transferência & Suporte</h3>
+                        <p class="text-slate-600 text-xs sm:text-sm">Garantir que a aprendizagem se converta em desempenho prático por meio de suporte gerencial, social e material.</p>
+                    </div>
+                    <div class="bg-slate-50 p-5 rounded-xl border border-slate-200">
+                        <span class="text-teal-600 font-bold text-xs uppercase tracking-wider block mb-1">Eixo 3</span>
+                        <h3 class="font-bold text-slate-800 text-base mb-2">Mensuração & ROI</h3>
+                        <p class="text-slate-600 text-xs sm:text-sm">Avaliar a reação, retenção, mudança comportamental no cargo e o retorno financeiro (ROI e ROL) para a gestão.</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Referencial Teórico Base -->
+            <div class="bg-white p-6 sm:p-8 rounded-2xl border border-slate-200 shadow-sm">
+                <h3 class="text-lg font-bold text-slate-900 mb-4 flex items-center gap-2">
+                    <i class="fa-solid fa-quote-left text-teal-600"></i> Quadro de Referenciais Teóricos Fundamentais
+                </h3>
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                    <div class="p-4 rounded-xl bg-slate-50 border border-slate-200 hover:border-teal-300 transition">
+                        <div class="font-bold text-slate-800 text-sm">Idalberto Chiavenato</div>
+                        <div class="text-xs text-teal-700 font-medium mb-1">Gestão de Pessoas & Subsistema de T&D</div>
+                        <p class="text-slate-600 text-xs">Define T&D como um processo educacional sistemático focado na assimilação de informações, mudança de atitudes e desenvolvimento de conceitos/habilidades do trabalho.</p>
+                    </div>
+                    <div class="p-4 rounded-xl bg-slate-50 border border-slate-200 hover:border-teal-300 transition">
+                        <div class="font-bold text-slate-800 text-sm">Gardênia Abbad & Luciana Sallorenzo (RAUSP)</div>
+                        <div class="text-xs text-teal-700 font-medium mb-1">Modelo IMPACT & Suporte à Transferência</div>
+                        <p class="text-slate-600 text-xs">Apresentam o modelo de avaliação de impacto do treinamento no trabalho, evidenciando a primazia do Suporte Gerencial, Social e Material na efetividade da capacitação.</p>
+                    </div>
+                    <div class="p-4 rounded-xl bg-slate-50 border border-slate-200 hover:border-teal-300 transition">
+                        <div class="font-bold text-slate-800 text-sm">Donald Kirkpatrick & A. C. Hamblin</div>
+                        <div class="text-xs text-teal-700 font-medium mb-1">Níveis de Avaliação de Treinamento</div>
+                        <p class="text-slate-600 text-xs">Estruturam a mensuração em níveis encadeados: Reação, Aprendizagem, Comportamento no Cargo (Transferência) e Resultados Financeiros/Organizacionais.</p>
+                    </div>
+                    <div class="p-4 rounded-xl bg-slate-50 border border-slate-200 hover:border-teal-300 transition">
+                        <div class="font-bold text-slate-800 text-sm">L. H. Peters & E. J. O'Connor</div>
+                        <div class="text-xs text-teal-700 font-medium mb-1">Restrições Situacionais no Desempenho</div>
+                        <p class="text-slate-600 text-xs">Demonstram como fatores ambientais (equipamentos, softwares, informações e tempo) podem bloquear o desempenho mesmo em profissionais treinados.</p>
+                    </div>
+                    <div class="p-4 rounded-xl bg-slate-50 border border-slate-200 hover:border-teal-300 transition md:col-span-2">
+                        <div class="font-bold text-slate-800 text-sm">Lea das Graças Camargos Anastasiou & Leonir Pessate Alves</div>
+                        <div class="text-xs text-teal-700 font-medium mb-1">Estratégias de Ensinagem e Mediação Docente</div>
+                        <p class="text-slate-600 text-xs">Fundamentam o uso de metodologias ativas, simulações, estudo de casos e oficinas práticas para provocar a construção autônoma e colaborativa do conhecimento técnico.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+
+        <!-- ================= TAB 2: MÓDULO 1: LNT & DIAGNÓSTICO ================= -->
+        <section id="modulo-1" class="tab-content hidden space-y-8">
+            <!-- Fundamentação Teórica -->
+            <div class="bg-white p-6 sm:p-8 rounded-2xl border border-slate-200 shadow-sm">
+                <div class="border-l-4 border-teal-600 pl-4 mb-6">
+                    <span class="text-xs font-bold text-teal-600 uppercase tracking-widest">Módulo 1</span>
+                    <h2 class="text-2xl font-extrabold text-slate-900">Levantamento de Necessidades de Treinamento (LNT) & Diagnóstico</h2>
+                </div>
+
+                <div class="prose prose-slate max-w-none text-slate-700 text-sm sm:text-base space-y-4">
+                    <h3 class="text-lg font-bold text-slate-900 flex items-center gap-2">
+                        <i class="fa-solid fa-microscope text-teal-600"></i> Os Três Níveis de Análise da LNT (Chiavenato)
+                    </h3>
+                    <p>
+                        O Levantamento de Necessidades de Treinamento é a primeira etapa do ciclo de T&D. Consiste no diagnóstico das carências de capacitação que afetam o desempenho organizacional. A análise deve ocorrer em três níveis interligados:
+                    </p>
+                    <div class="grid grid-cols-1 md:grid-cols-3 gap-4 my-4">
+                        <div class="bg-teal-50/50 p-4 rounded-xl border border-teal-100">
+                            <h4 class="font-bold text-teal-900 text-sm mb-1"><i class="fa-solid fa-building text-teal-600"></i> 1. Análise Organizacional</h4>
+                            <p class="text-xs text-slate-600">Examina os objetivos estratégicos, a missão e onde o treinamento deve ser alocado para apoiar a expansão e competitividade.</p>
+                        </div>
+                        <div class="bg-teal-50/50 p-4 rounded-xl border border-teal-100">
+                            <h4 class="font-bold text-teal-900 text-sm mb-1"><i class="fa-solid fa-list-check text-teal-600"></i> 2. Análise das Tarefas</h4>
+                            <p class="text-xs text-slate-600">Foca no conteúdo do cargo, nos requisitos do processo operacional e nos padrões de desempenho exigidos pela rotina.</p>
+                        </div>
+                        <div class="bg-teal-50/50 p-4 rounded-xl border border-teal-100">
+                            <h4 class="font-bold text-teal-900 text-sm mb-1"><i class="fa-solid fa-user-gear text-teal-600"></i> 3. Análise Individual (CHA)</h4>
+                            <p class="text-xs text-slate-600">Verifica se o colaborador possui as Conhecimentos (Saber), Habilidades (Saber Fazer) e Atitudes (Querer Fazer) adequadas.</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Card de Exemplo Prático -->
+                <div class="mt-8 bg-gradient-to-r from-amber-50 to-orange-50 border border-amber-200 rounded-xl p-5 shadow-sm">
+                    <div class="flex items-center gap-2 text-amber-800 font-bold text-sm mb-2">
+                        <i class="fa-solid fa-lightbulb text-amber-600 text-lg"></i> Exemplo Prático do Cotidiano Empresarial
+                    </div>
+                    <p class="text-slate-700 text-xs sm:text-sm leading-relaxed">
+                        Em uma distribuidora de logística, a diretoria observou atrasos severos na expedição de mercadorias. A suspeita inicial era "falta de motivação" dos operadores. O analista de RH realizou uma LNT rigorosa e descobriu dois fatores:
+                        <br><br>
+                        <strong>1. Lacuna de Nível de Tarefa (Treinável):</strong> Desconhecimento do novo sistema leitor de código de barras recém-instalado.<br>
+                        <strong>2. Restrição do Ambiente (Não Treinável por Curso):</strong> Inexistência de manuais operacionais e falta de sinal Wi-Fi no setor oeste do galpão.
+                        <br><br>
+                        <em>Conclusão:</em> Treinar os funcionários sem consertar a infraestrutura de rede e criar os manuais seria desperdício de orçamento!
+                    </p>
+                </div>
+            </div>
+
+            <!-- Atividade Prática Criativa do Módulo 1 -->
+            <div class="bg-white p-6 sm:p-8 rounded-2xl border border-slate-200 shadow-sm space-y-6">
+                <h3 class="text-lg font-bold text-slate-900 flex items-center gap-2">
+                    <i class="fa-solid fa-hands-holding-child text-teal-600"></i> Atividades Práticas & Dinâmicas de Sala de Aula
+                </h3>
+
+                <!-- Atividade 1 -->
+                <div class="border border-slate-200 rounded-xl p-5 hover:border-teal-400 transition">
+                    <div class="flex items-center justify-between mb-2">
+                        <span class="bg-teal-100 text-teal-800 font-bold text-xs px-2.5 py-1 rounded">Atividade 1</span>
+                        <span class="text-xs text-slate-500 font-medium"><i class="fa-regular fa-clock"></i> 45 min | Grupos</span>
+                    </div>
+                    <h4 class="font-bold text-slate-800 text-base mb-1">Simulador "Matriz CHA & LNT na Planilha"</h4>
+                    <p class="text-slate-600 text-xs sm:text-sm mb-3">
+                        <strong>Objetivo:</strong> Mapear Conhecimentos, Habilidades e Atitudes (CHA) e tabular dados de carências de equipe comercial com metas defasadas.
+                    </p>
+                    <div class="bg-slate-50 p-4 rounded-lg text-xs text-slate-700 space-y-2">
+                        <p><strong>Dinâmica:</strong></p>
+                        <ul class="list-disc list-inside space-y-1">
+                            <li>Cada grupo recebe fichas fictícias de 5 colaboradores com métricas de desempenho.</li>
+                            <li>Os alunos utilizam a calculadora interativa (Aba Simuladores) para definir a Matriz de Priorização calculando o Índice de Prioridade: $Urgência \times Impacto$.</li>
+                            <li>Classificam os gaps entre Treináveis (CHA) e Não Treináveis (Logística/Ferramentas).</li>
+                        </ul>
+                    </div>
+                </div>
+
+                <!-- Atividade 2 -->
+                <div class="border border-slate-200 rounded-xl p-5 hover:border-teal-400 transition">
+                    <div class="flex items-center justify-between mb-2">
+                        <span class="bg-teal-100 text-teal-800 font-bold text-xs px-2.5 py-1 rounded">Atividade 2</span>
+                        <span class="text-xs text-slate-500 font-medium"><i class="fa-regular fa-clock"></i> 40 min | Duplas</span>
+                    </div>
+                    <h4 class="font-bold text-slate-800 text-base mb-1">Oficina Role-Play: Entrevista Diagnóstica</h4>
+                    <p class="text-slate-600 text-xs sm:text-sm mb-3">
+                        <strong>Objetivo:</strong> Desenvolver habilidades investigativas de escuta ativa para separar problemas de competência de problemas estruturais.
+                    </p>
+                    <div class="bg-slate-50 p-4 rounded-lg text-xs text-slate-700 space-y-2">
+                        <p><strong>Roteiro da Simulação:</strong></p>
+                        <p>• <strong>Aluno A (Analista de RH):</strong> Aplica questionário estruturado investigando se a queda de produção se deve a conhecimento ou falta de recurso.</p>
+                        <p>• <strong>Aluno B (Gestor Operacional):</strong> Interpreta um gestor sob pressão que reclama da "falta de vontade da equipe".</p>
+                        <p>• <strong>Debriefing:</strong> O analista deve apresentar o diagnóstico final apontando as reais causas do gargalo.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+
+        <!-- ================= TAB 3: MÓDULO 2: CAPACITAÇÃO & SUPORTE ================= -->
+        <section id="modulo-2" class="tab-content hidden space-y-8">
+            <div class="bg-white p-6 sm:p-8 rounded-2xl border border-slate-200 shadow-sm">
+                <div class="border-l-4 border-teal-600 pl-4 mb-6">
+                    <span class="text-xs font-bold text-teal-600 uppercase tracking-widest">Módulo 2</span>
+                    <h2 class="text-2xl font-extrabold text-slate-900">Desenho de Soluções, Tipos de Capacitação e Suporte à Transferência</h2>
+                </div>
+
+                <div class="space-y-6">
+                    <!-- Conceito T x D -->
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                        <div class="border border-slate-200 p-5 rounded-xl bg-slate-50">
+                            <h3 class="font-bold text-teal-800 text-base mb-2 flex items-center gap-2">
+                                <i class="fa-solid fa-screwdriver-wrench text-teal-600"></i> Treinamento (Foco Atual)
+                            </h3>
+                            <p class="text-xs sm:text-sm text-slate-600 leading-relaxed">
+                                Curto prazo. Orientado às necessidades do cargo atual. Visa o aperfeiçoamento imediato de Habilidades e Conhecimentos técnicos para execução perfeita das rotinas vigentes.
+                            </p>
+                        </div>
+                        <div class="border border-slate-200 p-5 rounded-xl bg-slate-50">
+                            <h3 class="font-bold text-teal-800 text-base mb-2 flex items-center gap-2">
+                                <i class="fa-solid fa-chart-line text-teal-600"></i> Desenvolvimento (Foco Futuro)
+                            </h3>
+                            <p class="text-xs sm:text-sm text-slate-600 leading-relaxed">
+                                Médio e longo prazo. Orientado à carreira e crescimento pessoal/profissional. Prepara o colaborador para posições futuras de maior complexidade, liderança e visão estratégica.
+                            </p>
+                        </div>
+                    </div>
+
+                    <!-- Modelo IMPACT - Abbad & Sallorenzo -->
+                    <div class="bg-teal-900 text-white p-6 rounded-2xl shadow-md">
+                        <h3 class="text-lg font-bold text-teal-300 mb-2 flex items-center gap-2">
+                            <i class="fa-solid fa-shield-halved"></i> Suporte à Transferência de Treinamento (Modelo IMPACT)
+                        </h3>
+                        <p class="text-xs sm:text-sm text-slate-200 mb-4 leading-relaxed">
+                            Conforme demonstrado por Abbad & Sallorenzo (RAUSP), a aprendizagem isolada na sala de aula não garante a aplicação dos conhecimentos no posto de trabalho. A efetividade real depende de duas dimensões cruciais de Suporte:
+                        </p>
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                            <div class="bg-white/10 p-4 rounded-xl border border-white/10">
+                                <h4 class="font-bold text-teal-300 text-sm mb-1"><i class="fa-solid fa-users-gear"></i> Suporte Gerencial & Social</h4>
+                                <p class="text-xs text-slate-300">Incentivo ativo do chefe direto, orientação no retorno, ausência de punições por erros de aprendizagem e clima favorável dos colegas de trabalho.</p>
+                            </div>
+                            <div class="bg-white/10 p-4 rounded-xl border border-white/10">
+                                <h4 class="font-bold text-teal-300 text-sm mb-1"><i class="fa-solid fa-cubes"></i> Suporte Material & Recursos</h4>
+                                <p class="text-xs text-slate-300">Disponibilidade, qualidade e quantidade adequada de ferramentas, sistemas, softwares, tempo hábil e manuais no ambiente de trabalho.</p>
+                            </div>
+                        </div>
+                        <div class="mt-4 p-3 bg-amber-500/20 border border-amber-400/30 rounded-lg text-xs text-amber-200">
+                            <i class="fa-solid fa-triangle-exclamation"></i> <strong>Restrições Situacionais (Peters & O'Connor):</strong> A falta de suporte material e o excesso de pressão de tempo causam o "efeito recaída", fazendo o colaborador abandonar o novo método e retornar ao vício operacional antigo.
+                        </div>
+                    </div>
+
+                    <!-- Exemplo Prático Cotidiano -->
+                    <div class="bg-gradient-to-r from-emerald-50 to-teal-50 border border-teal-200 rounded-xl p-5 shadow-sm">
+                        <div class="flex items-center gap-2 text-teal-900 font-bold text-sm mb-2">
+                            <i class="fa-solid fa-user-check text-teal-600 text-lg"></i> Exemplo Prático do Cotidiano Empresarial
+                        </div>
+                        <p class="text-slate-700 text-xs sm:text-sm leading-relaxed">
+                            Um técnico em administração recém-promovido a líder de equipe participa de uma capacitação em gestão de tempo e priorização de tarefas. Ao retornar ao setor, seu gerente direto dedica 30 minutos na segunda-feira para revisar o plano de trabalho semanal e garante licença de software de gestão visual de tarefas. Esse <strong>Suporte Gerencial e Material</strong> permite a consolidação das novas competências sem recaídas operacionais.
+                        </p>
+                    </div>
+
+                    <!-- Atividade do Módulo 2 -->
+                    <div class="border border-slate-200 rounded-xl p-5 bg-white">
+                        <div class="flex items-center justify-between mb-2">
+                            <span class="bg-teal-100 text-teal-800 font-bold text-xs px-2.5 py-1 rounded">Atividade Prática</span>
+                            <span class="text-xs text-slate-500 font-medium"><i class="fa-regular fa-clock"></i> 50 min</span>
+                        </div>
+                        <h4 class="font-bold text-slate-800 text-base mb-1">Simulador "Jogo dos Bloqueios Situacionais"</h4>
+                        <p class="text-slate-600 text-xs sm:text-sm mb-3">
+                            Análise de cartões de caso reais de insucesso de transferência de treinamento em empresas locais.
+                        </p>
+                        <div class="bg-slate-50 p-4 rounded-lg text-xs text-slate-700 space-y-2">
+                            <p><strong>Cenário Exemplo:</strong> <em>"O colaborador obteve nota 100 no curso de Excel Avançado para automatizar relatórios, mas o computador do setor possui apenas 2GB de RAM e versão legada do programa sem suporte a macros."</em></p>
+                            <p><strong>Desafio dos Alunos:</strong> Classificar o bloqueio (Material vs. Gerencial) e elaborar o plano de contingência para a diretoria.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+
+        <!-- ================= TAB 4: MÓDULO 3: AVALIAÇÃO & ROI ================= -->
+        <section id="modulo-3" class="tab-content hidden space-y-8">
+            <div class="bg-white p-6 sm:p-8 rounded-2xl border border-slate-200 shadow-sm">
+                <div class="border-l-4 border-teal-600 pl-4 mb-6">
+                    <span class="text-xs font-bold text-teal-600 uppercase tracking-widest">Módulo 3</span>
+                    <h2 class="text-2xl font-extrabold text-slate-900">Avaliação de Treinamento, Indicadores de T&D e ROI</h2>
+                </div>
+
+                <!-- Níveis de Kirkpatrick & Hamblin -->
+                <div class="space-y-6">
+                    <h3 class="text-lg font-bold text-slate-900 flex items-center gap-2">
+                        <i class="fa-solid fa-layer-group text-teal-600"></i> Os 4 Níveis de Avaliação de Desempenho (Kirkpatrick / Hamblin)
+                    </h3>
+
+                    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+                        <div class="bg-slate-50 p-4 rounded-xl border-t-4 border-blue-500 shadow-sm">
+                            <div class="text-xs font-bold text-blue-600 mb-1">Nível 1</div>
+                            <h4 class="font-bold text-slate-800 text-sm mb-2">Reação</h4>
+                            <p class="text-xs text-slate-600">Mede o grau de satisfação e percepção imediata dos alunos com o instrutor, material, carga horária e instalações.</p>
+                        </div>
+                        <div class="bg-slate-50 p-4 rounded-xl border-t-4 border-indigo-500 shadow-sm">
+                            <div class="text-xs font-bold text-indigo-600 mb-1">Nível 2</div>
+                            <h4 class="font-bold text-slate-800 text-sm mb-2">Aprendizagem</h4>
+                            <p class="text-xs text-slate-600">Afera a retenção de conhecimentos e o ganho de habilidades através de provas teóricas e testes práticos.</p>
+                        </div>
+                        <div class="bg-slate-50 p-4 rounded-xl border-t-4 border-teal-500 shadow-sm">
+                            <div class="text-xs font-bold text-teal-600 mb-1">Nível 3</div>
+                            <h4 class="font-bold text-slate-800 text-sm mb-2">Impacto / Comportamento</h4>
+                            <p class="text-xs text-slate-600">Avalia a efetiva mudança comportamental e a aplicação das novas rotinas no posto de trabalho após 60 a 90 dias.</p>
+                        </div>
+                        <div class="bg-slate-50 p-4 rounded-xl border-t-4 border-emerald-500 shadow-sm">
+                            <div class="text-xs font-bold text-emerald-600 mb-1">Nível 4 & 5</div>
+                            <h4 class="font-bold text-slate-800 text-sm mb-2">Resultados & ROI</h4>
+                            <p class="text-xs text-slate-600">Calcula o impacto nos indicadores do negócio (produtividade, erros, vendas) e o retorno do investimento monetário.</p>
+                        </div>
+                    </div>
+
+                    <!-- Fórmulas dos Indicadores Key -->
+                    <div class="bg-slate-900 text-white p-6 rounded-2xl space-y-4">
+                        <h4 class="font-bold text-teal-400 text-base flex items-center gap-2">
+                            <i class="fa-solid fa-calculator"></i> Métricas & Fórmulas Fundamentais de T&D
+                        </h4>
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-4 text-xs">
+                            <div class="bg-slate-800 p-4 rounded-lg border border-slate-700">
+                                <span class="font-bold text-teal-300 block mb-1">Retorno sobre o Investimento (ROI)</span>
+                                <div class="bg-slate-900 p-2 rounded text-center font-mono text-teal-200 my-2">
+                                    ROI (%) = [ (Ganho Financeiro - Custo Total) / Custo Total ] × 100
+                                </div>
+                                <p class="text-slate-400">Demonstra quantos reais retornaram para cada R$ 1,00 investido na capacitação.</p>
+                            </div>
+                            <div class="bg-slate-800 p-4 rounded-lg border border-slate-700">
+                                <span class="font-bold text-teal-300 block mb-1">Taxa de Adesão & Abandono</span>
+                                <div class="bg-slate-900 p-2 rounded text-center font-mono text-teal-200 my-2">
+                                    Adesão (%) = (Participantes Presentes / Convocados) × 100
+                                </div>
+                                <p class="text-slate-400">Mede o engajamento e o nível de priorização das lideranças na liberação de equipes.</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Exemplo Prático Cotidiano Módulo 3 -->
+                    <div class="bg-gradient-to-r from-blue-50 to-indigo-50 border border-blue-200 rounded-xl p-5 shadow-sm">
+                        <div class="flex items-center gap-2 text-blue-900 font-bold text-sm mb-2">
+                            <i class="fa-solid fa-chart-line text-blue-600 text-lg"></i> Exemplo Prático de Cadeia de Avaliação
+                        </div>
+                        <p class="text-slate-700 text-xs sm:text-sm leading-relaxed">
+                            Após um curso de atendimento ao cliente para equipe de pós-venda:
+                            <br>• <strong>Reação:</strong> 95% de satisfação com o treinador.
+                            <br>• <strong>Aprendizagem:</strong> Média 9.0 no teste de procedimentos.
+                            <br>• <strong>Comportamento (3 meses):</strong> Redução de 40% no tempo médio de resposta no SAC.
+                            <br>• <strong>Resultados/ROI:</strong> Queda de 25% nos cancelamentos de contratos, gerando um ROI de +210% sobre o custo do treinamento.
+                        </p>
+                    </div>
+
+                    <!-- Atividade Pitch & Dashboard -->
+                    <div class="border border-slate-200 rounded-xl p-5 bg-white">
+                        <div class="flex items-center justify-between mb-2">
+                            <span class="bg-teal-100 text-teal-800 font-bold text-xs px-2.5 py-1 rounded">Atividade Prática Criativa</span>
+                            <span class="text-xs text-slate-500 font-medium"><i class="fa-regular fa-clock"></i> 60 min</span>
+                        </div>
+                        <h4 class="font-bold text-slate-800 text-base mb-1">Pitch de Resultados & Dashboard de T&D</h4>
+                        <p class="text-slate-600 text-xs sm:text-sm mb-3">
+                            Simulação executiva de apresentação do ROI de Treinamento para a Diretoria Financeira.
+                        </p>
+                        <div class="bg-slate-50 p-4 rounded-lg text-xs text-slate-700 space-y-2">
+                            <p>1. Os alunos utilizam a Calculadora ROI (Aba Simuladores) para alimentar o painel com dados fictícios de custo e retornos.</p>
+                            <p>2. Cada grupo realiza um <strong>Pitch Executivo de 5 minutos</strong> convencendo o conselho de diretoria a renovar o orçamento de T&D do próximo ano.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+
+        <!-- ================= TAB 5: SIMULADORES INTERATIVOS ================= -->
+        <section id="simuladores" class="tab-content hidden space-y-8">
+            <div class="bg-white p-6 sm:p-8 rounded-2xl border border-slate-200 shadow-sm">
+                <div class="border-l-4 border-teal-600 pl-4 mb-6">
+                    <span class="text-xs font-bold text-teal-600 uppercase tracking-widest">Laboratório Prático</span>
+                    <h2 class="text-2xl font-extrabold text-slate-900">Simuladores & Ferramentas Interativas de Gestão</h2>
+                    <p class="text-slate-500 text-xs sm:text-sm mt-1">Ferramentas de cálculo e diagnóstico para utilização em sala de aula ou estudos de caso.</p>
+                </div>
+
+                <!-- SIMULADOR 1: CALCULADORA DE MATRIZ DE LNT -->
+                <div class="bg-slate-50 border border-slate-200 rounded-2xl p-6 mb-8 shadow-sm">
+                    <div class="flex items-center gap-3 mb-4">
+                        <div class="w-9 h-9 rounded-lg bg-teal-600 text-white flex items-center justify-center font-bold">
+                            1
+                        </div>
+                        <div>
+                            <h3 class="text-lg font-bold text-slate-900">Simulador 1: Calculadora & Matriz de LNT (Urgência vs. Impacto)</h3>
+                            <p class="text-xs text-slate-500">Mapeamento de Prioridade e Diagnóstico do Gap de Desempenho</p>
+                        </div>
+                    </div>
+
+                    <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+                        <!-- Formulário de Entrada -->
+                        <div class="bg-white p-5 rounded-xl border border-slate-200 space-y-4">
+                            <h4 class="font-bold text-slate-800 text-sm border-b pb-2">Cadastrar Necessidade de Treinamento</h4>
+                            
+                            <div>
+                                <label class="block text-xs font-semibold text-slate-700 mb-1">Descrição do Problema / Tarefa</label>
+                                <input type="text" id="lnt-task" placeholder="Ex: Operação do Leitor de Cód. Barras" class="w-full text-xs p-2.5 rounded-lg border border-slate-300 focus:ring-2 focus:ring-teal-500 focus:outline-none">
+                            </div>
+
+                            <div>
+                                <label class="block text-xs font-semibold text-slate-700 mb-1">Dimensão do CHA Predominante</label>
+                                <select id="lnt-cha" class="w-full text-xs p-2.5 rounded-lg border border-slate-300 focus:ring-2 focus:ring-teal-500 focus:outline-none">
+                                    <option value="Conhecimento">Conhecimento (Saber Teórico)</option>
+                                    <option value="Habilidade">Habilidade (Saber Fazer / Prática)</option>
+                                    <option value="Atitude">Atitude (Querer Fazer / Comportamento)</option>
+                                    <option value="Recurso/Infra">Restrição de Recurso (Não Treinável)</option>
+                                </select>
+                            </div>
+
+                            <div class="grid grid-cols-2 gap-3">
+                                <div>
+                                    <label class="block text-xs font-semibold text-slate-700 mb-1">Urgência (1 a 5)</label>
+                                    <input type="number" id="lnt-urgency" min="1" max="5" value="3" class="w-full text-xs p-2.5 rounded-lg border border-slate-300 focus:ring-2 focus:ring-teal-500 focus:outline-none">
+                                </div>
+                                <div>
+                                    <label class="block text-xs font-semibold text-slate-700 mb-1">Impacto (1 a 5)</label>
+                                    <input type="number" id="lnt-impact" min="1" max="5" value="4" class="w-full text-xs p-2.5 rounded-lg border border-slate-300 focus:ring-2 focus:ring-teal-500 focus:outline-none">
+                                </div>
+                            </div>
+
+                            <button onclick="addLntItem()" class="w-full bg-teal-600 hover:bg-teal-700 text-white font-semibold text-xs py-2.5 rounded-lg transition flex items-center justify-center gap-2">
+                                <i class="fa-solid fa-plus"></i> Adicionar à Matriz
+                            </button>
+                        </div>
+
+                        <!-- Tabela / Matriz Resultante -->
+                        <div class="lg:col-span-2 bg-white p-5 rounded-xl border border-slate-200 flex flex-col justify-between">
+                            <div>
+                                <div class="flex items-center justify-between mb-3 border-b pb-2">
+                                    <h4 class="font-bold text-slate-800 text-sm">Matriz de Priorização Calculada</h4>
+                                    <button onclick="clearLntTable()" class="text-xs text-red-600 hover:underline"><i class="fa-solid fa-trash"></i> Limpar</button>
+                                </div>
+
+                                <div class="overflow-x-auto">
+                                    <table class="w-full text-left text-xs">
+                                        <thead class="bg-slate-100 text-slate-700 font-semibold uppercase">
+                                            <tr>
+                                                <th class="p-2">Necessidade/Tarefa</th>
+                                                <th class="p-2">CHA</th>
+                                                <th class="p-2 text-center">Score (U×I)</th>
+                                                <th class="p-2 text-center">Prioridade</th>
+                                                <th class="p-2 text-center">Ação Recomendada</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody id="lnt-table-body" class="divide-y divide-slate-100">
+                                            <!-- Preenchido via JS -->
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+
+                            <div class="mt-4 pt-3 border-t text-xs text-slate-500 flex items-center justify-between">
+                                <span>* Score = Urgência × Impacto (1 a 25)</span>
+                                <span class="font-medium text-teal-700"><i class="fa-solid fa-info-circle"></i> Alta: ≥15 | Média: 8-14 | Baixa: <8</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+
+                <!-- SIMULADOR 2: DIAGNÓSTICO DE SUPORTE À TRANSFERÊNCIA (MODELO IMPACT) -->
+                <div class="bg-slate-50 border border-slate-200 rounded-2xl p-6 mb-8 shadow-sm">
+                    <div class="flex items-center gap-3 mb-4">
+                        <div class="w-9 h-9 rounded-lg bg-teal-600 text-white flex items-center justify-center font-bold">
+                            2
+                        </div>
+                        <div>
+                            <h3 class="text-lg font-bold text-slate-900">Simulador 2: Diagnóstico de Suporte à Transferência (Modelo IMPACT)</h3>
+                            <p class="text-xs text-slate-500">Avaliação do Clima Organizacional pós-treinamento e Barreiras de Desempenho</p>
+                        </div>
+                    </div>
+
+                    <div id="quiz-container" class="bg-white p-6 rounded-xl border border-slate-200 space-y-6">
+                        <div class="space-y-4">
+                            <!-- Pergunta 1 -->
+                            <div class="p-4 bg-slate-50 rounded-lg">
+                                <label class="block text-xs font-bold text-slate-800 mb-2">1. Como o gestor imediato reage quando o funcionário aplica as novas técnicas na prática?</label>
+                                <div class="space-y-1.5 text-xs text-slate-700">
+                                    <label class="flex items-center gap-2 cursor-pointer">
+                                        <input type="radio" name="q1" value="3" class="text-teal-600 focus:ring-teal-500">
+                                        Orientando, encorajando e revisando os planos de trabalho juntos (Suporte Gerencial Alto).
+                                    </label>
+                                    <label class="flex items-center gap-2 cursor-pointer">
+                                        <input type="radio" name="q1" value="1" class="text-teal-600 focus:ring-teal-500">
+                                        É indiferente, não acompanha e só exige metas rápidas.
+                                    </label>
+                                    <label class="flex items-center gap-2 cursor-pointer">
+                                        <input type="radio" name="q1" value="0" class="text-teal-600 focus:ring-teal-500">
+                                        Critica a lentidão inicial e exige que volte ao método antigo tradicional.
+                                    </label>
+                                </div>
+                            </div>
+
+                            <!-- Pergunta 2 -->
+                            <div class="p-4 bg-slate-50 rounded-lg">
+                                <label class="block text-xs font-bold text-slate-800 mb-2">2. As ferramentas, softwares e infraestrutura física necessárias estão disponíveis e em pleno funcionamento?</label>
+                                <div class="space-y-1.5 text-xs text-slate-700">
+                                    <label class="flex items-center gap-2 cursor-pointer">
+                                        <input type="radio" name="q2" value="3" class="text-teal-600 focus:ring-teal-500">
+                                        Sim, 100% atualizados e adequados à rotina de trabalho (Suporte Material Total).
+                                    </label>
+                                    <label class="flex items-center gap-2 cursor-pointer">
+                                        <input type="radio" name="q2" value="1" class="text-teal-600 focus:ring-teal-500">
+                                        Parcialmente. Faltam acessos, licenças de sistemas ou manuais claros.
+                                    </label>
+                                    <label class="flex items-center gap-2 cursor-pointer">
+                                        <input type="radio" name="q2" value="0" class="text-teal-600 focus:ring-teal-500">
+                                        Não. Equipamentos obsoletos, sem acesso ao software ou infraestrutura precária.
+                                    </label>
+                                </div>
+                            </div>
+
+                            <!-- Pergunta 3 -->
+                            <div class="p-4 bg-slate-50 rounded-lg">
+                                <label class="block text-xs font-bold text-slate-800 mb-2">3. Qual é a atitude dos colegas da equipe de trabalho em relação às novidades trazidas do curso?</label>
+                                <div class="space-y-1.5 text-xs text-slate-700">
+                                    <label class="flex items-center gap-2 cursor-pointer">
+                                        <input type="radio" name="q3" value="3" class="text-teal-600 focus:ring-teal-500">
+                                        Apoiam, tiram dúvidas e buscam aprender o novo processo em conjunto.
+                                    </label>
+                                    <label class="flex items-center gap-2 cursor-pointer">
+                                        <input type="radio" name="q3" value="1" class="text-teal-600 focus:ring-teal-500">
+                                        Neutros. Cada um faz do seu jeito individual.
+                                    </label>
+                                    <label class="flex items-center gap-2 cursor-pointer">
+                                        <input type="radio" name="q3" value="0" class="text-teal-600 focus:ring-teal-500">
+                                        Resistentes. Debocham das mudanças ou pressionam para não alterar a rotina.
+                                    </label>
+                                </div>
+                            </div>
+
+                            <!-- Pergunta 4 -->
+                            <div class="p-4 bg-slate-50 rounded-lg">
+                                <label class="block text-xs font-bold text-slate-800 mb-2">4. Há tempo suficiente na jornada diária para praticar o novo aprendizado sem sobreatrefamento?</label>
+                                <div class="space-y-1.5 text-xs text-slate-700">
+                                    <label class="flex items-center gap-2 cursor-pointer">
+                                        <input type="radio" name="q4" value="3" class="text-teal-600 focus:ring-teal-500">
+                                        Sim, houve redistribuição temporária de carga de trabalho.
+                                    </label>
+                                    <label class="flex items-center gap-2 cursor-pointer">
+                                        <input type="radio" name="q4" value="1" class="text-teal-600 focus:ring-teal-500">
+                                        Pouco. O funcionário precisa acumular a rotina diária com a adaptação.
+                                    </label>
+                                    <label class="flex items-center gap-2 cursor-pointer">
+                                        <input type="radio" name="q4" value="0" class="text-teal-600 focus:ring-teal-500">
+                                        Nenhum. Pressão extrema por prazos inviabiliza testar o novo aprendizado.
+                                    </label>
+                                </div>
+                            </div>
+                        </div>
+
+                        <button onclick="calculateSupportDiagnosis()" class="bg-teal-600 hover:bg-teal-700 text-white font-semibold text-xs px-6 py-3 rounded-lg transition shadow flex items-center gap-2">
+                            <i class="fa-solid fa-square-poll-vertical"></i> Processar Diagnóstico do Ambiente
+                        </button>
+
+                        <!-- Painel do Resultado do Quiz -->
+                        <div id="quiz-result" class="hidden p-5 rounded-xl border transition-all">
+                            <!-- Preenchido via JS -->
+                        </div>
+                    </div>
+                </div>
+
+
+                <!-- SIMULADOR 3: CALCULADORA DE ROI & MÉTRICAS DE T&D -->
+                <div class="bg-slate-50 border border-slate-200 rounded-2xl p-6 shadow-sm">
+                    <div class="flex items-center gap-3 mb-4">
+                        <div class="w-9 h-9 rounded-lg bg-teal-600 text-white flex items-center justify-center font-bold">
+                            3
+                        </div>
+                        <div>
+                            <h3 class="text-lg font-bold text-slate-900">Simulador 3: Calculadora de Retorno sobre Investimento (ROI) de T&D</h3>
+                            <p class="text-xs text-slate-500">Análise Financeira e Viabilidade do Programa de Capacitação</p>
+                        </div>
+                    </div>
+
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                        <div class="bg-white p-5 rounded-xl border border-slate-200 space-y-3">
+                            <h4 class="font-bold text-slate-800 text-sm border-b pb-2">Parâmetros do Programa</h4>
+
+                            <div>
+                                <label class="block text-xs font-semibold text-slate-700 mb-1">Custo Total do Treinamento (R$)</label>
+                                <input type="number" id="roi-cost" value="12000" class="w-full text-xs p-2.5 rounded-lg border border-slate-300 focus:ring-2 focus:ring-teal-500">
+                                <span class="text-[10px] text-slate-400">Inclui: instrutor, material, horas paradas e logística.</span>
+                            </div>
+
+                            <div>
+                                <label class="block text-xs font-semibold text-slate-700 mb-1">Ganho Financeiro / Economia Gerada (R$)</label>
+                                <input type="number" id="roi-gain" value="38000" class="w-full text-xs p-2.5 rounded-lg border border-slate-300 focus:ring-2 focus:ring-teal-500">
+                                <span class="text-[10px] text-slate-400">Redução de retrabalho, aumento de vendas, economia de insumos.</span>
+                            </div>
+
+                            <div>
+                                <label class="block text-xs font-semibold text-slate-700 mb-1">Número de Colaboradores Capacitados</label>
+                                <input type="number" id="roi-people" value="15" class="w-full text-xs p-2.5 rounded-lg border border-slate-300 focus:ring-2 focus:ring-teal-500">
+                            </div>
+
+                            <button onclick="calculateROI()" class="w-full bg-slate-900 hover:bg-slate-800 text-white font-semibold text-xs py-2.5 rounded-lg transition flex items-center justify-center gap-2">
+                                <i class="fa-solid fa-calculator"></i> Calcular ROI & Indicadores
+                            </button>
+                        </div>
+
+                        <!-- Card de Resultados do ROI -->
+                        <div class="bg-slate-900 text-white p-5 rounded-xl flex flex-col justify-between">
+                            <div>
+                                <h4 class="font-bold text-teal-400 text-sm border-b border-slate-800 pb-2 mb-4">Resultado do Indicador Executivo</h4>
+                                
+                                <div class="grid grid-cols-2 gap-4 text-center my-2">
+                                    <div class="bg-slate-800 p-3 rounded-lg border border-slate-700">
+                                        <span class="text-[10px] uppercase text-slate-400 font-bold block">ROI Gerado</span>
+                                        <span id="res-roi" class="text-2xl font-black text-emerald-400">+216.7%</span>
+                                    </div>
+                                    <div class="bg-slate-800 p-3 rounded-lg border border-slate-700">
+                                        <span class="text-[10px] uppercase text-slate-400 font-bold block">Lucro Líquido</span>
+                                        <span id="res-net" class="text-xl font-bold text-teal-300">R$ 26.000</span>
+                                    </div>
+                                </div>
+
+                                <div class="space-y-2 text-xs text-slate-300 mt-4">
+                                    <div class="flex justify-between border-b border-slate-800 py-1">
+                                        <span>Investimento por Pessoa:</span>
+                                        <span id="res-per-capita" class="font-mono text-white">R$ 800,00</span>
+                                    </div>
+                                    <div class="flex justify-between border-b border-slate-800 py-1">
+                                        <span>Retorno por R$ 1,00 Investido:</span>
+                                        <span id="res-ratio" class="font-mono text-emerald-400">R$ 3,17</span>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div id="roi-verdict" class="mt-4 p-3 bg-teal-500/20 border border-teal-500/30 rounded-lg text-xs text-teal-200">
+                                <i class="fa-solid fa-circle-check"></i> Projeto com alto retorno financeiro e alta viabilidade de aprovação junto ao conselho executivo.
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </section>
+
+    </main>
+
+    <!-- FOOTER -->
+    <footer class="bg-slate-900 text-slate-400 text-xs py-8 border-t border-slate-800 mt-12 no-print">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center space-y-3">
+            <p class="font-semibold text-slate-300">
+                EEB Colombo Machado Salles | Disciplina: Gestão de Pessoas - Módulos T&D
+            </p>
+            <p class="text-slate-500 max-w-2xl mx-auto">
+                Material didático fundamentado em Chiavenato, Modelo IMPACT (Abbad & Sallorenzo), Kirkpatrick, Peters & O'Connor e Estratégias de Ensinagem (Anastasiou & Alves).
+            </p>
+            <div class="pt-2 flex justify-center items-center gap-4 text-slate-500">
+                <span><i class="fa-solid fa-graduation-cap"></i> Formação Técnica em Administração</span>
+                <span>•</span>
+                <span><i class="fa-solid fa-laptop-code"></i> Plataforma Educacional Interativa</span>
+            </div>
+        </div>
+    </footer>
+
+    <!-- JAVASCRIPT LOGIC -->
+    <script>
+        // TAB SWITCHER LOGIC
+        function switchTab(tabId) {
+            // Hide all tabs
+            const contents = document.querySelectorAll('.tab-content');
+            contents.forEach(content => content.classList.add('hidden'));
+
+            // Remove active style from all buttons
+            const buttons = document.querySelectorAll('.tab-btn');
+            buttons.forEach(btn => {
+                btn.classList.remove('active');
+            });
+
+            // Show current tab
+            const targetContent = document.getElementById(tabId);
+            if (targetContent) {
+                targetContent.classList.remove('hidden');
+            }
+
+            // Set current button active
+            const targetBtn = document.getElementById(`tab-btn-${tabId}`);
+            if (targetBtn) {
+                targetBtn.classList.add('active');
+            }
+
+            // Scroll smoothly to top
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+
+        // SIMULADOR 1: LNT MATRIX
+        let lntItems = [
+            { task: "Sistema Leitor de Cód. Barras", cha: "Habilidade", urgency: 5, impact: 5, score: 25, priority: "Alta", action: "Treinamento Prático Intensivo" },
+            { task: "Conhecimento do Código de Defesa do Consumidor", cha: "Conhecimento", urgency: 3, impact: 3, score: 9, priority: "Média", action: "E-learning / Cartilha" },
+            { task: "Falha de Sinal Wi-Fi na Expedição", cha: "Recurso/Infra", urgency: 5, impact: 4, score: 20, priority: "Alta", action: "Manutenção de TI (Não é Curso)" }
+        ];
+
+        function renderLntTable() {
+            const tbody = document.getElementById('lnt-table-body');
+            tbody.innerHTML = '';
+
+            lntItems.forEach((item, index) => {
+                let badgeClass = "";
+                if (item.priority === "Alta") badgeClass = "bg-red-100 text-red-800 font-bold";
+                else if (item.priority === "Média") badgeClass = "bg-amber-100 text-amber-800 font-bold";
+                else badgeClass = "bg-emerald-100 text-emerald-800 font-bold";
+
+                const tr = document.createElement('tr');
+                tr.className = "hover:bg-slate-50 transition";
+                tr.innerHTML = `
+                    <td class="p-2 font-medium text-slate-800">${item.task}</td>
+                    <td class="p-2 text-slate-600">${item.cha}</td>
+                    <td class="p-2 text-center font-mono font-bold text-slate-900">${item.score}</td>
+                    <td class="p-2 text-center"><span class="px-2 py-0.5 rounded text-[10px] ${badgeClass}">${item.priority}</span></td>
+                    <td class="p-2 text-center text-slate-700">${item.action}</td>
+                `;
+                tbody.appendChild(tr);
+            });
+        }
+
+        function addLntItem() {
+            const taskInput = document.getElementById('lnt-task');
+            const chaInput = document.getElementById('lnt-cha');
+            const urgencyInput = document.getElementById('lnt-urgency');
+            const impactInput = document.getElementById('lnt-impact');
+
+            const task = taskInput.value.trim();
+            if (!task) {
+                alert("Por favor, informe a Descrição do Problema / Tarefa.");
+                return;
+            }
+
+            const cha = chaInput.value;
+            const urgency = parseInt(urgencyInput.value) || 1;
+            const impact = parseInt(impactInput.value) || 1;
+            const score = urgency * impact;
+
+            let priority = "Baixa";
+            if (score >= 15) priority = "Alta";
+            else if (score >= 8) priority = "Média";
+
+            let action = "Capacitação Pontual";
+            if (cha === "Recurso/Infra") {
+                action = "Ação de Infraestrutura / Gestão";
+            } else if (priority === "Alta") {
+                action = "Treinamento Prioritário Imediato";
+            } else if (priority === "Média") {
+                action = "Workshop / Microlearning";
+            } else {
+                action = "Leitura Orientada / Tutorial";
+            }
+
+            lntItems.push({ task, cha, urgency, impact, score, priority, action });
+            renderLntTable();
+
+            // Clear inputs
+            taskInput.value = '';
+            urgencyInput.value = 3;
+            impactInput.value = 4;
+        }
+
+        function clearLntTable() {
+            lntItems = [];
+            renderLntTable();
+        }
+
+        // SIMULADOR 2: DIAGNÓSTICO DE SUPORTE
+        function calculateSupportDiagnosis() {
+            const q1 = document.querySelector('input[name="q1"]:checked');
+            const q2 = document.querySelector('input[name="q2"]:checked');
+            const q3 = document.querySelector('input[name="q3"]:checked');
+            const q4 = document.querySelector('input[name="q4"]:checked');
+
+            if (!q1 || !q2 || !q3 || !q4) {
+                alert("Por favor, responda a todas as 4 perguntas do diagnóstico!");
+                return;
+            }
+
+            const scoreTotal = parseInt(q1.value) + parseInt(q2.value) + parseInt(q3.value) + parseInt(q4.value);
+            const maxScore = 12;
+            const percentage = Math.round((scoreTotal / maxScore) * 100);
+
+            const resultDiv = document.getElementById('quiz-result');
+            resultDiv.classList.remove('hidden');
+
+            if (scoreTotal >= 9) {
+                resultDiv.className = "p-5 rounded-xl border border-emerald-300 bg-emerald-50 text-emerald-900";
+                resultDiv.innerHTML = `
+                    <div class="font-bold text-base flex items-center gap-2 mb-2">
+                        <i class="fa-solid fa-circle-check text-emerald-600 text-xl"></i>
+                        Diagnóstico: Ambiente ALTAMENTE PROPÍCIO à Transferência (${percentage}%)
+                    </div>
+                    <p class="text-xs leading-relaxed">
+                        A organização oferece forte <strong>Suporte Gerencial, Social e Material</strong> (Modelo IMPACT). O risco de recaída operacional é muito baixo. O conhecimento adquirido em sala de aula se converterá rapidamente em ganhos reais de produtividade.
+                    </p>
+                `;
+            } else if (scoreTotal >= 5) {
+                resultDiv.className = "p-5 rounded-xl border border-amber-300 bg-amber-50 text-amber-900";
+                resultDiv.innerHTML = `
+                    <div class="font-bold text-base flex items-center gap-2 mb-2">
+                        <i class="fa-solid fa-triangle-exclamation text-amber-600 text-xl"></i>
+                        Diagnóstico: Ambiente MODERADO com Riscos de Bloqueio (${percentage}%)
+                    </div>
+                    <p class="text-xs leading-relaxed">
+                        Existem barreiras parciais no ambiente de trabalho (ex: falta de tempo ou softwares desalinhados). Há o risco de o colaborador utilizar os novos métodos apenas parcialmente.
+                        <br><strong>Recomendação:</strong> Alinhar previamente com as chefias diretas a remoção de obstáculos práticos.
+                    </p>
+                `;
+            } else {
+                resultDiv.className = "p-5 rounded-xl border border-red-300 bg-red-50 text-red-900";
+                resultDiv.innerHTML = `
+                    <div class="font-bold text-base flex items-center gap-2 mb-2">
+                        <i class="fa-solid fa-circle-xmark text-red-600 text-xl"></i>
+                        Diagnóstico: Ambiente INIBIDOR / Altas Restrições Situacionais (${percentage}%)
+                    </div>
+                    <p class="text-xs leading-relaxed">
+                        <strong>Alerta Crítico:</strong> O ambiente de pós-treinamento apresenta graves restrições situacionais (Peters & O'Connor). Treinar os colaboradores neste cenário resultará em desperdício orçamentário e frustração, pois a chefia ou a infraestrutura impedirão a aplicação do aprendizado.
+                    </p>
+                `;
+            }
+        }
+
+        // SIMULADOR 3: CALCULADORA DE ROI
+        function calculateROI() {
+            const cost = parseFloat(document.getElementById('roi-cost').value) || 0;
+            const gain = parseFloat(document.getElementById('roi-gain').value) || 0;
+            const people = parseInt(document.getElementById('roi-people').value) || 1;
+
+            if (cost <= 0) {
+                alert("O custo total deve ser maior que zero!");
+                return;
+            }
+
+            const netGain = gain - cost;
+            const roiPercent = ((netGain / cost) * 100).toFixed(1);
+            const costPerCapita = (cost / people).toFixed(2);
+            const ratio = (gain / cost).toFixed(2);
+
+            document.getElementById('res-roi').textContent = (roiPercent >= 0 ? "+" : "") + roiPercent + "%";
+            document.getElementById('res-net').textContent = "R$ " + netGain.toLocaleString('pt-BR');
+            document.getElementById('res-per-capita').textContent = "R$ " + parseFloat(costPerCapita).toLocaleString('pt-BR');
+            document.getElementById('res-ratio').textContent = "R$ " + ratio;
+
+            const verdict = document.getElementById('roi-verdict');
+            if (roiPercent >= 100) {
+                verdict.className = "mt-4 p-3 bg-emerald-500/20 border border-emerald-500/30 rounded-lg text-xs text-emerald-200";
+                verdict.innerHTML = `<i class="fa-solid fa-circle-check"></i> Retorno Excepcional! O projeto pagou o investimento original em mais de ${ratio}x.`;
+            } else if (roiPercent > 0) {
+                verdict.className = "mt-4 p-3 bg-teal-500/20 border border-teal-500/30 rounded-lg text-xs text-teal-200";
+                verdict.innerHTML = `<i class="fa-solid fa-circle-info"></i> Retorno Positivo. O programa gerou lucro superando os custos de execução.`;
+            } else {
+                verdict.className = "mt-4 p-3 bg-red-500/20 border border-red-500/30 rounded-lg text-xs text-red-200";
+                verdict.innerHTML = `<i class="fa-solid fa-triangle-exclamation"></i> Projeto deficitário. Os ganhos financeiros não cobrem o custo de execução.`;
+            }
+        }
+
+        // Initialize App
+        window.onload = function() {
+            renderLntTable();
+            calculateROI();
+        };
+    </script>
 </body>
 </html>

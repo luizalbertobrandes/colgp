@@ -81,7 +81,7 @@
                         Gestão de Pessoas: <span class="text-teal-400">Do Diagnóstico à Transferência do Aprendizado</span>
                     </h1>
                     <p class="mt-2 text-slate-300 text-sm sm:text-base max-w-3xl">
-                        Plano Didático Interativo, Fundamentação Teórica, Metodologias Ativas e Simuladores Práticos de T&D.
+                        Plano Didático Interativo, Fundamentação Teórica, Metodologias Ativas e Fichas do Simulador de LNT & T&D.
                     </p>
                 </div>
                 <div class="flex items-center gap-3 no-print">
@@ -102,6 +102,9 @@
                 </button>
                 <button onclick="switchTab('modulo-1')" id="tab-btn-modulo-1" class="tab-btn px-4 py-2.5 text-xs sm:text-sm font-medium rounded-lg text-slate-600 hover:text-teal-600 hover:bg-slate-100 transition whitespace-nowrap border-b-2 border-transparent flex items-center gap-2">
                     <i class="fa-solid fa-magnifying-glass-chart"></i> Módulo 1: LNT & Diagnóstico
+                </button>
+                <button onclick="switchTab('fichas-equipe')" id="tab-btn-fichas-equipe" class="tab-btn px-4 py-2.5 text-xs sm:text-sm font-medium rounded-lg text-slate-600 hover:text-teal-600 hover:bg-slate-100 transition whitespace-nowrap border-b-2 border-transparent flex items-center gap-2 bg-amber-50/50 text-amber-800 font-semibold border-amber-200">
+                    <i class="fa-solid fa-id-card text-amber-600"></i> Fichas do Caso (Equipe Comercial)
                 </button>
                 <button onclick="switchTab('modulo-2')" id="tab-btn-modulo-2" class="tab-btn px-4 py-2.5 text-xs sm:text-sm font-medium rounded-lg text-slate-600 hover:text-teal-600 hover:bg-slate-100 transition whitespace-nowrap border-b-2 border-transparent flex items-center gap-2">
                     <i class="fa-solid fa-chalkboard-user"></i> Módulo 2: Capacitação & Suporte
@@ -240,9 +243,17 @@
 
             <!-- Atividade Prática Criativa do Módulo 1 -->
             <div class="bg-white p-6 sm:p-8 rounded-2xl border border-slate-200 shadow-sm space-y-6">
-                <h3 class="text-lg font-bold text-slate-900 flex items-center gap-2">
-                    <i class="fa-solid fa-hands-holding-child text-teal-600"></i> Atividades Práticas & Dinâmicas de Sala de Aula
-                </h3>
+                <div class="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 border-b pb-4">
+                    <div>
+                        <h3 class="text-lg font-bold text-slate-900 flex items-center gap-2">
+                            <i class="fa-solid fa-hands-holding-child text-teal-600"></i> Atividades Práticas & Dinâmicas de Sala de Aula
+                        </h3>
+                        <p class="text-xs text-slate-500">Acesse as fichas prontas da Equipe Comercial para realizar a dinâmica em grupo.</p>
+                    </div>
+                    <button onclick="switchTab('fichas-equipe')" class="bg-amber-600 hover:bg-amber-700 text-white font-semibold text-xs px-4 py-2.5 rounded-lg transition shadow flex items-center gap-2">
+                        <i class="fa-solid fa-id-card"></i> Ver 5 Fichas da Equipe Comercial
+                    </button>
+                </div>
 
                 <!-- Atividade 1 -->
                 <div class="border border-slate-200 rounded-xl p-5 hover:border-teal-400 transition">
@@ -255,11 +266,11 @@
                         <strong>Objetivo:</strong> Mapear Conhecimentos, Habilidades e Atitudes (CHA) e tabular dados de carências de equipe comercial com metas defasadas.
                     </p>
                     <div class="bg-slate-50 p-4 rounded-lg text-xs text-slate-700 space-y-2">
-                        <p><strong>Dinâmica:</strong></p>
+                        <p><strong>Dinâmica de Trabalho:</strong></p>
                         <ul class="list-disc list-inside space-y-1">
-                            <li>Cada grupo recebe fichas fictícias de 5 colaboradores com métricas de desempenho.</li>
-                            <li>Os alunos utilizam a calculadora interativa (Aba Simuladores) para definir a Matriz de Priorização calculando o Índice de Prioridade: $Urgência \times Impacto$.</li>
-                            <li>Classificam os gaps entre Treináveis (CHA) e Não Treináveis (Logística/Ferramentas).</li>
+                            <li>Cada grupo analisa as 5 fichas fictícias da Equipe Comercial da Distribuidora <em>AçoForte S/A</em>.</li>
+                            <li>Os alunos utilizam a Calculadora Interativa (Aba Simuladores) para definir o Índice de Prioridade: $Urgência \times Impacto$.</li>
+                            <li>Separam os gargalos em <strong>Treináveis (CHA - Conhecimento, Habilidade, Atitude)</strong> e <strong>Não Treináveis (Infraestrutura, Ferramentas, Logística)</strong>.</li>
                         </ul>
                     </div>
                 </div>
@@ -280,6 +291,308 @@
                         <p>• <strong>Aluno B (Gestor Operacional):</strong> Interpreta um gestor sob pressão que reclama da "falta de vontade da equipe".</p>
                         <p>• <strong>Debriefing:</strong> O analista deve apresentar o diagnóstico final apontando as reais causas do gargalo.</p>
                     </div>
+                </div>
+            </div>
+        </section>
+
+
+        <!-- ================= TAB NOVE: FICHAS DO CASO (EQUIPE COMERCIAL) ================= -->
+        <section id="fichas-equipe" class="tab-content hidden space-y-8">
+            <div class="bg-white p-6 sm:p-8 rounded-2xl border border-slate-200 shadow-sm">
+                <div class="flex flex-col md:flex-row md:items-center justify-between gap-4 border-b pb-6 mb-6">
+                    <div>
+                        <div class="inline-flex items-center gap-2 bg-amber-100 border border-amber-300 text-amber-800 text-xs font-bold px-3 py-1 rounded-full mb-2">
+                            <i class="fa-solid fa-folder-open"></i> Estudo de Caso Prático #2026-B
+                        </div>
+                        <h2 class="text-2xl font-extrabold text-slate-900">Fichas Metodológicas da Equipe Comercial</h2>
+                        <p class="text-xs sm:text-sm text-slate-500">
+                            Empresa fictícia: <strong>AçoForte Distribuidora S/A</strong> | Diagnóstico de Metas Defasadas do 3º Trimestre
+                        </p>
+                    </div>
+                    <div class="flex items-center gap-2 no-print">
+                        <button onclick="carregarTodasFichasNoSimulador()" class="bg-teal-700 hover:bg-teal-800 text-white text-xs font-bold px-4 py-2.5 rounded-lg transition shadow flex items-center gap-2">
+                            <i class="fa-solid fa-file-import"></i> Carregar Todas no Simulador LNT
+                        </button>
+                    </div>
+                </div>
+
+                <div class="bg-amber-50/70 border border-amber-200 rounded-xl p-4 text-xs text-amber-900 mb-8 space-y-1">
+                    <p class="font-bold flex items-center gap-2 text-sm">
+                        <i class="fa-solid fa-circle-info text-amber-600"></i> Instruções para os Grupos de Alunos:
+                    </p>
+                    <p>1. Analise atentamente as métricas e o histórico de relatos de cada um dos 5 colaboradores abaixo.</p>
+                    <p>2. Identifique se o problema principal é de <strong>Competência (CHA: Conhecimento, Habilidade ou Atitude)</strong> ou de <strong>Restrição de Recurso (Ferramentas, TI, Logística)</strong>.</p>
+                    <p>3. Utilize os botões <strong>"Lançar na Planilha LNT"</strong> de cada ficha para enviar os dados direto ao Simulador Interativo da Plataforma.</p>
+                </div>
+
+                <!-- CARDS DOS 5 COLABORADORES -->
+                <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+
+                    <!-- FICHA 1 -->
+                    <div class="border border-slate-200 rounded-2xl bg-white p-5 shadow-sm hover:shadow-md transition flex flex-col justify-between">
+                        <div>
+                            <div class="flex items-center gap-4 border-b pb-4 mb-4">
+                                <img src="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?auto=format&fit=crop&q=80&w=250" alt="Lucas Andrade" class="w-16 h-16 rounded-full object-cover border-2 border-teal-500 shadow-sm">
+                                <div>
+                                    <span class="bg-teal-100 text-teal-800 text-[10px] font-bold px-2 py-0.5 rounded uppercase tracking-wider">Ficha #01</span>
+                                    <h3 class="font-bold text-slate-900 text-lg">Lucas Andrade</h3>
+                                    <p class="text-xs text-slate-500 font-medium">Consultor de Vendas Sênior | 5 anos de empresa</p>
+                                </div>
+                            </div>
+
+                            <!-- Métricas -->
+                            <div class="grid grid-cols-2 gap-2 bg-slate-50 p-3 rounded-xl text-xs mb-4">
+                                <div>
+                                    <span class="text-slate-400 block text-[10px]">Meta de Vendas:</span>
+                                    <span class="font-bold text-slate-800">R$ 100.000 / mês</span>
+                                </div>
+                                <div>
+                                    <span class="text-slate-400 block text-[10px]">Realizado Atual:</span>
+                                    <span class="font-bold text-red-600">R$ 45.000 (45%)</span>
+                                </div>
+                                <div>
+                                    <span class="text-slate-400 block text-[10px]">Taxa Conversão:</span>
+                                    <span class="font-bold text-red-600">12% (Meta: 30%)</span>
+                                </div>
+                                <div>
+                                    <span class="text-slate-400 block text-[10px]">Tempo p/ Orçamento:</span>
+                                    <span class="font-bold text-amber-700">4h por proposta</span>
+                                </div>
+                            </div>
+
+                            <!-- Histórico Observado -->
+                            <div class="space-y-2 text-xs text-slate-700 mb-4">
+                                <p class="font-bold text-slate-900 flex items-center gap-1.5">
+                                    <i class="fa-solid fa-comment-dots text-teal-600"></i> Relato de Observação no Campo:
+                                </p>
+                                <p class="bg-slate-50 p-3 rounded-lg italic text-slate-600 border-l-2 border-teal-500">
+                                    "Lucas é muito comunicativo e atencioso com os clientes. Porém, após a atualização do novo software de CRM e precificação, ele não consegue operar as telas avançadas de cotação automatizada. Leva horas calculando impostos manualmente em planilhas antigas e erra a formatação dos orçamentos, perdendo o timing do cliente."
+                                </p>
+                            </div>
+                        </div>
+
+                        <div class="pt-3 border-t flex items-center justify-between">
+                            <div class="text-[11px]">
+                                <span class="font-bold text-slate-700">Sugestão LNT:</span> <span class="text-teal-700 font-semibold">Habilidade (CRM)</span>
+                            </div>
+                            <button onclick="carregarFichaLNT('Operação Avançada do CRM', 'Habilidade', 5, 4)" class="bg-teal-600 hover:bg-teal-700 text-white text-xs font-semibold px-3 py-1.5 rounded-lg transition flex items-center gap-1.5">
+                                <i class="fa-solid fa-arrow-right-to-bracket"></i> Lançar na Planilha LNT
+                            </button>
+                        </div>
+                    </div>
+
+                    <!-- FICHA 2 -->
+                    <div class="border border-slate-200 rounded-2xl bg-white p-5 shadow-sm hover:shadow-md transition flex flex-col justify-between">
+                        <div>
+                            <div class="flex items-center gap-4 border-b pb-4 mb-4">
+                                <img src="https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?auto=format&fit=crop&q=80&w=250" alt="Carla Menezes" class="w-16 h-16 rounded-full object-cover border-2 border-teal-500 shadow-sm">
+                                <div>
+                                    <span class="bg-teal-100 text-teal-800 text-[10px] font-bold px-2 py-0.5 rounded uppercase tracking-wider">Ficha #02</span>
+                                    <h3 class="font-bold text-slate-900 text-lg">Carla Menezes</h3>
+                                    <p class="text-xs text-slate-500 font-medium">Executiva de Contas Jr. | 8 meses de empresa</p>
+                                </div>
+                            </div>
+
+                            <!-- Métricas -->
+                            <div class="grid grid-cols-2 gap-2 bg-slate-50 p-3 rounded-xl text-xs mb-4">
+                                <div>
+                                    <span class="text-slate-400 block text-[10px]">Meta de Vendas:</span>
+                                    <span class="font-bold text-slate-800">R$ 80.000 / mês</span>
+                                </div>
+                                <div>
+                                    <span class="text-slate-400 block text-[10px]">Realizado Atual:</span>
+                                    <span class="font-bold text-red-600">R$ 32.000 (40%)</span>
+                                </div>
+                                <div>
+                                    <span class="text-slate-400 block text-[10px]">Chamados Pós-Venda:</span>
+                                    <span class="font-bold text-red-600">18 reclamações/mês</span>
+                                </div>
+                                <div>
+                                    <span class="text-slate-400 block text-[10px]">Contratos Devolvidos:</span>
+                                    <span class="font-bold text-amber-700">35% por inconsistência</span>
+                                </div>
+                            </div>
+
+                            <!-- Histórico Observado -->
+                            <div class="space-y-2 text-xs text-slate-700 mb-4">
+                                <p class="font-bold text-slate-900 flex items-center gap-1.5">
+                                    <i class="fa-solid fa-comment-dots text-teal-600"></i> Relato de Observação no Campo:
+                                </p>
+                                <p class="bg-slate-50 p-3 rounded-lg italic text-slate-600 border-l-2 border-teal-500">
+                                    "Carla domina o sistema de vendas perfeitamente, mas desconhece as normas do Código de Defesa do Consumidor e as novas políticas contratuais de garantia de faturamento da empresa. Ela promete prazos de trocas e condições de frete inviáveis aos clientes, gerando multas, distratos e forte atrito com o jurídico."
+                                </p>
+                            </div>
+                        </div>
+
+                        <div class="pt-3 border-t flex items-center justify-between">
+                            <div class="text-[11px]">
+                                <span class="font-bold text-slate-700">Sugestão LNT:</span> <span class="text-teal-700 font-semibold">Conhecimento (CDC/Contratos)</span>
+                            </div>
+                            <button onclick="carregarFichaLNT('Legislação do Consumidor & Contratos', 'Conhecimento', 4, 4)" class="bg-teal-600 hover:bg-teal-700 text-white text-xs font-semibold px-3 py-1.5 rounded-lg transition flex items-center gap-1.5">
+                                <i class="fa-solid fa-arrow-right-to-bracket"></i> Lançar na Planilha LNT
+                            </button>
+                        </div>
+                    </div>
+
+                    <!-- FICHA 3 -->
+                    <div class="border border-red-200 bg-red-50/20 rounded-2xl p-5 shadow-sm hover:shadow-md transition flex flex-col justify-between">
+                        <div>
+                            <div class="flex items-center gap-4 border-b border-red-100 pb-4 mb-4">
+                                <img src="https://images.unsplash.com/photo-1500648767791-00dcc994a43e?auto=format&fit=crop&q=80&w=250" alt="Roberto Silva" class="w-16 h-16 rounded-full object-cover border-2 border-red-500 shadow-sm">
+                                <div>
+                                    <span class="bg-red-100 text-red-800 text-[10px] font-bold px-2 py-0.5 rounded uppercase tracking-wider">Ficha #03 - Atento!</span>
+                                    <h3 class="font-bold text-slate-900 text-lg">Roberto "Beto" Silva</h3>
+                                    <p class="text-xs text-slate-500 font-medium">Vendedor Externo Key Account | 10 anos de empresa</p>
+                                </div>
+                            </div>
+
+                            <!-- Métricas -->
+                            <div class="grid grid-cols-2 gap-2 bg-white/80 p-3 rounded-xl text-xs mb-4 border border-red-100">
+                                <div>
+                                    <span class="text-slate-400 block text-[10px]">Meta de Vendas:</span>
+                                    <span class="font-bold text-slate-800">R$ 120.000 / mês</span>
+                                </div>
+                                <div>
+                                    <span class="text-slate-400 block text-[10px]">Realizado Atual:</span>
+                                    <span class="font-bold text-red-600">R$ 50.000 (41%)</span>
+                                </div>
+                                <div>
+                                    <span class="text-slate-400 block text-[10px]">Visitas Canceladas:</span>
+                                    <span class="font-bold text-red-600">60% de queda</span>
+                                </div>
+                                <div>
+                                    <span class="text-slate-400 block text-[10px]">Amostras de Produto:</span>
+                                    <span class="font-bold text-red-700">3 semanas de atraso</span>
+                                </div>
+                            </div>
+
+                            <!-- Histórico Observado -->
+                            <div class="space-y-2 text-xs text-slate-700 mb-4">
+                                <p class="font-bold text-slate-900 flex items-center gap-1.5">
+                                    <i class="fa-solid fa-triangle-exclamation text-red-600"></i> Relato de Observação no Campo:
+                                </p>
+                                <p class="bg-white p-3 rounded-lg italic text-slate-600 border-l-2 border-red-500 border">
+                                    "Beto é um dos vendedores mais experientes da empresa, domina técnicas de negociação e conhece o produto como ninguém. Contudo, seu tablet corporativo está com a bateria viciada (desliga nas reuniões), o chip 4G não funciona na região dos clientes e a fábrica não enviou os amostradores físicos de aço há quase um mês."
+                                </p>
+                            </div>
+                        </div>
+
+                        <div class="pt-3 border-t border-red-100 flex items-center justify-between">
+                            <div class="text-[11px]">
+                                <span class="font-bold text-slate-700">Sugestão LNT:</span> <span class="text-red-700 font-bold">NÃO TREINÁVEL (Recurso/Infra)</span>
+                            </div>
+                            <button onclick="carregarFichaLNT('Falha de Tablet, Sinal 4G e Amostras', 'Recurso/Infra', 5, 5)" class="bg-red-600 hover:bg-red-700 text-white text-xs font-semibold px-3 py-1.5 rounded-lg transition flex items-center gap-1.5">
+                                <i class="fa-solid fa-arrow-right-to-bracket"></i> Lançar na Planilha LNT
+                            </button>
+                        </div>
+                    </div>
+
+                    <!-- FICHA 4 -->
+                    <div class="border border-slate-200 rounded-2xl bg-white p-5 shadow-sm hover:shadow-md transition flex flex-col justify-between">
+                        <div>
+                            <div class="flex items-center gap-4 border-b pb-4 mb-4">
+                                <img src="https://images.unsplash.com/photo-1580489944761-15a19d654956?auto=format&fit=crop&q=80&w=250" alt="Juliana Costa" class="w-16 h-16 rounded-full object-cover border-2 border-teal-500 shadow-sm">
+                                <div>
+                                    <span class="bg-teal-100 text-teal-800 text-[10px] font-bold px-2 py-0.5 rounded uppercase tracking-wider">Ficha #04</span>
+                                    <h3 class="font-bold text-slate-900 text-lg">Juliana Costa</h3>
+                                    <p class="text-xs text-slate-500 font-medium">SDR / Pré-vendas Internas | 1 ano de empresa</p>
+                                </div>
+                            </div>
+
+                            <!-- Métricas -->
+                            <div class="grid grid-cols-2 gap-2 bg-slate-50 p-3 rounded-xl text-xs mb-4">
+                                <div>
+                                    <span class="text-slate-400 block text-[10px]">Ligações/Dia:</span>
+                                    <span class="font-bold text-red-600">15 ligações (Meta: 50)</span>
+                                </div>
+                                <div>
+                                    <span class="text-slate-400 block text-[10px]">Taxa Agendamento:</span>
+                                    <span class="font-bold text-red-600">5% (Meta: 20%)</span>
+                                </div>
+                                <div>
+                                    <span class="text-slate-400 block text-[10px]">Atrasos no Turno:</span>
+                                    <span class="font-bold text-amber-700">Frequentes</span>
+                                </div>
+                                <div>
+                                    <span class="text-slate-400 block text-[10px]">Adesão ao Script:</span>
+                                    <span class="font-bold text-red-600">Baixa / Recusa</span>
+                                </div>
+                            </div>
+
+                            <!-- Histórico Observado -->
+                            <div class="space-y-2 text-xs text-slate-700 mb-4">
+                                <p class="font-bold text-slate-900 flex items-center gap-1.5">
+                                    <i class="fa-solid fa-comment-dots text-teal-600"></i> Relato de Observação no Campo:
+                                </p>
+                                <p class="bg-slate-50 p-3 rounded-lg italic text-slate-600 border-l-2 border-teal-500">
+                                    "Juliana tirou nota 10 no curso de comunicação e prospecção há 3 meses. Conhece todas as técnicas, mas demonstra extrema apatia e desmotivação. Recusa-se a seguir o roteiro de abordagem aprovado, argumentando que 'não acredita mais nos produtos da empresa' após um desentendimento com a supervisão."
+                                </p>
+                            </div>
+                        </div>
+
+                        <div class="pt-3 border-t flex items-center justify-between">
+                            <div class="text-[11px]">
+                                <span class="font-bold text-slate-700">Sugestão LNT:</span> <span class="text-teal-700 font-semibold">Atitude / Engajamento</span>
+                            </div>
+                            <button onclick="carregarFichaLNT('Apatia, Desalinhamento e Postura de Prospecção', 'Atitude', 4, 3)" class="bg-teal-600 hover:bg-teal-700 text-white text-xs font-semibold px-3 py-1.5 rounded-lg transition flex items-center gap-1.5">
+                                <i class="fa-solid fa-arrow-right-to-bracket"></i> Lançar na Planilha LNT
+                            </button>
+                        </div>
+                    </div>
+
+                    <!-- FICHA 5 -->
+                    <div class="border border-slate-200 rounded-2xl bg-white p-5 shadow-sm hover:shadow-md transition flex flex-col justify-between lg:col-span-2">
+                        <div>
+                            <div class="flex items-center gap-4 border-b pb-4 mb-4">
+                                <img src="https://images.unsplash.com/photo-1519085360753-af0119f7cbe7?auto=format&fit=crop&q=80&w=250" alt="Fernando Lima" class="w-16 h-16 rounded-full object-cover border-2 border-teal-500 shadow-sm">
+                                <div>
+                                    <span class="bg-teal-100 text-teal-800 text-[10px] font-bold px-2 py-0.5 rounded uppercase tracking-wider">Ficha #05</span>
+                                    <h3 class="font-bold text-slate-900 text-lg">Fernando "Nando" Lima</h3>
+                                    <p class="text-xs text-slate-500 font-medium">Assistente de Vendas Internas | 4 meses de empresa</p>
+                                </div>
+                            </div>
+
+                            <!-- Métricas -->
+                            <div class="grid grid-cols-2 md:grid-cols-4 gap-2 bg-slate-50 p-3 rounded-xl text-xs mb-4">
+                                <div>
+                                    <span class="text-slate-400 block text-[10px]">Meta de Vendas:</span>
+                                    <span class="font-bold text-slate-800">R$ 60.000 / mês</span>
+                                </div>
+                                <div>
+                                    <span class="text-slate-400 block text-[10px]">Realizado Atual:</span>
+                                    <span class="font-bold text-amber-600">R$ 42.000 (70%)</span>
+                                </div>
+                                <div>
+                                    <span class="text-slate-400 block text-[10px]">Fechamento em Reunião:</span>
+                                    <span class="font-bold text-red-600">18% (Média: 40%)</span>
+                                </div>
+                                <div>
+                                    <span class="text-slate-400 block text-[10px]">Descontos Concedidos:</span>
+                                    <span class="font-bold text-red-600">Teto máximo (15%)</span>
+                                </div>
+                            </div>
+
+                            <!-- Histórico Observado -->
+                            <div class="space-y-2 text-xs text-slate-700 mb-4">
+                                <p class="font-bold text-slate-900 flex items-center gap-1.5">
+                                    <i class="fa-solid fa-comment-dots text-teal-600"></i> Relato de Observação no Campo:
+                                </p>
+                                <p class="bg-slate-50 p-3 rounded-lg italic text-slate-600 border-l-2 border-teal-500">
+                                    "Fernando é extremamente pontual e dedicado. Entende as especificações dos produtos de aço, mas congela quando o comprador do outro lado pede um desconto adicional ou faz objeção ao valor do frete. Nando cede imediatamente a margem máxima de desconto e, mesmo assim, perde a negociação por não saber argumentar valor agregado."
+                                </p>
+                            </div>
+                        </div>
+
+                        <div class="pt-3 border-t flex items-center justify-between">
+                            <div class="text-[11px]">
+                                <span class="font-bold text-slate-700">Sugestão LNT:</span> <span class="text-teal-700 font-semibold">Habilidade (Contorno de Objeções & Negociação)</span>
+                            </div>
+                            <button onclick="carregarFichaLNT('Técnicas de Negociação & Fechamento', 'Habilidade', 3, 4)" class="bg-teal-600 hover:bg-teal-700 text-white text-xs font-semibold px-3 py-1.5 rounded-lg transition flex items-center gap-1.5">
+                                <i class="fa-solid fa-arrow-right-to-bracket"></i> Lançar na Planilha LNT
+                            </button>
+                        </div>
+                    </div>
+
                 </div>
             </div>
         </section>
@@ -472,14 +785,19 @@
 
                 <!-- SIMULADOR 1: CALCULADORA DE MATRIZ DE LNT -->
                 <div class="bg-slate-50 border border-slate-200 rounded-2xl p-6 mb-8 shadow-sm">
-                    <div class="flex items-center gap-3 mb-4">
-                        <div class="w-9 h-9 rounded-lg bg-teal-600 text-white flex items-center justify-center font-bold">
-                            1
+                    <div class="flex items-center justify-between gap-3 mb-4">
+                        <div class="flex items-center gap-3">
+                            <div class="w-9 h-9 rounded-lg bg-teal-600 text-white flex items-center justify-center font-bold">
+                                1
+                            </div>
+                            <div>
+                                <h3 class="text-lg font-bold text-slate-900">Simulador 1: Calculadora & Matriz de LNT (Urgência vs. Impacto)</h3>
+                                <p class="text-xs text-slate-500">Mapeamento de Prioridade e Diagnóstico do Gap de Desempenho</p>
+                            </div>
                         </div>
-                        <div>
-                            <h3 class="text-lg font-bold text-slate-900">Simulador 1: Calculadora & Matriz de LNT (Urgência vs. Impacto)</h3>
-                            <p class="text-xs text-slate-500">Mapeamento de Prioridade e Diagnóstico do Gap de Desempenho</p>
-                        </div>
+                        <button onclick="switchTab('fichas-equipe')" class="text-xs bg-amber-100 text-amber-800 hover:bg-amber-200 font-bold px-3 py-1.5 rounded-lg border border-amber-300 transition flex items-center gap-1.5">
+                            <i class="fa-solid fa-id-card"></i> Consultar Fichas da Equipe
+                        </button>
                     </div>
 
                     <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
@@ -489,11 +807,11 @@
                             
                             <div>
                                 <label class="block text-xs font-semibold text-slate-700 mb-1">Descrição do Problema / Tarefa</label>
-                                <input type="text" id="lnt-task" placeholder="Ex: Operação do Leitor de Cód. Barras" class="w-full text-xs p-2.5 rounded-lg border border-slate-300 focus:ring-2 focus:ring-teal-500 focus:outline-none">
+                                <input type="text" id="lnt-task" placeholder="Ex: Operação de CRM / Objeção de Preço" class="w-full text-xs p-2.5 rounded-lg border border-slate-300 focus:ring-2 focus:ring-teal-500 focus:outline-none">
                             </div>
 
                             <div>
-                                <label class="block text-xs font-semibold text-slate-700 mb-1">Dimensão do CHA Predominante</label>
+                                <label class="block text-xs font-semibold text-slate-700 mb-1">Dimensão do CHA / Categoria</label>
                                 <select id="lnt-cha" class="w-full text-xs p-2.5 rounded-lg border border-slate-300 focus:ring-2 focus:ring-teal-500 focus:outline-none">
                                     <option value="Conhecimento">Conhecimento (Saber Teórico)</option>
                                     <option value="Habilidade">Habilidade (Saber Fazer / Prática)</option>
@@ -523,7 +841,7 @@
                             <div>
                                 <div class="flex items-center justify-between mb-3 border-b pb-2">
                                     <h4 class="font-bold text-slate-800 text-sm">Matriz de Priorização Calculada</h4>
-                                    <button onclick="clearLntTable()" class="text-xs text-red-600 hover:underline"><i class="fa-solid fa-trash"></i> Limpar</button>
+                                    <button onclick="clearLntTable()" class="text-xs text-red-600 hover:underline"><i class="fa-solid fa-trash"></i> Limpar Planilha</button>
                                 </div>
 
                                 <div class="overflow-x-auto">
@@ -546,7 +864,7 @@
 
                             <div class="mt-4 pt-3 border-t text-xs text-slate-500 flex items-center justify-between">
                                 <span>* Score = Urgência × Impacto (1 a 25)</span>
-                                <span class="font-medium text-teal-700"><i class="fa-solid fa-info-circle"></i> Alta: ≥15 | Média: 8-14 | Baixa: <8</span>
+                                <span class="font-medium text-teal-700"><i class="fa-solid fa-info-circle"></i> Alta: ≥15 | Média: 8-14 | Baixa: &lt;8</span>
                             </div>
                         </div>
                     </div>
@@ -792,6 +1110,11 @@
             const tbody = document.getElementById('lnt-table-body');
             tbody.innerHTML = '';
 
+            if (lntItems.length === 0) {
+                tbody.innerHTML = `<tr><td colspan="5" class="p-4 text-center text-slate-400 italic">Nenhum item cadastrado na matriz. Clique nas fichas dos colaboradores ou preencha o formulário ao lado.</td></tr>`;
+                return;
+            }
+
             lntItems.forEach((item, index) => {
                 let badgeClass = "";
                 if (item.priority === "Alta") badgeClass = "bg-red-100 text-red-800 font-bold";
@@ -850,6 +1173,43 @@
             taskInput.value = '';
             urgencyInput.value = 3;
             impactInput.value = 4;
+        }
+
+        function carregarFichaLNT(task, cha, urgency, impact) {
+            const score = urgency * impact;
+            let priority = "Baixa";
+            if (score >= 15) priority = "Alta";
+            else if (score >= 8) priority = "Média";
+
+            let action = "Capacitação Pontual";
+            if (cha === "Recurso/Infra") {
+                action = "Ação de Infraestrutura / TI (Não Treinável)";
+            } else if (priority === "Alta") {
+                action = "Treinamento Prioritário Imediato";
+            } else if (priority === "Média") {
+                action = "Workshop / Mentoria de Vendas";
+            } else {
+                action = "Leitura Orientada / Feedback";
+            }
+
+            // Check if already exists
+            const exists = lntItems.some(i => i.task === task);
+            if (!exists) {
+                lntItems.push({ task, cha, urgency, impact, score, priority, action });
+            }
+
+            renderLntTable();
+            switchTab('simuladores');
+        }
+
+        function carregarTodasFichasNoSimulador() {
+            lntItems = []; // reset
+            carregarFichaLNT('Operação Avançada do CRM (Lucas)', 'Habilidade', 5, 4);
+            carregarFichaLNT('Legislação do Consumidor & Contratos (Carla)', 'Conhecimento', 4, 4);
+            carregarFichaLNT('Falha de Tablet, Sinal 4G e Amostras (Beto)', 'Recurso/Infra', 5, 5);
+            carregarFichaLNT('Apatia, Desalinhamento e Postura de Prospecção (Juliana)', 'Atitude', 4, 3);
+            carregarFichaLNT('Técnicas de Negociação & Fechamento (Fernando)', 'Habilidade', 3, 4);
+            switchTab('simuladores');
         }
 
         function clearLntTable() {

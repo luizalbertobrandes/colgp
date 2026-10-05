@@ -1,63 +1,986 @@
 <!DOCTYPE html>
-<html lang="pt-BR">
+<html lang="pt-BR" class="scroll-smooth">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Aguarde - Aula em Breve</title>
+    <title>Gestão de Pessoas — LNT Meso e Micro | EEB Colombo Machado Salles</title>
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- FontAwesome Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Google Fonts Inter -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: {
+                        sans: ['Inter', 'sans-serif'],
+                    },
+                    colors: {
+                        brand: {
+                            50: '#f0f7ff',
+                            100: '#e0effe',
+                            500: '#0284c7',
+                            600: '#0369a1',
+                            700: '#035485',
+                            800: '#075985',
+                            900: '#0c4a6e',
+                            slate: '#0f172a'
+                        }
+                    }
+                }
+            }
+        }
+    </script>
     <style>
-        body {
-            margin: 0;
-            padding: 0;
-            background-color: #f4f4f4; /* Cor de fundo suave */
-            font-family: Arial, sans-serif;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            height: 100vh;
+        .gradient-header {
+            background: linear-gradient(135deg, #0f172a 0%, #1e293b 50%, #0369a1 100%);
         }
-
-        .container {
-            background-color: #fff;
-            border-radius: 8px;
-            box-shadow: 0 4px 8px rgba(0,0,0,0.1);
-            padding: 40px;
-            text-align: center;
+        .custom-scrollbar::-webkit-scrollbar {
+            width: 6px;
+            height: 6px;
         }
-
-        .container img {
-            max-width: 100%;
-            height: auto;
-            border-radius: 8px; /* Mantém as bordas arredondadas da imagem */
-            margin-bottom: 20px;
+        .custom-scrollbar::-webkit-scrollbar-track {
+            background: #f1f5f9;
         }
-
-        .container h1 {
-            color: #333;
-            font-size: 24px;
-            margin-bottom: 30px;
+        .custom-scrollbar::-webkit-scrollbar-thumb {
+            background: #cbd5e1;
+            border-radius: 4px;
         }
-
-        .btn-voltar {
-            display: inline-block;
-            background-color: #007bff; /* Azul para o botão */
-            color: #fff;
-            padding: 12px 24px;
-            text-decoration: none;
-            border-radius: 5px;
-            font-weight: bold;
-            transition: background-color 0.3s ease;
-        }
-
-        .btn-voltar:hover {
-            background-color: #0056b3; /* Cor mais escura no hover */
+        .custom-scrollbar::-webkit-scrollbar-thumb:hover {
+            background: #94a3b8;
         }
     </style>
 </head>
-<body>
-    <div class="container">
-        <img src="imagem1.png" width="320" height="240" alt="O professor em sala de aula">
-        <h1>Aguarde: em breve essa aula estará disponivel.</h1>
-        <a href="index.html" class="btn-voltar">Voltar</a>
-    </div>
+<body class="bg-slate-50 text-slate-800 font-sans antialiased selection:bg-sky-500 selection:text-white flex flex-col min-h-screen">
+
+    <!-- Header / Navbar -->
+    <header class="gradient-header text-white sticky top-0 z-50 shadow-lg border-b border-slate-700/50 backdrop-blur-md bg-opacity-95">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-3.5 flex flex-col md:flex-row items-center justify-between gap-4">
+            <div class="flex items-center space-x-3 w-full md:w-auto justify-between">
+                <div class="flex items-center space-x-3">
+                    <div class="bg-sky-500/20 p-2.5 rounded-xl border border-sky-400/30 flex items-center justify-center">
+                        <i class="fa-solid fa-graduation-cap text-sky-400 text-2xl"></i>
+                    </div>
+                    <div>
+                        <span class="text-xs font-semibold uppercase tracking-wider text-sky-300 block">EEB Colombo Machado Salles</span>
+                        <h1 class="text-lg font-bold leading-tight text-white">Técnico em Administração • Gestão de Pessoas</h1>
+                    </div>
+                </div>
+                <span class="md:hidden bg-sky-900/80 text-sky-300 text-xs px-2.5 py-1 rounded-full border border-sky-700 font-mono">Semana 2</span>
+            </div>
+
+            <nav class="flex items-center gap-1 sm:gap-2 text-xs sm:text-sm font-medium overflow-x-auto w-full md:w-auto pb-1 md:pb-0 custom-scrollbar">
+                <a href="#teoria" class="px-3 py-1.5 rounded-lg hover:bg-white/10 transition-colors whitespace-nowrap flex items-center gap-1.5 text-slate-200 hover:text-white">
+                    <i class="fa-solid fa-book-open text-sky-400"></i> Teoria (Aulas 3 e 4)
+                </a>
+                <a href="#matriz-cha" class="px-3 py-1.5 rounded-lg hover:bg-white/10 transition-colors whitespace-nowrap flex items-center gap-1.5 text-slate-200 hover:text-white">
+                    <i class="fa-solid fa-table-list text-sky-400"></i> Matriz do Cargo
+                </a>
+                <a href="#simulador" class="px-3 py-1.5 rounded-lg hover:bg-white/10 transition-colors whitespace-nowrap flex items-center gap-1.5 text-slate-200 hover:text-white">
+                    <i class="fa-solid fa-calculator text-sky-400"></i> Calculadora de Gaps
+                </a>
+                <a href="#quiz" class="px-3 py-1.5 rounded-lg hover:bg-white/10 transition-colors whitespace-nowrap flex items-center gap-1.5 text-slate-200 hover:text-white">
+                    <i class="fa-solid fa-circle-question text-sky-400"></i> Quiz de Fixação
+                </a>
+            </nav>
+        </div>
+    </header>
+
+    <!-- Hero Banner -->
+    <section class="bg-gradient-to-br from-slate-900 via-slate-800 to-sky-950 text-white py-10 px-4 border-b border-slate-700">
+        <div class="max-w-7xl mx-auto flex flex-col lg:flex-row items-center justify-between gap-8">
+            <div class="max-w-3xl space-y-4">
+                <div class="inline-flex items-center gap-2 bg-sky-500/10 text-sky-300 px-3 py-1 rounded-full text-xs font-semibold border border-sky-500/20">
+                    <i class="fa-solid fa-layer-group"></i> Módulo Prático de T&D
+                </div>
+                <h2 class="text-2xl sm:text-3xl lg:text-4xl font-extrabold tracking-tight leading-snug">
+                    Levantamento de Necessidades de Treinamento (LNT)
+                </h2>
+                <p class="text-slate-300 text-sm sm:text-base leading-relaxed">
+                    Aprofunde o estudo do <strong class="text-sky-300 font-semibold">Nível Meso (Análise de Tarefas & Espaço Ocupacional)</strong> e do <strong class="text-sky-300 font-semibold">Nível Micro (Análise Individual & Diagnóstico de Gaps)</strong>. Explore a matriz CHA e mensure numericamente as lacunas de competências para orientar planos de capacitação eficientes.
+                </p>
+                <div class="flex flex-wrap gap-3 pt-2">
+                    <a href="#simulador" class="inline-flex items-center gap-2 bg-sky-600 hover:bg-sky-500 text-white font-semibold text-xs sm:text-sm px-4 py-2.5 rounded-xl shadow-md shadow-sky-900/50 transition-all hover:scale-[1.02]">
+                        <i class="fa-solid fa-play"></i> Iniciar Simulador de Gaps
+                    </a>
+                    <a href="#matriz-cha" class="inline-flex items-center gap-2 bg-slate-800 hover:bg-slate-700 text-slate-200 border border-slate-600 text-xs sm:text-sm px-4 py-2.5 rounded-xl transition-all">
+                        <i class="fa-solid fa-magnifying-glass"></i> Explorar Matriz de Requisitos
+                    </a>
+                </div>
+            </div>
+
+            <!-- Key Info Card -->
+            <div class="w-full lg:w-80 bg-slate-800/80 backdrop-blur border border-slate-700 p-5 rounded-2xl shadow-xl space-y-4 text-xs sm:text-sm">
+                <div class="flex items-center justify-between border-b border-slate-700 pb-3">
+                    <span class="text-slate-400 font-medium">Empresa Simulação:</span>
+                    <span class="font-bold text-sky-300">TechSul Soluções</span>
+                </div>
+                <div class="flex items-center justify-between border-b border-slate-700 pb-3">
+                    <span class="text-slate-400 font-medium">Setor Foco:</span>
+                    <span class="font-semibold text-slate-200">Customer Service (CS)</span>
+                </div>
+                <div class="flex items-center justify-between border-b border-slate-700 pb-3">
+                    <span class="text-slate-400 font-medium">Fórmula Central:</span>
+                    <span class="font-mono text-emerald-400 font-bold bg-slate-900/80 px-2 py-0.5 rounded">Gap = Ideal - Real</span>
+                </div>
+                <div class="flex items-center justify-between">
+                    <span class="text-slate-400 font-medium">Escala Padrão:</span>
+                    <span class="font-semibold text-amber-300">1 a 5 Pontos</span>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Main Content Container -->
+    <main class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-10 space-y-16 flex-grow">
+
+        <!-- SEÇÃO 1: TEORIA ILUSTRADA -->
+        <section id="teoria" class="space-y-8">
+            <div class="border-b border-slate-200 pb-4">
+                <div class="flex items-center gap-2 text-sky-600 font-semibold text-xs tracking-wider uppercase mb-1">
+                    <i class="fa-solid fa-graduation-cap"></i> Fundamentação Teórica
+                </div>
+                <h2 class="text-2xl sm:text-3xl font-bold text-slate-900">Aulas 3 e 4: Níveis de Análise no LNT</h2>
+            </div>
+
+            <!-- Grid de Aulas -->
+            <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
+                
+                <!-- Card Aula 3 -->
+                <div class="bg-white rounded-2xl p-6 sm:p-8 shadow-sm border border-slate-200 flex flex-col justify-between hover:shadow-md transition-shadow">
+                    <div class="space-y-4">
+                        <div class="flex items-center justify-between">
+                            <span class="bg-sky-100 text-sky-800 text-xs font-bold px-3 py-1 rounded-full uppercase tracking-wide">Aula 3 (45 min)</span>
+                            <span class="text-xs text-slate-400 font-medium"><i class="fa-regular fa-clock"></i> Nível Meso / Operacional</span>
+                        </div>
+                        <h3 class="text-xl font-bold text-slate-900">LNT Nível 2: Análise de Tarefas e Espaço Ocupacional</h3>
+                        <p class="text-slate-600 text-sm leading-relaxed">
+                            O Nível Meso foca no <strong>cargo e nas atribuições do espaço ocupacional</strong>. Em vez de olhar para a empresa toda (Nível Macro) ou para o indivíduo isolado (Nível Micro), investiga o que o cargo exige para ser desempenhado com alta eficiência.
+                        </p>
+
+                        <!-- CHA Card Concept -->
+                        <div class="bg-slate-50 border border-slate-200 rounded-xl p-4 space-y-3">
+                            <h4 class="text-xs font-bold uppercase tracking-wider text-slate-700 flex items-center justify-between">
+                                <span>A Tríade de Competências (CHA)</span>
+                                <span class="text-sky-600 font-mono font-normal">C × H × A</span>
+                            </h4>
+                            <div class="space-y-2.5 text-xs">
+                                <div class="flex items-start gap-2.5 bg-white p-2.5 rounded-lg border border-slate-100">
+                                    <div class="bg-blue-100 text-blue-700 font-bold rounded p-1 min-w-[24px] text-center">C</div>
+                                    <div>
+                                        <strong class="text-slate-800">Conhecimento (Saber / Hard Skill):</strong>
+                                        <p class="text-slate-500">Teorias, regras de garantia, operação de CRM, Código de Defesa do Consumidor.</p>
+                                    </div>
+                                </div>
+                                <div class="flex items-start gap-2.5 bg-white p-2.5 rounded-lg border border-slate-100">
+                                    <div class="bg-emerald-100 text-emerald-700 font-bold rounded p-1 min-w-[24px] text-center">H</div>
+                                    <div>
+                                        <strong class="text-slate-800">Habilidade (Saber Fazer / Hard & Soft Skill):</strong>
+                                        <p class="text-slate-500">Aplicação prática do conhecimento: digitação ágil, análise de problemas e comunicação assertiva.</p>
+                                    </div>
+                                </div>
+                                <div class="flex items-start gap-2.5 bg-white p-2.5 rounded-lg border border-slate-100">
+                                    <div class="bg-amber-100 text-amber-700 font-bold rounded p-1 min-w-[24px] text-center">A</div>
+                                    <div>
+                                        <strong class="text-slate-800">Atitude (Saber Ser / Soft Skill):</strong>
+                                        <p class="text-slate-500">Predisposição e postura comportamental: empatia com o cliente, inteligência emocional e proatividade.</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Mathematical Concept Box -->
+                        <div class="p-3 bg-sky-50 border border-sky-200 rounded-xl text-center">
+                            <span class="text-xs text-sky-800 font-medium">Equação da Entrega Profissional:</span>
+                            <div class="text-sm font-bold text-sky-900 font-mono mt-1">
+                                Competência = Saber × Saber Fazer × Querer Fazer
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Card Aula 4 -->
+                <div class="bg-white rounded-2xl p-6 sm:p-8 shadow-sm border border-slate-200 flex flex-col justify-between hover:shadow-md transition-shadow">
+                    <div class="space-y-4">
+                        <div class="flex items-center justify-between">
+                            <span class="bg-indigo-100 text-indigo-800 text-xs font-bold px-3 py-1 rounded-full uppercase tracking-wide">Aula 4 (45 min)</span>
+                            <span class="text-xs text-slate-400 font-medium"><i class="fa-regular fa-clock"></i> Nível Micro / Individual</span>
+                        </div>
+                        <h3 class="text-xl font-bold text-slate-900">LNT Nível 3: Análise Individual e Cálculo de Gaps</h3>
+                        <p class="text-slate-600 text-sm leading-relaxed">
+                            O Nível Micro avalia <strong>o colaborador específico no cargo</strong>. O objetivo central é diagnosticar lacunas de aprendizagem (gaps), comparando o desempenho esperado (Perfil do Cargo) com o desempenho real entregue.
+                        </p>
+
+                        <!-- Sources & Tools -->
+                        <div class="space-y-2 text-xs">
+                            <h4 class="font-bold text-slate-700 uppercase tracking-wider">Fontes Primárias de Coleta de Dados:</h4>
+                            <div class="grid grid-cols-1 sm:grid-cols-3 gap-2">
+                                <div class="p-2.5 bg-slate-50 border border-slate-200 rounded-lg">
+                                    <div class="font-bold text-slate-800 mb-0.5"><i class="fa-solid fa-user-pen text-sky-500"></i> Autoavaliação</div>
+                                    <p class="text-slate-500 text-[11px]">Reflexão do próprio colaborador sobre sua conduta e resultados.</p>
+                                </div>
+                                <div class="p-2.5 bg-slate-50 border border-slate-200 rounded-lg">
+                                    <div class="font-bold text-slate-800 mb-0.5"><i class="fa-solid fa-comments text-indigo-500"></i> Feedbacks 180° / 360°</div>
+                                    <p class="text-slate-500 text-[11px]">Cruzamento de percepções entre gesto, pares e clientes.</p>
+                                </div>
+                                <div class="p-2.5 bg-slate-50 border border-slate-200 rounded-lg">
+                                    <div class="font-bold text-slate-800 mb-0.5"><i class="fa-solid fa-chart-line text-emerald-500"></i> KPIs de Desempenho</div>
+                                    <p class="text-slate-500 text-[11px]">Métricas como CSAT (Satisfação), FCR e Tempo de Resposta.</p>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Scale Table Legend -->
+                        <div class="bg-slate-900 text-white rounded-xl p-4 space-y-2">
+                            <div class="flex justify-between items-center text-xs text-slate-300">
+                                <span class="font-bold text-sky-400">Escala Padrão de Proficiência (1 a 5)</span>
+                                <span class="font-mono text-[10px]">Diagnóstico de T&D</span>
+                            </div>
+                            <div class="grid grid-cols-5 gap-1 text-center font-mono text-xs">
+                                <div class="bg-slate-800 p-1 rounded border border-slate-700">
+                                    <div class="text-red-400 font-bold">1</div>
+                                    <div class="text-[9px] text-slate-400">Crítico</div>
+                                </div>
+                                <div class="bg-slate-800 p-1 rounded border border-slate-700">
+                                    <div class="text-amber-400 font-bold">2</div>
+                                    <div class="text-[9px] text-slate-400">Parcial</div>
+                                </div>
+                                <div class="bg-slate-800 p-1 rounded border border-slate-700">
+                                    <div class="text-yellow-300 font-bold">3</div>
+                                    <div class="text-[9px] text-slate-400">Médio</div>
+                                </div>
+                                <div class="bg-slate-800 p-1 rounded border border-slate-700">
+                                    <div class="text-emerald-400 font-bold">4</div>
+                                    <div class="text-[9px] text-slate-400">Avançado</div>
+                                </div>
+                                <div class="bg-slate-800 p-1 rounded border border-slate-700">
+                                    <div class="text-sky-400 font-bold">5</div>
+                                    <div class="text-[9px] text-slate-400">Excelência</div>
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+
+            </div>
+        </section>
+
+        <!-- SEÇÃO 2: TABELA INTERATIVA DE REQUISITOS DO CARGO -->
+        <section id="matriz-cha" class="space-y-6">
+            <div class="flex flex-col md:flex-row md:items-end justify-between gap-4 border-b border-slate-200 pb-4">
+                <div>
+                    <div class="flex items-center gap-2 text-sky-600 font-semibold text-xs tracking-wider uppercase mb-1">
+                        <i class="fa-solid fa-briefcase"></i> Mapeamento Meso / Operacional
+                    </div>
+                    <h2 class="text-2xl sm:text-3xl font-bold text-slate-900">Matriz do Cargo: Atendimento ao Cliente</h2>
+                    <p class="text-slate-500 text-sm mt-1">Estudo de caso da empresa fictícia <strong class="text-slate-800">TechSul Soluções Digitais</strong>.</p>
+                </div>
+
+                <!-- Search and Filter controls -->
+                <div class="flex flex-wrap items-center gap-2">
+                    <div class="relative min-w-[200px]">
+                        <i class="fa-solid fa-magnifying-glass absolute left-3 top-1/2 -translate-y-1/2 text-slate-400 text-xs"></i>
+                        <input type="text" id="matrixSearch" onkeyup="filterMatrix()" placeholder="Buscar competência ou tarefa..." 
+                               class="w-full pl-8 pr-3 py-1.5 text-xs rounded-xl border border-slate-300 focus:outline-none focus:ring-2 focus:ring-sky-500">
+                    </div>
+                    <select id="matrixFilter" onchange="filterMatrix()" class="py-1.5 px-3 text-xs rounded-xl border border-slate-300 bg-white focus:outline-none focus:ring-2 focus:ring-sky-500 font-medium">
+                        <option value="all">Todas as Tarefas</option>
+                        <option value="1">1. Atendimento Diário Chat/E-mail</option>
+                        <option value="2">2. Resolução de Reclamações</option>
+                        <option value="3">3. Registro e Triagem de Feedbacks</option>
+                    </select>
+                </div>
+            </div>
+
+            <!-- Interactive Table -->
+            <div class="bg-white rounded-2xl shadow-sm border border-slate-200 overflow-hidden">
+                <div class="overflow-x-auto">
+                    <table class="w-full text-left text-xs sm:text-sm" id="chaTable">
+                        <thead class="bg-slate-900 text-slate-200 uppercase tracking-wider text-[11px] font-semibold">
+                            <tr>
+                                <th class="py-4 px-4 sm:px-6 w-1/4">Tarefa / Atribuição (Espaço Ocupacional)</th>
+                                <th class="py-4 px-4 border-l border-slate-800 w-1/4 text-sky-300">Conhecimentos / Saber (Hard)</th>
+                                <th class="py-4 px-4 border-l border-slate-800 w-1/4 text-emerald-300">Habilidades / Saber Fazer (Hard/Soft)</th>
+                                <th class="py-4 px-4 border-l border-slate-800 w-1/4 text-amber-300">Atitudes / Querer Fazer (Soft)</th>
+                            </tr>
+                        </thead>
+                        <tbody class="divide-y divide-slate-200 text-slate-700">
+                            <!-- Row 1 -->
+                            <tr class="hover:bg-sky-50/50 transition-colors matrix-row" data-task="1">
+                                <td class="py-4 px-4 sm:px-6 font-medium text-slate-900 bg-slate-50/50">
+                                    <div class="flex items-start gap-2">
+                                        <span class="bg-sky-100 text-sky-800 text-[10px] font-bold px-2 py-0.5 rounded">T1</span>
+                                        <div>
+                                            <strong class="block text-slate-900">Atendimento Diário via Chat e E-mail</strong>
+                                            <p class="text-slate-500 text-xs font-normal mt-0.5">Atendimento primário a clientes de e-commerce com dúvidas operacionais.</p>
+                                        </div>
+                                    </div>
+                                </td>
+                                <td class="py-4 px-4 border-l border-slate-100">
+                                    <ul class="list-disc list-inside space-y-1 text-slate-600">
+                                        <li>Políticas de garantia e devolução</li>
+                                        <li>Catálogo completo de produtos/serviços</li>
+                                        <li>Regras do contrato de serviço</li>
+                                    </ul>
+                                </td>
+                                <td class="py-4 px-4 border-l border-slate-100">
+                                    <ul class="list-disc list-inside space-y-1 text-slate-600">
+                                        <li>Redação empresarial clara e objetiva</li>
+                                        <li>Operação ágil de sistemas CRM (Zendesk)</li>
+                                        <li>Digitacão rápida e sem erros gramaticais</li>
+                                    </ul>
+                                </td>
+                                <td class="py-4 px-4 border-l border-slate-100">
+                                    <ul class="list-disc list-inside space-y-1 text-slate-600">
+                                        <li>Empatia com as dores do cliente</li>
+                                        <li>Cordialidade e tom respeitoso</li>
+                                        <li>Paciência e diplomacia no atendimento</li>
+                                    </ul>
+                                </td>
+                            </tr>
+
+                            <!-- Row 2 -->
+                            <tr class="hover:bg-sky-50/50 transition-colors matrix-row" data-task="2">
+                                <td class="py-4 px-4 sm:px-6 font-medium text-slate-900 bg-slate-50/50">
+                                    <div class="flex items-start gap-2">
+                                        <span class="bg-indigo-100 text-indigo-800 text-[10px] font-bold px-2 py-0.5 rounded">T2</span>
+                                        <div>
+                                            <strong class="block text-slate-900">Resolução de Reclamações & Conflitos</strong>
+                                            <p class="text-slate-500 text-xs font-normal mt-0.5">Tratamento de atrasos, estornos e insatisfações críticas.</p>
+                                        </div>
+                                    </div>
+                                </td>
+                                <td class="py-4 px-4 border-l border-slate-100">
+                                    <ul class="list-disc list-inside space-y-1 text-slate-600">
+                                        <li>Procedimentos de trocas e fretes reverso</li>
+                                        <li>Noções do Código de Defesa do Consumidor</li>
+                                        <li>Limites de autonomia para descontos</li>
+                                    </ul>
+                                </td>
+                                <td class="py-4 px-4 border-l border-slate-100">
+                                    <ul class="list-disc list-inside space-y-1 text-slate-600">
+                                        <li>Análise rápida de causadores de problemas</li>
+                                        <li>Comunicação assertiva sem jargões</li>
+                                        <li>Negociação pragmática sob pressão</li>
+                                    </ul>
+                                </td>
+                                <td class="py-4 px-4 border-l border-slate-100">
+                                    <ul class="list-disc list-inside space-y-1 text-slate-600">
+                                        <li>Inteligência emocional em atritos</li>
+                                        <li>Proatividade na busca de soluções</li>
+                                        <li>Foco na contenção do cancelamento</li>
+                                    </ul>
+                                </td>
+                            </tr>
+
+                            <!-- Row 3 -->
+                            <tr class="hover:bg-sky-50/50 transition-colors matrix-row" data-task="3">
+                                <td class="py-4 px-4 sm:px-6 font-medium text-slate-900 bg-slate-50/50">
+                                    <div class="flex items-start gap-2">
+                                        <span class="bg-emerald-100 text-emerald-800 text-[10px] font-bold px-2 py-0.5 rounded">T3</span>
+                                        <div>
+                                            <strong class="block text-slate-900">Registro e Triagem de Feedbacks (KPIs)</strong>
+                                            <p class="text-slate-500 text-xs font-normal mt-0.5">Alimentação de relatórios para melhoria contínua de processos.</p>
+                                        </div>
+                                    </div>
+                                </td>
+                                <td class="py-4 px-4 border-l border-slate-100">
+                                    <ul class="list-disc list-inside space-y-1 text-slate-600">
+                                        <li>Métricas de atendimento (CSAT, FCR, TMR)</li>
+                                        <li>Taxonomia e taxação de chamados</li>
+                                        <li>Entendimento do fluxo de produto</li>
+                                    </ul>
+                                </td>
+                                <td class="py-4 px-4 border-l border-slate-100">
+                                    <ul class="list-disc list-inside space-y-1 text-slate-600">
+                                        <li>Categorização precisa no sistema CRM</li>
+                                        <li>Escuta ativa de demandas implícitas</li>
+                                        <li>Síntese técnica de relatórios de falhas</li>
+                                    </ul>
+                                </td>
+                                <td class="py-4 px-4 border-l border-slate-100">
+                                    <ul class="list-disc list-inside space-y-1 text-slate-600">
+                                        <li>Atenção rigorosa aos detalhes</li>
+                                        <li>Orientação para satisfação do cliente</li>
+                                        <li>Compromisso com melhoria de processos</li>
+                                    </ul>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+                <div class="bg-slate-50 px-6 py-3 border-t border-slate-200 text-xs text-slate-500 flex justify-between items-center">
+                    <span><i class="fa-solid fa-circle-info text-sky-500"></i> Matriz alinhada aos objetivos de redução de churn e melhoria do CSAT na TechSul.</span>
+                    <span class="font-mono">3 Atribuições Mapeadas</span>
+                </div>
+            </div>
+        </section>
+
+        <!-- SEÇÃO 3: SIMULADOR INTERATIVO DE CÁLCULO DE GAPS -->
+        <section id="simulador" class="space-y-6">
+            <div class="border-b border-slate-200 pb-4 flex flex-col md:flex-row md:items-center justify-between gap-4">
+                <div>
+                    <div class="flex items-center gap-2 text-sky-600 font-semibold text-xs tracking-wider uppercase mb-1">
+                        <i class="fa-solid fa-calculator"></i> Ferramenta Prática de Diagnóstico (LNT Micro)
+                    </div>
+                    <h2 class="text-2xl sm:text-3xl font-bold text-slate-900">Simulador de Cálculo de Gaps de Aprendizagem</h2>
+                    <p class="text-slate-500 text-sm mt-1">Calcule a lacuna entre o nível exigido pelo cargo e a entrega real demonstrada pelo colaborador.</p>
+                </div>
+
+                <!-- Presets selection -->
+                <div class="flex items-center gap-2 bg-slate-100 p-1.5 rounded-xl border border-slate-200">
+                    <span class="text-xs font-semibold text-slate-600 pl-2">Perfil Pré-definido:</span>
+                    <button onclick="loadProfile('lucas')" class="px-2.5 py-1 text-xs font-medium rounded-lg bg-white shadow-sm text-slate-800 hover:bg-slate-50 transition-all border border-slate-200">Lucas Silva (Foco LNT)</button>
+                    <button onclick="loadProfile('ana')" class="px-2.5 py-1 text-xs font-medium rounded-lg text-slate-600 hover:bg-white hover:shadow-sm transition-all">Ana Souza (Pleno)</button>
+                    <button onclick="loadProfile('custom')" class="px-2.5 py-1 text-xs font-medium rounded-lg text-slate-600 hover:bg-white hover:shadow-sm transition-all">Personalizar</button>
+                </div>
+            </div>
+
+            <!-- Calculator Dashboard Layout -->
+            <div class="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
+                
+                <!-- Left Input Controls (7 Cols) -->
+                <div class="lg:col-span-7 bg-white rounded-2xl p-6 shadow-sm border border-slate-200 space-y-6">
+                    <div class="flex items-center justify-between border-b border-slate-100 pb-4">
+                        <div>
+                            <h3 class="font-bold text-slate-900 text-base flex items-center gap-2">
+                                <i class="fa-solid fa-user text-sky-600"></i> Avaliação por Competências (Escala 1 a 5)
+                            </h3>
+                            <p class="text-xs text-slate-500">Ajuste as notas esperadas e entregues de cada item.</p>
+                        </div>
+                        <span id="profileBadge" class="bg-sky-100 text-sky-800 text-xs font-bold px-2.5 py-1 rounded-md">Perfil: Lucas Silva</span>
+                    </div>
+
+                    <!-- Input Grid -->
+                    <div id="competencyInputs" class="space-y-5">
+                        <!-- Competencies injected via JS -->
+                    </div>
+
+                    <div class="pt-2 flex gap-3">
+                        <button onclick="calculateGaps()" class="flex-1 bg-sky-600 hover:bg-sky-700 text-white font-bold py-3 px-4 rounded-xl text-sm shadow-md transition-all flex items-center justify-center gap-2">
+                            <i class="fa-solid fa-square-root-variable"></i> Processar Diagnóstico de Gap
+                        </button>
+                        <button onclick="resetSimulator()" class="bg-slate-100 hover:bg-slate-200 text-slate-600 font-medium py-3 px-4 rounded-xl text-sm transition-all" title="Reiniciar">
+                            <i class="fa-solid fa-rotate-left"></i>
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Right Results & Action Plan (5 Cols) -->
+                <div class="lg:col-span-5 space-y-6">
+                    
+                    <!-- Gap Calculation Output Box -->
+                    <div class="bg-slate-900 text-white rounded-2xl p-6 shadow-xl space-y-5 border border-slate-800">
+                        <div class="flex items-center justify-between border-b border-slate-800 pb-3">
+                            <span class="text-xs font-bold uppercase tracking-wider text-sky-400">Resumo do Diagnóstico Individual</span>
+                            <span class="text-xs text-slate-400 font-mono" id="calculationDate">LNT 2026.2</span>
+                        </div>
+
+                        <!-- Score Cards -->
+                        <div class="grid grid-cols-3 gap-3 text-center">
+                            <div class="bg-slate-800/80 p-3 rounded-xl border border-slate-700/60">
+                                <div class="text-[10px] text-slate-400 uppercase font-medium">Ideal Médio</div>
+                                <div id="avgIdeal" class="text-xl font-extrabold text-sky-300 font-mono mt-1">4.5</div>
+                            </div>
+                            <div class="bg-slate-800/80 p-3 rounded-xl border border-slate-700/60">
+                                <div class="text-[10px] text-slate-400 uppercase font-medium">Real Médio</div>
+                                <div id="avgReal" class="text-xl font-extrabold text-amber-300 font-mono mt-1">3.0</div>
+                            </div>
+                            <div class="bg-slate-800/80 p-3 rounded-xl border border-slate-700/60">
+                                <div class="text-[10px] text-slate-400 uppercase font-medium">Gap Global</div>
+                                <div id="globalGap" class="text-xl font-extrabold text-red-400 font-mono mt-1">+1.5</div>
+                            </div>
+                        </div>
+
+                        <!-- Gap Severity Legend Breakdown -->
+                        <div class="space-y-2 pt-2 border-t border-slate-800">
+                            <div class="text-xs font-semibold text-slate-300">Status dos Gaps por Competência:</div>
+                            <div id="gapBreakdownList" class="space-y-2 text-xs">
+                                <!-- Dynamic gap output list -->
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Recommended T&D Plan Card -->
+                    <div class="bg-white rounded-2xl p-6 shadow-sm border border-slate-200 space-y-4">
+                        <h4 class="font-bold text-slate-900 text-sm flex items-center gap-2">
+                            <i class="fa-solid fa-bullseye text-emerald-600"></i> Recomendações Prioritárias de T&D
+                        </h4>
+                        <div id="tdRecommendations" class="space-y-3 text-xs">
+                            <!-- Dynamic recommendations injected here -->
+                        </div>
+                    </div>
+
+                </div>
+
+            </div>
+        </section>
+
+        <!-- SEÇÃO 4: QUIZ DE FIXAÇÃO INTERATIVO -->
+        <section id="quiz" class="space-y-6">
+            <div class="border-b border-slate-200 pb-4">
+                <div class="flex items-center gap-2 text-sky-600 font-semibold text-xs tracking-wider uppercase mb-1">
+                    <i class="fa-solid fa-circle-question"></i> Validação do Conhecimento
+                </div>
+                <h2 class="text-2xl sm:text-3xl font-bold text-slate-900">Quiz de Fixação Interativo</h2>
+                <p class="text-slate-500 text-sm mt-1">Testes rápidos com feedback pedagógico imediato para consolidar o aprendizado da Semana 2.</p>
+            </div>
+
+            <div class="bg-white rounded-2xl p-6 sm:p-8 shadow-sm border border-slate-200 max-w-4xl mx-auto space-y-8">
+                
+                <!-- Quiz Score Header -->
+                <div class="flex items-center justify-between bg-slate-50 p-4 rounded-xl border border-slate-200">
+                    <div>
+                        <span class="text-xs font-bold uppercase tracking-wider text-slate-500 block">Progresso do Quiz</span>
+                        <span class="text-sm font-bold text-slate-800" id="quizScoreText">Responda as 3 questões abaixo</span>
+                    </div>
+                    <div id="quizBadge" class="bg-slate-200 text-slate-700 text-xs font-bold px-3 py-1.5 rounded-lg font-mono">
+                        0 / 3 Concluídas
+                    </div>
+                </div>
+
+                <!-- Questions Container -->
+                <div class="space-y-8 divide-y divide-slate-100" id="quizContainer">
+                    
+                    <!-- Q1 -->
+                    <div class="space-y-4 pt-4 first:pt-0" id="q1">
+                        <div class="flex items-start gap-3">
+                            <span class="bg-sky-100 text-sky-800 font-bold text-xs px-2.5 py-1 rounded-lg">Q1</span>
+                            <h3 class="font-bold text-slate-800 text-sm sm:text-base leading-snug">
+                                Qual a diferença fundamental entre a Análise de Tarefas (Nível Meso) e a Análise Individual (Nível Micro) no Levantamento de Necessidades de Treinamento?
+                            </h3>
+                        </div>
+                        <div class="space-y-2 pl-9">
+                            <button onclick="checkQuiz(1, 0, false)" class="q-btn w-full text-left p-3 text-xs sm:text-sm rounded-xl border border-slate-200 hover:border-sky-300 hover:bg-sky-50/50 transition-all">
+                                A) O Nível Meso avalia os objetivos estratégicos globais da empresa, enquanto o Micro avalia os custos orçamentários do RH.
+                            </button>
+                            <button onclick="checkQuiz(1, 1, true)" class="q-btn w-full text-left p-3 text-xs sm:text-sm rounded-xl border border-slate-200 hover:border-sky-300 hover:bg-sky-50/50 transition-all">
+                                B) O Nível Meso analisa os requisitos do cargo e atribuições (CHA do cargo), enquanto o Micro investiga o desempenho do colaborador real (gaps do indivíduo).
+                            </button>
+                            <button onclick="checkQuiz(1, 2, false)" class="q-btn w-full text-left p-3 text-xs sm:text-sm rounded-xl border border-slate-200 hover:border-sky-300 hover:bg-sky-50/50 transition-all">
+                                C) O Nível Meso é exclusivo para gerentes, e o Nível Micro é voltado apenas para aprendizes.
+                            </button>
+                        </div>
+                        <div class="q-feedback hidden pl-9 text-xs p-3.5 rounded-xl"></div>
+                    </div>
+
+                    <!-- Q2 -->
+                    <div class="space-y-4 pt-6" id="q2">
+                        <div class="flex items-start gap-3">
+                            <span class="bg-indigo-100 text-indigo-800 font-bold text-xs px-2.5 py-1 rounded-lg">Q2</span>
+                            <h3 class="font-bold text-slate-800 text-sm sm:text-base leading-snug">
+                                Um colaborador do setor de Atendimento possui nota ideal no cargo de 5 em Domínio de CRM, porém sua nota entregue atual é 3. Como interpretamos o resultado no LNT?
+                            </h3>
+                        </div>
+                        <div class="space-y-2 pl-9">
+                            <button onclick="checkQuiz(2, 0, false)" class="q-btn w-full text-left p-3 text-xs sm:text-sm rounded-xl border border-slate-200 hover:border-sky-300 hover:bg-sky-50/50 transition-all">
+                                A) Gap de -2 (Superávit): O colaborador ultrapassou as expectativas e deve ser promovido imediatamente.
+                            </button>
+                            <button onclick="checkQuiz(2, 1, true)" class="q-btn w-full text-left p-3 text-xs sm:text-sm rounded-xl border border-slate-200 hover:border-sky-300 hover:bg-sky-50/50 transition-all">
+                                B) Gap de +2 (Lacuna Moderada): Há uma necessidade clara de treinamento técnico direcionado na navegação do CRM.
+                            </button>
+                            <button onclick="checkQuiz(2, 2, false)" class="q-btn w-full text-left p-3 text-xs sm:text-sm rounded-xl border border-slate-200 hover:border-sky-300 hover:bg-sky-50/50 transition-all">
+                                C) Gap de 0: Nenhuma ação de T&D é necessária pois o nível 3 já é aceitável para qualquer empresa.
+                            </button>
+                        </div>
+                        <div class="q-feedback hidden pl-9 text-xs p-3.5 rounded-xl"></div>
+                    </div>
+
+                    <!-- Q3 -->
+                    <div class="space-y-4 pt-6" id="q3">
+                        <div class="flex items-start gap-3">
+                            <span class="bg-emerald-100 text-emerald-800 font-bold text-xs px-2.5 py-1 rounded-lg">Q3</span>
+                            <h3 class="font-bold text-slate-800 text-sm sm:text-base leading-snug">
+                                Na tríade CHA, qual das opções corresponde corretamente a uma Atitude (Soft Skill / Querer Fazer) exigida no Atendimento ao Cliente?
+                            </h3>
+                        </div>
+                        <div class="space-y-2 pl-9">
+                            <button onclick="checkQuiz(3, 0, false)" class="q-btn w-full text-left p-3 text-xs sm:text-sm rounded-xl border border-slate-200 hover:border-sky-300 hover:bg-sky-50/50 transition-all">
+                                A) Conhecer integralmente o Código de Defesa do Consumidor.
+                            </button>
+                            <button onclick="checkQuiz(3, 1, false)" class="q-btn w-full text-left p-3 text-xs sm:text-sm rounded-xl border border-slate-200 hover:border-sky-300 hover:bg-sky-50/50 transition-all">
+                                B) Saber utilizar o sistema de chamados Zendesk com rapidez.
+                            </button>
+                            <button onclick="checkQuiz(3, 2, true)" class="q-btn w-full text-left p-3 text-xs sm:text-sm rounded-xl border border-slate-200 hover:border-sky-300 hover:bg-sky-50/50 transition-all">
+                                C) Demonstrar empatia, paciência e inteligência emocional diante de um cliente irritado.
+                            </button>
+                        </div>
+                        <div class="q-feedback hidden pl-9 text-xs p-3.5 rounded-xl"></div>
+                    </div>
+
+                </div>
+
+            </div>
+        </section>
+
+        <!-- Preview de Próxima Semana -->
+        <section class="bg-gradient-to-r from-sky-900 to-slate-900 text-white rounded-2xl p-6 sm:p-8 shadow-lg flex flex-col md:flex-row items-center justify-between gap-6">
+            <div class="space-y-2 text-center md:text-left">
+                <span class="text-xs font-bold uppercase tracking-wider text-sky-400">Próximo Passo Didático</span>
+                <h3 class="text-xl font-bold">SEMANA 3: Desenho e Planejamento do Plano de Treinamento</h3>
+                <p class="text-slate-300 text-xs sm:text-sm max-w-2xl">
+                    Com os Gaps calculados, aprenderemos a estruturar a Matriz de Treinamento, definindo objetivos instrucionais, carga horária, metodologia e orçamento de T&D.
+                </p>
+            </div>
+            <div class="shrink-0">
+                <span class="inline-block bg-sky-500/20 text-sky-300 border border-sky-400/30 px-4 py-2 rounded-xl text-xs font-bold font-mono">
+                    Aguarde Liberação • Semana 3
+                </span>
+            </div>
+        </section>
+
+    </main>
+
+    <!-- Footer -->
+    <footer class="bg-slate-900 text-slate-400 text-xs py-8 border-t border-slate-800 mt-auto">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex flex-col sm:flex-row justify-between items-center gap-4">
+            <div class="space-y-1 text-center sm:text-left">
+                <p class="font-bold text-slate-200">EEB Colombo Machado Salles — Curso Técnico em Administração</p>
+                <p class="text-slate-500">Disciplina: Gestão de Pessoas • Material Pedagógico Interativo Semana 2</p>
+            </div>
+            <div class="flex items-center gap-4 text-slate-500">
+                <span><i class="fa-solid fa-code text-sky-500"></i> LNT Meso & Micro</span>
+                <span>•</span>
+                <span>Canoinhas / SC</span>
+            </div>
+        </div>
+    </footer>
+
+    <!-- JavaScript Application Code -->
+    <script>
+        // Competency Data Set for Customer Service Simulator
+        const competenciesData = [
+            {
+                id: 'crm',
+                name: 'Domínio do Sistema CRM (Hard Skill)',
+                category: 'Hard Skill',
+                task: 'T1 - Atendimento Chat/E-mail',
+                idealDefault: 5,
+                realDefault: 3,
+                recommendationGap2: 'Workshop prático de navegação avançada, atalhos e taxonomia no CRM Zendesk.',
+                recommendationGap3: 'Treinamento intensivo individual de operação de CRM com tutoria e avaliação de velocidade.'
+            },
+            {
+                id: 'product',
+                name: 'Conhecimento do Produto (Hard Skill)',
+                category: 'Hard Skill',
+                task: 'T1 / T2 - Garantias e Regras',
+                idealDefault: 5,
+                realDefault: 5,
+                recommendationGap2: 'Reciclagem e leitura orientada das políticas atualizadas de garantia e frete.',
+                recommendationGap3: 'Treinamento completo sobre o catálogo e regras contratuais da TechSul.'
+            },
+            {
+                id: 'eq',
+                name: 'Inteligência Emocional & Empatia (Soft Skill)',
+                category: 'Soft Skill',
+                task: 'T2 - Gestão de Conflitos',
+                idealDefault: 4,
+                realDefault: 2,
+                recommendationGap2: 'Treinamento comportamental de gestão do estresse, resiliência e comunicação empática.',
+                recommendationGap3: 'Mentoria comportamental individualizada e simulação de de-escalonamento de conflitos.'
+            },
+            {
+                id: 'fcr',
+                name: 'Resolução no 1º Contato / FCR (KPI/Habilidade)',
+                category: 'KPI / Habilidade',
+                task: 'T3 - Eficiência Operacional',
+                idealDefault: 4,
+                realDefault: 2,
+                recommendationGap2: 'Treinamento em matrizes de autonomia e procedimentos de rápida solução interna.',
+                recommendationGap3: 'Acompanhamento do fluxo de atendimento (shadowing) com agente sênior.'
+            }
+        ];
+
+        // Profiles preset
+        const profiles = {
+            lucas: {
+                name: 'Lucas Silva (Foco LNT)',
+                crm: { ideal: 5, real: 3 },
+                product: { ideal: 5, real: 5 },
+                eq: { ideal: 4, real: 2 },
+                fcr: { ideal: 4, real: 2 }
+            },
+            ana: {
+                name: 'Ana Souza (Perfil Pleno)',
+                crm: { ideal: 5, real: 4 },
+                product: { ideal: 5, real: 4 },
+                eq: { ideal: 4, real: 4 },
+                fcr: { ideal: 4, real: 3 }
+            },
+            custom: {
+                name: 'Perfil Personalizado',
+                crm: { ideal: 5, real: 2 },
+                product: { ideal: 4, real: 3 },
+                eq: { ideal: 4, real: 1 },
+                fcr: { ideal: 4, real: 2 }
+            }
+        };
+
+        let currentProfileKey = 'lucas';
+        let currentValues = JSON.parse(JSON.stringify(profiles.lucas));
+
+        // Initialize Inputs on Load
+        window.onload = function() {
+            renderInputs();
+            calculateGaps();
+        };
+
+        function renderInputs() {
+            const container = document.getElementById('competencyInputs');
+            container.innerHTML = '';
+
+            competenciesData.forEach(comp => {
+                const val = currentValues[comp.id] || { ideal: comp.idealDefault, real: comp.realDefault };
+                
+                const card = document.createElement('div');
+                card.className = "bg-slate-50 p-4 rounded-xl border border-slate-200 space-y-3";
+                card.innerHTML = `
+                    <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-1">
+                        <div>
+                            <span class="text-[10px] font-bold uppercase tracking-wider text-slate-500">${comp.category} • ${comp.task}</span>
+                            <h4 class="font-bold text-slate-800 text-xs sm:text-sm">${comp.name}</h4>
+                        </div>
+                        <span id="gapBadge-${comp.id}" class="self-start sm:self-auto text-xs font-mono font-bold px-2 py-0.5 rounded">Gap: +0</span>
+                    </div>
+
+                    <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 text-xs pt-1">
+                        <!-- Ideal Control -->
+                        <div class="space-y-1">
+                            <div class="flex justify-between font-semibold text-slate-700">
+                                <span>Ideal (Cargo Exigido):</span>
+                                <span id="idealVal-${comp.id}" class="text-sky-700 font-bold font-mono">${val.ideal}</span>
+                            </div>
+                            <input type="range" min="1" max="5" value="${val.ideal}" id="idealInput-${comp.id}" 
+                                   oninput="updateValue('${comp.id}', 'ideal', this.value)" 
+                                   class="w-full accent-sky-600 h-1.5 bg-slate-200 rounded-lg cursor-pointer">
+                            <div class="flex justify-between text-[10px] text-slate-400 font-mono">
+                                <span>1</span><span>2</span><span>3</span><span>4</span><span>5</span>
+                            </div>
+                        </div>
+
+                        <!-- Real Control -->
+                        <div class="space-y-1">
+                            <div class="flex justify-between font-semibold text-slate-700">
+                                <span>Real (Entregue):</span>
+                                <span id="realVal-${comp.id}" class="text-amber-700 font-bold font-mono">${val.real}</span>
+                            </div>
+                            <input type="range" min="1" max="5" value="${val.real}" id="realInput-${comp.id}" 
+                                   oninput="updateValue('${comp.id}', 'real', this.value)" 
+                                   class="w-full accent-amber-500 h-1.5 bg-slate-200 rounded-lg cursor-pointer">
+                            <div class="flex justify-between text-[10px] text-slate-400 font-mono">
+                                <span>1</span><span>2</span><span>3</span><span>4</span><span>5</span>
+                            </div>
+                        </div>
+                    </div>
+                `;
+                container.appendChild(card);
+            });
+        }
+
+        function updateValue(id, type, val) {
+            val = parseInt(val);
+            if(!currentValues[id]) currentValues[id] = {};
+            currentValues[id][type] = val;
+            
+            document.getElementById(`${type}Val-${id}`).innerText = val;
+            calculateGaps();
+        }
+
+        function loadProfile(key) {
+            currentProfileKey = key;
+            document.getElementById('profileBadge').innerText = `Perfil: ${profiles[key].name}`;
+            currentValues = JSON.parse(JSON.stringify(profiles[key]));
+            renderInputs();
+            calculateGaps();
+        }
+
+        function resetSimulator() {
+            loadProfile('lucas');
+        }
+
+        function calculateGaps() {
+            let totalIdeal = 0;
+            let totalReal = 0;
+            let count = competenciesData.length;
+
+            const breakdownList = document.getElementById('gapBreakdownList');
+            const recommendationsDiv = document.getElementById('tdRecommendations');
+            
+            breakdownList.innerHTML = '';
+            recommendationsDiv.innerHTML = '';
+
+            let hasGapsToAddress = false;
+
+            competenciesData.forEach(comp => {
+                const ideal = currentValues[comp.id]?.ideal ?? comp.idealDefault;
+                const real = currentValues[comp.id]?.real ?? comp.realDefault;
+                const gap = ideal - real;
+
+                totalIdeal += ideal;
+                totalReal += real;
+
+                // Update individual badge in left pane
+                const badge = document.getElementById(`gapBadge-${comp.id}`);
+                if(badge) {
+                    if(gap <= 0) {
+                        badge.className = "self-start sm:self-auto text-xs font-mono font-bold px-2 py-0.5 rounded bg-emerald-100 text-emerald-800";
+                        badge.innerText = `Sem Gap (${gap})`;
+                    } else if(gap <= 2) {
+                        badge.className = "self-start sm:self-auto text-xs font-mono font-bold px-2 py-0.5 rounded bg-amber-100 text-amber-900";
+                        badge.innerText = `Gap Médio (+${gap})`;
+                    } else {
+                        badge.className = "self-start sm:self-auto text-xs font-mono font-bold px-2 py-0.5 rounded bg-red-100 text-red-800";
+                        badge.innerText = `Gap Crítico (+${gap})`;
+                    }
+                }
+
+                // Add to breakdown in black right card
+                const item = document.createElement('div');
+                item.className = "flex items-center justify-between p-2 rounded bg-slate-800/60 border border-slate-700/50";
+                
+                let gapClass = "text-emerald-400";
+                let gapText = `Gap ${gap}`;
+                if(gap > 0) {
+                    gapText = `+${gap}`;
+                    gapClass = gap >= 3 ? "text-red-400 font-bold" : "text-amber-300 font-bold";
+                }
+
+                item.innerHTML = `
+                    <span class="text-slate-300 font-medium truncate max-w-[200px]">${comp.name.split('(')[0]}</span>
+                    <div class="flex items-center gap-2 font-mono text-[11px]">
+                        <span class="text-slate-400">${ideal} - ${real} =</span>
+                        <span class="${gapClass}">${gapText}</span>
+                    </div>
+                `;
+                breakdownList.appendChild(item);
+
+                // Build T&D Recommendations
+                if(gap > 0) {
+                    hasGapsToAddress = true;
+                    const recCard = document.createElement('div');
+                    const isCritical = gap >= 3;
+                    
+                    recCard.className = `p-3 rounded-xl border text-xs space-y-1 ${
+                        isCritical ? 'bg-red-50 border-red-200 text-red-900' : 'bg-amber-50 border-amber-200 text-amber-900'
+                    }`;
+
+                    const recText = gap >= 3 ? comp.recommendationGap3 : comp.recommendationGap2;
+
+                    recCard.innerHTML = `
+                        <div class="flex items-center justify-between font-bold">
+                            <span><i class="fa-solid fa-triangle-exclamation"></i> ${comp.name.split('(')[0]}</span>
+                            <span class="font-mono text-[10px] px-1.5 py-0.5 rounded bg-white/80">Gap +${gap}</span>
+                        </div>
+                        <p class="text-[11px] leading-relaxed opacity-90">${recText}</p>
+                    `;
+                    recommendationsDiv.appendChild(recCard);
+                }
+            });
+
+            if(!hasGapsToAddress) {
+                recommendationsDiv.innerHTML = `
+                    <div class="p-4 bg-emerald-50 border border-emerald-200 text-emerald-800 rounded-xl text-center space-y-1">
+                        <i class="fa-solid fa-circle-check text-emerald-600 text-lg"></i>
+                        <strong class="block text-xs font-bold">Desempenho Pleno no Cargo</strong>
+                        <p class="text-[11px] text-emerald-700">Todas as entregas atingem ou superam o nível ideal. Recomenda-se apenas manutenção e potencial mentoria para novos funcionários.</p>
+                    </div>
+                `;
+            }
+
+            // Update Header averages
+            const avgI = (totalIdeal / count).toFixed(1);
+            const avgR = (totalReal / count).toFixed(1);
+            const globalG = (totalIdeal - totalReal) / count;
+
+            document.getElementById('avgIdeal').innerText = avgI;
+            document.getElementById('avgReal').innerText = avgR;
+            
+            const globalGapElem = document.getElementById('globalGap');
+            if(globalG <= 0) {
+                globalGapElem.innerText = `${globalG.toFixed(1)}`;
+                globalGapElem.className = "text-xl font-extrabold text-emerald-400 font-mono mt-1";
+            } else {
+                globalGapElem.innerText = `+${globalG.toFixed(1)}`;
+                globalGapElem.className = globalG >= 2 ? "text-xl font-extrabold text-red-400 font-mono mt-1" : "text-xl font-extrabold text-amber-300 font-mono mt-1";
+            }
+        }
+
+        function filterMatrix() {
+            const query = document.getElementById('matrixSearch').value.toLowerCase();
+            const filterVal = document.getElementById('matrixFilter').value;
+            const rows = document.querySelectorAll('.matrix-row');
+
+            rows.forEach(row => {
+                const taskAttr = row.getAttribute('data-task');
+                const text = row.innerText.toLowerCase();
+
+                const matchesQuery = text.includes(query);
+                const matchesFilter = (filterVal === 'all' || taskAttr === filterVal);
+
+                if (matchesQuery && matchesFilter) {
+                    row.style.display = '';
+                } else {
+                    row.style.display = 'none';
+                }
+            });
+        }
+
+        let answeredQuestions = { 1: false, 2: false, 3: false };
+        let correctAnswersCount = 0;
+
+        function checkQuiz(qNum, optionIdx, isCorrect) {
+            const qDiv = document.getElementById(`q${qNum}`);
+            const buttons = qDiv.querySelectorAll('.q-btn');
+            const feedback = qDiv.querySelector('.q-feedback');
+
+            // Disable buttons for this question
+            buttons.forEach((btn, idx) => {
+                btn.disabled = true;
+                btn.classList.remove('hover:border-sky-300', 'hover:bg-sky-50/50');
+                if (idx === optionIdx) {
+                    if (isCorrect) {
+                        btn.classList.add('bg-emerald-100', 'border-emerald-500', 'text-emerald-900', 'font-bold');
+                    } else {
+                        btn.classList.add('bg-red-100', 'border-red-500', 'text-red-900');
+                    }
+                }
+            });
+
+            feedback.classList.remove('hidden');
+
+            if (isCorrect) {
+                feedback.classList.add('bg-emerald-50', 'text-emerald-900', 'border', 'border-emerald-200');
+                if(qNum === 1) {
+                    feedback.innerHTML = `<strong><i class="fa-solid fa-circle-check"></i> Correto!</strong> O Nível Meso detalha as tarefas e o perfil exigido pelo cargo (CHA ideal), enquanto o Nível Micro afere o desempenho real do colaborador ocupante.`;
+                } else if(qNum === 2) {
+                    feedback.innerHTML = `<strong><i class="fa-solid fa-circle-check"></i> Exato!</strong> Gap = Ideal (5) - Real (3) = +2. Um gap positivo indica necessidade de treinamento direcionado para equiparar a entrega ao padrão do cargo.`;
+                } else {
+                    feedback.innerHTML = `<strong><i class="fa-solid fa-circle-check"></i> Perfeito!</strong> Atitude engloba predisposição comportamental e afetiva (Soft Skill / Querer Fazer), como empatia e controle emocional.`;
+                }
+                if(!answeredQuestions[qNum]) correctAnswersCount++;
+            } else {
+                feedback.classList.add('bg-red-50', 'text-red-900', 'border', 'border-red-200');
+                feedback.innerHTML = `<strong><i class="fa-solid fa-circle-xmark"></i> Incorreto.</strong> Reveja os conceitos das Aulas 3 e 4. Lembre-se da fórmula: $\\text{Gap} = \\text{Ideal} - \\text{Real}$.`;
+            }
+
+            answeredQuestions[qNum] = true;
+            updateQuizProgress();
+        }
+
+        function updateQuizProgress() {
+            const count = Object.values(answeredQuestions).filter(Boolean).length;
+            document.getElementById('quizBadge').innerText = `${count} / 3 Concluídas`;
+            
+            if(count === 3) {
+                document.getElementById('quizScoreText').innerText = `Quiz Concluído! Você acertou ${correctAnswersCount} de 3 questões.`;
+            }
+        }
+    </script>
 </body>
 </html>

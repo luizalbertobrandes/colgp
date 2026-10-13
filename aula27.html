@@ -3,61 +3,322 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Aguarde - Aula em Breve</title>
+    <title>Atividade Prática: Mapeamento de LNT e Diagnóstico de Gaps</title>
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Lucide Icons -->
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <!-- MathJax para renderização de fórmulas -->
+    <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
     <style>
-        body {
-            margin: 0;
-            padding: 0;
-            background-color: #f4f4f4; /* Cor de fundo suave */
-            font-family: Arial, sans-serif;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            height: 100vh;
-        }
-
-        .container {
-            background-color: #fff;
-            border-radius: 8px;
-            box-shadow: 0 4px 8px rgba(0,0,0,0.1);
-            padding: 40px;
-            text-align: center;
-        }
-
-        .container img {
-            max-width: 100%;
-            height: auto;
-            border-radius: 8px; /* Mantém as bordas arredondadas da imagem */
-            margin-bottom: 20px;
-        }
-
-        .container h1 {
-            color: #333;
-            font-size: 24px;
-            margin-bottom: 30px;
-        }
-
-        .btn-voltar {
-            display: inline-block;
-            background-color: #007bff; /* Azul para o botão */
-            color: #fff;
-            padding: 12px 24px;
-            text-decoration: none;
-            border-radius: 5px;
-            font-weight: bold;
-            transition: background-color 0.3s ease;
-        }
-
-        .btn-voltar:hover {
-            background-color: #0056b3; /* Cor mais escura no hover */
+        @media print {
+            .no-print { display: none !important; }
+            .print-break { page-break-before: always; }
+            body { background: white; color: black; }
+            .shadow-lg, .shadow-md, .shadow-sm { box-shadow: none !important; }
+            .border { border-color: #cbd5e1 !important; }
         }
     </style>
 </head>
-<body>
-    <div class="container">
-        <img src="imagem1.png" width="320" height="240" alt="O professor em sala de aula">
-        <h1>Aguarde: em breve essa aula estará disponivel.</h1>
-        <a href="index.html" class="btn-voltar">Voltar</a>
-    </div>
+<body class="bg-slate-50 text-slate-800 font-sans antialiased min-h-screen flex flex-col">
+
+    <!-- Header / Navbar -->
+    <header class="bg-indigo-900 text-white shadow-md no-print">
+        <div class="max-w-6xl mx-auto px-4 py-6 flex flex-col sm:flex-row justify-between items-center gap-4">
+            <div>
+                <span class="bg-indigo-700 text-indigo-200 text-xs font-semibold px-2.5 py-1 rounded-full uppercase tracking-wider">Gestão de Pessoas & T&D</span>
+                <h1 class="text-2xl font-bold mt-1">Mapeamento de LNT e Diagnóstico de Gaps</h1>
+                <p class="text-indigo-200 text-sm">Atividade Prática para Caderno — Níveis Meso e Micro</p>
+            </div>
+            <button onclick="window.print()" class="flex items-center gap-2 bg-emerald-600 hover:bg-emerald-500 text-white font-medium px-4 py-2 rounded-lg transition-colors shadow-sm">
+                <i data-lucide="printer" class="w-4 h-4"></i> Imprimir / Gerar PDF
+            </button>
+        </div>
+    </header>
+
+    <!-- Main Content -->
+    <main class="max-w-6xl mx-auto px-4 py-8 flex-grow w-full space-y-8">
+
+        <!-- Card de Meta Informações -->
+        <section class="bg-white rounded-xl p-6 border border-slate-200 shadow-sm grid grid-cols-1 md:grid-cols-3 gap-6">
+            <div class="flex items-start gap-4">
+                <div class="p-3 bg-indigo-50 text-indigo-600 rounded-lg">
+                    <i data-lucide="target" class="w-6 h-6"></i>
+                </div>
+                <div>
+                    <h2 class="font-semibold text-slate-900">Objetivo Geral</h2>
+                    <p class="text-xs text-slate-600 mt-1">Aplicar conceitos de LNT (Meso e Micro), mapear competências pela Matriz CHA e realizar cálculo de lacunas de aprendizagem.</p>
+                </div>
+            </div>
+            <div class="flex items-start gap-4">
+                <div class="p-3 bg-amber-50 text-amber-600 rounded-lg">
+                    <i data-lucide="book-open" class="w-6 h-6"></i>
+                </div>
+                <div>
+                    <h2 class="font-semibold text-slate-900">Local de Resolução</h2>
+                    <p class="text-xs text-slate-600 mt-1">Caderno do Aluno (transcreva e resolva as etapas solicitadas).</p>
+                </div>
+            </div>
+            <div class="flex items-start gap-4">
+                <div class="p-3 bg-emerald-50 text-emerald-600 rounded-lg">
+                    <i data-lucide="clock" class="w-6 h-6"></i>
+                </div>
+                <div>
+                    <h2 class="font-semibold text-slate-900">Duração Estimada</h2>
+                    <p class="text-xs text-slate-600 mt-1">45 a 50 minutos em sala de aula.</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- ROTEIRO DA ATIVIDADE PRÁTICA -->
+        <section class="space-y-6">
+            <div class="flex items-center gap-2 border-b border-slate-200 pb-3">
+                <i data-lucide="file-text" class="w-6 h-6 text-indigo-700"></i>
+                <h2 class="text-xl font-bold text-slate-900">Passo a Passo da Atividade no Caderno</h2>
+            </div>
+
+            <!-- Etapa 1 -->
+            <div class="bg-white rounded-xl border border-slate-200 p-6 shadow-sm space-y-4">
+                <div class="flex items-center gap-3">
+                    <span class="bg-indigo-900 text-white font-bold w-8 h-8 flex items-center justify-center rounded-full text-sm">1</span>
+                    <h3 class="text-lg font-semibold text-slate-900">Etapa 1: Mapeamento do Espaço Ocupacional (Nível Meso)</h3>
+                </div>
+                
+                <div class="pl-11 space-y-4">
+                    <p class="text-sm text-slate-700"><strong>Identificação do Cargo:</strong> Copie em seu caderno o cargo de estudo: <span class="text-indigo-900 font-semibold">Atendente de Customer Service (CS)</span> (baseado na empresa <em>TechSul Soluções</em>).</p>
+                    
+                    <p class="text-sm text-slate-700"><strong>Construção da Matriz CHA:</strong> Desenhe uma tabela com 3 colunas para organizar a tríade de competências necessárias para o cargo:</p>
+
+                    <div class="grid grid-cols-1 md:grid-cols-3 gap-4 text-sm">
+                        <div class="p-4 bg-slate-50 border border-slate-200 rounded-lg">
+                            <span class="font-bold text-indigo-800 block mb-1">Conhecimento (C)</span>
+                            <span class="text-xs font-semibold text-slate-500 uppercase block mb-2">Saber / Hard Skill</span>
+                            <p class="text-slate-600 text-xs">Liste teorias e regras indispensáveis, como o Código de Defesa do Consumidor e políticas de garantia.</p>
+                        </div>
+                        <div class="p-4 bg-slate-50 border border-slate-200 rounded-lg">
+                            <span class="font-bold text-indigo-800 block mb-1">Habilidade (H)</span>
+                            <span class="text-xs font-semibold text-slate-500 uppercase block mb-2">Saber Fazer / Hard & Soft Skill</span>
+                            <p class="text-slate-600 text-xs">Liste aplicações práticas, como redação empresarial objetiva e operação ágil de sistemas CRM.</p>
+                        </div>
+                        <div class="p-4 bg-slate-50 border border-slate-200 rounded-lg">
+                            <span class="font-bold text-indigo-800 block mb-1">Atitude (A)</span>
+                            <span class="text-xs font-semibold text-slate-500 uppercase block mb-2">Querer Fazer / Soft Skill</span>
+                            <p class="text-slate-600 text-xs">Liste posturas comportamentais, como empatia com as dores do cliente e inteligência emocional em atritos.</p>
+                        </div>
+                    </div>
+
+                    <div class="bg-indigo-50 border-l-4 border-indigo-600 p-4 rounded-r-lg">
+                        <p class="text-xs font-semibold text-indigo-900 mb-1">Registro da Equação:</p>
+                        <p class="text-sm text-indigo-950 font-mono">$$\text{Competência} = \text{Saber} \times \text{Saber Fazer} \times \text{Querer Fazer}$$</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Etapa 2 -->
+            <div class="bg-white rounded-xl border border-slate-200 p-6 shadow-sm space-y-4">
+                <div class="flex items-center gap-3">
+                    <span class="bg-indigo-900 text-white font-bold w-8 h-8 flex items-center justify-center rounded-full text-sm">2</span>
+                    <h3 class="text-lg font-semibold text-slate-900">Etapa 2: Diagnóstico Individual e Cálculo de Gaps (Nível Micro)</h3>
+                </div>
+
+                <div class="pl-11 space-y-4">
+                    <p class="text-sm text-slate-700"><strong>Tabela de Avaliação Individual:</strong> Monte em seu caderno uma tabela com 4 colunas: <code>Competência</code> | <code>Nível Ideal</code> | <code>Nível Real</code> | <code>Gap Calculado</code>.</p>
+
+                    <div class="bg-slate-50 p-4 rounded-lg border border-slate-200">
+                        <p class="text-xs font-bold text-slate-700 mb-2">Escala Oficial de Proficiência (1 a 5 pontos):</p>
+                        <div class="grid grid-cols-2 sm:grid-cols-5 gap-2 text-center text-xs">
+                            <div class="p-2 bg-red-100 text-red-800 font-medium rounded border border-red-200">1: Crítico</div>
+                            <div class="p-2 bg-orange-100 text-orange-800 font-medium rounded border border-orange-200">2: Parcial</div>
+                            <div class="p-2 bg-yellow-100 text-yellow-800 font-medium rounded border border-yellow-200">3: Médio</div>
+                            <div class="p-2 bg-blue-100 text-blue-800 font-medium rounded border border-blue-200">4: Avançado</div>
+                            <div class="p-2 bg-emerald-100 text-emerald-800 font-medium rounded border border-emerald-200">5: Excelência</div>
+                        </div>
+                    </div>
+
+                    <p class="text-sm text-slate-700"><strong>Cálculo da Lacuna:</strong> Selecione 3 competências mapeadas na Etapa 1, atribua notas hipotéticas para um colaborador (ex: <em>Lucas Silva</em>) e aplique a fórmula central:</p>
+
+                    <div class="bg-indigo-50 border-l-4 border-indigo-600 p-4 rounded-r-lg">
+                        <p class="text-sm text-indigo-950 font-mono">$$\text{Gap} = \text{Ideal} - \text{Real}$$</p>
+                    </div>
+
+                    <!-- Simulador Interativo -->
+                    <div class="bg-slate-100 border border-slate-300 rounded-xl p-4 no-print space-y-3">
+                        <div class="flex items-center gap-2">
+                            <i data-lucide="calculator" class="w-5 h-5 text-indigo-700"></i>
+                            <h4 class="font-bold text-slate-800 text-sm">Simulador de Diagnóstico para Rascunho</h4>
+                        </div>
+                        <div class="grid grid-cols-1 sm:grid-cols-3 gap-3 text-xs">
+                            <div>
+                                <label class="block font-medium text-slate-700 mb-1">Competência</label>
+                                <input type="text" id="sim-comp" value="Domínio de CRM" class="w-full p-2 border border-slate-300 rounded focus:ring-1 focus:ring-indigo-500">
+                            </div>
+                            <div>
+                                <label class="block font-medium text-slate-700 mb-1">Nível Ideal (1-5)</label>
+                                <input type="number" id="sim-ideal" min="1" max="5" value="5" oninput="calcularSimulacao()" class="w-full p-2 border border-slate-300 rounded focus:ring-1 focus:ring-indigo-500">
+                            </div>
+                            <div>
+                                <label class="block font-medium text-slate-700 mb-1">Nível Real (1-5)</label>
+                                <input type="number" id="sim-real" min="1" max="5" value="3" oninput="calcularSimulacao()" class="w-full p-2 border border-slate-300 rounded focus:ring-1 focus:ring-indigo-500">
+                            </div>
+                        </div>
+                        <div class="p-3 bg-white border border-slate-200 rounded flex justify-between items-center text-xs">
+                            <span>Resultado do Gap calculador:</span>
+                            <span id="sim-resultado" class="font-bold text-indigo-700 text-sm">2 ponto(s) de lacuna</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Etapa 3 -->
+            <div class="bg-white rounded-xl border border-slate-200 p-6 shadow-sm space-y-4">
+                <div class="flex items-center gap-3">
+                    <span class="bg-indigo-900 text-white font-bold w-8 h-8 flex items-center justify-center rounded-full text-sm">3</span>
+                    <h3 class="text-lg font-semibold text-slate-900">Etapa 3: Plano de Ação de T&D</h3>
+                </div>
+
+                <div class="pl-11 space-y-3 text-sm text-slate-700">
+                    <p>1. Identifique qual das competências calculadas apresentou a <strong>maior lacuna de aprendizagem</strong>.</p>
+                    <p>2. Escreva um parágrafo no caderno indicando qual fonte primária de coleta de dados (<em>Autoavaliação</em>, <em>Feedbacks 180°/360°</em> ou <em>KPIs de Desempenho como CSAT e FCR</em>) você utilizaria para confirmar essa necessidade de treinamento.</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- SEÇÃO DE PERGUNTAS DISCURSIVAS -->
+        <section class="space-y-6 print-break">
+            <div class="flex items-center gap-2 border-b border-slate-200 pb-3">
+                <i data-lucide="help-circle" class="w-6 h-6 text-indigo-700"></i>
+                <h2 class="text-xl font-bold text-slate-900">10 Perguntas Discursivas sobre o Tema</h2>
+            </div>
+
+            <div class="space-y-3" id="questions-container">
+                <!-- Perguntas geradas via JavaScript -->
+            </div>
+        </section>
+
+    </main>
+
+    <!-- Footer -->
+    <footer class="bg-slate-900 text-slate-400 py-6 text-center text-xs border-t border-slate-800 no-print">
+        <p>TechSul Soluções — Material de Apoio Acadêmico e Prático de T&D</p>
+    </footer>
+
+    <script>
+        // Inicializar ícones
+        lucide.createIcons();
+
+        // Dados das 10 Perguntas Discursivas
+        const perguntas = [
+            {
+                tag: "Nível Meso vs. Nível Micro",
+                pergunta: "Qual é o foco principal de análise do Nível Meso (Operacional) no LNT e como ele se diferencia da abordagem do Nível Micro (Individual)?",
+                resposta: "O Nível Meso foca na análise das exigências das tarefas e requisitos do cargo/função (mapeamento do perfil ocupacional e competências CHA exigidas). Ele se diferencia do Nível Micro pois este último foca no indivíduo específico, analisando o desempenho real do colaborador frente aos requisitos do cargo para identificar suas lacunas particulares de aprendizagem."
+            },
+            {
+                tag: "A Tríade CHA",
+                pergunta: "Explique cada um dos componentes da tríade CHA (Conhecimento, Habilidade e Atitude) e apresente a Equação da Entrega Profissional.",
+                resposta: "Conhecimento (C) é o 'Saber' teórico/conceitual. Habilidade (H) é o 'Saber Fazer' prático e instrumental. Atitude (A) é o 'Querer Fazer', abrangendo posturas, motivações e soft skills. A Equação da Entrega Profissional é dada por: Competência = Saber × Saber Fazer × Querer Fazer (uma relação multiplicativa onde a ausência de um elemento zera a entrega final)."
+            },
+            {
+                tag: "Diagnóstico de Lacunas",
+                pergunta: "No Nível Micro do LNT, qual é o objetivo de calcular os gaps de aprendizagem e qual fórmula é utilizada nessa mensuração?",
+                resposta: "O objetivo é quantificar a diferença entre o padrão esperado de desempenho e o nível real entregue pelo colaborador, orientando intervenções precisas de T&D. A fórmula utilizada é: Gap = Nível Ideal - Nível Real."
+            },
+            {
+                tag: "Fontes de Coleta de Dados",
+                pergunta: "Quasi são as três fontes primárias de coleta de dados no nível Micro e qual o papel de KPIs de desempenho (como CSAT, FCR e Tempo de Resposta) no diagnóstico de treinamento?",
+                resposta: "As três fontes primárias são Autoavaliação, Feedbacks (180°/360°) e KPIs de Desempenho. Os KPIs atuam como evidências quantitativas e objetivas da operação, comprovando se as lacunas teóricas impactam diretamente nos resultados do negócio."
+            },
+            {
+                tag: "Escala de Proficiência",
+                pergunta: "Descreva os cinco níveis da escala padrão de proficiência (de 1 a 5 pontos) utilizada para mensurar o desempenho esperado e entregue pelos colaboradores.",
+                resposta: "1: Crítico (Domínio insuficiente); 2: Parcial (Conhecimento básico, necessita de supervisão); 3: Médio (Atende com autonomia básica); 4: Avançado (Alto domínio e pouca margem de erro); 5: Excelência (Domínio pleno, capaz de instruir outros)."
+            },
+            {
+                tag: "Análise de Atribuições",
+                pergunta: "Na tarefa de Atendimento Diário via Chat e E-mail da empresa TechSul, cite um exemplo de Conhecimento (Hard Skill), uma Habilidade e uma Atitude (Soft Skill) exigidos do profissional.",
+                resposta: "Conhecimento: Domínio do Código de Defesa do Consumidor e políticas internas. Habilidade: Agilidade na digitação e operação de sistemas CRM. Atitude: Empatia e paciência na comunicação sob pressão."
+            },
+            {
+                tag: "Gestão de Conflitos",
+                pergunta: "Quais atitudes e comportamentos são indispensáveis na atribuição de Resolução de Reclamações & Conflitos para evitar o cancelamento de clientes (churn)?",
+                resposta: "Escuta ativa, inteligência emocional, controle do estresse, proatividade na busca de soluções pacíficas e postura orientada à satisfação do cliente sem violar políticas da empresa."
+            },
+            {
+                tag: "Cálculo e Interpretação de Gap",
+                pergunta: "Se um colaborador apresenta nota Ideal = 5 e nota Real = 3 na competência de Domínio de CRM, qual é o valor numérico do Gap e o que esse resultado indica para a área de Treinamento e Desenvolvimento (T&D)?",
+                resposta: "O valor do Gap é 2 (5 - 3 = 2). Isso indica uma lacuna moderada, sinalizando que a área de T&D deve planejar uma capacitação prática focada nas funcionalidades intermediárias/avançadas do CRM."
+            },
+            {
+                tag: "Melhoria de Processos e CRM",
+                pergunta: "De que forma o registro e a triagem de feedbacks em sistemas CRM ajudam a identificar falhas operacionais e alimentar melhorias no Nível Meso?",
+                resposta: "O registro centralizado permite categorizar a frequência e reincidência de falhas operacionais. Ao agrupar esses dados, a área de T&D consegue identificar se determinado problema é fruto de um gargalo de processo do cargo (Nível Meso) e não apenas uma falha individual."
+            },
+            {
+                tag: "Próximos Passos de T&D",
+                pergunta: "Após mapear os Gaps no LNT, qual é a etapa posterior no planejamento de Gestão de Pessoas que orientará a criação do plano de capacitação?",
+                resposta: "A etapa posterior é a Elaboração e Desenho do Plano de Treinamento (Desenvolvimento de Objetivos Instrucionais, escolha de metodologias, orçamentação e cronograma de execução)."
+            }
+        ];
+
+        // Renderizar Perguntas
+        const container = document.getElementById('questions-container');
+        perguntas.forEach((item, index) => {
+            const card = document.createElement('div');
+            card.className = "bg-white rounded-xl border border-slate-200 p-5 shadow-sm space-y-3";
+            card.innerHTML = `
+                <div class="flex items-start justify-between gap-3">
+                    <div>
+                        <span class="text-xs font-semibold uppercase tracking-wider bg-slate-100 text-slate-600 px-2.5 py-1 rounded-full mb-2 inline-block">[${item.tag}]</span>
+                        <h3 class="font-bold text-slate-900 text-sm sm:text-base">${index + 1}. ${item.pergunta}</h3>
+                    </div>
+                </div>
+                <button onclick="toggleAnswer(${index})" class="no-print text-xs font-medium text-indigo-700 hover:text-indigo-900 flex items-center gap-1">
+                    <span id="btn-text-${index}">Exibir Resposta Esperada</span>
+                    <i data-lucide="chevron-down" id="icon-${index}" class="w-4 h-4 transition-transform"></i>
+                </button>
+                <div id="answer-${index}" class="hidden pt-3 border-t border-slate-100 text-xs sm:text-sm text-slate-600 leading-relaxed bg-slate-50 p-3 rounded-lg border border-slate-200">
+                    <strong class="text-slate-800 font-semibold block mb-1">Gabarito / Orientação de Resposta:</strong>
+                    ${item.resposta}
+                </div>
+            `;
+            container.appendChild(card);
+        });
+
+        // Toggle para Respostas
+        function toggleAnswer(index) {
+            const answer = document.getElementById(`answer-${index}`);
+            const btnText = document.getElementById(`btn-text-${index}`);
+            const icon = document.getElementById(`icon-${index}`);
+
+            if (answer.classList.contains('hidden')) {
+                answer.classList.remove('hidden');
+                btnText.textContent = 'Ocultar Resposta Esperada';
+                icon.style.transform = 'rotate(180deg)';
+            } else {
+                answer.classList.add('hidden');
+                btnText.textContent = 'Exibir Resposta Esperada';
+                icon.style.transform = 'rotate(0deg)';
+            }
+        }
+
+        // Função do Simulador de Gaps
+        function calcularSimulacao() {
+            const ideal = parseFloat(document.getElementById('sim-ideal').value) || 0;
+            const real = parseFloat(document.getElementById('sim-real').value) || 0;
+            const resElem = document.getElementById('sim-resultado');
+
+            const gap = ideal - real;
+            if (gap > 0) {
+                resElem.textContent = `${gap} ponto(s) de lacuna (Necessita T&D)`;
+                resElem.className = "font-bold text-amber-700 text-sm";
+            } else if (gap === 0) {
+                resElem.textContent = "0 pontos - Desempenho no nível ideal";
+                resElem.className = "font-bold text-emerald-700 text-sm";
+            } else {
+                resElem.textContent = `${gap} (Supera o nível ideal)`;
+                resElem.className = "font-bold text-indigo-700 text-sm";
+            }
+        }
+    </script>
 </body>
 </html>

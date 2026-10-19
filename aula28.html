@@ -1,63 +1,655 @@
 <!DOCTYPE html>
-<html lang="pt-BR">
+<html lang="pt-BR" class="scroll-smooth">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Aguarde - Aula em Breve</title>
+    <title>Acompanhamento e Modelo Kirkpatrick - Educação Corporativa</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <!-- FontAwesome icons for rich visual elements -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: {
+                        sans: ['Inter', 'sans-serif'],
+                    },
+                    colors: {
+                        brand: {
+                            50: '#f0f9ff',
+                            100: '#e0f2fe',
+                            500: '#0284c7',
+                            600: '#0284c7',
+                            700: '#0369a1',
+                            800: '#075985',
+                            900: '#0c4a6e',
+                        },
+                        kirk1: '#10b981', // Reação - Green
+                        kirk2: '#3b82f6', // Aprendizagem - Blue
+                        kirk3: '#f59e0b', // Comportamento - Amber
+                        kirk4: '#ef4444', // Resultados - Red
+                        kirk5: '#8b5cf6', // ROI - Purple
+                    }
+                }
+            }
+        }
+    </script>
     <style>
-        body {
-            margin: 0;
-            padding: 0;
-            background-color: #f4f4f4; /* Cor de fundo suave */
-            font-family: Arial, sans-serif;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            height: 100vh;
+        .glass-card {
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(229, 231, 235, 0.8);
         }
-
-        .container {
-            background-color: #fff;
-            border-radius: 8px;
-            box-shadow: 0 4px 8px rgba(0,0,0,0.1);
-            padding: 40px;
-            text-align: center;
+        .pyramid-level {
+            clip-path: polygon(5% 0%, 95% 0%, 100% 100%, 0% 100%);
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
         }
-
-        .container img {
-            max-width: 100%;
-            height: auto;
-            border-radius: 8px; /* Mantém as bordas arredondadas da imagem */
-            margin-bottom: 20px;
+        .pyramid-top {
+            clip-path: polygon(50% 0%, 50% 0%, 100% 100%, 0% 100%);
         }
-
-        .container h1 {
-            color: #333;
-            font-size: 24px;
-            margin-bottom: 30px;
-        }
-
-        .btn-voltar {
-            display: inline-block;
-            background-color: #007bff; /* Azul para o botão */
-            color: #fff;
-            padding: 12px 24px;
-            text-decoration: none;
-            border-radius: 5px;
-            font-weight: bold;
-            transition: background-color 0.3s ease;
-        }
-
-        .btn-voltar:hover {
-            background-color: #0056b3; /* Cor mais escura no hover */
+        .tab-active {
+            border-bottom: 3px solid #0284c7;
+            color: #0284c7;
+            font-weight: 700;
         }
     </style>
 </head>
-<body>
-    <div class="container">
-        <img src="imagem1.png" width="320" height="240" alt="O professor em sala de aula">
-        <h1>Aguarde: em breve essa aula estará disponivel.</h1>
-        <a href="index.html" class="btn-voltar">Voltar</a>
-    </div>
+<body class="bg-slate-50 text-slate-800 font-sans antialiased min-h-screen flex flex-col selection:bg-brand-500 selection:text-white">
+
+    <header class="sticky top-0 z-50 bg-slate-900/95 text-white backdrop-blur shadow-md border-b border-slate-800">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex items-center justify-between h-16">
+                <div class="flex items-center space-x-3">
+                    <div class="p-2 bg-brand-600 rounded-lg text-white font-bold">
+                        <i class="fa-solid fa-graduation-cap text-xl"></i>
+                    </div>
+                    <div>
+                        <h1 class="font-bold text-lg leading-tight">Educação Corporativa</h1>
+                        <p class="text-xs text-slate-400">Modelo Kirkpatrick & Indicadores</p>
+                    </div>
+                </div>
+                <nav class="hidden md:flex space-x-6 text-sm font-medium">
+                    <a href="#objetivo" class="hover:text-brand-500 transition-colors">Objetivo</a>
+                    <a href="#parte1" class="hover:text-brand-500 transition-colors">1. Planejamento & Baseline</a>
+                    <a href="#parte2" class="hover:text-brand-500 transition-colors">2. Os 4 Níveis</a>
+                    <a href="#roi" class="hover:text-brand-500 transition-colors">3. ROI (5º Nível)</a>
+                    <a href="#calculadora" class="hover:text-brand-500 transition-colors">Calculadora</a>
+                    <a href="#quiz" class="hover:text-brand-500 transition-colors">Quiz</a>
+                </nav>
+                <a href="#calculadora" class="bg-brand-600 hover:bg-brand-700 text-white px-4 py-2 rounded-lg text-sm font-semibold transition-all shadow-sm">
+                    <i class="fa-solid fa-calculator mr-1"></i> Simular ROI
+                </a>
+            </div>
+        </div>
+    </header>
+
+    <section id="objetivo" class="bg-gradient-to-br from-slate-900 via-slate-800 to-brand-900 text-white py-12 md:py-16">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="grid grid-cols-1 lg:grid-cols-12 gap-8 items-center">
+                <div class="lg:col-span-8">
+                    <div class="inline-flex items-center gap-2 bg-brand-500/20 text-brand-100 text-xs font-semibold px-3 py-1.5 rounded-full border border-brand-400/30 mb-4">
+                        <i class="fa-solid fa-book-open"></i> Plano de Aula Prático
+                    </div>
+                    <h2 class="text-3xl md:text-5xl font-extrabold tracking-tight mb-4 leading-tight">
+                        Acompanhamento e Modelo Kirkpatrick
+                    </h2>
+                    <p class="text-slate-300 text-base md:text-lg mb-6 leading-relaxed">
+                        Aprenda a mensurar indicadores de treinamento antes da aplicação e domine a estrutura dos 4 Níveis para fundamentar a avaliação e a defesa de soluções estratégicas.
+                    </p>
+                    
+                    <!-- Lesson Flow Badges -->
+                    <div class="flex flex-wrap gap-4 pt-2">
+                        <div class="bg-slate-800/80 border border-slate-700 rounded-lg p-3 flex items-center space-x-3">
+                            <span class="w-8 h-8 rounded-full bg-brand-500/30 text-brand-400 flex items-center justify-center font-bold text-sm">15m</span>
+                            <div>
+                                <p class="text-xs text-slate-400">Atividade Expositiva</p>
+                                <p class="text-sm font-semibold">Indicadores e Linha de Base</p>
+                            </div>
+                        </div>
+                        <div class="bg-slate-800/80 border border-slate-700 rounded-lg p-3 flex items-center space-x-3">
+                            <span class="w-8 h-8 rounded-full bg-purple-500/30 text-purple-400 flex items-center justify-center font-bold text-sm">30m</span>
+                            <div>
+                                <p class="text-xs text-slate-400">Estudo de Caso & Prática</p>
+                                <p class="text-sm font-semibold">4 Níveis + Nível 5 (ROI)</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="lg:col-span-4">
+                    <div class="bg-slate-800/90 border border-slate-700 rounded-2xl p-6 shadow-xl">
+                        <h3 class="text-sm font-bold text-brand-400 uppercase tracking-wider mb-3">
+                            <i class="fa-solid fa-bullseye mr-2"></i>Objetivo de Aprendizagem
+                        </h3>
+                        <p class="text-sm text-slate-200 leading-relaxed mb-4">
+                            Capacitar os alunos a planejar e mensurar indicadores de treinamento antes da sua aplicação, além de dominar a estrutura dos 4 Níveis do Modelo Kirkpatrick para fundamentar a avaliação e a defesa de soluções em Educação Corporativa.
+                        </p>
+                        <div class="border-t border-slate-700 pt-3 text-xs text-slate-400 flex justify-between items-center">
+                            <span><i class="fa-regular fa-clock mr-1"></i> Duração: 45 min</span>
+                            <span><i class="fa-solid fa-user-graduate mr-1"></i> Nível: Estratégico</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Main Content Container -->
+    <main class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-10 space-y-16 flex-grow">
+
+        <section id="parte1" class="scroll-mt-20">
+            <div class="mb-8">
+                <span class="text-xs font-bold uppercase tracking-widest text-brand-600 bg-brand-50 px-3 py-1 rounded-full border border-brand-100">
+                    Bloco 1 • 15 Minutos
+                </span>
+                <h2 class="text-2xl md:text-3xl font-bold text-slate-900 mt-2">
+                    1. Atividade Expositiva: Planejamento de Indicadores e Linha de Base
+                </h2>
+                <p class="text-slate-600 text-sm md:text-base mt-1">
+                    Como evitar que treinamentos sejam vistos apenas como custos ou eventos isolados.
+                </p>
+            </div>
+
+            <!-- Grid of 4 Core Concepts -->
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                
+                <!-- Principle 1 -->
+                <div class="bg-white rounded-xl p-6 shadow-sm border border-slate-200 hover:shadow-md transition-shadow">
+                    <div class="flex items-start gap-4">
+                        <div class="p-3 bg-brand-50 text-brand-600 rounded-xl font-bold text-xl">
+                            <i class="fa-solid fa-backward"></i>
+                        </div>
+                        <div>
+                            <h3 class="font-bold text-slate-900 text-lg mb-2">
+                                Planejamento "De Trás para Frente"
+                            </h3>
+                            <p class="text-slate-600 text-sm leading-relaxed mb-3">
+                                A medição estratégica inicia-se com a definição do <strong>resultado de negócio pretendido</strong>. Em vez de desenhar primeiro o conteúdo da aula, identifica-se qual impacto organizacional se deseja alcançar e quais comportamentos operacionais precisam mudar.
+                            </p>
+                            <div class="bg-slate-50 p-3 rounded-lg border border-slate-100 text-xs text-slate-700 flex items-center gap-2">
+                                <i class="fa-solid fa-arrow-left text-brand-600"></i>
+                                <span><strong>Fluxo:</strong> Impacto no Negócio &rarr; Comportamento Operacional &rarr; Conteúdo do Treinamento</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Principle 2 -->
+                <div class="bg-white rounded-xl p-6 shadow-sm border border-slate-200 hover:shadow-md transition-shadow">
+                    <div class="flex items-start gap-4">
+                        <div class="p-3 bg-indigo-50 text-indigo-600 rounded-xl font-bold text-xl">
+                            <i class="fa-solid fa-chart-line"></i>
+                        </div>
+                        <div>
+                            <h3 class="font-bold text-slate-900 text-lg mb-2">
+                                Definição da Linha de Base (Baseline)
+                            </h3>
+                            <p class="text-slate-600 text-sm leading-relaxed mb-3">
+                                O registro numérico do indicador <strong>antes</strong> da intervenção educativa. Sem essa métrica inicial (ex: volume de erros, tempo de atendimento, índice de refugo), é impossível comprovar estatisticamente o progresso gerado pelo treinamento.
+                            </p>
+                            <div class="bg-slate-50 p-3 rounded-lg border border-slate-100 text-xs text-slate-700 flex items-center gap-2">
+                                <i class="fa-solid fa-calculator text-indigo-600"></i>
+                                <span><strong>Exemplo:</strong> Reduzir o tempo médio de atendimento de 8.5 min (Baseline) para 5.0 min.</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Principle 3 -->
+                <div class="bg-white rounded-xl p-6 shadow-sm border border-slate-200 hover:shadow-md transition-shadow">
+                    <div class="flex items-start gap-4">
+                        <div class="p-3 bg-emerald-50 text-emerald-600 rounded-xl font-bold text-xl">
+                            <i class="fa-solid fa-bullseye"></i>
+                        </div>
+                        <div>
+                            <h3 class="font-bold text-slate-900 text-lg mb-2">
+                                Conexão com Dores de Negócio
+                            </h3>
+                            <p class="text-slate-600 text-sm leading-relaxed mb-3">
+                                Os indicadores devem estar diretamente associados às prioridades estratégicas da diretoria para garantir relevância e orçamento contínuo.
+                            </p>
+                            <div class="flex flex-wrap gap-1.5 pt-1">
+                                <span class="bg-emerald-50 text-emerald-700 text-xs px-2.5 py-1 rounded-md font-medium">Produtividade</span>
+                                <span class="bg-emerald-50 text-emerald-700 text-xs px-2.5 py-1 rounded-md font-medium">Qualidade</span>
+                                <span class="bg-emerald-50 text-emerald-700 text-xs px-2.5 py-1 rounded-md font-medium">Segurança do Trabalho</span>
+                                <span class="bg-emerald-50 text-emerald-700 text-xs px-2.5 py-1 rounded-md font-medium">Retenção de Talentos</span>
+                                <span class="bg-emerald-50 text-emerald-700 text-xs px-2.5 py-1 rounded-md font-medium">Conformidade</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Principle 4 -->
+                <div class="bg-white rounded-xl p-6 shadow-sm border border-slate-200 hover:shadow-md transition-shadow">
+                    <div class="flex items-start gap-4">
+                        <div class="p-3 bg-amber-50 text-amber-600 rounded-xl font-bold text-xl">
+                            <i class="fa-solid fa-magnifying-glass"></i>
+                        </div>
+                        <div>
+                            <h3 class="font-bold text-slate-900 text-lg mb-2">
+                                Garantia de Condições de Aplicação
+                            </h3>
+                            <p class="text-slate-600 text-sm leading-relaxed mb-3">
+                                Investigar previamente se a lacuna decorre de <strong>falta de conhecimento</strong> ou de <strong>fatores organizacionais</strong> (ferramentas inadequadas, tempo insuficiente ou metas conflitantes). O treinamento só soluciona lacunas de competência!
+                            </p>
+                            <div class="bg-slate-50 p-3 rounded-lg border border-slate-100 text-xs text-slate-700 flex items-center gap-2">
+                                <i class="fa-solid fa-triangle-exclamation text-amber-600"></i>
+                                <span><strong>Alerta:</strong> Treinamento não resolve ferramentas quebradas ou processos confusos.</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </section>
+
+        <section id="parte2" class="scroll-mt-20">
+            <div class="mb-8">
+                <span class="text-xs font-bold uppercase tracking-widest text-purple-600 bg-purple-50 px-3 py-1 rounded-full border border-purple-100">
+                    Bloco 2 • 30 Minutos
+                </span>
+                <h2 class="text-2xl md:text-3xl font-bold text-slate-900 mt-2">
+                    2. Estudo dos 4 Níveis do Modelo Kirkpatrick
+                </h2>
+                <p class="text-slate-600 text-sm md:text-base mt-1">
+                    Desenvolvido por Donald Kirkpatrick (década de 1950), este modelo avalia a eficácia em níveis sequenciais e complementares.
+                </p>
+            </div>
+
+            <div class="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
+                
+                <!-- Interactive Visual Pyramid -->
+                <div class="lg:col-span-5 bg-white p-6 rounded-2xl shadow-sm border border-slate-200 flex flex-col items-center">
+                    <h3 class="font-bold text-slate-900 text-center text-sm uppercase tracking-wider mb-2">
+                        Hierarquia de Avaliação
+                    </h3>
+                    <p class="text-xs text-slate-500 text-center mb-6">Clique em um nível para ver o detalhamento prático</p>
+
+                    <div class="w-full space-y-2 flex flex-col items-center">
+                        
+                        <!-- Level 4 Button -->
+                        <button onclick="selectLevel(4)" id="btn-lvl-4" class="w-full py-4 px-4 rounded-xl text-white font-bold text-sm sm:text-base transition-all duration-300 shadow-sm flex items-center justify-between bg-red-500 hover:bg-red-600 ring-2 ring-offset-2 ring-transparent">
+                            <span class="flex items-center gap-2">
+                                <span class="w-7 h-7 bg-white/20 rounded-full flex items-center justify-center text-xs">N4</span>
+                                <span>Resultados</span>
+                            </span>
+                            <span class="text-xs font-normal opacity-90">Impacto no Negócio</span>
+                        </button>
+
+                        <!-- Level 3 Button -->
+                        <button onclick="selectLevel(3)" id="btn-lvl-3" class="w-[92%] py-4 px-4 rounded-xl text-white font-bold text-sm sm:text-base transition-all duration-300 shadow-sm flex items-center justify-between bg-amber-500 hover:bg-amber-600 ring-2 ring-offset-2 ring-transparent">
+                            <span class="flex items-center gap-2">
+                                <span class="w-7 h-7 bg-white/20 rounded-full flex items-center justify-center text-xs">N3</span>
+                                <span>Comportamento</span>
+                            </span>
+                            <span class="text-xs font-normal opacity-90">Transferência</span>
+                        </button>
+
+                        <!-- Level 2 Button -->
+                        <button onclick="selectLevel(2)" id="btn-lvl-2" class="w-[84%] py-4 px-4 rounded-xl text-white font-bold text-sm sm:text-base transition-all duration-300 shadow-sm flex items-center justify-between bg-blue-500 hover:bg-blue-600 ring-2 ring-offset-2 ring-transparent">
+                            <span class="flex items-center gap-2">
+                                <span class="w-7 h-7 bg-white/20 rounded-full flex items-center justify-center text-xs">N2</span>
+                                <span>Aprendizagem</span>
+                            </span>
+                            <span class="text-xs font-normal opacity-90">Retenção</span>
+                        </button>
+
+                        <!-- Level 1 Button -->
+                        <button onclick="selectLevel(1)" id="btn-lvl-1" class="w-[76%] py-4 px-4 rounded-xl text-white font-bold text-sm sm:text-base transition-all duration-300 shadow-sm flex items-center justify-between bg-emerald-500 hover:bg-emerald-600 ring-2 ring-offset-2 ring-transparent">
+                            <span class="flex items-center gap-2">
+                                <span class="w-7 h-7 bg-white/20 rounded-full flex items-center justify-center text-xs">N1</span>
+                                <span>Reação</span>
+                            </span>
+                            <span class="text-xs font-normal opacity-90">Satisfação</span>
+                        </button>
+
+                    </div>
+
+                    <div class="mt-6 p-4 bg-slate-50 rounded-xl text-xs text-slate-500 border border-slate-200 text-center w-full">
+                        <i class="fa-solid fa-arrow-up text-brand-600 mr-1"></i> <strong>Atenção:</strong> Cada nível superior fundamenta-se no sucesso do nível anterior.
+                    </div>
+                </div>
+
+                <!-- Level Detailed Content Panel -->
+                <div class="lg:col-span-7 bg-white rounded-2xl p-6 md:p-8 shadow-sm border border-slate-200 min-h-[420px]" id="level-detail-card">
+                    <!-- Dynamic Javascript Content Loaded Here -->
+                </div>
+
+            </div>
+        </section>
+
+        <section id="roi" class="scroll-mt-20">
+            <div class="bg-gradient-to-br from-slate-900 to-purple-950 text-white rounded-3xl p-6 md:p-10 shadow-xl border border-purple-900/50">
+                <div class="max-w-3xl">
+                    <span class="text-xs font-bold uppercase tracking-widest text-purple-300 bg-purple-900/60 px-3 py-1 rounded-full border border-purple-700/50">
+                        Complemento para Defesa da Solução
+                    </span>
+                    <h2 class="text-3xl font-extrabold mt-3 text-white">
+                        O 5º Nível: Retorno sobre o Investimento (ROI)
+                    </h2>
+                    <p class="text-purple-200 text-sm md:text-base mt-2 leading-relaxed">
+                        Para defender orçamentos e justificar investimentos perante a diretoria e área financeira, <strong>Jack Phillips</strong> expandiu o modelo Kirkpatrick ao incluir a métrica de ROI.
+                    </p>
+                </div>
+
+                <!-- ROI Formula Box -->
+                <div class="my-8 bg-slate-800/80 p-6 rounded-2xl border border-purple-500/30 flex flex-col md:flex-row items-center justify-between gap-6">
+                    <div>
+                        <h4 class="text-xs font-bold text-purple-400 uppercase tracking-wider mb-1">Fórmula do ROI em Treinamento</h4>
+                        <p class="text-sm text-slate-300">Monetiza os benefícios líquidos obtidos no Nível 4 em relação ao custo total do treinamento.</p>
+                    </div>
+                    <div class="bg-slate-900 px-6 py-4 rounded-xl border border-purple-500/40 text-center font-mono">
+                        <span class="text-purple-300 font-bold text-lg md:text-xl">
+                            ROI (%) = [ (Benefícios Líquidos - Custo Total) / Custo Total ] × 100
+                        </span>
+                    </div>
+                </div>
+
+                <!-- Interactive ROI Simulator Tool -->
+                <div id="calculadora" class="bg-white text-slate-800 p-6 md:p-8 rounded-2xl shadow-lg">
+                    <div class="flex items-center space-x-2 border-b border-slate-200 pb-4 mb-6">
+                        <div class="p-2 bg-purple-100 text-purple-700 rounded-lg">
+                            <i class="fa-solid fa-calculator text-xl"></i>
+                        </div>
+                        <div>
+                            <h3 class="font-bold text-slate-900 text-lg">Simulador Prático de ROI (Modelo Phillips)</h3>
+                            <p class="text-xs text-slate-500">Insira os valores estimados para calcular o retorno percentual.</p>
+                        </div>
+                    </div>
+
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                        <div class="space-y-4">
+                            <div>
+                                <label class="block text-xs font-semibold text-slate-700 mb-1">
+                                    Benefícios Financeiros Líquidos Gerados (R$)
+                                </label>
+                                <div class="relative">
+                                    <span class="absolute left-3 top-2.5 text-slate-400 text-sm font-semibold">R$</span>
+                                    <input type="number" id="roi-benefit" value="150000" oninput="calculateROI()" class="w-full pl-10 pr-3 py-2 border border-slate-300 rounded-lg focus:ring-2 focus:ring-purple-500 focus:border-purple-500 text-slate-900 text-sm font-medium">
+                                </div>
+                                <span class="text-[11px] text-slate-500">Ex: Redução de desperdício, ganho de vendas ou retrabalho evitado</span>
+                            </div>
+
+                            <div>
+                                <label class="block text-xs font-semibold text-slate-700 mb-1">
+                                    Custo Total do Treinamento (R$)
+                                </label>
+                                <div class="relative">
+                                    <span class="absolute left-3 top-2.5 text-slate-400 text-sm font-semibold">R$</span>
+                                    <input type="number" id="roi-cost" value="50000" oninput="calculateROI()" class="w-full pl-10 pr-3 py-2 border border-slate-300 rounded-lg focus:ring-2 focus:ring-purple-500 focus:border-purple-500 text-slate-900 text-sm font-medium">
+                                </div>
+                                <span class="text-[11px] text-slate-500">Inclui instrutores, material, logística e horas-homem paradas</span>
+                            </div>
+                        </div>
+
+                        <!-- Result Display -->
+                        <div class="bg-purple-50 border border-purple-200 rounded-2xl p-6 flex flex-col justify-center items-center text-center">
+                            <span class="text-xs font-bold uppercase text-purple-700 tracking-wider mb-1">Retorno Calculado</span>
+                            <div id="roi-result-percent" class="text-4xl md:text-5xl font-black text-purple-700 my-1">
+                                200%
+                            </div>
+                            <p id="roi-explanation" class="text-xs text-purple-900 mt-2 font-medium">
+                                Para cada R$ 1,00 investido, a empresa obteve R$ 2,00 de lucro líquido adicional.
+                            </p>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </section>
+
+        <section id="quiz" class="scroll-mt-20">
+            <div class="bg-white rounded-2xl p-6 md:p-8 shadow-sm border border-slate-200">
+                <div class="flex items-center space-x-3 mb-6">
+                    <div class="p-3 bg-amber-100 text-amber-700 rounded-xl">
+                        <i class="fa-solid fa-list-check text-xl"></i>
+                    </div>
+                    <div>
+                        <h2 class="text-xl font-bold text-slate-900">Teste de Fixação</h2>
+                        <p class="text-xs text-slate-500">Valide o seu entendimento dos conceitos apresentados nesta aula</p>
+                    </div>
+                </div>
+
+                <div class="space-y-6" id="quiz-container">
+                    <!-- Question 1 -->
+                    <div class="border border-slate-200 rounded-xl p-5 bg-slate-50/50">
+                        <p class="font-semibold text-slate-900 text-sm mb-3">
+                            1. Por que o planejamento de indicadores deve começar "de trás para frente"?
+                        </p>
+                        <div class="space-y-2">
+                            <label class="flex items-start space-x-3 text-xs md:text-sm text-slate-700 p-2.5 rounded-lg bg-white border border-slate-200 cursor-pointer hover:bg-slate-100">
+                                <input type="radio" name="q1" value="a" class="mt-0.5 text-brand-600 focus:ring-brand-500">
+                                <span>Para economizar tempo no design instrucional das aulas.</span>
+                            </label>
+                            <label class="flex items-start space-x-3 text-xs md:text-sm text-slate-700 p-2.5 rounded-lg bg-white border border-slate-200 cursor-pointer hover:bg-slate-100">
+                                <input type="radio" name="q1" value="b" class="mt-0.5 text-brand-600 focus:ring-brand-500">
+                                <span>Para garantir que a solução atenda a um resultado de negócio antes de definir conteúdos e comportamentos.</span>
+                            </label>
+                            <label class="flex items-start space-x-3 text-xs md:text-sm text-slate-700 p-2.5 rounded-lg bg-white border border-slate-200 cursor-pointer hover:bg-slate-100">
+                                <input type="radio" name="q1" value="c" class="mt-0.5 text-brand-600 focus:ring-brand-500">
+                                <span>Porque o modelo Kirkpatrick exige aplicar o teste do Nível 4 primeiro.</span>
+                            </label>
+                        </div>
+                    </div>
+
+                    <!-- Question 2 -->
+                    <div class="border border-slate-200 rounded-xl p-5 bg-slate-50/50">
+                        <p class="font-semibold text-slate-900 text-sm mb-3">
+                            2. Qual é a janela temporal recomendada para medir o Nível 3 (Comportamento)?
+                        </p>
+                        <div class="space-y-2">
+                            <label class="flex items-start space-x-3 text-xs md:text-sm text-slate-700 p-2.5 rounded-lg bg-white border border-slate-200 cursor-pointer hover:bg-slate-100">
+                                <input type="radio" name="q2" value="a" class="mt-0.5 text-brand-600 focus:ring-brand-500">
+                                <span>Imediatamente ao final do curso, por meio de questionário de reação.</span>
+                            </label>
+                            <label class="flex items-start space-x-3 text-xs md:text-sm text-slate-700 p-2.5 rounded-lg bg-white border border-slate-200 cursor-pointer hover:bg-slate-100">
+                                <input type="radio" name="q2" value="b" class="mt-0.5 text-brand-600 focus:ring-brand-500">
+                                <span>Semanas ou meses após o treinamento (geralmente entre 60 e 90 dias), para permitir a consolidação na rotina.</span>
+                            </label>
+                            <label class="flex items-start space-x-3 text-xs md:text-sm text-slate-700 p-2.5 rounded-lg bg-white border border-slate-200 cursor-pointer hover:bg-slate-100">
+                                <input type="radio" name="q2" value="c" class="mt-0.5 text-brand-600 focus:ring-brand-500">
+                                <span>Apenas no ano seguinte durante a avaliação de desempenho anual.</span>
+                            </label>
+                        </div>
+                    </div>
+
+                    <button onclick="checkQuiz()" class="w-full md:w-auto bg-slate-900 hover:bg-slate-800 text-white px-6 py-2.5 rounded-xl text-sm font-semibold transition-colors">
+                        Verificar Respostas
+                    </button>
+                    <div id="quiz-feedback" class="hidden p-4 rounded-xl text-sm font-medium"></div>
+                </div>
+            </div>
+        </section>
+
+    </main>
+
+    <footer class="bg-slate-900 text-slate-400 py-8 border-t border-slate-800 text-xs">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex flex-col md:flex-row items-center justify-between gap-4">
+            <div class="flex items-center space-x-2">
+                <i class="fa-solid fa-graduation-cap text-brand-500 text-base"></i>
+                <span class="font-semibold text-slate-200">Educação Corporativa & Avaliação de Impacto</span>
+            </div>
+            <p>© 2026 Material Didático de Treinamento e Desenvolvimento. Baseado no Modelo Kirkpatrick e Jack Phillips.</p>
+        </div>
+    </footer>
+
+    <script>
+        // Data structure for the Kirkpatrick levels
+        const levelsData = {
+            1: {
+                title: "Nível 1 – Reação (Satisfação e Percepção)",
+                color: "emerald",
+                bgColor: "bg-emerald-500",
+                textColor: "text-emerald-600",
+                badgeBg: "bg-emerald-50 text-emerald-700 border-emerald-200",
+                focus: "Avalia a percepção imediata dos participantes sobre a experiência de aprendizagem, a clareza do conteúdo, a organização do ambiente e a didática do instrutor.",
+                practical: "Questionários curtos ao final do curso. Para ir além de pesquisas genéricas, mede-se a relevância e a utilidade percebida do conteúdo para a rotina diária.",
+                limitation: "Uma reação excelente indica bom engajamento inicial, mas NÃO garante retenção de conhecimento ou mudança de comportamento no trabalho.",
+                metrics: ["Satisfação do Aluno", "Utilidade Percebida", "NPS do Treinamento", "Clareza do Instrutor"]
+            },
+            2: {
+                title: "Nível 2 – Aprendizagem (Retenção e Competência)",
+                color: "blue",
+                bgColor: "bg-blue-500",
+                textColor: "text-blue-600",
+                badgeBg: "bg-blue-50 text-blue-700 border-blue-200",
+                focus: "Verifica o grau de assimilação dos conceitos, habilidades e atitudes propostos pela solução formativa.",
+                practical: "Avaliações antes e depois (pré-teste e pós-teste), testes práticos, provas situacionais, exercícios interativos ou simulações operacionais.",
+                limitation: "Garante que o aluno aprendeu a teoria/técnica em sala de aula, mas não assegura que ele aplicará na rotina sobrecarregada da empresa.",
+                metrics: ["Pontuação Pré/Pós Teste", "Taxa de Domínio Prático", "Simulações Aprovadas", "Retenção Conceitual"]
+            },
+            3: {
+                title: "Nível 3 – Comportamento (Transferência para a Rotina)",
+                color: "amber",
+                bgColor: "bg-amber-500",
+                textColor: "text-amber-600",
+                badgeBg: "bg-amber-50 text-amber-700 border-amber-200",
+                focus: "Avalia em que medida os conhecimentos e atitudes adquiridos são efetivamente aplicados no dia a dia do trabalho.",
+                practical: "Medição efetuada entre 60 e 90 dias após o curso. Utilizam-se questionários do colaborador e liderança, observação direta no posto e checklists.",
+                limitation: "A mudança comportamental depende fortemente do suporte da liderança direta, remoção de barreiras e disponibilidade de recursos.",
+                metrics: ["Adesão ao Checklist de Rotina", "Avaliação do Gestor (60 dias)", "Observação em Campo"]
+            },
+            4: {
+                title: "Nível 4 – Resultados (Impacto no Negócio)",
+                color: "red",
+                bgColor: "bg-red-500",
+                textColor: "text-red-600",
+                badgeBg: "bg-red-50 text-red-700 border-red-200",
+                focus: "Mede o impacto direto do treinamento nos indicadores estratégicos e operacionais da organização.",
+                practical: "Acompanhamento do volume de erros, tempo de atendimento, acidentes de trabalho, turnover e taxas de produtividade/vendas.",
+                limitation: "É o nível mais desafiador de isolar, pois exige desconsiderar fatores externos, melhorias de sistema e sazonais do mercado.",
+                metrics: ["Aumento de Produtividade", "Redução da Taxa de Erros", "Queda no Turnover", "Segurança/Acidentes"]
+            }
+        };
+
+        let activeLevel = 4;
+
+        function selectLevel(lvl) {
+            activeLevel = lvl;
+            const data = levelsData[lvl];
+
+            // Update Level Detail Panel UI
+            const container = document.getElementById('level-detail-card');
+            
+            container.innerHTML = `
+                <div class="animate-fadeIn">
+                    <div class="flex items-center justify-between border-b border-slate-100 pb-4 mb-4">
+                        <span class="text-xs font-bold uppercase tracking-wider px-3 py-1 rounded-full border ${data.badgeBg}">
+                            Nível ${lvl} do Modelo
+                        </span>
+                        <span class="text-xs text-slate-400 font-mono">Modelo Kirkpatrick</span>
+                    </div>
+
+                    <h3 class="text-xl md:text-2xl font-bold text-slate-900 mb-3">${data.title}</h3>
+                    
+                    <div class="space-y-4">
+                        <div>
+                            <h4 class="text-xs font-bold text-slate-400 uppercase tracking-wider mb-1">
+                                <i class="fa-solid fa-bullseye ${data.textColor} mr-1"></i> Foco Principal
+                            </h4>
+                            <p class="text-slate-700 text-sm leading-relaxed">${data.focus}</p>
+                        </div>
+
+                        <div class="bg-slate-50 p-4 rounded-xl border border-slate-100">
+                            <h4 class="text-xs font-bold text-slate-500 uppercase tracking-wider mb-1">
+                                <i class="fa-solid fa-vial mr-1"></i> Aplicação Prática
+                            </h4>
+                            <p class="text-slate-700 text-sm leading-relaxed">${data.practical}</p>
+                        </div>
+
+                        <div class="bg-rose-50/50 p-4 rounded-xl border border-rose-100">
+                            <h4 class="text-xs font-bold text-rose-700 uppercase tracking-wider mb-1">
+                                <i class="fa-solid fa-triangle-exclamation mr-1"></i> Atenção & Limitação
+                            </h4>
+                            <p class="text-slate-700 text-sm leading-relaxed">${data.limitation}</p>
+                        </div>
+
+                        <div>
+                            <h4 class="text-xs font-bold text-slate-400 uppercase tracking-wider mb-2">Indicadores / Métricas Típicas</h4>
+                            <div class="flex flex-wrap gap-2">
+                                ${data.metrics.map(m => `<span class="bg-slate-100 text-slate-800 text-xs px-2.5 py-1 rounded-md font-medium border border-slate-200"><i class="fa-solid fa-check ${data.textColor} mr-1"></i>${m}</span>`).join('')}
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            `;
+
+            // Highlight buttons
+            [1, 2, 3, 4].forEach(i => {
+                const btn = document.getElementById(`btn-lvl-${i}`);
+                if (i === lvl) {
+                    btn.classList.add('ring-slate-900', 'scale-105', 'shadow-md');
+                } else {
+                    btn.classList.remove('ring-slate-900', 'scale-105', 'shadow-md');
+                }
+            });
+        }
+
+        // ROI Calculator Logic
+        function calculateROI() {
+            const benefitInput = parseFloat(document.getElementById('roi-benefit').value) || 0;
+            const costInput = parseFloat(document.getElementById('roi-cost').value) || 0;
+            const resultPercentEl = document.getElementById('roi-result-percent');
+            const resultExpEl = document.getElementById('roi-explanation');
+
+            if (costInput <= 0) {
+                resultPercentEl.innerText = "N/A";
+                resultExpEl.innerText = "O custo do treinamento precisa ser maior que zero.";
+                return;
+            }
+
+            const netBenefit = benefitInput - costInput;
+            const roiPercent = ((netBenefit) / costInput) * 100;
+            
+            resultPercentEl.innerText = `${roiPercent.toFixed(0)}%`;
+
+            const multiplier = (roiPercent / 100).toFixed(2);
+            if (roiPercent > 0) {
+                resultExpEl.innerText = `Para cada R$ 1,00 investido, a empresa obteve R$ ${multiplier} de retorno líquido.`;
+            } else if (roiPercent === 0) {
+                resultExpEl.innerText = `O treinamento empatou os custos com os benefícios gerados.`;
+            } else {
+                resultExpEl.innerText = `O investimento excedeu os benefícios financeiros diretos obtidos.`;
+            }
+        }
+
+        // Quiz check logic
+        function checkQuiz() {
+            const q1 = document.querySelector('input[name="q1"]:checked');
+            const q2 = document.querySelector('input[name="q2"]:checked');
+            const feedback = document.getElementById('quiz-feedback');
+
+            if (!q1 || !q2) {
+                feedback.classList.remove('hidden', 'bg-emerald-100', 'text-emerald-800');
+                feedback.classList.add('bg-amber-100', 'text-amber-800');
+                feedback.innerText = "Por favor, responda todas as questões antes de verificar.";
+                return;
+            }
+
+            let correct = 0;
+            if (q1.value === 'b') correct++;
+            if (q2.value === 'b') correct++;
+
+            feedback.classList.remove('hidden', 'bg-amber-100', 'text-amber-800');
+            
+            if (correct === 2) {
+                feedback.classList.add('bg-emerald-100', 'text-emerald-900');
+                feedback.innerHTML = "<strong>Parabéns! Excelente trabalho!</strong> Você acertou todas as respostas (2/2).";
+            } else {
+                feedback.classList.add('bg-amber-100', 'text-amber-900');
+                feedback.innerHTML = `<strong>Você acertou ${correct} de 2 questões.</strong> Revise os conceitos do Planejamento "De trás para frente" e da Janela Temporal do Nível 3!`;
+            }
+        }
+
+        // Initialize default state
+        window.onload = function() {
+            selectLevel(4);
+            calculateROI();
+        }
+    </script>
 </body>
 </html>

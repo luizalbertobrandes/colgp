@@ -1028,6 +1028,37 @@
                     'Integrantes': item.members || '',
                     'Sintese LNT': item.synth || '',
                     'Gaps Treinamento': item.gaps_train || '',
+                    'Gaps Processos': item.gaps_proc || '',
+                    'Custo Total (R$)': costTotal,
+                    'Ganhos Totais (R$)': gainTotal,
+                    'ROI (%)': roiVal,
+                    'Nota LNT': item.score_lnt || 0,
+                    'Nota Plano': item.score_plan || 0,
+                    'Nota ROI': item.score_roi || 0,
+                    'Nota Pitch': item.score_pitch || 0,
+                    'Feedback C-Level': item.feedback || ''
+                });
+            });
+
+            const worksheet = XLSX.utils.json_to_sheet(exportRows);
+            const workbook = XLSX.utils.book_new();
+            XLSX.utils.book_append_sheet(workbook, worksheet, "Relatorio_Geral_LNT");
+            XLSX.writeFile(workbook, "Consultoria_RH_LogiTech_Consolidado.xlsx");
+            showToast("Planilha Excel exportada com sucesso!");
+        }
+
+        function exportToJSON() {
+            saveCurrentData();
+            const dataStr = "data:text/json;charset=utf-8," + encodeURIComponent(JSON.stringify(appData, null, 2));
+            const downloadAnchor = document.createElement('a');
+            downloadAnchor.setAttribute("href", dataStr);
+            downloadAnchor.setAttribute("download", "logitech_consultoria_rh_backup.json");
+            document.body.appendChild(downloadAnchor);
+            downloadAnchor.click();
+            downloadAnchor.remove();
+            showToast("Backup JSON baixado!");
+        }
+
         function syncToGoogleSheets(customPayload = null) {
             saveCurrentData();
             const scriptUrl = document.getElementById('googleScriptUrl').value.trim();

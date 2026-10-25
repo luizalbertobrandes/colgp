@@ -3,61 +3,1104 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Aguarde - Aula em Breve</title>
+    <title>Simulação de Consultoria Interna de RH - LogiTech Brasil</title>
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- FontAwesome icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- MathJax for rendering math formulas -->
+    <script src="https://polyfill.io/v3/polyfill.min.min.js?features=es6"></script>
+    <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <!-- SheetJS for Export to Excel -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
+
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        brand: {
+                            50: '#f0f9ff',
+                            100: '#e0f2fe',
+                            500: '#0284c7',
+                            600: '#0369a1',
+                            700: '#0f4c81',
+                            800: '#1e3a8a',
+                            900: '#0f172a',
+                        }
+                    }
+                }
+            }
+        }
+    </script>
     <style>
-        body {
-            margin: 0;
-            padding: 0;
-            background-color: #f4f4f4; /* Cor de fundo suave */
-            font-family: Arial, sans-serif;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            height: 100vh;
+        .step-active {
+            border-color: #0284c7;
+            color: #0284c7;
+            background-color: #f0f9ff;
         }
-
-        .container {
-            background-color: #fff;
-            border-radius: 8px;
-            box-shadow: 0 4px 8px rgba(0,0,0,0.1);
-            padding: 40px;
-            text-align: center;
+        .step-done {
+            border-color: #10b981;
+            color: #10b981;
         }
-
-        .container img {
-            max-width: 100%;
-            height: auto;
-            border-radius: 8px; /* Mantém as bordas arredondadas da imagem */
-            margin-bottom: 20px;
+        /* Custom scrollbars */
+        ::-webkit-scrollbar {
+            width: 6px;
+            height: 6px;
         }
-
-        .container h1 {
-            color: #333;
-            font-size: 24px;
-            margin-bottom: 30px;
+        ::-webkit-scrollbar-track {
+            background: #f1f1f1;
         }
-
-        .btn-voltar {
-            display: inline-block;
-            background-color: #007bff; /* Azul para o botão */
-            color: #fff;
-            padding: 12px 24px;
-            text-decoration: none;
-            border-radius: 5px;
-            font-weight: bold;
-            transition: background-color 0.3s ease;
+        ::-webkit-scrollbar-thumb {
+            background: #cbd5e1;
+            border-radius: 4px;
         }
-
-        .btn-voltar:hover {
-            background-color: #0056b3; /* Cor mais escura no hover */
+        ::-webkit-scrollbar-thumb:hover {
+            background: #94a3b8;
         }
     </style>
 </head>
-<body>
-    <div class="container">
-        <img src="imagem1.png" width="320" height="240" alt="O professor em sala de aula">
-        <h1>Aguarde: em breve essa aula estará disponivel.</h1>
-        <a href="index.html" class="btn-voltar">Voltar</a>
+<body class="bg-slate-50 text-slate-800 font-sans min-h-screen flex flex-col">
+
+    <!-- Header Navigation -->
+    <header class="bg-slate-900 text-white shadow-md sticky top-0 z-50">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-3 flex flex-wrap justify-between items-center gap-4">
+            <div class="flex items-center space-x-3">
+                <div class="bg-brand-500 text-white p-2 rounded-lg font-bold text-xl flex items-center justify-center w-10 h-10">
+                    <i class="fa-solid fa-boxes-packing"></i>
+                </div>
+                <div>
+                    <h1 class="font-bold text-lg leading-tight">LogiTech Brasil — Consultoria RH</h1>
+                    <p class="text-xs text-slate-400">Defesa Estratégica da LNT e Plano de Treinamento</p>
+                </div>
+            </div>
+
+            <!-- Header Controls & Mode Switcher -->
+            <div class="flex items-center space-x-3 text-sm">
+                <div class="bg-slate-800 p-1 rounded-lg border border-slate-700 flex">
+                    <button id="modeStudentBtn" onclick="switchRole('student')" class="px-3 py-1.5 rounded-md font-medium text-xs transition-all bg-brand-500 text-white shadow">
+                        <i class="fa-solid fa-user-graduate mr-1"></i> Equipe de RH
+                    </button>
+                    <button id="modeEvaluatorBtn" onclick="switchRole('evaluator')" class="px-3 py-1.5 rounded-md font-medium text-xs transition-all text-slate-400 hover:text-white">
+                        <i class="fa-solid fa-user-tie mr-1"></i> Bancada (C-Level)
+                    </button>
+                </div>
+
+                <button onclick="openSyncModal()" class="bg-emerald-600 hover:bg-emerald-500 text-white px-3 py-1.5 rounded-lg text-xs font-semibold flex items-center gap-1 shadow">
+                    <i class="fa-solid fa-file-excel"></i> Sync Google Sheets / Excel
+                </button>
+            </div>
+        </div>
+    </header>
+
+    <!-- Main Container -->
+    <main class="flex-1 max-w-7xl w-full mx-auto px-4 sm:px-6 lg:px-8 py-6">
+
+        <!-- Info Banner / Context Box -->
+        <div class="bg-gradient-to-r from-slate-900 to-brand-900 text-white rounded-xl p-5 mb-6 shadow-lg relative overflow-hidden">
+            <div class="relative z-10 flex flex-col md:flex-row justify-between items-start md:items-center gap-4">
+                <div>
+                    <div class="flex items-center gap-2 mb-1">
+                        <span class="bg-amber-500/20 text-amber-300 border border-amber-500/30 text-xs px-2.5 py-0.5 rounded-full font-semibold">Cenário Corporativo</span>
+                        <span class="text-xs text-slate-300"><i class="fa-regular fa-clock mr-1"></i>Duração: 2-3h prep | 15-20m pitch</span>
+                    </div>
+                    <h2 class="text-xl font-bold">Desafio: Transição Logística & Reclamações no E-Commerce</h2>
+                    <p class="text-slate-300 text-sm mt-1 max-w-3xl">
+                        A LogiTech Brasil enfrenta aumento de reclamações, atrasos no fulfillment, turnover de 12% ao mês e erros no novo WMS. A diretoria exige uma **Defesa Estratégica baseada em LNT** para liberar a verba de T&D.
+                    </p>
+                </div>
+                <div class="bg-white/10 backdrop-blur-md rounded-lg p-3 border border-white/10 text-center min-w-[180px]">
+                    <span class="text-xs text-slate-300 block uppercase font-semibold">Orçamento T&D</span>
+                    <span class="text-xl font-extrabold text-amber-400">R$ 85.000,00</span>
+                    <span class="text-[10px] text-slate-300 block mt-0.5">Sob Aprovação da Diretoria</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- Group / Team Selector & Quick Info Bar -->
+        <div class="bg-white border border-slate-200 rounded-xl p-4 mb-6 shadow-sm flex flex-col sm:flex-row justify-between items-center gap-4">
+            <div class="flex items-center gap-3 w-full sm:w-auto">
+                <label for="groupSelect" class="text-xs font-bold text-slate-500 uppercase tracking-wider whitespace-nowrap">Equipe Atual:</label>
+                <select id="groupSelect" onchange="changeGroup(this.value)" class="bg-slate-50 border border-slate-300 rounded-lg px-3 py-1.5 text-sm font-semibold text-slate-700 focus:outline-none focus:ring-2 focus:ring-brand-500 w-full sm:w-64">
+                    <option value="Grupo 1">Grupo 1 - Consultoria Alfa</option>
+                    <option value="Grupo 2">Grupo 2 - Consultoria Beta</option>
+                    <option value="Grupo 3">Grupo 3 - Consultoria Gamma</option>
+                    <option value="Grupo 4">Grupo 4 - Consultoria Delta</option>
+                    <option value="Grupo 5">Grupo 5 - Consultoria Epsilon</option>
+                    <option value="Grupo 6">Grupo 6 - Consultoria Zeta</option>
+                    <option value="Grupo 7">Grupo 7 - Consultoria Eta</option>
+                    <option value="Grupo 8">Grupo 8 - Consultoria Theta</option>
+                    <option value="Grupo 9">Grupo 9 - Consultoria Iota</option>
+                    <option value="Grupo 10">Grupo 10 - Consultoria Kappa</option>
+                </select>
+            </div>
+            <div class="flex items-center gap-2 text-xs text-slate-500">
+                <span>Integrantes:</span>
+                <input type="text" id="teamMembersInput" placeholder="Ex: Ana, Bruno, Carla, Daniel" onchange="updateTeamMembers(this.value)" class="border border-slate-300 rounded-lg px-2 py-1 text-xs w-60 focus:outline-none focus:ring-1 focus:ring-brand-500">
+            </div>
+        </div>
+
+        <!-- STUDENT WORKFLOW (Analistas de T&D) -->
+        <div id="studentWorkflow" class="space-y-6">
+            <!-- Navigation Tabs -->
+            <div class="border-b border-slate-200 flex space-x-2 overflow-x-auto pb-1">
+                <button onclick="showStep(1)" id="tabBtn1" class="step-active px-4 py-2.5 rounded-t-lg font-semibold text-sm border-b-2 flex items-center gap-2 whitespace-nowrap">
+                    <span class="w-5 h-5 rounded-full bg-brand-500 text-white text-xs flex items-center justify-center">1</span>
+                    Relatório de LNT (Diagnóstico)
+                </button>
+                <button onclick="showStep(2)" id="tabBtn2" class="text-slate-500 border-transparent px-4 py-2.5 rounded-t-lg font-semibold text-sm border-b-2 flex items-center gap-2 whitespace-nowrap hover:text-slate-700">
+                    <span class="w-5 h-5 rounded-full bg-slate-300 text-slate-700 text-xs flex items-center justify-center">2</span>
+                    Plano de Treinamento
+                </button>
+                <button onclick="showStep(3)" id="tabBtn3" class="text-slate-500 border-transparent px-4 py-2.5 rounded-t-lg font-semibold text-sm border-b-2 flex items-center gap-2 whitespace-nowrap hover:text-slate-700">
+                    <span class="w-5 h-5 rounded-full bg-slate-300 text-slate-700 text-xs flex items-center justify-center">3</span>
+                    Métricas, Kirkpatrick & ROI
+                </button>
+                <button onclick="showStep(4)" id="tabBtn4" class="text-slate-500 border-transparent px-4 py-2.5 rounded-t-lg font-semibold text-sm border-b-2 flex items-center gap-2 whitespace-nowrap hover:text-slate-700">
+                    <span class="w-5 h-5 rounded-full bg-slate-300 text-slate-700 text-xs flex items-center justify-center">4</span>
+                    Roteiro de Pitch (15 min)
+                </button>
+            </div>
+
+            <!-- STEP 1: RELATÓRIO DE LNT -->
+            <div id="step1" class="space-y-6">
+                <!-- Section 1.1 Data Sources -->
+                <div class="bg-white rounded-xl border border-slate-200 p-6 shadow-sm">
+                    <h3 class="text-base font-bold text-slate-800 mb-2 flex items-center gap-2">
+                        <i class="fa-solid fa-magnifying-glass-chart text-brand-500"></i>
+                        1. Fontes de Dados Utilizadas na LNT
+                    </h3>
+                    <p class="text-xs text-slate-500 mb-4">Selecione e descreva como a equipe cruzou informações para comprovar que o treinamento não foi proposto "às cegas".</p>
+                    
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                        <div class="p-3 border border-slate-200 rounded-lg hover:border-brand-500 transition-colors">
+                            <label class="flex items-start gap-2 cursor-pointer">
+                                <input type="checkbox" id="src_gestores" onchange="saveCurrentData()" class="mt-1 rounded text-brand-600 focus:ring-brand-500">
+                                <div>
+                                    <span class="font-semibold text-sm text-slate-800 block">Entrevistas / Opinião dos Gestores</span>
+                                    <span class="text-xs text-slate-500">Queixas dos supervisores sobre lentidão e falhas no manuseio do WMS.</span>
+                                </div>
+                            </label>
+                        </div>
+                        <div class="p-3 border border-slate-200 rounded-lg hover:border-brand-500 transition-colors">
+                            <label class="flex items-start gap-2 cursor-pointer">
+                                <input type="checkbox" id="src_questionario" onchange="saveCurrentData()" class="mt-1 rounded text-brand-600 focus:ring-brand-500">
+                                <div>
+                                    <span class="font-semibold text-sm text-slate-800 block">Questionários com Colaboradores</span>
+                                    <span class="text-xs text-slate-500">Percepção de insegurança nas novas tecnologias de separação automatizada.</span>
+                                </div>
+                            </label>
+                        </div>
+                        <div class="p-3 border border-slate-200 rounded-lg hover:border-brand-500 transition-colors">
+                            <label class="flex items-start gap-2 cursor-pointer">
+                                <input type="checkbox" id="src_desempenho" onchange="saveCurrentData()" class="mt-1 rounded text-brand-600 focus:ring-brand-500">
+                                <div>
+                                    <span class="font-semibold text-sm text-slate-800 block">Avaliações de Desempenho & KPIs</span>
+                                    <span class="text-xs text-slate-500">Indicadores de tempo de picking, taxa de erros e retrabalho do sistema.</span>
+                                </div>
+                            </label>
+                        </div>
+                        <div class="p-3 border border-slate-200 rounded-lg hover:border-brand-500 transition-colors">
+                            <label class="flex items-start gap-2 cursor-pointer">
+                                <input type="checkbox" id="src_desligamento" onchange="saveCurrentData()" class="mt-1 rounded text-brand-600 focus:ring-brand-500">
+                                <div>
+                                    <span class="font-semibold text-sm text-slate-800 block">Entrevistas de Desligamento</span>
+                                    <span class="text-xs text-slate-500">Relatos de estresse extremo por falta de capacitação no novo modelo.</span>
+                                </div>
+                            </label>
+                        </div>
+                    </div>
+
+                    <div class="mt-4">
+                        <label class="block text-xs font-semibold text-slate-700 mb-1">Síntese do Cruzamento de Dados (Evidências Clínicas do Problema):</label>
+                        <textarea id="lnt_sources_synthesis" onchange="saveCurrentData()" rows="3" class="w-full text-sm p-3 border border-slate-300 rounded-lg focus:ring-2 focus:ring-brand-500 focus:outline-none" placeholder="Explique como os dados confirmaram que o problema de atendimento ao cliente origina-se de erros no fluxo operacional..."></textarea>
+                    </div>
+                </div>
+
+                <!-- Section 1.2 Separation of Gaps -->
+                <div class="bg-white rounded-xl border border-slate-200 p-6 shadow-sm">
+                    <h3 class="text-base font-bold text-slate-800 mb-1 flex items-center gap-2">
+                        <i class="fa-solid fa-filter text-amber-500"></i>
+                        2. Filtro de Gestão: Separação de Gaps (Treinamento vs. Processo/Infra)
+                    </h3>
+                    <p class="text-xs text-slate-500 mb-4">
+                        Aplique a Pergunta de Ouro: <span class="italic font-semibold text-slate-700">"Se a vida do colaborador dependesse disso, ele saberia fazer?"</span>
+                    </p>
+
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                        <div class="bg-blue-50 border border-blue-200 p-4 rounded-xl">
+                            <h4 class="font-bold text-sm text-blue-900 mb-2 flex items-center gap-1.5">
+                                <i class="fa-solid fa-graduation-cap"></i>
+                                Demandas Autênticas de T&D (Falta de Conhecimento/Habilidade)
+                            </h4>
+                            <textarea id="gap_training_demands" onchange="saveCurrentData()" rows="4" class="w-full text-xs p-2.5 border border-blue-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:outline-none bg-white" placeholder="- Operação correta do leitor de código de barras e WMS&#10;- Procedimentos de separação ágil (picking)&#10;- Comunicação empática em relatórios de suporte ao e-commerce"></textarea>
+                        </div>
+
+                        <div class="bg-orange-50 border border-orange-200 p-4 rounded-xl">
+                            <h4 class="font-bold text-sm text-orange-900 mb-2 flex items-center gap-1.5">
+                                <i class="fa-solid fa-gears"></i>
+                                Encaminhamentos de Processo / Ferramentas / Gestão
+                            </h4>
+                            <textarea id="gap_process_demands" onchange="saveCurrentData()" rows="4" class="w-full text-xs p-2.5 border border-orange-300 rounded-lg focus:ring-2 focus:ring-orange-500 focus:outline-none bg-white" placeholder="- Falha de instabilidade no sinal do Wi-Fi do galpão (Encaminhado para TI)&#10;- Layout físico do estoque inadequado (Encaminhado para Engenharia de Operações)&#10;- Metas operacionais irrealistas (Encaminhado para Diretoria de Operações)"></textarea>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Section 1.3 Competency Mapping & Prioritization Matrix -->
+                <div class="bg-white rounded-xl border border-slate-200 p-6 shadow-sm">
+                    <h3 class="text-base font-bold text-slate-800 mb-2 flex items-center gap-2">
+                        <i class="fa-solid fa-table-cells text-emerald-600"></i>
+                        3. Mapeamento de Gaps e Matriz de Priorização (Gut / Matriz de Impacto)
+                    </h3>
+                    <p class="text-xs text-slate-500 mb-4">Classifique as necessidades identificadas de acordo com o impacto no negócio e urgência de solução.</p>
+
+                    <div class="overflow-x-auto">
+                        <table class="w-full text-left text-xs text-slate-600 border-collapse">
+                            <thead>
+                                <tr class="bg-slate-100 border-b border-slate-200 text-slate-700 font-bold">
+                                    <th class="p-2.5">Cargo / Perfil</th>
+                                    <th class="p-2.5">Competência Requerida</th>
+                                    <th class="p-2.5">Gap Observado</th>
+                                    <th class="p-2.5">Impacto (1-5)</th>
+                                    <th class="p-2.5">Urgência (1-5)</th>
+                                    <th class="p-2.5">Prioridade Final</th>
+                                </tr>
+                            </thead>
+                            <tbody id="matrixTableBody">
+                                <tr class="border-b border-slate-100 hover:bg-slate-50">
+                                    <td class="p-2 font-medium text-slate-800">Operador de Separação</td>
+                                    <td class="p-2">Domínio do Sistema WMS</td>
+                                    <td class="p-2">Lentidão e erros de registro de código</td>
+                                    <td class="p-2"><input type="number" min="1" max="5" value="5" onchange="calculatePriority(this)" class="w-12 p-1 border rounded text-center imp-val"></td>
+                                    <td class="p-2"><input type="number" min="1" max="5" value="5" onchange="calculatePriority(this)" class="w-12 p-1 border rounded text-center urg-val"></td>
+                                    <td class="p-2 font-bold text-red-600 priority-label">25 (Alta)</td>
+                                </tr>
+                                <tr class="border-b border-slate-100 hover:bg-slate-50">
+                                    <td class="p-2 font-medium text-slate-800">Atendente SAC E-commerce</td>
+                                    <td class="p-2">Gestão de Conflitos & Empatia</td>
+                                    <td class="p-2">Respostas padronizadas e rudes a clientes instáveis</td>
+                                    <td class="p-2"><input type="number" min="1" max="5" value="4" onchange="calculatePriority(this)" class="w-12 p-1 border rounded text-center imp-val"></td>
+                                    <td class="p-2"><input type="number" min="1" max="5" value="4" onchange="calculatePriority(this)" class="w-12 p-1 border rounded text-center urg-val"></td>
+                                    <td class="p-2 font-bold text-amber-600 priority-label">16 (Média)</td>
+                                </tr>
+                                <tr class="border-b border-slate-100 hover:bg-slate-50">
+                                    <td class="p-2 font-medium text-slate-800">Supervisores de Galpão</td>
+                                    <td class="p-2">Liderança Operacional & Feedback</td>
+                                    <td class="p-2">Falta de acompanhamento e alta rotatividade de novos</td>
+                                    <td class="p-2"><input type="number" min="1" max="5" value="5" onchange="calculatePriority(this)" class="w-12 p-1 border rounded text-center imp-val"></td>
+                                    <td class="p-2"><input type="number" min="1" max="5" value="3" onchange="calculatePriority(this)" class="w-12 p-1 border rounded text-center urg-val"></td>
+                                    <td class="p-2 font-bold text-amber-600 priority-label">15 (Média)</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+
+            <!-- STEP 2: PLANO DE TREINAMENTO -->
+            <div id="step2" class="space-y-6 hidden">
+                <!-- Objectives SMART -->
+                <div class="bg-white rounded-xl border border-slate-200 p-6 shadow-sm">
+                    <h3 class="text-base font-bold text-slate-800 mb-2 flex items-center gap-2">
+                        <i class="fa-solid fa-bullseye text-red-500"></i>
+                        1. Objetivos SMART do Programa
+                    </h3>
+                    <p class="text-xs text-slate-500 mb-4">Defina metas Específicas, Mensuráveis, Atingíveis, Relevantes e Temporais.</p>
+
+                    <div class="space-y-3">
+                        <div>
+                            <label class="block text-xs font-semibold text-slate-700">Objetivo SMART 1 (Operação / Qualidade):</label>
+                            <input type="text" id="smart_1" onchange="saveCurrentData()" class="w-full text-xs p-2.5 border border-slate-300 rounded-lg focus:ring-2 focus:ring-brand-500 focus:outline-none mt-1" value="Reduzir a taxa de erros de separação de pedidos de 8% para menos de 1,5% em até 90 dias após o treinamento.">
+                        </div>
+                        <div>
+                            <label class="block text-xs font-semibold text-slate-700">Objetivo SMART 2 (Turnover / Pessoas):</label>
+                            <input type="text" id="smart_2" onchange="saveCurrentData()" class="w-full text-xs p-2.5 border border-slate-300 rounded-lg focus:ring-2 focus:ring-brand-500 focus:outline-none mt-1" value="Diminuir o turnover voluntário da equipe de logística de 12% para 4% ao mês no prazo de 6 meses.">
+                        </div>
+                        <div>
+                            <label class="block text-xs font-semibold text-slate-700">Objetivo SMART 3 (Satisfação do Cliente / NPS):</label>
+                            <input type="text" id="smart_3" onchange="saveCurrentData()" class="w-full text-xs p-2.5 border border-slate-300 rounded-lg focus:ring-2 focus:ring-brand-500 focus:outline-none mt-1" value="Elevar o CSAT de atendimento ao cliente e-commerce de 65% para 88% até o final do trimestre.">
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Formats & Tracks -->
+                <div class="bg-white rounded-xl border border-slate-200 p-6 shadow-sm">
+                    <h3 class="text-base font-bold text-slate-800 mb-2 flex items-center gap-2">
+                        <i class="fa-solid fa-layer-group text-purple-600"></i>
+                        2. Trilhas e Formatos de Aprendizagem (Blended Learning)
+                    </h3>
+                    <p class="text-xs text-slate-500 mb-4">Justifique a distribuição dos formatos sem causar paralisação da operação logística.</p>
+
+                    <div class="grid grid-cols-1 md:grid-cols-3 gap-4 mb-4">
+                        <div class="p-4 border border-slate-200 rounded-xl bg-slate-50">
+                            <h4 class="font-bold text-xs text-slate-800 uppercase tracking-wide mb-1 flex items-center gap-1.5">
+                                <i class="fa-solid fa-mobile-screen text-indigo-500"></i> Microlearning (EAD)
+                            </h4>
+                            <p class="text-[11px] text-slate-500 mb-2">Vídeos curtos de 3 min no celular sobre rotinas do WMS antes do turno.</p>
+                            <input type="number" id="fmt_micro_hours" onchange="saveCurrentData()" placeholder="Carga horária total (ex: 4h)" class="w-full text-xs p-2 border rounded">
+                        </div>
+
+                        <div class="p-4 border border-slate-200 rounded-xl bg-slate-50">
+                            <h4 class="font-bold text-xs text-slate-800 uppercase tracking-wide mb-1 flex items-center gap-1.5">
+                                <i class="fa-solid fa-chalkboard-user text-amber-500"></i> Presencial Prático
+                            </h4>
+                            <p class="text-[11px] text-slate-500 mb-2">Simulação de empacotamento em estante física de testes no próprio galpão.</p>
+                            <input type="number" id="fmt_presential_hours" onchange="saveCurrentData()" placeholder="Carga horária total (ex: 8h)" class="w-full text-xs p-2 border rounded">
+                        </div>
+
+                        <div class="p-4 border border-slate-200 rounded-xl bg-slate-50">
+                            <h4 class="font-bold text-xs text-slate-800 uppercase tracking-wide mb-1 flex items-center gap-1.5">
+                                <i class="fa-solid fa-people-arrows text-emerald-500"></i> On-the-Job / Mentoria
+                            </h4>
+                            <p class="text-[11px] text-slate-500 mb-2">Acompanhamento por "Padrinhos de Operação" durante os 5 primeiros dias.</p>
+                            <input type="number" id="fmt_onthejob_hours" onchange="saveCurrentData()" placeholder="Carga horária total (ex: 12h)" class="w-full text-xs p-2 border rounded">
+                        </div>
+                    </div>
+
+                    <div>
+                        <label class="block text-xs font-semibold text-slate-700 mb-1">Estratégia para Não Paralisar a Operação:</label>
+                        <textarea id="operational_mitigation" onchange="saveCurrentData()" rows="2" class="w-full text-xs p-2.5 border border-slate-300 rounded-lg focus:ring-2 focus:ring-brand-500 focus:outline-none" placeholder="Ex: Treinamento em turmas escalonadas de no máximo 5 operadores por hora, durante os horários de menor pico de embarque..."></textarea>
+                    </div>
+                </div>
+
+                <!-- Schedule & Resources -->
+                <div class="bg-white rounded-xl border border-slate-200 p-6 shadow-sm">
+                    <h3 class="text-base font-bold text-slate-800 mb-2 flex items-center gap-2">
+                        <i class="fa-solid fa-calendar-days text-brand-600"></i>
+                        3. Cronograma Executivo e Recursos Necessários
+                    </h3>
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                        <div>
+                            <label class="block text-xs font-semibold text-slate-700 mb-1">Recursos Tecnológicos & Estrutura:</label>
+                            <textarea id="resources_needed" onchange="saveCurrentData()" rows="3" class="w-full text-xs p-2.5 border border-slate-300 rounded-lg focus:ring-2 focus:ring-brand-500 focus:outline-none" placeholder="Licença de plataforma LMN EAD, 3 leitores WMS extras para bancada de testes, consultor externo para liderança..."></textarea>
+                        </div>
+                        <div>
+                            <label class="block text-xs font-semibold text-slate-700 mb-1">Cronograma de Implementação (Semanas 1 a 4):</label>
+                            <textarea id="schedule_timeline" onchange="saveCurrentData()" rows="3" class="w-full text-xs p-2.5 border border-slate-300 rounded-lg focus:ring-2 focus:ring-brand-500 focus:outline-none" placeholder="Semana 1: Lançamento EAD e alinhamento de líderes&#10;Semana 2: Prática WMS com operadores&#10;Semana 3: Mentoria em campo..."></textarea>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- STEP 3: MENSURAÇÃO, KIRKPATRICK & ROI -->
+            <div id="step3" class="space-y-6 hidden">
+                <!-- Kirkpatrick 4 Levels -->
+                <div class="bg-white rounded-xl border border-slate-200 p-6 shadow-sm">
+                    <h3 class="text-base font-bold text-slate-800 mb-2 flex items-center gap-2">
+                        <i class="fa-solid fa-chart-line text-brand-600"></i>
+                        1. Modelo de Avaliação de Kirkpatrick (4 Níveis)
+                    </h3>
+                    <p class="text-xs text-slate-500 mb-4">Estruture os instrumentos de aferição para garantir validação do aprendizado ao C-Level.</p>
+
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                        <div class="border border-slate-200 p-3 rounded-lg bg-slate-50">
+                            <span class="font-bold text-xs text-brand-700 uppercase block mb-1">Nível 1: Reação</span>
+                            <p class="text-[11px] text-slate-500 mb-2">Pesquisa de satisfação e utilidade percebida (NPS do treinamento).</p>
+                            <input type="text" id="kirk_1" onchange="saveCurrentData()" class="w-full text-xs p-2 border rounded" value="Formulário digital ao fim de cada módulo (Meta CSAT > 90%)">
+                        </div>
+                        <div class="border border-slate-200 p-3 rounded-lg bg-slate-50">
+                            <span class="font-bold text-xs text-brand-700 uppercase block mb-1">Nível 2: Aprendizagem</span>
+                            <p class="text-[11px] text-slate-500 mb-2">Avaliação de conhecimento retido e simulação prática.</p>
+                            <input type="text" id="kirk_2" onchange="saveCurrentData()" class="w-full text-xs p-2 border rounded" value="Teste prático de bipe de 20 itens no WMS sem erros em < 3 minutos">
+                        </div>
+                        <div class="border border-slate-200 p-3 rounded-lg bg-slate-50">
+                            <span class="font-bold text-xs text-brand-700 uppercase block mb-1">Nível 3: Comportamento</span>
+                            <p class="text-[11px] text-slate-500 mb-2">Mudança real de atitude no posto de trabalho após 30 dias.</p>
+                            <input type="text" id="kirk_3" onchange="saveCurrentData()" class="w-full text-xs p-2 border rounded" value="Checklist de observação direta feito pelo supervisor em campo">
+                        </div>
+                        <div class="border border-slate-200 p-3 rounded-lg bg-slate-50">
+                            <span class="font-bold text-xs text-brand-700 uppercase block mb-1">Nível 4: Resultados</span>
+                            <p class="text-[11px] text-slate-500 mb-2">Impacto direto nos KPIs do negócio (Atrasos, Erros, Turnover).</p>
+                            <input type="text" id="kirk_4" onchange="saveCurrentData()" class="w-full text-xs p-2 border rounded" value="Redução do custo de frete por devolução e queda do turnover em 50%">
+                        </div>
+                    </div>
+                </div>
+
+                <!-- ROI Calculator -->
+                <div class="bg-white rounded-xl border border-slate-200 p-6 shadow-sm">
+                    <h3 class="text-base font-bold text-slate-800 mb-2 flex items-center gap-2">
+                        <i class="fa-solid fa-calculator text-emerald-600"></i>
+                        2. Demonstração e Cálculo do Retorno sobre Investimento (ROI)
+                    </h3>
+                    <div class="bg-amber-50 border border-amber-200 p-3 rounded-lg text-xs text-amber-900 mb-4 flex items-center justify-between">
+                        <div>
+                            <strong>Fórmula Oficial:</strong>
+                            <span class="font-mono text-xs block mt-0.5">$$\text{ROI (\%)} = \frac{\text{Ganhos Obtidos (R\$)} - \text{Custo Total (R\$)}}{\text{Custo Total (R\$)}} \times 100$$</span>
+                        </div>
+                    </div>
+
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                        <!-- Costs breakdown -->
+                        <div class="bg-slate-50 p-4 rounded-xl border border-slate-200 space-y-3">
+                            <h4 class="font-bold text-xs text-slate-700 uppercase border-b border-slate-200 pb-1">A. Custos Totais do Projeto (R$)</h4>
+                            
+                            <div>
+                                <label class="text-xs text-slate-600 block">Instrutores e Consultoria Externa:</label>
+                                <input type="number" id="cost_instructors" value="15000" oninput="calculateROI()" class="w-full text-xs p-2 border rounded">
+                            </div>
+                            <div>
+                                <label class="text-xs text-slate-600 block">Horas de Trabalho dos Colaboradores (Horas paradas):</label>
+                                <input type="number" id="cost_hours" value="12000" oninput="calculateROI()" class="w-full text-xs p-2 border rounded">
+                            </div>
+                            <div>
+                                <label class="text-xs text-slate-600 block">Licenças EAD e Material Didático:</label>
+                                <input type="number" id="cost_licenses" value="8000" oninput="calculateROI()" class="w-full text-xs p-2 border rounded">
+                            </div>
+                            <div class="pt-2 border-t border-slate-200 font-bold text-xs flex justify-between">
+                                <span>Custo Total do Projeto:</span>
+                                <span id="lbl_total_cost" class="text-red-600">R$ 35.000,00</span>
+                            </div>
+                        </div>
+
+                        <!-- Gains breakdown -->
+                        <div class="bg-slate-50 p-4 rounded-xl border border-slate-200 space-y-3">
+                            <h4 class="font-bold text-xs text-slate-700 uppercase border-b border-slate-200 pb-1">B. Ganhos / Economia Projetada (R$)</h4>
+                            
+                            <div>
+                                <label class="text-xs text-slate-600 block">Redução de Reembolsos por Erros de Envio:</label>
+                                <input type="number" id="gain_errors" value="45000" oninput="calculateROI()" class="w-full text-xs p-2 border rounded">
+                            </div>
+                            <div>
+                                <label class="text-xs text-slate-600 block">Economia com Redução de Turnover (Contratações):</label>
+                                <input type="number" id="gain_turnover" value="30000" oninput="calculateROI()" class="w-full text-xs p-2 border rounded">
+                            </div>
+                            <div>
+                                <label class="text-xs text-slate-600 block">Ganho de Produtividade (Horas extras evitada):</label>
+                                <input type="number" id="gain_productivity" value="25000" oninput="calculateROI()" class="w-full text-xs p-2 border rounded">
+                            </div>
+                            <div class="pt-2 border-t border-slate-200 font-bold text-xs flex justify-between">
+                                <span>Ganhos Totais Projetados:</span>
+                                <span id="lbl_total_gains" class="text-emerald-600">R$ 100.000,00</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- ROI Final Display -->
+                    <div class="mt-6 bg-brand-900 text-white p-5 rounded-xl flex flex-col md:flex-row items-center justify-between gap-4">
+                        <div>
+                            <span class="text-xs uppercase font-semibold text-brand-300">Resultado do Retorno Financeiro Proposto</span>
+                            <h4 class="text-2xl font-extrabold" id="roi_percentage_display">ROI: +185.71%</h4>
+                            <p class="text-xs text-slate-300 mt-1">Para cada R$ 1,00 investido no treinamento, a empresa recupera o valor e ganha R$ 1,85 em retorno financeiro limpo.</p>
+                        </div>
+                        <div class="text-right border-l md:border-l border-brand-700 pl-0 md:pl-6">
+                            <span class="text-xs text-brand-300 block">Lucro Líquido do Projeto</span>
+                            <span class="text-xl font-bold text-emerald-400" id="roi_net_display">R$ 65.000,00</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- STEP 4: ROTEIRO DE PITCH DA APRESENTAÇÃO -->
+            <div id="step4" class="space-y-6 hidden">
+                <div class="bg-white rounded-xl border border-slate-200 p-6 shadow-sm">
+                    <h3 class="text-base font-bold text-slate-800 mb-2 flex items-center gap-2">
+                        <i class="fa-solid fa-stopwatch text-amber-500"></i>
+                        Roteiro do Pitch de 15 Minutos para o C-Level
+                    </h3>
+                    <p class="text-xs text-slate-500 mb-4">Prepare os pontos focais da apresentação. Utilize o temporizador para praticar a oratória antes da sabatina.</p>
+
+                    <!-- Pitch Timer -->
+                    <div class="bg-slate-900 text-white p-4 rounded-xl mb-6 flex items-center justify-between">
+                        <div>
+                            <span class="text-xs text-slate-400 block uppercase">Cronômetro de Ensaio</span>
+                            <span id="pitchTimerDisplay" class="text-3xl font-mono font-bold text-amber-400">15:00</span>
+                        </div>
+                        <div class="flex gap-2">
+                            <button onclick="startPitchTimer()" class="bg-emerald-600 hover:bg-emerald-500 text-white px-3 py-1.5 rounded-lg text-xs font-bold">Iniciar</button>
+                            <button onclick="pausePitchTimer()" class="bg-amber-600 hover:bg-amber-500 text-white px-3 py-1.5 rounded-lg text-xs font-bold">Pausar</button>
+                            <button onclick="resetPitchTimer()" class="bg-slate-700 hover:bg-slate-600 text-white px-3 py-1.5 rounded-lg text-xs font-bold">Reset</button>
+                        </div>
+                    </div>
+
+                    <!-- Timeline Blocks -->
+                    <div class="space-y-4">
+                        <div class="p-4 border-l-4 border-blue-500 bg-slate-50 rounded-r-lg">
+                            <div class="flex justify-between items-center mb-1">
+                                <h4 class="font-bold text-sm text-slate-800">Bloco 1: O Diagnóstico de LNT (00:00 - 03:00)</h4>
+                                <span class="text-xs font-bold bg-blue-100 text-blue-800 px-2 py-0.5 rounded">3 minutos</span>
+                            </div>
+                            <p class="text-xs text-slate-600 mb-2">Contexto da crise de entregas, método de escuta dos colaboradores e filtro de gaps de processo vs. treinamento.</p>
+                            <textarea id="pitch_block_1" onchange="saveCurrentData()" rows="2" class="w-full text-xs p-2 border rounded bg-white" placeholder="Anotações de quem vai falar e argumento central..."></textarea>
+                        </div>
+
+                        <div class="p-4 border-l-4 border-purple-500 bg-slate-50 rounded-r-lg">
+                            <div class="flex justify-between items-center mb-1">
+                                <h4 class="font-bold text-sm text-slate-800">Bloco 2: O Plano de Treinamento (03:00 - 07:00)</h4>
+                                <span class="text-xs font-bold bg-purple-100 text-purple-800 px-2 py-0.5 rounded">4 minutos</span>
+                            </div>
+                            <p class="text-xs text-slate-600 mb-2">Objetivos SMART, formato Blended Learning, microlearning EAD e estratégia de não parar a logística.</p>
+                            <textarea id="pitch_block_2" onchange="saveCurrentData()" rows="2" class="w-full text-xs p-2 border rounded bg-white" placeholder="Anotações sobre a jornada pedagógica do operador..."></textarea>
+                        </div>
+
+                        <div class="p-4 border-l-4 border-emerald-500 bg-slate-50 rounded-r-lg">
+                            <div class="flex justify-between items-center mb-1">
+                                <h4 class="font-bold text-sm text-slate-800">Bloco 3: Indicadores & ROI Financieiro (07:00 - 11:00)</h4>
+                                <span class="text-xs font-bold bg-emerald-100 text-emerald-800 px-2 py-0.5 rounded">4 minutos</span>
+                            </div>
+                            <p class="text-xs text-slate-600 mb-2">Apresentação dos 4 Níveis de Kirkpatrick e defesa do ROI positivo de 185% com payback em 3 meses.</p>
+                            <textarea id="pitch_block_3" onchange="saveCurrentData()" rows="2" class="w-full text-xs p-2 border rounded bg-white" placeholder="Anotações do orador responsável pelos números financeiros..."></textarea>
+                        </div>
+
+                        <div class="p-4 border-l-4 border-red-500 bg-slate-50 rounded-r-lg">
+                            <div class="flex justify-between items-center mb-1">
+                                <h4 class="font-bold text-sm text-slate-800">Bloco 4: Sabatina do C-Level (11:00 - 15:00)</h4>
+                                <span class="text-xs font-bold bg-red-100 text-red-800 px-2 py-0.5 rounded">4 minutos</span>
+                            </div>
+                            <p class="text-xs text-slate-600">Perguntas surpresa da diretoria (CEO/CFO) sobre mitigação de riscos e garantia do retorno.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- EVALUATOR WORKFLOW (Bancada C-Level / Professor) -->
+        <div id="evaluatorWorkflow" class="space-y-6 hidden">
+            <div class="bg-amber-50 border border-amber-200 rounded-xl p-4 text-xs text-amber-900 flex items-center gap-3">
+                <i class="fa-solid fa-user-shield text-2xl text-amber-600"></i>
+                <div>
+                    <h4 class="font-bold text-sm">Modo Bancada Avaliadora (CEO, CFO e Diretor de Operações)</h4>
+                    <p>Utilize este painel para questionar a equipe durante o Pitch e atribuir as notas nos critérios estratégicos de RH.</p>
+                </div>
+            </div>
+
+            <!-- C-Level Challenge Questions Guide -->
+            <div class="bg-white rounded-xl border border-slate-200 p-6 shadow-sm">
+                <h3 class="text-base font-bold text-slate-800 mb-3 flex items-center gap-2">
+                    <i class="fa-solid fa-comments text-brand-600"></i>
+                    Guia de Perguntas Desafiadoras para a Sabatina (Roleplay C-Level)
+                </h3>
+
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-4 text-xs">
+                    <div class="p-3 border border-red-200 bg-red-50/50 rounded-lg">
+                        <span class="font-bold text-red-900 block mb-1"><i class="fa-solid fa-user-tie"></i> Pergunta do CEO (Visão Estratégica)</span>
+                        <p class="italic text-slate-700">"Como esse treinamento garante que o cliente do e-commerce vai parar de cancelar pedidos imediatamente no Reclame Aqui?"</p>
+                    </div>
+
+                    <div class="p-3 border border-emerald-200 bg-emerald-50/50 rounded-lg">
+                        <span class="font-bold text-emerald-900 block mb-1"><i class="fa-solid fa-sack-dollar"></i> Pergunta do CFO (Financeiro)</span>
+                        <p class="italic text-slate-700">"E se os ganhos projetados de produtividade forem 50% menores do que o previsto? O ROI ainda se sustenta?"</p>
+                    </div>
+
+                    <div class="p-3 border border-blue-200 bg-blue-50/50 rounded-lg">
+                        <span class="font-bold text-blue-900 block mb-1"><i class="fa-solid fa-industry"></i> Pergunta do COO (Operações)</span>
+                        <p class="italic text-slate-700">"Vocês estão tirando meus operadores de estoque na semana de maior volume do mês. Como o galpão vai bater a meta diária?"</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Evaluation Form -->
+            <div class="bg-white rounded-xl border border-slate-200 p-6 shadow-sm">
+                <h3 class="text-base font-bold text-slate-800 mb-4 flex items-center gap-2">
+                    <i class="fa-solid fa-clipboard-check text-emerald-600"></i>
+                    Ficha de Avaliação da Equipe — <span id="evalTeamName" class="text-brand-600">Grupo 1</span>
+                </h3>
+
+                <div class="space-y-4 text-xs">
+                    <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center p-3 bg-slate-50 rounded-lg border border-slate-200 gap-2">
+                        <div>
+                            <span class="font-bold text-slate-800 block">1. Rigor do Diagnóstico LNT (0 a 2.5 pts)</span>
+                            <span class="text-slate-500">Separaram corretamente falta de treino de falhas operacionais/infraestrutura?</span>
+                        </div>
+                        <input type="number" id="score_lnt" min="0" max="2.5" step="0.5" value="2.5" onchange="calculateTotalScore()" class="w-16 p-1.5 border rounded font-bold text-center">
+                    </div>
+
+                    <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center p-3 bg-slate-50 rounded-lg border border-slate-200 gap-2">
+                        <div>
+                            <span class="font-bold text-slate-800 block">2. Viabilidade do Plano de Treinamento (0 a 2.5 pts)</span>
+                            <span class="text-slate-500">Objetivos SMART claros e formato Blended compatível com a rotina logística?</span>
+                        </div>
+                        <input type="number" id="score_plan" min="0" max="2.5" step="0.5" value="2.5" onchange="calculateTotalScore()" class="w-16 p-1.5 border rounded font-bold text-center">
+                    </div>
+
+                    <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center p-3 bg-slate-50 rounded-lg border border-slate-200 gap-2">
+                        <div>
+                            <span class="font-bold text-slate-800 block">3. Consistência Financeira e ROI (0 a 2.5 pts)</span>
+                            <span class="text-slate-500">Demonстраção correta do ROI e estimativas de ganhos plausíveis?</span>
+                        </div>
+                        <input type="number" id="score_roi" min="0" max="2.5" step="0.5" value="2.5" onchange="calculateTotalScore()" class="w-16 p-1.5 border rounded font-bold text-center">
+                    </div>
+
+                    <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center p-3 bg-slate-50 rounded-lg border border-slate-200 gap-2">
+                        <div>
+                            <span class="font-bold text-slate-800 block">4. Postura Executiva no Pitch & Sabatina (0 a 2.5 pts)</span>
+                            <span class="text-slate-500">Respostas convincentes aos questionamentos dos diretores?</span>
+                        </div>
+                        <input type="number" id="score_pitch" min="0" max="2.5" step="0.5" value="2.5" onchange="calculateTotalScore()" class="w-16 p-1.5 border rounded font-bold text-center">
+                    </div>
+
+                    <div class="pt-3 border-t border-slate-200 flex justify-between items-center text-sm">
+                        <span class="font-bold text-slate-800">Nota Final Obtida:</span>
+                        <span id="totalScoreDisplay" class="font-extrabold text-xl text-brand-600">10.0 / 10.0</span>
+                    </div>
+
+                    <div class="mt-3">
+                        <label class="block text-xs font-semibold text-slate-700 mb-1">Feedback do C-Level / Professor:</label>
+                        <textarea id="evaluatorFeedback" rows="3" onchange="saveCurrentData()" class="w-full text-xs p-2.5 border border-slate-300 rounded-lg focus:ring-2 focus:ring-brand-500 focus:outline-none" placeholder="Excelente separação de gaps. A resposta ao CFO foi bem respaldada pelos dados de churn..."></textarea>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </main>
+
+    <!-- Modal Sync / Google Sheets Integration -->
+    <div id="syncModal" class="fixed inset-0 bg-slate-900/60 backdrop-blur-sm flex items-center justify-center p-4 z-50 hidden">
+        <div class="bg-white rounded-xl shadow-2xl max-w-xl w-full p-6 border border-slate-200">
+            <div class="flex justify-between items-center border-b border-slate-200 pb-3 mb-4">
+                <h3 class="text-base font-bold text-slate-800 flex items-center gap-2">
+                    <i class="fa-solid fa-cloud-arrow-up text-brand-500"></i>
+                    Sincronização & Exportação de Respostas
+                </h3>
+                <button onclick="closeSyncModal()" class="text-slate-400 hover:text-slate-600 text-lg">&times;</button>
+            </div>
+
+            <div class="space-y-4 text-xs text-slate-600">
+                <p>
+                    Para que o professor visualize todas as respostas em uma única planilha centralizada de qualquer dispositivo, utilize a **Integração via Google Apps Script** ou exporte o relatório em **Excel/JSON**.
+                </p>
+
+                <div class="bg-slate-50 p-3 rounded-lg border border-slate-200 space-y-2">
+                    <label class="font-semibold text-slate-700 block">URL do Google Apps Script Web App (Planilha Central):</label>
+                    <input type="text" id="googleScriptUrl" value="https://script.google.com/macros/s/AKfycbzyRdQLOYXpUrPPbuxwtUuWR9_Od4FErrtRB_Gj-3k86PgjglFHCANhgI9vZwA-bwCF/exec" placeholder="https://script.google.com/macros/s/.../exec" class="w-full p-2 border border-slate-300 rounded font-mono text-[11px] focus:ring-1 focus:ring-brand-500">
+                    <span class="text-[10px] text-slate-500 block">Cole aqui a URL do seu App da Web do Google Sheets para gravação automática.</span>
+                </div>
+
+                <div class="flex flex-wrap gap-2 pt-2">
+                    <button onclick="syncToGoogleSheets()" class="bg-emerald-600 hover:bg-emerald-500 text-white font-bold px-4 py-2 rounded-lg flex items-center gap-1.5 flex-1 justify-center">
+                        <i class="fa-solid fa-paper-plane"></i> Enviar p/ Google Sheets
+                    </button>
+                    <button onclick="exportToExcel()" class="bg-blue-600 hover:bg-blue-500 text-white font-bold px-4 py-2 rounded-lg flex items-center gap-1.5 flex-1 justify-center">
+                        <i class="fa-solid fa-file-excel"></i> Baixar Excel (.xlsx)
+                    </button>
+                    <button onclick="exportToJSON()" class="bg-slate-700 hover:bg-slate-600 text-white font-bold px-3 py-2 rounded-lg flex items-center gap-1.5">
+                        <i class="fa-solid fa-download"></i> JSON
+                    </button>
+                </div>
+            </div>
+        </div>
     </div>
+
+    <!-- Notification Toast -->
+    <div id="toast" class="fixed bottom-4 right-4 bg-slate-900 text-white text-xs px-4 py-3 rounded-xl shadow-2xl flex items-center gap-2 transform translate-y-20 opacity-0 transition-all duration-300 z-50">
+        <i id="toastIcon" class="fa-solid fa-circle-check text-emerald-400 text-base"></i>
+        <span id="toastMsg">Dados salvos com sucesso!</span>
+    </div>
+
+    <script>
+        // State Management
+        let currentRole = 'student'; // 'student' or 'evaluator'
+        let currentGroup = 'Grupo 1';
+        let pitchTimer = null;
+        let pitchSecondsLeft = 15 * 60;
+
+        // Helper to generate initial group structure
+        function createInitialGroupData() {
+            return {
+                members: '', sources: {}, synth: '', gaps_train: '', gaps_proc: '',
+                smart1: '', smart2: '', smart3: '', micro_h: '', pres_h: '', onjob_h: '',
+                mitig: '', resources: '', timeline: '', kirk1: '', kirk2: '', kirk3: '', kirk4: '',
+                cost_inst: 0, cost_hrs: 0, cost_lic: 0, gain_err: 0, gain_turn: 0, gain_prod: 0,
+                pitch1: '', pitch2: '', pitch3: '', score_lnt: 2.5, score_plan: 2.5, score_roi: 2.5, score_pitch: 2.5, feedback: ''
+            };
+        }
+
+        // Initialize default app data for 10 groups
+        function getInitialAppData() {
+            const defaultData = {};
+            for (let i = 1; i <= 10; i++) {
+                defaultData[`Grupo ${i}`] = createInitialGroupData();
+            }
+            
+            // Pre-fill Grupo 1 as sample
+            defaultData['Grupo 1'] = {
+                members: '', sources: {}, synth: '', gaps_train: '', gaps_proc: '',
+                smart1: '', smart2: '', smart3: '', micro_h: 4, pres_h: 8, onjob_h: 12,
+                mitig: '', resources: '', timeline: '', kirk1: '', kirk2: '', kirk3: '', kirk4: '',
+                cost_inst: 15000, cost_hrs: 12000, cost_lic: 8000,
+                gain_err: 45000, gain_turn: 30000, gain_prod: 25000,
+                pitch1: '', pitch2: '', pitch3: '',
+                score_lnt: 2.5, score_plan: 2.5, score_roi: 2.5, score_pitch: 2.5, feedback: ''
+            };
+
+            return defaultData;
+        }
+
+        // Data Store in Memory / LocalStorage
+        let appData = JSON.parse(localStorage.getItem('logitech_rh_data')) || getInitialAppData();
+
+        // Ensure all 10 groups exist in appData even if loaded from older localStorage
+        for (let i = 1; i <= 10; i++) {
+            const gName = `Grupo ${i}`;
+            if (!appData[gName]) {
+                appData[gName] = createInitialGroupData();
+            }
+        }
+
+        window.onload = function() {
+            loadGroupData(currentGroup);
+            calculateROI();
+            calculateTotalScore();
+        };
+
+        // Navigation & Workflow Role Switch
+        function switchRole(role) {
+            currentRole = role;
+            const studentWf = document.getElementById('studentWorkflow');
+            const evalWf = document.getElementById('evaluatorWorkflow');
+            const studentBtn = document.getElementById('modeStudentBtn');
+            const evalBtn = document.getElementById('modeEvaluatorBtn');
+
+            if (role === 'student') {
+                studentWf.classList.remove('hidden');
+                evalWf.classList.add('hidden');
+                studentBtn.className = "px-3 py-1.5 rounded-md font-medium text-xs transition-all bg-brand-500 text-white shadow";
+                evalBtn.className = "px-3 py-1.5 rounded-md font-medium text-xs transition-all text-slate-400 hover:text-white";
+            } else {
+                studentWf.classList.add('hidden');
+                evalWf.classList.remove('hidden');
+                evalBtn.className = "px-3 py-1.5 rounded-md font-medium text-xs transition-all bg-amber-500 text-white shadow";
+                studentBtn.className = "px-3 py-1.5 rounded-md font-medium text-xs transition-all text-slate-400 hover:text-white";
+            }
+        }
+
+        function showStep(stepNum) {
+            for (let i = 1; i <= 4; i++) {
+                const stepEl = document.getElementById(`step${i}`);
+                const tabBtn = document.getElementById(`tabBtn${i}`);
+                if (i === stepNum) {
+                    stepEl.classList.remove('hidden');
+                    tabBtn.className = "step-active px-4 py-2.5 rounded-t-lg font-semibold text-sm border-b-2 flex items-center gap-2 whitespace-nowrap";
+                } else {
+                    stepEl.classList.add('hidden');
+                    tabBtn.className = "text-slate-500 border-transparent px-4 py-2.5 rounded-t-lg font-semibold text-sm border-b-2 flex items-center gap-2 whitespace-nowrap hover:text-slate-700";
+                }
+            }
+        }
+
+        // Priority Matrix Calculation
+        function calculatePriority(input) {
+            const row = input.closest('tr');
+            const imp = parseInt(row.querySelector('.imp-val').value) || 0;
+            const urg = parseInt(row.querySelector('.urg-val').value) || 0;
+            const score = imp * urg;
+
+            const label = row.querySelector('.priority-label');
+            if (score >= 20) {
+                label.textContent = `${score} (Alta)`;
+                label.className = "p-2 font-bold text-red-600 priority-label";
+            } else if (score >= 10) {
+                label.textContent = `${score} (Média)`;
+                label.className = "p-2 font-bold text-amber-600 priority-label";
+            } else {
+                label.textContent = `${score} (Baixa)`;
+                label.className = "p-2 font-bold text-emerald-600 priority-label";
+            }
+            saveCurrentData();
+        }
+
+        // ROI Calculation
+        function calculateROI() {
+            const costInst = parseFloat(document.getElementById('cost_instructors').value) || 0;
+            const costHrs = parseFloat(document.getElementById('cost_hours').value) || 0;
+            const costLic = parseFloat(document.getElementById('cost_licenses').value) || 0;
+            const totalCost = costInst + costHrs + costLic;
+
+            const gainErr = parseFloat(document.getElementById('gain_errors').value) || 0;
+            const gainTurn = parseFloat(document.getElementById('gain_turnover').value) || 0;
+            const gainProd = parseFloat(document.getElementById('gain_productivity').value) || 0;
+            const totalGains = gainErr + gainTurn + gainProd;
+
+            document.getElementById('lbl_total_cost').textContent = totalCost.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' });
+            document.getElementById('lbl_total_gains').textContent = totalGains.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' });
+
+            const netGain = totalGains - totalCost;
+            let roi = 0;
+            if (totalCost > 0) {
+                roi = (netGain / totalCost) * 100;
+            }
+
+            document.getElementById('roi_percentage_display').textContent = `ROI: ${roi >= 0 ? '+' : ''}${roi.toFixed(2)}%`;
+            document.getElementById('roi_net_display').textContent = netGain.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' });
+
+            if (window.MathJax) {
+                MathJax.typesetPromise();
+            }
+            saveCurrentData();
+        }
+
+        // Score Evaluator
+        function calculateTotalScore() {
+            const s1 = parseFloat(document.getElementById('score_lnt').value) || 0;
+            const s2 = parseFloat(document.getElementById('score_plan').value) || 0;
+            const s3 = parseFloat(document.getElementById('score_roi').value) || 0;
+            const s4 = parseFloat(document.getElementById('score_pitch').value) || 0;
+
+            const total = s1 + s2 + s3 + s4;
+            document.getElementById('totalScoreDisplay').textContent = `${total.toFixed(1)} / 10.0`;
+            saveCurrentData();
+        }
+
+        // Group Selection and State Loading
+        function changeGroup(groupName) {
+            saveCurrentData();
+            currentGroup = groupName;
+            document.getElementById('evalTeamName').textContent = groupName;
+            loadGroupData(groupName);
+            showToast(`Dados alterados para ${groupName}`);
+        }
+
+        function updateTeamMembers(val) {
+            if (!appData[currentGroup]) appData[currentGroup] = {};
+            appData[currentGroup].members = val;
+            saveCurrentData();
+        }
+
+        function saveCurrentData() {
+            const g = appData[currentGroup] || {};
+            g.members = document.getElementById('teamMembersInput').value;
+
+            // Step 1
+            g.sources = {
+                gestores: document.getElementById('src_gestores').checked,
+                questionario: document.getElementById('src_questionario').checked,
+                desempenho: document.getElementById('src_desempenho').checked,
+                desligamento: document.getElementById('src_desligamento').checked
+            };
+            g.synth = document.getElementById('lnt_sources_synthesis').value;
+            g.gaps_train = document.getElementById('gap_training_demands').value;
+            g.gaps_proc = document.getElementById('gap_process_demands').value;
+
+            // Step 2
+            g.smart1 = document.getElementById('smart_1').value;
+            g.smart2 = document.getElementById('smart_2').value;
+            g.smart3 = document.getElementById('smart_3').value;
+            g.micro_h = document.getElementById('fmt_micro_hours').value;
+            g.pres_h = document.getElementById('fmt_presential_hours').value;
+            g.onjob_h = document.getElementById('fmt_onthejob_hours').value;
+            g.mitig = document.getElementById('operational_mitigation').value;
+            g.resources = document.getElementById('resources_needed').value;
+            g.timeline = document.getElementById('schedule_timeline').value;
+
+            // Step 3
+            g.kirk1 = document.getElementById('kirk_1').value;
+            g.kirk2 = document.getElementById('kirk_2').value;
+            g.kirk3 = document.getElementById('kirk_3').value;
+            g.kirk4 = document.getElementById('kirk_4').value;
+
+            g.cost_inst = document.getElementById('cost_instructors').value;
+            g.cost_hrs = document.getElementById('cost_hours').value;
+            g.cost_lic = document.getElementById('cost_licenses').value;
+
+            g.gain_err = document.getElementById('gain_errors').value;
+            g.gain_turn = document.getElementById('gain_turnover').value;
+            g.gain_prod = document.getElementById('gain_productivity').value;
+
+            // Step 4
+            g.pitch1 = document.getElementById('pitch_block_1').value;
+            g.pitch2 = document.getElementById('pitch_block_2').value;
+            g.pitch3 = document.getElementById('pitch_block_3').value;
+
+            // Evaluator
+            g.score_lnt = document.getElementById('score_lnt').value;
+            g.score_plan = document.getElementById('score_plan').value;
+            g.score_roi = document.getElementById('score_roi').value;
+            g.score_pitch = document.getElementById('score_pitch').value;
+            g.feedback = document.getElementById('evaluatorFeedback').value;
+
+            appData[currentGroup] = g;
+            localStorage.setItem('logitech_rh_data', JSON.stringify(appData));
+        }
+
+        function loadGroupData(groupName) {
+            const g = appData[groupName] || {};
+            document.getElementById('teamMembersInput').value = g.members || '';
+
+            // Step 1
+            const src = g.sources || {};
+            document.getElementById('src_gestores').checked = !!src.gestores;
+            document.getElementById('src_questionario').checked = !!src.questionario;
+            document.getElementById('src_desempenho').checked = !!src.desempenho;
+            document.getElementById('src_desligamento').checked = !!src.desligamento;
+
+            document.getElementById('lnt_sources_synthesis').value = g.synth || '';
+            document.getElementById('gap_training_demands').value = g.gaps_train || '';
+            document.getElementById('gap_process_demands').value = g.gaps_proc || '';
+
+            // Step 2
+            if (g.smart1 !== undefined) document.getElementById('smart_1').value = g.smart1;
+            if (g.smart2 !== undefined) document.getElementById('smart_2').value = g.smart2;
+            if (g.smart3 !== undefined) document.getElementById('smart_3').value = g.smart3;
+
+            document.getElementById('fmt_micro_hours').value = g.micro_h || '';
+            document.getElementById('fmt_presential_hours').value = g.pres_h || '';
+            document.getElementById('fmt_onthejob_hours').value = g.onjob_h || '';
+            document.getElementById('operational_mitigation').value = g.mitig || '';
+            document.getElementById('resources_needed').value = g.resources || '';
+            document.getElementById('schedule_timeline').value = g.timeline || '';
+
+            // Step 3
+            if (g.kirk1 !== undefined) document.getElementById('kirk_1').value = g.kirk1;
+            if (g.kirk2 !== undefined) document.getElementById('kirk_2').value = g.kirk2;
+            if (g.kirk3 !== undefined) document.getElementById('kirk_3').value = g.kirk3;
+            if (g.kirk4 !== undefined) document.getElementById('kirk_4').value = g.kirk4;
+
+            if (g.cost_inst !== undefined) document.getElementById('cost_instructors').value = g.cost_inst;
+            if (g.cost_hrs !== undefined) document.getElementById('cost_hours').value = g.cost_hrs;
+            if (g.cost_lic !== undefined) document.getElementById('cost_licenses').value = g.cost_lic;
+
+            if (g.gain_err !== undefined) document.getElementById('gain_errors').value = g.gain_err;
+            if (g.gain_turn !== undefined) document.getElementById('gain_turnover').value = g.gain_turn;
+            if (g.gain_prod !== undefined) document.getElementById('gain_productivity').value = g.gain_prod;
+
+            // Step 4
+            document.getElementById('pitch_block_1').value = g.pitch1 || '';
+            document.getElementById('pitch_block_2').value = g.pitch2 || '';
+            document.getElementById('pitch_block_3').value = g.pitch3 || '';
+
+            // Evaluator
+            document.getElementById('score_lnt').value = g.score_lnt !== undefined ? g.score_lnt : 2.5;
+            document.getElementById('score_plan').value = g.score_plan !== undefined ? g.score_plan : 2.5;
+            document.getElementById('score_roi').value = g.score_roi !== undefined ? g.score_roi : 2.5;
+            document.getElementById('score_pitch').value = g.score_pitch !== undefined ? g.score_pitch : 2.5;
+            document.getElementById('evaluatorFeedback').value = g.feedback || '';
+
+            calculateROI();
+            calculateTotalScore();
+        }
+
+        // Pitch Timer Logic
+        function updatePitchTimer() {
+            const mins = Math.floor(pitchSecondsLeft / 60);
+            const secs = pitchSecondsLeft % 60;
+            document.getElementById('pitchTimerDisplay').textContent = 
+                `${mins.toString().padStart(2, '0')}:${secs.toString().padStart(2, '0')}`;
+
+            if (pitchSecondsLeft > 0) {
+                pitchSecondsLeft--;
+            } else {
+                clearInterval(pitchTimer);
+                pitchTimer = null;
+                showToast("Tempo esgotado para o Pitch!", "warning");
+            }
+        }
+
+        function startPitchTimer() {
+            if (!pitchTimer) {
+                pitchTimer = setInterval(updatePitchTimer, 1000);
+            }
+        }
+
+        function pausePitchTimer() {
+            clearInterval(pitchTimer);
+            pitchTimer = null;
+        }
+
+        function resetPitchTimer() {
+            pausePitchTimer();
+            pitchSecondsLeft = 15 * 60;
+            updatePitchTimer();
+        }
+
+        // Modals & Exporting
+        function openSyncModal() {
+            document.getElementById('syncModal').classList.remove('hidden');
+        }
+
+        function closeSyncModal() {
+            document.getElementById('syncModal').classList.add('hidden');
+        }
+
+        function exportToExcel() {
+            saveCurrentData();
+            const exportRows = [];
+
+            Object.keys(appData).forEach(grp => {
+                const item = appData[grp];
+                const costTotal = (parseFloat(item.cost_inst)||0) + (parseFloat(item.cost_hrs)||0) + (parseFloat(item.cost_lic)||0);
+                const gainTotal = (parseFloat(item.gain_err)||0) + (parseFloat(item.gain_turn)||0) + (parseFloat(item.gain_prod)||0);
+                const roiVal = costTotal > 0 ? (((gainTotal - costTotal) / costTotal) * 100).toFixed(2) + '%' : '0%';
+
+                exportRows.push({
+                    'Equipe': grp,
+                    'Integrantes': item.members || '',
+                    'Sintese LNT': item.synth || '',
+                    'Gaps Treinamento': item.gaps_train || '',
+                    'Gaps Processos': item.gaps_proc || '',
+                    'Objetivo SMART 1': item.smart1 || '',
+                    'Custo Total R$': costTotal,
+                    'Ganhos Totais R$': gainTotal,
+                    'ROI Estimado': roiVal,
+                    'Nota Avaliacao': ((parseFloat(item.score_lnt)||0) + (parseFloat(item.score_plan)||0) + (parseFloat(item.score_roi)||0) + (parseFloat(item.score_pitch)||0)).toFixed(1),
+                    'Feedback C-Level': item.feedback || ''
+                });
+            });
+
+            const worksheet = XLSX.utils.json_to_sheet(exportRows);
+            const workbook = XLSX.utils.book_new();
+            XLSX.utils.book_append_sheet(workbook, worksheet, "LNT LogiTech Consolidados");
+            XLSX.writeFile(workbook, "Simulacao_RH_LogiTech_LNT.xlsx");
+            showToast("Planilha Excel exportada com sucesso!");
+        }
+
+        function exportToJSON() {
+            saveCurrentData();
+            const dataStr = "data:text/json;charset=utf-8," + encodeURIComponent(JSON.stringify(appData, null, 2));
+            const downloadAnchor = document.createElement('a');
+            downloadAnchor.setAttribute("href", dataStr);
+            downloadAnchor.setAttribute("download", `logitech_rh_lnt_dados.json`);
+            document.body.appendChild(downloadAnchor);
+            downloadAnchor.click();
+            downloadAnchor.remove();
+        }
+
+        function syncToGoogleSheets() {
+            saveCurrentData();
+            const scriptUrl = document.getElementById('googleScriptUrl').value.trim();
+
+            if (!scriptUrl) {
+                showToast("Insira a URL do Google Apps Script!", "warning");
+                return;
+            }
+
+            fetch(scriptUrl, {
+                method: 'POST',
+                mode: 'no-cors',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({
+                    group: currentGroup,
+                    data: appData[currentGroup]
+                })
+            })
+            .then(() => {
+                showToast("Dados enviados para o Google Sheets!");
+                closeSyncModal();
+            })
+            .catch(err => {
+                showToast("Erro ao conectar com Google Sheets", "error");
+                console.error(err);
+            });
+        }
+
+        function showToast(msg, type = 'success') {
+            const toast = document.getElementById('toast');
+            const toastMsg = document.getElementById('toastMsg');
+            const toastIcon = document.getElementById('toastIcon');
+
+            toastMsg.textContent = msg;
+
+            if (type === 'success') {
+                toastIcon.className = "fa-solid fa-circle-check text-emerald-400 text-base";
+            } else if (type === 'warning') {
+                toastIcon.className = "fa-solid fa-triangle-exclamation text-amber-400 text-base";
+            } else {
+                toastIcon.className = "fa-solid fa-circle-xmark text-red-400 text-base";
+            }
+
+            toast.classList.remove('translate-y-20', 'opacity-0');
+            setTimeout(() => {
+                toast.classList.add('translate-y-20', 'opacity-0');
+            }, 3000);
+        }
+    </script>
 </body>
 </html>

@@ -666,13 +666,16 @@
                 </div>
 
                 <div class="flex flex-wrap gap-2 pt-2">
-                    <button onclick="syncToGoogleSheets()" class="bg-emerald-600 hover:bg-emerald-500 text-white font-bold px-4 py-2 rounded-lg flex items-center gap-1.5 flex-1 justify-center">
-                        <i class="fa-solid fa-paper-plane"></i> Enviar p/ Google Sheets
+                    <button onclick="syncToGoogleSheets()" class="bg-emerald-600 hover:bg-emerald-500 text-white font-bold px-3 py-2 rounded-lg flex items-center gap-1.5 flex-1 justify-center text-xs">
+                        <i class="fa-solid fa-paper-plane"></i> Enviar Atual
                     </button>
-                    <button onclick="exportToExcel()" class="bg-blue-600 hover:bg-blue-500 text-white font-bold px-4 py-2 rounded-lg flex items-center gap-1.5 flex-1 justify-center">
+                    <button onclick="sendTestDataToSheets()" class="bg-amber-600 hover:bg-amber-500 text-white font-bold px-3 py-2 rounded-lg flex items-center gap-1.5 justify-center text-xs">
+                        <i class="fa-solid fa-vial"></i> Teste de Envio
+                    </button>
+                    <button onclick="exportToExcel()" class="bg-blue-600 hover:bg-blue-500 text-white font-bold px-3 py-2 rounded-lg flex items-center gap-1.5 flex-1 justify-center text-xs">
                         <i class="fa-solid fa-file-excel"></i> Baixar Excel (.xlsx)
                     </button>
-                    <button onclick="exportToJSON()" class="bg-slate-700 hover:bg-slate-600 text-white font-bold px-3 py-2 rounded-lg flex items-center gap-1.5">
+                    <button onclick="exportToJSON()" class="bg-slate-700 hover:bg-slate-600 text-white font-bold px-3 py-2 rounded-lg flex items-center gap-1.5 text-xs">
                         <i class="fa-solid fa-download"></i> JSON
                     </button>
                 </div>
@@ -1025,35 +1028,7 @@
                     'Integrantes': item.members || '',
                     'Sintese LNT': item.synth || '',
                     'Gaps Treinamento': item.gaps_train || '',
-                    'Gaps Processos': item.gaps_proc || '',
-                    'Objetivo SMART 1': item.smart1 || '',
-                    'Custo Total R$': costTotal,
-                    'Ganhos Totais R$': gainTotal,
-                    'ROI Estimado': roiVal,
-                    'Nota Avaliacao': ((parseFloat(item.score_lnt)||0) + (parseFloat(item.score_plan)||0) + (parseFloat(item.score_roi)||0) + (parseFloat(item.score_pitch)||0)).toFixed(1),
-                    'Feedback C-Level': item.feedback || ''
-                });
-            });
-
-            const worksheet = XLSX.utils.json_to_sheet(exportRows);
-            const workbook = XLSX.utils.book_new();
-            XLSX.utils.book_append_sheet(workbook, worksheet, "LNT LogiTech Consolidados");
-            XLSX.writeFile(workbook, "Simulacao_RH_LogiTech_LNT.xlsx");
-            showToast("Planilha Excel exportada com sucesso!");
-        }
-
-        function exportToJSON() {
-            saveCurrentData();
-            const dataStr = "data:text/json;charset=utf-8," + encodeURIComponent(JSON.stringify(appData, null, 2));
-            const downloadAnchor = document.createElement('a');
-            downloadAnchor.setAttribute("href", dataStr);
-            downloadAnchor.setAttribute("download", `logitech_rh_lnt_dados.json`);
-            document.body.appendChild(downloadAnchor);
-            downloadAnchor.click();
-            downloadAnchor.remove();
-        }
-
-        function syncToGoogleSheets() {
+        function syncToGoogleSheets(customPayload = null) {
             saveCurrentData();
             const scriptUrl = document.getElementById('googleScriptUrl').value.trim();
 
@@ -1062,23 +1037,51 @@
                 return;
             }
 
+            const payloadData = customPayload || {
+                group: currentGroup,
+                members: appData[currentGroup]?.members || 'N/A',
+                synth: appData[currentGroup]?.synth || 'Sem síntese registrada',
+                roi: document.getElementById('roi_percentage_display').textContent,
+                totalScore: document.getElementById('totalScoreDisplay').textContent,
+                feedback: appData[currentGroup]?.feedback || '',
+                timestamp: new Date().toLocaleString('pt-BR')
+            };
+
+            // Para contornar bloqueios do Google Apps Script em requisições de origens cruzadas (CORS),
+            // enviamos com URLSearchParams no formato form-urlencoded.
+            const formData = new URLSearchParams();
+            formData.append('payload', JSON.stringify(payloadData));
+
             fetch(scriptUrl, {
                 method: 'POST',
                 mode: 'no-cors',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({
-                    group: currentGroup,
-                    data: appData[currentGroup]
-                })
+                headers: {
+                    'Content-Type': 'application/x-www-form-urlencoded'
+                },
+                body: formData.toString()
             })
             .then(() => {
-                showToast("Dados enviados para o Google Sheets!");
+                showToast("Requisição enviada com sucesso ao Google Sheets!");
                 closeSyncModal();
             })
             .catch(err => {
                 showToast("Erro ao conectar com Google Sheets", "error");
                 console.error(err);
             });
+        }
+
+        function sendTestDataToSheets() {
+            const testPayload = {
+                group: "Grupo Teste (Debug RH)",
+                members: "Usuário Teste / Robô de Validação",
+                synth: "Este é um registro de teste automatizado para confirmar a integração via WebApp.",
+                roi: "ROI: +200.00%",
+                totalScore: "10.0 / 10.0",
+                feedback: "Teste de sincronização bem-sucedido!",
+                timestamp: new Date().toLocaleString('pt-BR')
+            };
+
+            syncToGoogleSheets(testPayload);
         }
 
         function showToast(msg, type = 'success') {

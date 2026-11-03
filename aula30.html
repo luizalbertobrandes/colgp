@@ -3,61 +3,581 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Aguarde - Aula em Breve</title>
+    <title>Fundamentos do Poder Disciplinar do Empregador</title>
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Font Awesome icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Merriweather:ital,wght@0,400;0,700;1,400&display=swap" rel="stylesheet">
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        brand: {
+                            50: '#f0f7ff',
+                            100: '#e0effe',
+                            600: '#1d4ed8',
+                            700: '#1e40af',
+                            800: '#1e3a8a',
+                            900: '#0f172a'
+                        }
+                    },
+                    fontFamily: {
+                        sans: ['Inter', 'sans-serif'],
+                        serif: ['Merriweather', 'serif']
+                    }
+                }
+            }
+        }
+    </script>
     <style>
-        body {
-            margin: 0;
-            padding: 0;
-            background-color: #f4f4f4; /* Cor de fundo suave */
-            font-family: Arial, sans-serif;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            height: 100vh;
+        .quote-card {
+            border-left: 4px solid #1d4ed8;
         }
-
-        .container {
-            background-color: #fff;
-            border-radius: 8px;
-            box-shadow: 0 4px 8px rgba(0,0,0,0.1);
-            padding: 40px;
-            text-align: center;
+        .custom-scrollbar::-webkit-scrollbar {
+            width: 6px;
         }
-
-        .container img {
-            max-width: 100%;
-            height: auto;
-            border-radius: 8px; /* Mantém as bordas arredondadas da imagem */
-            margin-bottom: 20px;
+        .custom-scrollbar::-webkit-scrollbar-track {
+            background: #f1f1f1;
         }
-
-        .container h1 {
-            color: #333;
-            font-size: 24px;
-            margin-bottom: 30px;
-        }
-
-        .btn-voltar {
-            display: inline-block;
-            background-color: #007bff; /* Azul para o botão */
-            color: #fff;
-            padding: 12px 24px;
-            text-decoration: none;
-            border-radius: 5px;
-            font-weight: bold;
-            transition: background-color 0.3s ease;
-        }
-
-        .btn-voltar:hover {
-            background-color: #0056b3; /* Cor mais escura no hover */
+        .custom-scrollbar::-webkit-scrollbar-thumb {
+            background: #cbd5e1;
+            border-radius: 4px;
         }
     </style>
 </head>
-<body>
-    <div class="container">
-        <img src="imagem1.png" width="320" height="240" alt="O professor em sala de aula">
-        <h1>Aguarde: em breve essa aula estará disponivel.</h1>
-        <a href="index.html" class="btn-voltar">Voltar</a>
-    </div>
+<body class="bg-slate-50 text-slate-800 font-sans antialiased leading-relaxed">
+
+    <!-- Header / Navbar -->
+    <header class="sticky top-0 z-50 bg-white/95 backdrop-blur border-b border-slate-200 shadow-sm">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex justify-between items-center h-16">
+                <div class="flex items-center space-x-3">
+                    <div class="bg-brand-600 text-white p-2 rounded-lg">
+                        <i class="fa-solid fa-scale-balanced text-xl"></i>
+                    </div>
+                    <div>
+                        <span class="font-bold text-lg text-slate-900 block leading-tight">Direito do Trabalho</span>
+                        <span class="text-xs text-slate-500">Módulo Acadêmico Interativo</span>
+                    </div>
+                </div>
+                <nav class="hidden md:flex space-x-6 text-sm font-medium text-slate-600">
+                    <a href="#conceito" class="hover:text-brand-600 transition">Conceito e Origem</a>
+                    <a href="#desdobramentos" class="hover:text-brand-600 transition">Poder Diretivo</a>
+                    <a href="#principios" class="hover:text-brand-600 transition">Princípios & Limites</a>
+                    <a href="#penalidades" class="hover:text-brand-600 transition">Sanções Legais</a>
+                    <a href="#pratica" class="bg-brand-600 text-white px-4 py-2 rounded-md hover:bg-brand-700 transition">Atividade Prática</a>
+                </nav>
+            </div>
+        </div>
+    </header>
+
+    <!-- Hero Section -->
+    <section class="bg-gradient-to-br from-brand-900 via-brand-800 to-slate-900 text-white py-16 px-4 sm:px-6 lg:px-8">
+        <div class="max-w-5xl mx-auto text-center space-y-6">
+            <span class="inline-block bg-brand-600/30 text-brand-100 text-xs font-semibold uppercase tracking-wider px-3 py-1 rounded-full border border-brand-400/30">
+                Direito Individual do Trabalho
+            </span>
+            <h1 class="text-3xl sm:text-5xl font-extrabold tracking-tight">
+                Fundamentos do Poder Disciplinar do Empregador
+            </h1>
+            <p class="text-lg sm:text-xl text-slate-300 max-w-3xl mx-auto font-light leading-relaxed">
+                A prerrogativa jurídica de orientação, fiscalização e punição no contrato de trabalho: origens, limites constitucionais e aplicação doutrinária.
+            </p>
+            <div class="pt-4 flex flex-wrap justify-center gap-4 text-sm font-medium">
+                <a href="#pratica" class="bg-emerald-600 hover:bg-emerald-500 text-white px-6 py-3 rounded-lg shadow-lg hover:shadow-emerald-900/30 transition flex items-center gap-2">
+                    <i class="fa-solid fa-gamepad"></i> Ir para o Simulador Prático
+                </a>
+                <a href="#doutrina" class="bg-white/10 hover:bg-white/20 text-white border border-white/20 px-6 py-3 rounded-lg transition flex items-center gap-2">
+                    <i class="fa-solid fa-book-open"></i> Ver Citações Doutrinárias
+                </a>
+            </div>
+        </div>
+    </section>
+
+    <!-- Main Content Layout -->
+    <main class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12 space-y-16">
+
+        <!-- Section 1: Conceituação e Origem -->
+        <section id="conceito" class="scroll-mt-20">
+            <div class="bg-white rounded-2xl shadow-sm border border-slate-200 p-6 sm:p-10 space-y-8">
+                <div class="border-b border-slate-100 pb-4">
+                    <h2 class="text-2xl font-bold text-slate-900 flex items-center gap-3">
+                        <span class="bg-brand-50 text-brand-600 w-10 h-10 rounded-lg flex items-center justify-center font-bold text-lg">1</span>
+                        Conceituação e Enquadramento Jurídico
+                    </h2>
+                </div>
+
+                <div class="grid md:grid-cols-2 gap-8 items-center">
+                    <div class="space-y-4 text-slate-600">
+                        <p>
+                            O <strong>Poder Disciplinar</strong> é a faculdade atribuída ao empregador de impor sanções aos empregados que descumprirem as obrigações assumidas no contrato de trabalho ou violarem as normas organizacionais do estabelecimento.
+                        </p>
+                        <p>
+                            Este poder não possui caráter absoluto nem punitivo-estatal propriamente dito; decorre da necessidade privada de harmonização e manutenção da ordem interna no empreendimento econômico.
+                        </p>
+                        <div class="bg-amber-50 border-l-4 border-amber-500 p-4 rounded-r-lg">
+                            <p class="text-sm text-amber-900">
+                                <strong>Importante:</strong> Ao contrário do Direito Penal, que busca a retribuição e reinserção social, o Poder Disciplinar Trabalhista tem finalidade precipuamente <em>pedagógica</em> e <em>corretiva</em>.
+                            </p>
+                        </div>
+                    </div>
+
+                    <!-- Card Citação Doutrinária -->
+                    <div class="quote-card bg-slate-50 p-6 rounded-r-xl space-y-3 font-serif">
+                        <i class="fa-solid fa-quote-left text-brand-600 text-2xl"></i>
+                        <p class="text-slate-700 italic text-sm sm:text-base">
+                            "O poder disciplinar consiste no conjunto de prerrogativas concentradas pelo direito no empregador, destinadas a aplicar penalidades aos trabalhadores que descumprirem suas obrigações contratuais (...) O poder disciplinar é a síntese do poder empregatício."
+                        </p>
+                        <div class="text-xs font-sans text-slate-500 pt-2 border-t border-slate-200 font-semibold">
+                            — DELGADO, Maurício Godinho. <span class="font-normal italic">Curso de Direito do Trabalho</span>. 19ª ed., p. 742.
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Section 2: O Poder Diretivo e suas Vertentes -->
+        <section id="desdobramentos" class="scroll-mt-20">
+            <div class="space-y-6">
+                <div class="text-center max-w-3xl mx-auto">
+                    <h2 class="text-2xl font-bold text-slate-900">O Poder Disciplinar como Desdobramento do Poder Diretivo</h2>
+                    <p class="text-slate-600 mt-2">
+                        Com base no <strong>Artigo 2º da CLT</strong>, o empregador assume os riscos da atividade econômica e dirige a prestação pessoal de serviços. Do Poder Diretivo (ou Empregatício) emanam quatro dimensões interdependentes:
+                    </p>
+                </div>
+
+                <div class="grid sm:grid-cols-2 lg:grid-cols-4 gap-6">
+                    <div class="bg-white p-6 rounded-xl border border-slate-200 shadow-sm hover:shadow-md transition space-y-3">
+                        <div class="w-12 h-12 bg-blue-100 text-blue-600 rounded-lg flex items-center justify-center text-xl font-bold">
+                            <i class="fa-solid fa-sitemap"></i>
+                        </div>
+                        <h3 class="font-bold text-slate-900 text-lg">Poder Organizativo</h3>
+                        <p class="text-sm text-slate-600">
+                            Estruturação e regulamentação interna da empresa (regimento interno, horários, organogramas e metas).
+                        </p>
+                    </div>
+
+                    <div class="bg-white p-6 rounded-xl border border-slate-200 shadow-sm hover:shadow-md transition space-y-3">
+                        <div class="w-12 h-12 bg-indigo-100 text-indigo-600 rounded-lg flex items-center justify-center text-xl font-bold">
+                            <i class="fa-solid fa-compass"></i>
+                        </div>
+                        <h3 class="font-bold text-slate-900 text-lg">Poder Diretivo / Técnico</h3>
+                        <p class="text-sm text-slate-600">
+                            Faculdade de determinar como o trabalho deve ser executado, expedindo ordens gerais e individuais.
+                        </p>
+                    </div>
+
+                    <div class="bg-white p-6 rounded-xl border border-slate-200 shadow-sm hover:shadow-md transition space-y-3">
+                        <div class="w-12 h-12 bg-purple-100 text-purple-600 rounded-lg flex items-center justify-center text-xl font-bold">
+                            <i class="fa-solid fa-eye"></i>
+                        </div>
+                        <h3 class="font-bold text-slate-900 text-lg">Poder Fiscalizatório</h3>
+                        <p class="text-sm text-slate-600">
+                            Acompanhamento e controle da execução do trabalho (ponto, auditorias, vistorias respeitados os limites da intimidade).
+                        </p>
+                    </div>
+
+                    <div class="bg-white p-6 rounded-xl border border-slate-200 shadow-sm hover:shadow-md transition space-y-3 border-l-4 border-l-brand-600">
+                        <div class="w-12 h-12 bg-brand-100 text-brand-600 rounded-lg flex items-center justify-center text-xl font-bold">
+                            <i class="fa-solid fa-gavel"></i>
+                        </div>
+                        <h3 class="font-bold text-slate-900 text-lg">Poder Disciplinar</h3>
+                        <p class="text-sm text-slate-600">
+                            Prerrogativa de reprimir ilícitos contratuais impondo sanções previstas na lei e na convenção coletiva.
+                        </p>
+                    </div>
+                </div>
+
+                <!-- Fundamento Legal CLT -->
+                <div class="bg-slate-900 text-white p-6 rounded-xl space-y-3">
+                    <div class="flex items-center gap-2 text-brand-400 font-mono text-sm font-semibold">
+                        <i class="fa-solid fa-book"></i> Consolidação das Leis do Trabalho (CLT) - Art. 2º
+                    </div>
+                    <blockquote class="text-slate-300 italic font-serif">
+                        "Considera-se empregador a empresa, individual ou coletiva, que, assumindo os riscos da atividade econômica, admite, assalaria e dirige a prestação pessoal de serviço."
+                    </blockquote>
+                </div>
+            </div>
+        </section>
+
+        <!-- Section 3: Princípios Regentes e Limites Legal-Doutrinários -->
+        <section id="principios" class="scroll-mt-20">
+            <div class="bg-white rounded-2xl shadow-sm border border-slate-200 p-6 sm:p-10 space-y-8">
+                <div>
+                    <h2 class="text-2xl font-bold text-slate-900 flex items-center gap-3">
+                        <span class="bg-brand-50 text-brand-600 w-10 h-10 rounded-lg flex items-center justify-center font-bold text-lg">2</span>
+                        Princípios Vetores do Poder Disciplinar
+                    </h2>
+                    <p class="text-slate-600 mt-2">
+                        A aplicação de sanções não é discricionária nem arbitrária. A doutrina jurídica e a jurisprudência fixaram balizas rígidas para sua validade:
+                    </p>
+                </div>
+
+                <div class="grid md:grid-cols-2 gap-6">
+                    <div class="border border-slate-200 rounded-xl p-5 hover:border-brand-300 transition">
+                        <h3 class="font-bold text-slate-900 flex items-center gap-2">
+                            <i class="fa-solid fa-scale-unbalanced text-brand-600"></i>
+                            Proporcionalidade e Gradação
+                        </h3>
+                        <p class="text-sm text-slate-600 mt-2">
+                            A pena deve ser idônea e proporcional à gravidade da infração cometida. Salvo conduta de gravidade extrema imediata (ex: agressão física), deve-se adotar o critério pedagógico e progressivo (advertências $\rightarrow$ suspensão $\rightarrow$ justa causa).
+                        </p>
+                    </div>
+
+                    <div class="border border-slate-200 rounded-xl p-5 hover:border-brand-300 transition">
+                        <h3 class="font-bold text-slate-900 flex items-center gap-2">
+                            <i class="fa-solid fa-clock text-brand-600"></i>
+                            Imediatidade (Atualidade)
+                        </h3>
+                        <p class="text-sm text-slate-600 mt-2">
+                            A sanção deve ser aplicada logo após o conhecimento do ato faltoso e sua devida apuração. O decurso irrazoável de tempo sem punição configura o <strong>perdão tácito</strong> pelo empregador.
+                        </p>
+                    </div>
+
+                    <div class="border border-slate-200 rounded-xl p-5 hover:border-brand-300 transition">
+                        <h3 class="font-bold text-slate-900 flex items-center gap-2">
+                            <i class="fa-solid fa-ban text-brand-600"></i>
+                            Non Bis in Idem (Unicidade da Pena)
+                        </h3>
+                        <p class="text-sm text-slate-600 mt-2">
+                            O mesmo ato faltoso não pode ser punido mais de uma vez. O empregador que suspende o trabalhador por uma falta não pode posteriormente demiti-lo por justa causa sob o mesmo fundamento.
+                        </p>
+                    </div>
+
+                    <div class="border border-slate-200 rounded-xl p-5 hover:border-brand-300 transition">
+                        <h3 class="font-bold text-slate-900 flex items-center gap-2">
+                            <i class="fa-solid fa-user-shield text-brand-600"></i>
+                            Não Alteração Contratual Lesiva & Vetação à Multa
+                        </h3>
+                        <p class="text-sm text-slate-600 mt-2">
+                            São vedadas sanções que modifiquem unilateralmente o contrato causando prejuízo (art. 468 CLT), bem como a aplicação de sanções pecuniárias/multas (salvo caso específico de atletas profissionais).
+                        </p>
+                    </div>
+                </div>
+
+                <!-- Citação Limites constitucionais -->
+                <div class="quote-card bg-slate-50 p-6 rounded-r-xl space-y-3 font-serif">
+                    <i class="fa-solid fa-quote-left text-brand-600 text-2xl"></i>
+                    <p class="text-slate-700 italic text-sm sm:text-base">
+                        "O exercício do poder disciplinar encontra intransponíveis limites nos direitos fundamentais da pessoa humana constitucionalmente garantidos, tais como a intimidade, a honra, a imagem e a dignidade do trabalhador (Art. 1º, III e Art. 5º, X da CF/88)."
+                    </p>
+                    <div class="text-xs font-sans text-slate-500 pt-2 border-t border-slate-200 font-semibold">
+                        — MARTINS, Sergio Pinto. <span class="font-normal italic">Direito do Trabalho</span>. 38ª ed., p. 245.
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Section 4: Modalidades de Penalidades no Direito Brasileiro -->
+        <section id="penalidades" class="scroll-mt-20">
+            <div class="bg-white rounded-2xl shadow-sm border border-slate-200 p-6 sm:p-10 space-y-8">
+                <div class="border-b border-slate-100 pb-4">
+                    <h2 class="text-2xl font-bold text-slate-900 flex items-center gap-3">
+                        <span class="bg-brand-50 text-brand-600 w-10 h-10 rounded-lg flex items-center justify-center font-bold text-lg">3</span>
+                        Modalidades de Sanções no Direito Trabalhista
+                    </h2>
+                </div>
+
+                <div class="grid md:grid-cols-3 gap-6">
+                    <!-- Advertência -->
+                    <div class="bg-slate-50 p-6 rounded-xl border border-slate-200 flex flex-col justify-between space-y-4">
+                        <div>
+                            <span class="bg-yellow-100 text-yellow-800 text-xs font-bold px-2.5 py-1 rounded">Leve</span>
+                            <h3 class="font-bold text-slate-900 text-lg mt-2">1. Advertência</h3>
+                            <p class="text-xs text-slate-500 mt-1">Verbal ou Escrita</p>
+                            <p class="text-sm text-slate-600 mt-3">
+                                Aviso ostensivo ao trabalhador referente à infração cometida. Não possui previsão expressa na CLT, mas deriva do costume trabalhista e doutrina consolidada. Tem fim preventivo e pedagógico.
+                            </p>
+                        </div>
+                        <div class="text-xs font-medium text-slate-500 border-t border-slate-200 pt-3">
+                            <i class="fa-solid fa-circle-info text-yellow-600 mr-1"></i> Não gera desconto pecuniário.
+                        </div>
+                    </div>
+
+                    <!-- Suspensão Disciplinar -->
+                    <div class="bg-slate-50 p-6 rounded-xl border border-slate-200 flex flex-col justify-between space-y-4">
+                        <div>
+                            <span class="bg-orange-100 text-orange-800 text-xs font-bold px-2.5 py-1 rounded">Média / Grave</span>
+                            <h3 class="font-bold text-slate-900 text-lg mt-2">2. Suspensão Disciplinar</h3>
+                            <p class="text-xs text-slate-500 mt-1">Artigo 474 da CLT</p>
+                            <p class="text-sm text-slate-600 mt-3">
+                                Afastamento temporário das atividades sem percepção de salário. <strong>Limite legal máximo: 30 dias consecutivos</strong>. A suspensão superior a 30 dias enseja rescisão indireta.
+                            </p>
+                        </div>
+                        <div class="text-xs font-medium text-slate-500 border-t border-slate-200 pt-3">
+                            <i class="fa-solid fa-triangle-exclamation text-orange-600 mr-1"></i> Implica perda da remuneração dos dias.
+                        </div>
+                    </div>
+
+                    <!-- Justa Causa -->
+                    <div class="bg-slate-50 p-6 rounded-xl border border-slate-200 flex flex-col justify-between space-y-4">
+                        <div>
+                            <span class="bg-red-100 text-red-800 text-xs font-bold px-2.5 py-1 rounded">Gravíssima</span>
+                            <h3 class="font-bold text-slate-900 text-lg mt-2">3. Demissão por Justa Causa</h3>
+                            <p class="text-xs text-slate-500 mt-1">Artigo 482 da CLT</p>
+                            <p class="text-sm text-slate-600 mt-3">
+                                Rescisão do contrato por falta grave e insustentabilidade do vínculo probatório/confiança. O rol do art. 482 é <strong>taxativo</strong> (improbidade, desídia, insubordinação, etc.).
+                            </p>
+                        </div>
+                        <div class="text-xs font-medium text-slate-500 border-t border-slate-200 pt-3">
+                            <i class="fa-solid fa-gavel text-red-600 mr-1"></i> Penalidade máxima do Direito Trabalhista.
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Section 5: Atividade Prática Criativa - O Simulador de Compliance -->
+        <section id="pratica" class="scroll-mt-20">
+            <div class="bg-gradient-to-r from-slate-900 via-brand-900 to-slate-900 text-white rounded-2xl shadow-xl p-6 sm:p-10 space-y-8">
+                
+                <div class="flex flex-col md:flex-row md:items-center justify-between gap-4 border-b border-slate-700 pb-6">
+                    <div>
+                        <span class="bg-emerald-500/20 text-emerald-300 text-xs font-mono font-semibold px-3 py-1 rounded-full border border-emerald-500/30">
+                            Laboratório Interativo
+                        </span>
+                        <h2 class="text-3xl font-extrabold mt-2 text-white">
+                            Atividade Prática: Juiz de RH e Compliance
+                        </h2>
+                        <p class="text-slate-300 text-sm sm:text-base mt-1">
+                            Análise de Casos Concretos e Aplicação de Sanções Disciplinares
+                        </p>
+                    </div>
+
+                    <!-- Placar / Estatísticas -->
+                    <div class="flex items-center space-x-4 bg-slate-800/80 p-3 rounded-xl border border-slate-700">
+                        <div class="text-center px-3">
+                            <span class="text-xs text-slate-400 block uppercase">Caso</span>
+                            <span id="case-counter" class="text-xl font-bold text-emerald-400">1/4</span>
+                        </div>
+                        <div class="h-8 w-px bg-slate-700"></div>
+                        <div class="text-center px-3">
+                            <span class="text-xs text-slate-400 block uppercase">Pontuação</span>
+                            <span id="score-counter" class="text-xl font-bold text-brand-400">0 pts</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Card de Caso Prático Dinâmico -->
+                <div id="case-box" class="bg-slate-800/90 rounded-xl p-6 sm:p-8 border border-slate-700 space-y-6">
+                    <!-- Conteúdo do Caso Injetado via JS -->
+                </div>
+
+                <!-- Painel de Feedback da Resposta -->
+                <div id="feedback-box" class="hidden rounded-xl p-6 border transition-all duration-300">
+                    <!-- Feedback Injetado via JS -->
+                </div>
+
+                <!-- Botão Próximo Caso -->
+                <div class="flex justify-end">
+                    <button id="next-btn" onclick="nextCase()" class="hidden bg-emerald-600 hover:bg-emerald-500 text-white font-semibold px-6 py-3 rounded-lg shadow-lg transition flex items-center gap-2">
+                        Próximo Caso <i class="fa-solid fa-arrow-right"></i>
+                    </button>
+                </div>
+
+            </div>
+        </section>
+
+    </main>
+
+    <!-- Footer -->
+    <footer class="bg-white border-t border-slate-200 py-8 text-center text-sm text-slate-500">
+        <div class="max-w-7xl mx-auto px-4">
+            <p>© Material Didático de Direito do Trabalho - Fundamentos do Poder Disciplinar</p>
+            <p class="text-xs text-slate-400 mt-1">Desenvolvido para fins acadêmicos e pedagógicos.</p>
+        </div>
+    </footer>
+
+    <!-- Script da Atividade Prática Interativa -->
+    <script>
+        // Banco de Dados de Casos Práticos
+        const cases = [
+            {
+                id: 1,
+                title: "O Primeiro Atraso de Carlos",
+                context: "Carlos é um funcionário exemplar com 3 anos de casa e sem qualquer registro de faltas ou conduta inadequada. Hoje ele se atrasou em 35 minutos para o início do expediente por ter perdido o ônibus.",
+                options: [
+                    { id: 'A', text: "Aplicar Demissão por Justa Causa por desídia imediata.", correct: false, reason: "Incorreto! A justa causa requer gravidade manifesta ou reiteração de condutas (desídia). Um único atraso isolado de 35 minutos não autoriza a pena máxima." },
+                    { id: 'B', text: "Aplicar Suspensão Disciplinar por 3 dias sem salário.", correct: false, reason: "Incorreto! Viola o Princípio da Proporcionalidade e da Gradação das Penas. Uma suspensão sem prévia orientação/advertência para uma falta leve isolada é arbitrária." },
+                    { id: 'C', text: "Conversa orientativa verbal ou Advertência leve.", correct: true, reason: "Correto! Respeita a proporcionalidade e a finalidade pedagógica do poder disciplinar. Tratando-se de falta leve e sem histórico prévio, a orientação pedagógica é a medida adequada." },
+                    { id: 'D', text: "Descontar uma multa de R$ 200,00 no salário do final do mês.", correct: false, reason: "Incorreto! A legislação brasileira proíbe penalidades pecuniárias ou multas impostas pelo empregador (salvo no caso de atletas profissionais)." }
+                ]
+            },
+            {
+                id: 2,
+                title: "A Altercação Físico-Verbal na Fábrica",
+                context: "Durante a jornada de trabalho, Mário, sem que houvesse legítima defesa, desferiu um soco em seu colega de equipe dentro do setor de produção, causando lesão corporal visível.",
+                options: [
+                    { id: 'A', text: "Aplicar Advertência Escrita solicitando que não repita o ato.", correct: false, reason: "Incorreto! A agressão física no ambiente de trabalho é conduta de gravidade extrema que quebra imediatamente a confiança contratual, descartando a necessidade de gradação prévia." },
+                    { id: 'B', text: "Aplicar Rescisão por Justa Causa com base no Art. 482, 'j' da CLT.", correct: true, reason: "Correto! O ato lesivo da honra ou ofensa física praticado no serviço constitui falta grave imediata, dispensando gradação de penalidades prévias conforme prevê a CLT." },
+                    { id: 'C', text: "Suspender Mário por 45 dias para que ele reflita em casa.", correct: false, reason: "Incorreto! O artigo 474 da CLT estipula que a suspensão disciplinar não pode exceder 30 dias consecutivos. Ultrapassar este prazo configura rescisão indireta do contrato." },
+                    { id: 'D', text: "Aplicar advertência verbal hoje e, se o RH aprovar na próxima semana, aplicar a justa causa.", correct: false, reason: "Incorreto! Viola o princípio do 'Non Bis in Idem' (não se pode punir duas vezes o mesmo fato) e o princípio da imediatez." }
+                ]
+            },
+            {
+                id: 3,
+                title: "Falta Ocorrida Há Seis Meses",
+                context: "A gerência de RH descobriu hoje que há 6 meses o empregado Roberto cometeu um descumprimento de procedimento interno leve. Na época a chefia direta soube, mas optou por não punir. O novo gerente deseja aplicar uma suspensão hoje.",
+                options: [
+                    { id: 'A', text: "Aplicar a suspensão, pois o prazo prescricional do trabalho é de 5 anos.", correct: false, reason: "Incorreto! O prazo prescricional para propor ação judicial não se confunde com o Princípio da Imediatidade da punição disciplinar." },
+                    { id: 'B', text: "Não aplicar punição, pois operou-se o Perdão Tácito.", correct: true, reason: "Correto! O transcurso de longo período sem aplicação da sanção (tendo o superior ciência do fato) gera a presunção do perdão tácito por ausência do requisito de imediatidade/atualidade." },
+                    { id: 'C', text: "Descontar os dias não trabalhados da época na folha atual.", correct: false, reason: "Incorreto! Além da falta de imediatidade, sanções pecuniárias desautorizadas pela CLT são ilícitas." },
+                    { id: 'D', text: "Aplicar uma justa causa retroativa.", correct: false, reason: "Incorreto! Nenhuma pena pode retroagir ou desrespeitar o princípio da atualidade e da boa-fé objetiva." }
+                ]
+            },
+            {
+                id: 4,
+                title: "A Punição Dupla de Fernanda",
+                context: "Fernanda cometeu uma insubordinação ao se recusar expressamente a usar o Equipamento de Proteção Individual (EPI). A empresa aplicou a ela uma suspensão disciplinar de 2 dias. No retorno, o diretor achou a pena branda e mandou demiti-la por justa causa pelo mesmo fato.",
+                options: [
+                    { id: 'A', text: "A conduta do diretor é válida, pois o diretor tem poder hierárquico supremo.", correct: false, reason: "Incorreto! O poder diretivo não é absoluto e deve respeitar os princípios gerais do Direito e da CLT." },
+                    { id: 'B', text: "A justa causa é nula por violação ao princípio 'Non Bis in Idem'.", correct: true, reason: "Correto! O empregador esgotou seu poder disciplinar para aquele fato específico ao aplicar a suspensão. Não é permitido punir novamente o empregado pela mesma infração." },
+                    { id: 'C', text: "A justa causa é válida, desde que a suspensão seja convertida em salário.", correct: false, reason: "Incorreto! A dupla punição pela mesma falta contamina a validade da sanção posterior." },
+                    { id: 'D', text: "A empresa pode aplicar multa adicional por violação às normas de segurança.", correct: false, reason: "Incorreto! Penalidades pecuniárias/multas não são admitidas no direito trabalhista comum." }
+                ]
+            }
+        ];
+
+        let currentCaseIndex = 0;
+        let score = 0;
+        let answered = false;
+
+        function loadCase(index) {
+            answered = false;
+            const currentCase = cases[index];
+            
+            // Atualizar contadores
+            document.getElementById('case-counter').innerText = `${index + 1}/${cases.length}`;
+            document.getElementById('next-btn').classList.add('hidden');
+            document.getElementById('feedback-box').classList.add('hidden');
+
+            const caseBox = document.getElementById('case-box');
+            caseBox.innerHTML = `
+                <div class="space-y-3">
+                    <span class="text-xs font-mono text-brand-400 font-semibold tracking-wider uppercase">Cenário Jurídico #${currentCase.id}</span>
+                    <h3 class="text-xl font-bold text-white">${currentCase.title}</h3>
+                    <p class="text-slate-300 leading-relaxed text-sm sm:text-base bg-slate-900/60 p-4 rounded-lg border border-slate-700">
+                        "${currentCase.context}"
+                    </p>
+                </div>
+
+                <div class="space-y-3 pt-2">
+                    <p class="text-sm font-semibold text-slate-200">Qual é a conduta jurídica e disciplinar adequada para este caso?</p>
+                    <div class="grid gap-3">
+                        ${currentCase.options.map(opt => `
+                            <button onclick="selectOption('${opt.id}')" id="btn-opt-${opt.id}" class="opt-btn w-full text-left p-4 rounded-lg bg-slate-800 hover:bg-slate-700 border border-slate-600 transition flex items-start gap-3">
+                                <span class="bg-slate-700 text-slate-200 w-6 h-6 rounded flex items-center justify-center text-xs font-bold shrink-0 mt-0.5">${opt.id}</span>
+                                <span class="text-sm text-slate-200">${opt.text}</span>
+                            </button>
+                        `).join('')}
+                    </div>
+                </div>
+            `;
+        }
+
+        function selectOption(optionId) {
+            if (answered) return;
+            answered = true;
+
+            const currentCase = cases[currentCaseIndex];
+            const selectedOpt = currentCase.options.find(o => o.id === optionId);
+            const feedbackBox = document.getElementById('feedback-box');
+
+            // Desabilitar botões
+            document.querySelectorAll('.opt-btn').forEach(btn => btn.disabled = true);
+
+            // Destacar opção selecionada
+            const selectedBtn = document.getElementById(`btn-opt-${optionId}`);
+
+            if (selectedOpt.correct) {
+                score += 25;
+                document.getElementById('score-counter').innerText = `${score} pts`;
+                
+                selectedBtn.classList.remove('bg-slate-800', 'border-slate-600');
+                selectedBtn.classList.add('bg-emerald-900/50', 'border-emerald-500', 'text-emerald-200');
+
+                feedbackBox.className = "rounded-xl p-6 border bg-emerald-950/80 border-emerald-500/50 text-emerald-200 space-y-2 block animate-fade-in";
+                feedbackBox.innerHTML = `
+                    <div class="flex items-center gap-2 font-bold text-emerald-400 text-lg">
+                        <i class="fa-solid fa-circle-check"></i> Análise Jurídica Correta!
+                    </div>
+                    <p class="text-sm leading-relaxed">${selectedOpt.reason}</p>
+                `;
+            } else {
+                selectedBtn.classList.remove('bg-slate-800', 'border-slate-600');
+                selectedBtn.classList.add('bg-rose-900/50', 'border-rose-500', 'text-rose-200');
+
+                // Mostrar também qual era a certa
+                const correctOpt = currentCase.options.find(o => o.correct);
+                const correctBtn = document.getElementById(`btn-opt-${correctOpt.id}`);
+                correctBtn.classList.add('bg-emerald-900/30', 'border-emerald-500/50');
+
+                feedbackBox.className = "rounded-xl p-6 border bg-rose-950/80 border-rose-500/50 text-rose-200 space-y-2 block animate-fade-in";
+                feedbackBox.innerHTML = `
+                    <div class="flex items-center gap-2 font-bold text-rose-400 text-lg">
+                        <i class="fa-solid fa-circle-xmark"></i> Inadequação Jurídica Detectada
+                    </div>
+                    <p class="text-sm leading-relaxed">${selectedOpt.reason}</p>
+                `;
+            }
+
+            document.getElementById('next-btn').classList.remove('hidden');
+        }
+
+        function nextCase() {
+            if (currentCaseIndex < cases.length - 1) {
+                currentCaseIndex++;
+                loadCase(currentCaseIndex);
+            } else {
+                showFinalResults();
+            }
+        }
+
+        function showFinalResults() {
+            const caseBox = document.getElementById('case-box');
+            document.getElementById('feedback-box').classList.add('hidden');
+            document.getElementById('next-btn').classList.add('hidden');
+
+            let medal = "🥇 Especialista em Direito do Trabalho";
+            if (score < 75) medal = "🥈 Analista em Desenvolvimento";
+            if (score < 50) medal = "📘 Necessita Revisar a Doutrina";
+
+            caseBox.innerHTML = `
+                <div class="text-center py-8 space-y-6">
+                    <div class="w-20 h-20 bg-brand-600/30 text-brand-400 rounded-full flex items-center justify-center text-4xl mx-auto border border-brand-500/40">
+                        <i class="fa-solid fa-trophy"></i>
+                    </div>
+                    <div class="space-y-2">
+                        <h3 class="text-2xl font-bold text-white">Simulação Concluída!</h3>
+                        <p class="text-slate-400 text-sm">Sua pontuação final no diagnóstico de conformidade trabalhista:</p>
+                        <div class="text-4xl font-extrabold text-brand-400 py-2">${score} / 100 pontos</div>
+                        <span class="inline-block bg-slate-700 text-slate-200 text-xs font-semibold px-4 py-1.5 rounded-full border border-slate-600">
+                            ${medal}
+                        </span>
+                    </div>
+                    <div class="pt-4">
+                        <button onclick="restartQuiz()" class="bg-brand-600 hover:bg-brand-500 text-white font-semibold px-6 py-3 rounded-lg shadow-lg transition">
+                            <i class="fa-solid fa-rotate-right mr-2"></i> Reiniciar Exercício Prático
+                        </button>
+                    </div>
+                </div>
+            `;
+        }
+
+        function restartQuiz() {
+            currentCaseIndex = 0;
+            score = 0;
+            document.getElementById('score-counter').innerText = "0 pts";
+            loadCase(0);
+        }
+
+        // Inicializar no carregamento da página
+        window.onload = function() {
+            loadCase(0);
+        };
+    </script>
 </body>
 </html>

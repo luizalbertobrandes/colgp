@@ -3,61 +3,603 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Aguarde - Aula em Breve</title>
+    <title>Tipologia dos Conflitos no Ambiente de Trabalho</title>
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Font Awesome for Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: {
+                        sans: ['Inter', 'sans-serif'],
+                    },
+                    colors: {
+                        brand: {
+                            50: '#f0f7ff',
+                            100: '#e0effe',
+                            500: '#0284c7',
+                            600: '#0369a1',
+                            700: '#075985',
+                            900: '#0c4a6e',
+                        }
+                    }
+                }
+            }
+        }
+    </script>
     <style>
-        body {
-            margin: 0;
-            padding: 0;
-            background-color: #f4f4f4; /* Cor de fundo suave */
-            font-family: Arial, sans-serif;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            height: 100vh;
+        .tab-btn.active {
+            border-bottom-color: #0284c7;
+            color: #0284c7;
+            font-weight: 600;
         }
-
-        .container {
-            background-color: #fff;
-            border-radius: 8px;
-            box-shadow: 0 4px 8px rgba(0,0,0,0.1);
-            padding: 40px;
-            text-align: center;
+        .card-hover {
+            transition: all 0.3s ease;
         }
-
-        .container img {
-            max-width: 100%;
-            height: auto;
-            border-radius: 8px; /* Mantém as bordas arredondadas da imagem */
-            margin-bottom: 20px;
-        }
-
-        .container h1 {
-            color: #333;
-            font-size: 24px;
-            margin-bottom: 30px;
-        }
-
-        .btn-voltar {
-            display: inline-block;
-            background-color: #007bff; /* Azul para o botão */
-            color: #fff;
-            padding: 12px 24px;
-            text-decoration: none;
-            border-radius: 5px;
-            font-weight: bold;
-            transition: background-color 0.3s ease;
-        }
-
-        .btn-voltar:hover {
-            background-color: #0056b3; /* Cor mais escura no hover */
+        .card-hover:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.1), 0 8px 10px -6px rgba(0, 0, 0, 0.1);
         }
     </style>
 </head>
-<body>
-    <div class="container">
-        <img src="imagem1.png" width="320" height="240" alt="O professor em sala de aula">
-        <h1>Aguarde: em breve essa aula estará disponivel.</h1>
-        <a href="index.html" class="btn-voltar">Voltar</a>
+<body class="bg-slate-50 text-slate-800 font-sans antialiased min-h-screen flex flex-col">
+
+    <!-- Header / Navbar -->
+    <header class="bg-slate-900 text-white shadow-lg sticky top-0 z-50">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex items-center justify-between h-16">
+                <div class="flex items-center gap-3">
+                    <div class="bg-brand-500 p-2 rounded-lg text-white">
+                        <i class="fa-solid fa-users-gear text-xl"></i>
+                    </div>
+                    <div>
+                        <h1 class="font-bold text-lg leading-tight">Gestão Organizacional</h1>
+                        <p class="text-xs text-slate-400">Guia Completo de Tipologia dos Conflitos</p>
+                    </div>
+                </div>
+                <div class="hidden md:flex items-center gap-2">
+                    <span class="text-xs bg-slate-800 text-slate-300 px-3 py-1 rounded-full border border-slate-700">
+                        <i class="fa-solid fa-graduation-cap text-brand-500 mr-1"></i> Módulo Educacional
+                    </span>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <!-- Hero Banner -->
+    <section class="bg-gradient-to-r from-slate-900 via-brand-900 to-slate-900 text-white py-12 px-4 sm:px-6">
+        <div class="max-w-5xl mx-auto text-center">
+            <span class="inline-block px-3 py-1 bg-brand-500/20 text-brand-100 rounded-full text-xs font-semibold uppercase tracking-wider mb-4 border border-brand-500/30">
+                Comportamento Organizacional
+            </span>
+            <h2 class="text-3xl sm:text-4xl font-extrabold mb-4 leading-tight">
+                Tipologia dos Conflitos no Ambiente de Trabalho
+            </h2>
+            <p class="text-slate-300 text-base sm:text-lg max-w-3xl mx-auto font-light leading-relaxed">
+                O conflito é um fenômeno natural, inevitável e inerente às interações humanas e organizacionais. Compreender suas dimensões é o primeiro passo para transformá-lo em motor de inovação e desenvolvimento.
+            </p>
+        </div>
+    </section>
+
+    <!-- Navigation Tabs -->
+    <div class="bg-white border-b border-slate-200 sticky top-16 z-40 shadow-sm">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6">
+            <nav class="flex space-x-4 sm:space-x-8 overflow-x-auto no-scrollbar" id="tabNav">
+                <button onclick="switchTab('classificacao')" id="tab-classificacao" class="tab-btn active py-4 px-2 border-b-2 border-transparent font-medium text-sm flex items-center gap-2 whitespace-nowrap text-slate-600 hover:text-brand-600">
+                    <i class="fa-solid fa-sitemap"></i> Classificações
+                </button>
+                <button onclick="switchTab('estagios')" id="tab-estagios" class="tab-btn py-4 px-2 border-b-2 border-transparent font-medium text-sm flex items-center gap-2 whitespace-nowrap text-slate-600 hover:text-brand-600">
+                    <i class="fa-solid fa-timeline"></i> Estágios de Evolução
+                </button>
+                <button onclick="switchTab('gestao')" id="tab-gestao" class="tab-btn py-4 px-2 border-b-2 border-transparent font-medium text-sm flex items-center gap-2 whitespace-nowrap text-slate-600 hover:text-brand-600">
+                    <i class="fa-solid fa-handshake"></i> Gestão de Conflitos
+                </button>
+                <button onclick="switchTab('impactos')" id="tab-impactos" class="tab-btn py-4 px-2 border-b-2 border-transparent font-medium text-sm flex items-center gap-2 whitespace-nowrap text-slate-600 hover:text-brand-600">
+                    <i class="fa-solid fa-triangle-exclamation"></i> Impactos da Ausência de Mediação
+                </button>
+                <button onclick="switchTab('atividade')" id="tab-atividade" class="tab-btn py-4 px-2 border-b-2 border-transparent font-medium text-sm flex items-center gap-2 whitespace-nowrap text-emerald-600 hover:text-emerald-700">
+                    <i class="fa-solid fa-pen-ruler text-emerald-500"></i> Atividade Prática (Sem PC)
+                </button>
+            </nav>
+        </div>
     </div>
+
+    <!-- Main Content Area -->
+    <main class="flex-grow max-w-7xl w-full mx-auto px-4 sm:px-6 lg:px-8 py-8">
+
+        <!-- TAB 1: CLASSIFICAÇÕES -->
+        <section id="content-classificacao" class="space-y-8">
+            <div class="flex flex-col md:flex-row md:items-center justify-between gap-4 bg-white p-4 rounded-xl border border-slate-200 shadow-sm">
+                <div>
+                    <h3 class="text-xl font-bold text-slate-800">Perspectivas e Tipologias</h3>
+                    <p class="text-xs text-slate-500">Filtre as classificações para explorar o conteúdo em detalhes.</p>
+                </div>
+                <!-- Filter Buttons -->
+                <div class="flex flex-wrap gap-2" id="filterContainer">
+                    <button onclick="filterCards('todos')" class="filter-btn active-filter px-3 py-1.5 text-xs font-semibold rounded-lg bg-brand-600 text-white transition">Todos</button>
+                    <button onclick="filterCards('abrangencia')" class="filter-btn px-3 py-1.5 text-xs font-semibold rounded-lg bg-slate-100 text-slate-600 hover:bg-slate-200 transition">Abrangência</button>
+                    <button onclick="filterCards('foco')" class="filter-btn px-3 py-1.5 text-xs font-semibold rounded-lg bg-slate-100 text-slate-600 hover:bg-slate-200 transition">Natureza do Foco</button>
+                    <button onclick="filterCards('funcionalidade')" class="filter-btn px-3 py-1.5 text-xs font-semibold rounded-lg bg-slate-100 text-slate-600 hover:bg-slate-200 transition">Funcionalidade</button>
+                </div>
+            </div>
+
+            <!-- Cards Grid -->
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+
+                <!-- 1. Nível de Abrangência -->
+                <div class="card-item abrangencia bg-white rounded-xl border border-slate-200 shadow-sm overflow-hidden flex flex-col card-hover">
+                    <div class="bg-gradient-to-r from-blue-600 to-indigo-600 p-4 text-white">
+                        <span class="text-xs font-semibold bg-white/20 px-2.5 py-0.5 rounded-full">1. Abrangência</span>
+                        <h4 class="text-lg font-bold mt-1">Nível Individual & Grupal</h4>
+                    </div>
+                    <div class="p-5 flex-grow space-y-4 text-sm">
+                        <div class="border-l-4 border-blue-500 pl-3">
+                            <h5 class="font-bold text-slate-800">Conflito Intrapessoal</h5>
+                            <p class="text-slate-600 text-xs mt-1">Ocorre no plano individual/psicológico: dúvidas internas, dilemas sobre escolhas ou choque entre valores pessoais e exigências do trabalho.</p>
+                        </div>
+                        <div class="border-l-4 border-blue-400 pl-3">
+                            <h5 class="font-bold text-slate-800">Conflito Interpessoal</h5>
+                            <p class="text-slate-600 text-xs mt-1">Entre duas ou mais pessoas por divergências de valores, estilos de trabalho, crenças, choques de personalidade ou percepções contrastantes.</p>
+                        </div>
+                        <div class="border-l-4 border-indigo-400 pl-3">
+                            <h5 class="font-bold text-slate-800">Conflito Intragrupal</h5>
+                            <p class="text-slate-600 text-xs mt-1">No interior de uma mesma equipe: sobreposição de funções, disputas de liderança, competição interna ou desalinhamento de objetivos.</p>
+                        </div>
+                        <div class="border-l-4 border-indigo-500 pl-3">
+                            <h5 class="font-bold text-slate-800">Conflito Intergrupal / Departamental</h5>
+                            <p class="text-slate-600 text-xs mt-1">Entre setores diferentes: disputa por recursos orçamentários escassos, diferenças culturais ou interdependência de atividades.</p>
+                        </div>
+                        <div class="border-l-4 border-indigo-600 pl-3">
+                            <h5 class="font-bold text-slate-800">Conflito Organizacional / Corporativo</h5>
+                            <p class="text-slate-600 text-xs mt-1">Discordância entre colaboradores e as políticas, diretrizes, estruturas formais de poder ou sistemas de trabalho da empresa.</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 2. Natureza do Foco -->
+                <div class="card-item foco bg-white rounded-xl border border-slate-200 shadow-sm overflow-hidden flex flex-col card-hover">
+                    <div class="bg-gradient-to-r from-purple-600 to-pink-600 p-4 text-white">
+                        <span class="text-xs font-semibold bg-white/20 px-2.5 py-0.5 rounded-full">2. Foco</span>
+                        <h4 class="text-lg font-bold mt-1">Natureza do Objeto</h4>
+                    </div>
+                    <div class="p-5 flex-grow space-y-4 text-sm">
+                        <div class="bg-purple-50 p-3 rounded-lg border border-purple-100">
+                            <div class="flex items-center gap-2 text-purple-800 font-bold mb-1">
+                                <i class="fa-solid fa-list-check"></i> Conflitos de Tarefa
+                            </div>
+                            <p class="text-slate-600 text-xs leading-relaxed">Referem-se ao conteúdo e às metas do trabalho, como divergências sobre prioridades, padrões de qualidade ou distribuição de responsabilidades.</p>
+                        </div>
+                        <div class="bg-pink-50 p-3 rounded-lg border border-pink-100">
+                            <div class="flex items-center gap-2 text-pink-800 font-bold mb-1">
+                                <i class="fa-solid fa-diagram-project"></i> Conflitos de Processo
+                            </div>
+                            <p class="text-slate-600 text-xs leading-relaxed">Relacionam-se à maneira prática como as atividades e os fluxos devem ser executados, incluindo quem executa determinada etapa e a alocação de recursos.</p>
+                        </div>
+                        <div class="bg-rose-50 p-3 rounded-lg border border-rose-100">
+                            <div class="flex items-center gap-2 text-rose-800 font-bold mb-1">
+                                <i class="fa-solid fa-heart-crack"></i> Conflitos de Relacionamento
+                            </div>
+                            <p class="text-slate-600 text-xs leading-relaxed">Centralizam-se em atritos pessoais, desavenças, antipatias e descompassos emocionais entre colegas de equipe. <strong class="text-rose-700">Costumam drenar mais energia e prejudicar a produtividade.</strong></p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 3. Funcionalidade -->
+                <div class="card-item funcionalidade bg-white rounded-xl border border-slate-200 shadow-sm overflow-hidden flex flex-col card-hover md:col-span-2 lg:col-span-1">
+                    <div class="bg-gradient-to-r from-emerald-600 to-teal-600 p-4 text-white">
+                        <span class="text-xs font-semibold bg-white/20 px-2.5 py-0.5 rounded-full">3. Funcionalidade</span>
+                        <h4 class="text-lg font-bold mt-1">Impacto no Desempenho</h4>
+                    </div>
+                    <div class="p-5 flex-grow space-y-4 text-sm">
+                        <div class="bg-emerald-50 p-4 rounded-xl border border-emerald-200">
+                            <div class="flex items-center gap-2 text-emerald-800 font-bold text-base mb-1">
+                                <i class="fa-solid fa-lightbulb"></i> Conflitos Funcionais
+                            </div>
+                            <span class="text-xs font-semibold text-emerald-600 block mb-2">(Construtivos ou Produtivos)</span>
+                            <p class="text-slate-600 text-xs leading-relaxed">Desafiam o status quo, instigam a criatividade, estimulam a autoavaliação, geram mudanças positivas e melhoram a tomada de decisões.<br><br><em>Grupos estáticos e excessivamente harmônicos correm o risco de se tornarem apáticos diante da necessidade de inovar.</em></p>
+                        </div>
+
+                        <div class="bg-red-50 p-4 rounded-xl border border-red-200">
+                            <div class="flex items-center gap-2 text-red-800 font-bold text-base mb-1">
+                                <i class="fa-solid fa-burst"></i> Conflitos Disfuncionais
+                            </div>
+                            <span class="text-xs font-semibold text-red-600 block mb-2">(Destrutivos ou Contraprodutivos)</span>
+                            <p class="text-slate-600 text-xs leading-relaxed">Bloqueiam a cooperação, destroem valor, sobrecarregam as partes com hostilidade e frustração e comprometem o clima organizacional e os resultados estratégicos.</p>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </section>
+
+        <!-- TAB 2: ESTÁGIOS DE EVOLUÇÃO -->
+        <section id="content-estagios" class="hidden space-y-8">
+            <div class="bg-white p-6 rounded-xl border border-slate-200 shadow-sm">
+                <h3 class="text-2xl font-bold text-slate-800 mb-2">Estágios de Evolução e Percepção</h3>
+                <p class="text-slate-600 text-sm">Os conflitos não surgem prontos; eles evoluem por níveis graduais de consciência e manifestação interpessoal.</p>
+
+                <!-- Interactive Step Progress -->
+                <div class="mt-8 relative">
+                    <div class="grid grid-cols-1 md:grid-cols-3 gap-6 relative z-10">
+
+                        <!-- Stage 1 -->
+                        <div class="bg-slate-50 p-6 rounded-xl border-2 border-amber-300 relative">
+                            <div class="w-10 h-10 rounded-full bg-amber-500 text-white flex items-center justify-center font-bold text-lg mb-4">1</div>
+                            <h4 class="font-bold text-slate-800 text-lg mb-1">Conflito Percebido</h4>
+                            <span class="text-xs font-bold text-amber-600 uppercase tracking-wide">Fase Latente</span>
+                            <p class="text-slate-600 text-sm mt-3">Quando as partes tomam consciência lógica da existência de objetivos ou interesses incompatíveis. Há a razão diagnóstica, mas o fator emocional ainda está contido.</p>
+                        </div>
+
+                        <!-- Stage 2 -->
+                        <div class="bg-slate-50 p-6 rounded-xl border-2 border-orange-400 relative">
+                            <div class="w-10 h-10 rounded-full bg-orange-500 text-white flex items-center justify-center font-bold text-lg mb-4">2</div>
+                            <h4 class="font-bold text-slate-800 text-lg mb-1">Conflito Experienciado</h4>
+                            <span class="text-xs font-bold text-orange-600 uppercase tracking-wide">Fase Oculta</span>
+                            <p class="text-slate-600 text-sm mt-3">Quando a tensão provoca sentimentos de raiva, ansiedade, medo ou hostilidade. A carga emocional é vivenciada internamente, embora ainda sem manifestação aberta ou confronto direto.</p>
+                        </div>
+
+                        <!-- Stage 3 -->
+                        <div class="bg-slate-50 p-6 rounded-xl border-2 border-red-500 relative">
+                            <div class="w-10 h-10 rounded-full bg-red-600 text-white flex items-center justify-center font-bold text-lg mb-4">3</div>
+                            <h4 class="font-bold text-slate-800 text-lg mb-1">Conflito Manifestado</h4>
+                            <span class="text-xs font-bold text-red-600 uppercase tracking-wide">Fase Aberta</span>
+                            <p class="text-slate-600 text-sm mt-3">Quando as divergências se exteriorizam por meio de atitudes ativas ou passivas, discussões diretas, sabotagem, desrespeito ou comportamentos observáveis.</p>
+                        </div>
+
+                    </div>
+                </div>
+
+                <div class="mt-8 bg-brand-50 border border-brand-200 p-4 rounded-xl flex items-start gap-4">
+                    <i class="fa-solid fa-circle-info text-brand-600 text-xl mt-1"></i>
+                    <div class="text-sm text-slate-700">
+                        <strong>Insight de Gestão:</strong> Quanto mais cedo o conflito for identificado (idealmente no estágio <em>Percebido</em>), mais fácil é aplicar técnicas de mediação e evitar desgastes emocionais profundos da fase <em>Experienciada</em> ou os danos operacionais da fase <em>Manifestada</em>.
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- TAB 3: GESTÃO DE CONFLITOS -->
+        <section id="content-gestao" class="hidden space-y-8">
+            <div class="bg-white p-6 sm:p-8 rounded-xl border border-slate-200 shadow-sm space-y-6">
+                <div>
+                    <h3 class="text-2xl font-bold text-slate-800">Conceito Moderno de Gestão de Conflitos</h3>
+                    <p class="text-slate-600 text-sm mt-1">Superando a visão tradicional de simples eliminação para uma abordagem estratégica e interacionista.</p>
+                </div>
+
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    <div class="bg-slate-50 p-5 rounded-xl border border-slate-200">
+                        <div class="flex items-center gap-3 text-slate-500 mb-3">
+                            <i class="fa-solid fa-ban text-red-500 text-xl"></i>
+                            <h4 class="font-bold text-slate-700">Abordagem Tradicional (Superada)</h4>
+                        </div>
+                        <p class="text-slate-600 text-sm leading-relaxed">
+                            Buscava apenas extinguir ou suprimir o conflito a qualquer custo, enxergando toda e qualquer divergência como algo intrinsecamente prejudicial e destrutivo para a empresa.
+                        </p>
+                    </div>
+
+                    <div class="bg-brand-50 p-5 rounded-xl border border-brand-200">
+                        <div class="flex items-center gap-3 text-brand-700 mb-3">
+                            <i class="fa-solid fa-sliders text-brand-600 text-xl"></i>
+                            <h4 class="font-bold text-slate-800">Abordagem Contemporânea & Interacionista</h4>
+                        </div>
+                        <p class="text-slate-700 text-sm leading-relaxed">
+                            Gerenciar conflitos consiste em manter níveis equilibrados e produtivos de tensão, minimizando as disfunções destrutivas e potencializando o confronto saudável de ideias.
+                        </p>
+                    </div>
+                </div>
+
+                <h4 class="text-lg font-bold text-slate-800 pt-4 border-t border-slate-200">Pilares do Gerenciamento Eficaz</h4>
+
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+                    <div class="p-4 rounded-xl border border-slate-200 bg-white space-y-2">
+                        <div class="w-8 h-8 rounded-lg bg-blue-100 text-blue-600 flex items-center justify-center font-bold">1</div>
+                        <h5 class="font-bold text-slate-800 text-sm">Equilíbrio de Tensão</h5>
+                        <p class="text-xs text-slate-600">Manter a tensão em níveis construtivos que estimulem a inovação sem descambar para a hostilidade interpessoal.</p>
+                    </div>
+
+                    <div class="p-4 rounded-xl border border-slate-200 bg-white space-y-2">
+                        <div class="w-8 h-8 rounded-lg bg-indigo-100 text-indigo-600 flex items-center justify-center font-bold">2</div>
+                        <h5 class="font-bold text-slate-800 text-sm">Competência Diagnóstica</h5>
+                        <p class="text-xs text-slate-600">Identificar as causas antecedentes reais (falhas de comunicação, escassez de recursos ou ambiguidade de papéis).</p>
+                    </div>
+
+                    <div class="p-4 rounded-xl border border-slate-200 bg-white space-y-2">
+                        <div class="w-8 h-8 rounded-lg bg-emerald-100 text-emerald-600 flex items-center justify-center font-bold">3</div>
+                        <h5 class="font-bold text-slate-800 text-sm">Soluções Integrativas</h5>
+                        <p class="text-xs text-slate-600">Focar no modelo <strong>Ganha-Ganha</strong>, superando a competição impositiva ou a evitação para atender aos interesses de todos.</p>
+                    </div>
+                </div>
+
+                <div class="bg-gradient-to-r from-slate-900 to-slate-800 text-white p-6 rounded-xl flex flex-col md:flex-row items-center justify-between gap-4">
+                    <div class="space-y-1">
+                        <h5 class="font-bold text-base text-brand-400">O Papel da Liderança e do RH</h5>
+                        <p class="text-xs text-slate-300">Atuam como facilitadores estratégicos, estruturando canais formais de escuta ativa, promovendo diálogos transparentes e aplicando a Comunicação Não Violenta (CNV).</p>
+                    </div>
+                    <span class="px-4 py-2 bg-brand-600 text-white text-xs font-bold rounded-lg whitespace-nowrap">Facilitadores de Diálogo</span>
+                </div>
+            </div>
+        </section>
+
+        <!-- TAB 4: IMPACTOS DA AUSÊNCIA DE MEDIAÇÃO -->
+        <section id="content-impactos" class="hidden space-y-8">
+            <div class="bg-white p-6 sm:p-8 rounded-xl border border-slate-200 shadow-sm space-y-6">
+                <div>
+                    <h3 class="text-2xl font-bold text-slate-800">Impactos da Ausência de Mediação</h3>
+                    <p class="text-slate-600 text-sm mt-1">Quando as tensões não contam com intervenção precoce, os conflitos escalam silenciosamente com prejuízos em três dimensões.</p>
+                </div>
+
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+
+                    <!-- Metric Card 1 -->
+                    <div class="bg-red-50 border border-red-200 rounded-xl p-6 flex flex-col justify-between">
+                        <div>
+                            <div class="flex items-center justify-between mb-4">
+                                <span class="p-2 bg-red-100 text-red-600 rounded-lg"><i class="fa-solid fa-chart-line-down text-xl"></i></span>
+                                <span class="text-xs font-bold text-red-600 bg-red-200/60 px-2 py-0.5 rounded">Dimensão 1</span>
+                            </div>
+                            <h4 class="font-bold text-slate-800 text-lg mb-2">Perdas Financeiras e Operacionais</h4>
+                            <ul class="text-xs text-slate-600 space-y-3 mt-4">
+                                <li class="flex items-start gap-2">
+                                    <i class="fa-solid fa-caret-right text-red-500 mt-0.5"></i>
+                                    <span><strong>Queda de Produtividade:</strong> Até 25% de perda de eficiência operacional pelo desvio de foco e energia.</span>
+                                </li>
+                                <li class="flex items-start gap-2">
+                                    <i class="fa-solid fa-caret-right text-red-500 mt-0.5"></i>
+                                    <span><strong>Aumento de Absenteísmo:</strong> Crescimento médio de 15% em faltas e licenças por desgaste.</span>
+                                </li>
+                                <li class="flex items-start gap-2">
+                                    <i class="fa-solid fa-caret-right text-red-500 mt-0.5"></i>
+                                    <span><strong>Elevação do Turnover:</strong> Custo de substituição de talentos pode atingir até 150% do salário anual.</span>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+
+                    <!-- Metric Card 2 -->
+                    <div class="bg-amber-50 border border-amber-200 rounded-xl p-6 flex flex-col justify-between">
+                        <div>
+                            <div class="flex items-center justify-between mb-4">
+                                <span class="p-2 bg-amber-100 text-amber-600 rounded-lg"><i class="fa-solid fa-brain text-xl"></i></span>
+                                <span class="text-xs font-bold text-amber-700 bg-amber-200/60 px-2 py-0.5 rounded">Dimensão 2</span>
+                            </div>
+                            <h4 class="font-bold text-slate-800 text-lg mb-2">Danos à Saúde Mental e Clima</h4>
+                            <ul class="text-xs text-slate-600 space-y-3 mt-4">
+                                <li class="flex items-start gap-2">
+                                    <i class="fa-solid fa-caret-right text-amber-600 mt-0.5"></i>
+                                    <span><strong>Adoecimento Emocional:</strong> Estresse crônico, ansiedade, exaustão emocional e Burnout por falta de escuta.</span>
+                                </li>
+                                <li class="flex items-start gap-2">
+                                    <i class="fa-solid fa-caret-right text-amber-600 mt-0.5"></i>
+                                    <span><strong>Contágio de Ambiente:</strong> A desconfiança mútua e o clima hostil propagam-se para outras equipes, travando a cooperação.</span>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+
+                    <!-- Metric Card 3 -->
+                    <div class="bg-slate-100 border border-slate-300 rounded-xl p-6 flex flex-col justify-between">
+                        <div>
+                            <div class="flex items-center justify-between mb-4">
+                                <span class="p-2 bg-slate-200 text-slate-700 rounded-lg"><i class="fa-solid fa-gavel text-xl"></i></span>
+                                <span class="text-xs font-bold text-slate-600 bg-slate-300 px-2 py-0.5 rounded">Dimensão 3</span>
+                            </div>
+                            <h4 class="font-bold text-slate-800 text-lg mb-2">Escalada, Litígios e Reputação</h4>
+                            <ul class="text-xs text-slate-600 space-y-3 mt-4">
+                                <li class="flex items-start gap-2">
+                                    <i class="fa-solid fa-caret-right text-slate-500 mt-0.5"></i>
+                                    <span><strong>Judicialização:</strong> Desentendimentos escalam para denúncias de assédio, rescisão indireta e processos de alto custo.</span>
+                                </li>
+                                <li class="flex items-start gap-2">
+                                    <i class="fa-solid fa-caret-right text-slate-500 mt-0.5"></i>
+                                    <span><strong>Danos à Marca Empregadora:</strong> Prejuízo grave à reputação corporativa e perda de atratividade no mercado.</span>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        </section>
+
+        <!-- TAB 5: ATIVIDADE PRÁTICA (PRESENCIAL / SEM COMPUTADOR) -->
+        <section id="content-atividade" class="hidden space-y-8">
+            <div class="bg-white p-6 sm:p-8 rounded-xl border-2 border-emerald-500 shadow-md space-y-6">
+                
+                <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4 border-b border-slate-200 pb-6">
+                    <div>
+                        <span class="bg-emerald-100 text-emerald-800 text-xs font-bold px-3 py-1 rounded-full uppercase tracking-wider">Dinâmica Presencial / Sem Computador</span>
+                        <h3 class="text-2xl font-bold text-slate-900 mt-2">Atividade: "O Comitê de Mediação Ganha-Ganha"</h3>
+                        <p class="text-slate-600 text-sm mt-1">Exercício prático de simulação (Role-Playing) para fixação de diagnóstico e mediação de conflitos.</p>
+                    </div>
+                    <button onclick="window.print()" class="self-start sm:self-center px-4 py-2 bg-slate-800 text-white rounded-lg text-xs font-semibold hover:bg-slate-700 transition flex items-center gap-2">
+                        <i class="fa-solid fa-print"></i> Imprimir Roteiro
+                    </button>
+                </div>
+
+                <!-- Activity Details -->
+                <div class="grid grid-cols-2 md:grid-cols-4 gap-4 bg-slate-50 p-4 rounded-xl text-center border border-slate-200">
+                    <div class="p-2">
+                        <span class="block text-xs text-slate-500 font-medium">Duração</span>
+                        <span class="text-base font-bold text-slate-800">50 a 60 min</span>
+                    </div>
+                    <div class="p-2 border-l border-slate-200">
+                        <span class="block text-xs text-slate-500 font-medium">Formato</span>
+                        <span class="text-base font-bold text-slate-800">Grupos de 4 a 5</span>
+                    </div>
+                    <div class="p-2 border-l border-slate-200">
+                        <span class="block text-xs text-slate-500 font-medium">Material Necessário</span>
+                        <span class="text-base font-bold text-slate-800">Papel e Caneta</span>
+                    </div>
+                    <div class="p-2 border-l border-slate-200">
+                        <span class="block text-xs text-slate-500 font-medium">Foco</span>
+                        <span class="text-base font-bold text-emerald-600">Diagnóstico + CNV</span>
+                    </div>
+                </div>
+
+                <!-- Step by Step -->
+                <div class="space-y-6">
+                    <h4 class="text-lg font-bold text-slate-800 flex items-center gap-2">
+                        <i class="fa-solid fa-list-ol text-emerald-600"></i> Passo a Passo da Dinâmica
+                    </h4>
+
+                    <!-- Step 1 -->
+                    <div class="flex gap-4">
+                        <div class="flex-shrink-0 w-8 h-8 rounded-full bg-emerald-600 text-white font-bold flex items-center justify-center text-sm">1</div>
+                        <div>
+                            <h5 class="font-bold text-slate-800 text-sm">Divisão de Papéis no Grupo (5 min)</h5>
+                            <p class="text-slate-600 text-xs mt-1">Cada grupo de 4 ou 5 alunos distribuirá os seguintes papéis:</p>
+                            <ul class="text-xs text-slate-600 list-disc list-inside mt-2 space-y-1">
+                                <li><strong>Participante A (Líder do Setor de Vendas):</strong> Exige prazos curtíssimos para atender clientes VIPs.</li>
+                                <li><strong>Participante B (Líder do Setor de Operações/TI):</strong> Reclama de sobrecarga e falta de alocação de recursos.</li>
+                                <li><strong>Mediador(a) 1 (RH / Liderança Facilitadora):</strong> Conduz o diálogo usando Comunicação Não Violenta (CNV).</li>
+                                <li><strong>Observador(es) Analista(s):</strong> Registrará o diagnóstico das tipologias e o comportamento das partes.</li>
+                            </ul>
+                        </div>
+                    </div>
+
+                    <!-- Step 2 -->
+                    <div class="flex gap-4">
+                        <div class="flex-shrink-0 w-8 h-8 rounded-full bg-emerald-600 text-white font-bold flex items-center justify-center text-sm">2</div>
+                        <div>
+                            <h5 class="font-bold text-slate-800 text-sm">Estudo do Cenário Imprevisto (10 min)</h5>
+                            <p class="text-slate-600 text-xs mt-1">
+                                <em>Cenário:</em> O setor de Vendas prometeu a entrega de um projeto em 15 dias sem consultar Operações, que pede no mínimo 30 dias. Vendas acusa Operações de "lentidão" (Relacionamento), enquanto Operações acusa Vendas de "irresponsabilidade com fluxos" (Processo/Tarefa). O clima está extremamente tenso (Estágio Manifestado).
+                            </p>
+                        </div>
+                    </div>
+
+                    <!-- Step 3 -->
+                    <div class="flex gap-4">
+                        <div class="flex-shrink-0 w-8 h-8 rounded-full bg-emerald-600 text-white font-bold flex items-center justify-center text-sm">3</div>
+                        <div>
+                            <h5 class="font-bold text-slate-800 text-sm">Simulação da Reunião de Mediação (15 min)</h5>
+                            <p class="text-slate-600 text-xs mt-1">
+                                Os papéis interpretam a reunião. O Mediador deve:
+                            </p>
+                            <ul class="text-xs text-slate-600 list-disc list-inside mt-2 space-y-1">
+                                <li>Separar o conflito de <em>Relacionamento</em> dos conflitos de <em>Processo e Tarefa</em>.</li>
+                                <li>Praticar a escuta ativa e fazer perguntas abertas.</li>
+                                <li>Conduzir a conversa para uma solução <strong>Integrativa (Ganha-Ganha)</strong>.</li>
+                            </ul>
+                        </div>
+                    </div>
+
+                    <!-- Step 4 -->
+                    <div class="flex gap-4">
+                        <div class="flex-shrink-0 w-8 h-8 rounded-full bg-emerald-600 text-white font-bold flex items-center justify-center text-sm">4</div>
+                        <div>
+                            <h5 class="font-bold text-slate-800 text-sm">Elaboração da Matriz de Diagnóstico em Papel (10 min)</h5>
+                            <p class="text-slate-600 text-xs mt-1">
+                                Em uma folha de papel, o grupo deve preencher o seguinte formulário sintético:
+                            </p>
+                            <div class="mt-3 bg-slate-50 border border-slate-300 rounded-lg p-3 text-xs space-y-2">
+                                <div class="grid grid-cols-2 gap-2 border-b border-slate-200 pb-2 font-semibold text-slate-700">
+                                    <span>Item de Análise</span>
+                                    <span>Identificação do Grupo</span>
+                                </div>
+                                <div class="grid grid-cols-2 gap-2 border-b border-slate-150 pb-1">
+                                    <span>1. Nível de Abrangência:</span>
+                                    <span class="text-slate-500">[ ] Interpessoal [ ] Intergrupal</span>
+                                </div>
+                                <div class="grid grid-cols-2 gap-2 border-b border-slate-150 pb-1">
+                                    <span>2. Foco Principal:</span>
+                                    <span class="text-slate-500">[ ] Tarefa [ ] Processo [ ] Relacionamento</span>
+                                </div>
+                                <div class="grid grid-cols-2 gap-2 border-b border-slate-150 pb-1">
+                                    <span>3. Estágio Atual:</span>
+                                    <span class="text-slate-500">[ ] Percebido [ ] Experienciado [ ] Manifestado</span>
+                                </div>
+                                <div class="grid grid-cols-2 gap-2">
+                                    <span>4. Solução Proposta:</span>
+                                    <span class="text-slate-500">(Descrever a proposta Ganha-Ganha)</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Step 5 -->
+                    <div class="flex gap-4">
+                        <div class="flex-shrink-0 w-8 h-8 rounded-full bg-emerald-600 text-white font-bold flex items-center justify-center text-sm">5</div>
+                        <div>
+                            <h5 class="font-bold text-slate-800 text-sm">Debriefing Coletivo / Apresentação (15 min)</h5>
+                            <p class="text-slate-600 text-xs mt-1">
+                                Cada grupo compartilha brevemente em 2 minutos qual foi o acordo Ganha-Ganha alcançado e como conseguiram desarmar os gatilhos emocionais da equipe.
+                            </p>
+                        </div>
+                    </div>
+
+                </div>
+
+                <!-- Pedagogical Objectives -->
+                <div class="bg-emerald-50 border border-emerald-200 p-4 rounded-xl text-xs text-emerald-900 flex items-start gap-3">
+                    <i class="fa-solid fa-circle-check text-emerald-600 text-lg mt-0.5"></i>
+                    <div>
+                        <strong>Competências Desenvolvidas:</strong>
+                        Capacidade de diagnóstico sob pressão, escuta empática, diferenciação de focos de conflito e habilidade de negociação baseada em interesses reais e não em posições rígidas.
+                    </div>
+                </div>
+
+            </div>
+        </section>
+
+    </main>
+
+    <!-- Footer -->
+    <footer class="bg-slate-900 text-slate-400 py-6 border-t border-slate-800 mt-auto text-xs text-center">
+        <div class="max-w-7xl mx-auto px-4">
+            <p>Material de Apoio Didático — Tipologia dos Conflitos no Ambiente de Trabalho</p>
+        </div>
+    </footer>
+
+    <!-- Interactive JS Script -->
+    <script>
+        function switchTab(tabId) {
+            // Hide all tab contents
+            const contents = ['classificacao', 'estagios', 'gestao', 'impactos', 'atividade'];
+            contents.forEach(id => {
+                const el = document.getElementById('content-' + id);
+                if (el) el.classList.add('hidden');
+                
+                const btn = document.getElementById('tab-' + id);
+                if (btn) btn.classList.remove('active');
+            });
+
+            // Show selected content and activate tab button
+            const selectedContent = document.getElementById('content-' + tabId);
+            if (selectedContent) selectedContent.classList.remove('hidden');
+
+            const selectedTab = document.getElementById('tab-' + tabId);
+            if (selectedTab) selectedTab.classList.add('active');
+        }
+
+        function filterCards(category) {
+            const cards = document.querySelectorAll('.card-item');
+            cards.forEach(card => {
+                if (category === 'todos') {
+                    card.classList.remove('hidden');
+                } else {
+                    if (card.classList.contains(category)) {
+                        card.classList.remove('hidden');
+                    } else {
+                        card.classList.add('hidden');
+                    }
+                }
+            });
+
+            // Update button styles
+            const buttons = document.querySelectorAll('.filter-btn');
+            buttons.forEach(btn => {
+                btn.classList.remove('bg-brand-600', 'text-white');
+                btn.classList.add('bg-slate-100', 'text-slate-600');
+            });
+
+            event.target.classList.remove('bg-slate-100', 'text-slate-600');
+            event.target.classList.add('bg-brand-600', 'text-white');
+        }
+    </script>
 </body>
 </html>

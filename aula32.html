@@ -3,61 +3,1113 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Aguarde - Aula em Breve</title>
-    <style>
-        body {
-            margin: 0;
-            padding: 0;
-            background-color: #f4f4f4; /* Cor de fundo suave */
-            font-family: Arial, sans-serif;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            height: 100vh;
+    <title>Simulador Jurídico: Poder Disciplinar do Empregador</title>
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Font Awesome para Ícones -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Google Fonts: Inter e Merriweather -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Merriweather:ital,wght@0,400;0,700;1,400&display=swap" rel="stylesheet">
+    
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: {
+                        sans: ['Inter', 'sans-serif'],
+                        serif: ['Merriweather', 'serif'],
+                    },
+                    colors: {
+                        juridico: {
+                            50: '#f0f4f8',
+                            100: '#d9e2ec',
+                            200: '#bcccdc',
+                            300: '#9fb3c8',
+                            400: '#829ab1',
+                            500: '#627d98',
+                            600: '#486581',
+                            700: '#334e68',
+                            800: '#243b53',
+                            900: '#102a43',
+                            950: '#0a1c2e',
+                        },
+                        dourado: {
+                            400: '#f5b041',
+                            500: '#d68910',
+                            600: '#b9770e',
+                        }
+                    }
+                }
+            }
         }
-
-        .container {
-            background-color: #fff;
-            border-radius: 8px;
-            box-shadow: 0 4px 8px rgba(0,0,0,0.1);
-            padding: 40px;
-            text-align: center;
-        }
-
-        .container img {
-            max-width: 100%;
-            height: auto;
-            border-radius: 8px; /* Mantém as bordas arredondadas da imagem */
-            margin-bottom: 20px;
-        }
-
-        .container h1 {
-            color: #333;
-            font-size: 24px;
-            margin-bottom: 30px;
-        }
-
-        .btn-voltar {
-            display: inline-block;
-            background-color: #007bff; /* Azul para o botão */
-            color: #fff;
-            padding: 12px 24px;
-            text-decoration: none;
-            border-radius: 5px;
-            font-weight: bold;
-            transition: background-color 0.3s ease;
-        }
-
-        .btn-voltar:hover {
-            background-color: #0056b3; /* Cor mais escura no hover */
-        }
-    </style>
+    </script>
 </head>
-<body>
-    <div class="container">
-        <img src="imagem1.png" width="320" height="240" alt="O professor em sala de aula">
-        <h1>Aguarde: em breve essa aula estará disponivel.</h1>
-        <a href="index.html" class="btn-voltar">Voltar</a>
-    </div>
+<body class="bg-slate-100 text-slate-800 font-sans antialiased min-h-screen flex flex-col">
+
+    <!-- Cabeçalho Institucional -->
+    <header class="bg-juridico-950 text-white shadow-lg border-b border-juridico-800 sticky top-0 z-30">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-3.5">
+            <div class="flex flex-col lg:flex-row lg:items-center lg:justify-between gap-3">
+                <!-- Título e Identidade -->
+                <div class="flex items-center gap-3">
+                    <div class="w-11 h-11 rounded-xl bg-gradient-to-br from-dourado-400 to-dourado-600 flex items-center justify-center text-juridico-950 shadow-md flex-shrink-0">
+                        <i class="fa-solid fa-scale-balanced text-xl"></i>
+                    </div>
+                    <div>
+                        <div class="flex flex-wrap items-center gap-1.5 text-xs">
+                            <span class="font-semibold uppercase tracking-wider text-dourado-400">EEB Colombo Machado Salles • 2ª Série 1</span>
+                            <span class="text-juridico-600 hidden sm:inline">•</span>
+                            <span class="text-juridico-300 hidden sm:inline">Direito do Trabalho</span>
+                        </div>
+                        <h1 class="text-base sm:text-xl font-bold tracking-tight text-white">Poder Disciplinar do Empregador</h1>
+                    </div>
+                </div>
+
+                <div class="flex flex-wrap items-center justify-between lg:justify-end gap-3">
+                    <!-- Badge do Aluno (Exibido após identificação) -->
+                    <div id="student-header-badge" class="hidden items-center gap-2.5 bg-juridico-900 border border-juridico-700 px-3 py-1.5 rounded-xl text-xs">
+                        <div class="w-7 h-7 rounded-lg bg-dourado-500/20 text-dourado-400 flex items-center justify-center flex-shrink-0">
+                            <i class="fa-solid fa-user-graduate"></i>
+                        </div>
+                        <div class="leading-tight">
+                            <span id="header-student-name" class="font-bold text-white block truncate max-w-[180px] sm:max-w-[240px]">Aluno(a)</span>
+                            <span id="header-student-info" class="text-juridico-300 text-[11px]">2ª Série 1</span>
+                        </div>
+                    </div>
+
+                    <!-- Navegação por Abas -->
+                    <nav class="flex bg-juridico-900 p-1 rounded-xl border border-juridico-800">
+                        <button onclick="switchTab('simulador')" id="tab-btn-simulador" class="px-3.5 py-2 rounded-lg text-xs sm:text-sm font-medium transition-all flex items-center gap-2 bg-juridico-700 text-white shadow-sm">
+                            <i class="fa-solid fa-gavel"></i>
+                            <span>Casos Práticos</span>
+                        </button>
+                        <button onclick="switchTab('doutrina')" id="tab-btn-doutrina" class="px-3.5 py-2 rounded-lg text-xs sm:text-sm font-medium transition-all flex items-center gap-2 text-juridico-300 hover:text-white">
+                            <i class="fa-solid fa-book-open"></i>
+                            <span>Fundamentação</span>
+                        </button>
+                    </nav>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <!-- Conteúdo Principal -->
+    <main class="flex-grow max-w-7xl w-full mx-auto px-4 sm:px-6 lg:px-8 py-6 sm:py-8">
+
+        <!-- ========================================================= -->
+        <!-- TELA 0: IDENTIFICAÇÃO OBRIGATÓRIA DO ALUNO                -->
+        <!-- ========================================================= -->
+        <section id="view-identificacao" class="max-w-xl mx-auto my-2 sm:my-6">
+            <div class="bg-white rounded-2xl shadow-md border border-slate-200 overflow-hidden">
+                <div class="bg-juridico-900 p-6 text-white border-b border-juridico-800">
+                    <span class="inline-block px-2.5 py-1 rounded-lg bg-dourado-500/20 text-dourado-400 border border-dourado-500/30 text-xs font-bold uppercase tracking-wider mb-2">
+                        Identificação Escolar
+                    </span>
+                    <h2 class="text-xl font-bold font-serif">EEB Colombo Machado Salles</h2>
+                    <p class="text-sm text-juridico-200 mt-1">Turma: <strong>2ª Série 1</strong> • Atividade Prática: Poder Disciplinar do Empregador</p>
+                </div>
+
+                <form id="student-form" onsubmit="startSimulation(event)" class="p-6 space-y-5">
+                    <div id="form-error-msg" class="hidden bg-rose-50 border border-rose-200 text-rose-700 text-xs font-medium p-3 rounded-xl flex items-center gap-2">
+                        <i class="fa-solid fa-circle-exclamation"></i>
+                        <span>Por favor, digite seu nome completo (mínimo 3 letras) para iniciar.</span>
+                    </div>
+
+                    <div>
+                        <label for="student-name" class="block text-xs font-bold uppercase tracking-wider text-slate-700 mb-1.5">
+                            Nome Completo do(a) Aluno(a) *
+                        </label>
+                        <input type="text" id="student-name" required placeholder="Digite seu nome completo..."
+                            class="w-full px-4 py-3 rounded-xl border border-slate-300 text-slate-800 text-sm focus:ring-2 focus:ring-juridico-700 focus:border-juridico-700 outline-none transition-all">
+                    </div>
+
+                    <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                        <div>
+                            <label for="student-class" class="block text-xs font-bold uppercase tracking-wider text-slate-700 mb-1.5">
+                                Turma / Escola
+                            </label>
+                            <input type="text" id="student-class" value="2ª Série 1 - EEB Colombo Machado Salles" readonly
+                                class="w-full px-4 py-3 rounded-xl border border-slate-200 bg-slate-100 text-slate-600 text-xs font-semibold cursor-not-allowed">
+                        </div>
+
+                        <div>
+                            <label for="student-number" class="block text-xs font-bold uppercase tracking-wider text-slate-700 mb-1.5">
+                                Nº da Chamada / Matrícula
+                            </label>
+                            <input type="text" id="student-number" placeholder="Ex.: Nº 14 (Opcional)"
+                                class="w-full px-4 py-3 rounded-xl border border-slate-300 text-slate-800 text-sm focus:ring-2 focus:ring-juridico-700 focus:border-juridico-700 outline-none transition-all">
+                        </div>
+                    </div>
+
+                    <div class="bg-slate-50 p-4 rounded-xl border border-slate-200 text-xs text-slate-600 leading-relaxed flex items-start gap-2.5">
+                        <i class="fa-solid fa-file-lines text-juridico-700 mt-0.5 text-sm"></i>
+                        <span>Ao concluir os casos práticos, o sistema gerará automaticamente um <strong>Relatório de Texto Formatado</strong> contendo sua identificação, suas respostas e as fundamentações jurídicas.</span>
+                    </div>
+
+                    <button type="submit" class="w-full py-3.5 px-5 rounded-xl bg-juridico-800 hover:bg-juridico-900 text-white font-semibold text-sm transition-all shadow-md flex items-center justify-center gap-2">
+                        <span>Iniciar Simulador de Casos</span>
+                        <i class="fa-solid fa-arrow-right"></i>
+                    </button>
+                </form>
+            </div>
+        </section>
+
+        <!-- ========================================================= -->
+        <!-- TELA 1: SIMULADOR DE RESOLUÇÃO DE PROBLEMAS               -->
+        <!-- ========================================================= -->
+        <section id="view-simulador" class="hidden space-y-6">
+            
+            <!-- Barra de Progresso e Filtros -->
+            <div class="bg-white rounded-2xl shadow-sm border border-slate-200 p-4 sm:p-5">
+                <div class="flex flex-col md:flex-row md:items-center justify-between gap-4">
+                    <!-- Filtro por Eixo Temático -->
+                    <div class="flex flex-wrap items-center gap-2">
+                        <span class="text-xs font-semibold uppercase tracking-wider text-slate-400 mr-1">Eixo Temático:</span>
+                        <button onclick="filterCases('todos')" data-filter="todos" class="filter-btn active px-3 py-1.5 rounded-lg text-xs font-medium bg-juridico-800 text-white transition-colors">Todos (8)</button>
+                        <button onclick="filterCases('limites')" data-filter="limites" class="filter-btn px-3 py-1.5 rounded-lg text-xs font-medium bg-slate-100 text-slate-600 hover:bg-slate-200 transition-colors">Limites Constitucionais</button>
+                        <button onclick="filterCases('requisitos')" data-filter="requisitos" class="filter-btn px-3 py-1.5 rounded-lg text-xs font-medium bg-slate-100 text-slate-600 hover:bg-slate-200 transition-colors">Requisitos das Penas</button>
+                        <button onclick="filterCases('fiscalizacao')" data-filter="fiscalizacao" class="filter-btn px-3 py-1.5 rounded-lg text-xs font-medium bg-slate-100 text-slate-600 hover:bg-slate-200 transition-colors">Fiscalização e Controle</button>
+                    </div>
+
+                    <!-- Estatísticas e Botão de Relatório -->
+                    <div class="flex flex-wrap items-center gap-3 text-sm">
+                        <div class="flex items-center gap-2 bg-slate-50 px-3 py-1.5 rounded-xl border border-slate-200">
+                            <span class="text-slate-500 text-xs">Progresso:</span>
+                            <span id="stat-progress" class="font-bold text-juridico-800">0/8</span>
+                        </div>
+                        <div class="flex items-center gap-2 bg-emerald-50 px-3 py-1.5 rounded-xl border border-emerald-200">
+                            <span class="text-emerald-700 text-xs">Acertos:</span>
+                            <span id="stat-score" class="font-bold text-emerald-700">0</span>
+                        </div>
+                        <button onclick="showSummary()" class="px-3 py-1.5 rounded-xl bg-dourado-500 hover:bg-dourado-600 text-white text-xs font-semibold transition-colors flex items-center gap-1.5 shadow-sm" title="Visualizar Relatório em Texto">
+                            <i class="fa-solid fa-file-lines"></i>
+                            <span>Gerar Relatório</span>
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Card Principal do Caso Prático -->
+            <div id="case-container" class="grid grid-cols-1 lg:grid-cols-12 gap-6 items-start">
+                
+                <!-- Coluna Esquerda: Enunciado do Caso Concreto -->
+                <div class="lg:col-span-6 bg-white rounded-2xl shadow-sm border border-slate-200 overflow-hidden">
+                    <div class="bg-juridico-900 px-6 py-4 flex items-center justify-between border-b border-juridico-800">
+                        <div class="flex items-center gap-2.5">
+                            <span id="case-badge-number" class="px-2.5 py-1 rounded-md bg-dourado-500 text-juridico-950 font-bold text-xs">CASO #01</span>
+                            <span id="case-badge-topic" class="px-2.5 py-1 rounded-md bg-juridico-800 text-juridico-200 text-xs font-medium border border-juridico-700">Requisitos das Penas</span>
+                        </div>
+                        <span id="case-difficulty" class="text-xs font-medium text-juridico-300 flex items-center gap-1">
+                            <i class="fa-solid fa-layer-group text-dourado-400"></i> Nível: Intermediário
+                        </span>
+                    </div>
+
+                    <div class="p-6 space-y-5">
+                        <div>
+                            <h2 id="case-title" class="text-xl font-bold text-slate-900 font-serif leading-snug">Título do Caso</h2>
+                        </div>
+
+                        <!-- Narrativa Fática -->
+                        <div class="bg-slate-50 rounded-xl p-5 border-l-4 border-juridico-700 space-y-3">
+                            <div class="flex items-center gap-2 text-xs font-bold uppercase tracking-wider text-juridico-700">
+                                <i class="fa-solid fa-file-lines"></i>
+                                <span>Situação Fática (Autos do Processo)</span>
+                            </div>
+                            <p id="case-scenario" class="text-slate-700 text-sm sm:text-base leading-relaxed font-serif"></p>
+                        </div>
+
+                        <!-- Pergunta / Problema Jurídico -->
+                        <div class="pt-1">
+                            <h3 class="text-xs font-bold uppercase tracking-wider text-slate-400 mb-1.5">Problema Jurídico a Resolver:</h3>
+                            <p id="case-question" class="text-slate-900 font-semibold text-base leading-snug"></p>
+                        </div>
+
+                        <!-- Dica Doutrinária -->
+                        <div class="border-t border-slate-100 pt-4">
+                            <button onclick="toggleHint()" class="text-xs font-medium text-juridico-600 hover:text-juridico-800 flex items-center gap-1.5 transition-colors">
+                                <i class="fa-regular fa-lightbulb text-dourado-500"></i>
+                                <span id="hint-toggle-text">Consultar nota doutrinária orientativa</span>
+                            </button>
+                            <div id="case-hint-box" class="hidden mt-3 p-3.5 rounded-xl bg-amber-50/80 border border-amber-200 text-xs text-amber-900 leading-relaxed">
+                                <strong class="font-semibold block mb-1">Nota Orientativa:</strong>
+                                <span id="case-hint-text"></span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Coluna Direita: Alternativas e Parecer Fundamentado -->
+                <div class="lg:col-span-6 space-y-5">
+                    <div class="bg-white rounded-2xl shadow-sm border border-slate-200 p-6">
+                        <h3 class="text-sm font-bold uppercase tracking-wider text-slate-500 mb-4 flex items-center gap-2">
+                            <i class="fa-solid fa-list-check text-juridico-700"></i>
+                            <span>Selecione a Solução Jurídica Adequada</span>
+                        </h3>
+
+                        <!-- Lista de Alternativas -->
+                        <div id="options-list" class="space-y-3"></div>
+
+                        <!-- Botão de Submissão -->
+                        <div class="mt-6 flex items-center justify-between gap-3">
+                            <button onclick="prevCase()" id="btn-prev" class="px-4 py-2.5 rounded-xl border border-slate-300 text-slate-600 text-sm font-medium hover:bg-slate-50 disabled:opacity-40 disabled:cursor-not-allowed transition-all flex items-center gap-2">
+                                <i class="fa-solid fa-arrow-left"></i>
+                                <span>Anterior</span>
+                            </button>
+
+                            <button onclick="submitAnswer()" id="btn-submit" disabled class="flex-grow sm:flex-grow-0 px-6 py-2.5 rounded-xl bg-juridico-800 text-white text-sm font-semibold hover:bg-juridico-900 disabled:bg-slate-300 disabled:cursor-not-allowed transition-all shadow-sm flex items-center justify-center gap-2">
+                                <i class="fa-solid fa-check-double"></i>
+                                <span>Proferir Decisão</span>
+                            </button>
+
+                            <button onclick="nextCase()" id="btn-next" class="px-4 py-2.5 rounded-xl border border-slate-300 text-slate-600 text-sm font-medium hover:bg-slate-50 transition-all flex items-center gap-2">
+                                <span>Próximo</span>
+                                <i class="fa-solid fa-arrow-right"></i>
+                            </button>
+                        </div>
+                    </div>
+
+                    <!-- Painel de Feedback Jurídico -->
+                    <div id="feedback-panel" class="hidden rounded-2xl shadow-md border overflow-hidden">
+                        <div id="feedback-header" class="px-6 py-4 flex items-center gap-3">
+                            <div id="feedback-icon" class="w-8 h-8 rounded-full flex items-center justify-center text-white font-bold flex-shrink-0"></div>
+                            <div>
+                                <h4 id="feedback-title" class="font-bold text-base"></h4>
+                                <p id="feedback-subtitle" class="text-xs opacity-90"></p>
+                            </div>
+                        </div>
+                        <div class="p-6 bg-white space-y-4">
+                            <div>
+                                <span class="text-xs font-bold uppercase tracking-wider text-slate-400 block mb-1">Fundamentação Doutrinária e Legal</span>
+                                <p id="feedback-explanation" class="text-sm text-slate-700 leading-relaxed"></p>
+                            </div>
+                            <div class="bg-slate-50 p-3.5 rounded-xl border border-slate-200 flex items-start gap-2.5">
+                                <i class="fa-solid fa-landmark text-juridico-700 mt-0.5"></i>
+                                <div class="text-xs text-slate-600">
+                                    <strong class="text-slate-800 block mb-0.5">Base Normativa e Jurisprudencial:</strong>
+                                    <span id="feedback-legal-basis"></span>
+                                </div>
+                            </div>
+                            <div class="pt-2 flex justify-end">
+                                <button onclick="nextCase()" class="px-5 py-2.5 rounded-xl bg-juridico-800 text-white text-xs font-semibold hover:bg-juridico-900 transition-colors flex items-center gap-2">
+                                    <span id="next-action-label">Avançar para o Próximo Caso</span>
+                                    <i class="fa-solid fa-chevron-right"></i>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Tela de Conclusão com Relatório de Texto -->
+            <div id="summary-modal" class="hidden bg-white rounded-2xl shadow-lg border border-slate-200 p-6 sm:p-8 max-w-4xl mx-auto space-y-6">
+                <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4 border-b border-slate-200 pb-5">
+                    <div class="flex items-center gap-4">
+                        <div class="w-14 h-14 bg-dourado-500/20 text-dourado-600 rounded-2xl flex items-center justify-center text-2xl border border-dourado-500/30 flex-shrink-0">
+                            <i class="fa-solid fa-file-contract"></i>
+                        </div>
+                        <div>
+                            <span class="text-xs font-bold uppercase tracking-wider text-juridico-700">EEB Colombo Machado Salles • 2ª Série 1</span>
+                            <h2 class="text-xl sm:text-2xl font-bold text-slate-900 font-serif">Relatório Final de Desempenho</h2>
+                            <p id="summary-student-subtitle" class="text-slate-600 text-xs sm:text-sm">Aluno(a): -</p>
+                        </div>
+                    </div>
+
+                    <div class="grid grid-cols-3 gap-3 bg-slate-50 px-4 py-3 rounded-xl border border-slate-200 text-center">
+                        <div>
+                            <span class="text-[11px] text-slate-500 block">Respondidos</span>
+                            <span id="final-total" class="text-base font-bold text-slate-900">0/8</span>
+                        </div>
+                        <div>
+                            <span class="text-[11px] text-slate-500 block">Acertos</span>
+                            <span id="final-acertos" class="text-base font-bold text-emerald-600">0</span>
+                        </div>
+                        <div>
+                            <span class="text-[11px] text-slate-500 block">Aproveit.</span>
+                            <span id="final-percent" class="text-base font-bold text-juridico-700">0%</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Área do Relatório em Texto Formatado -->
+                <div class="space-y-3">
+                    <div class="flex flex-wrap items-center justify-between gap-2">
+                        <label for="report-textarea" class="text-xs font-bold uppercase tracking-wider text-slate-600 flex items-center gap-2">
+                            <i class="fa-solid fa-align-left text-juridico-700"></i>
+                            <span>Relatório em Texto Formatado (Pronto para Entrega)</span>
+                        </label>
+                        <div class="flex items-center gap-2">
+                            <button onclick="copyReportText()" id="btn-copy-report" class="px-3.5 py-2 rounded-xl bg-emerald-600 hover:bg-emerald-700 text-white text-xs font-semibold transition-colors flex items-center gap-1.5 shadow-sm">
+                                <i class="fa-solid fa-copy"></i>
+                                <span>Copiar Relatório</span>
+                            </button>
+                            <button onclick="downloadReportTxt()" class="px-3.5 py-2 rounded-xl bg-juridico-800 hover:bg-juridico-900 text-white text-xs font-semibold transition-colors flex items-center gap-1.5 shadow-sm">
+                                <i class="fa-solid fa-download"></i>
+                                <span>Baixar (.TXT)</span>
+                            </button>
+                        </div>
+                    </div>
+
+                    <textarea id="report-textarea" readonly rows="16"
+                        class="w-full p-4 rounded-xl bg-slate-900 text-slate-100 font-mono text-xs leading-relaxed border border-slate-700 focus:outline-none resize-y"></textarea>
+                </div>
+
+                <div class="flex flex-col sm:flex-row justify-between items-center gap-3 pt-2 border-t border-slate-100">
+                    <button onclick="backToCasesFromSummary()" class="w-full sm:w-auto px-5 py-2.5 rounded-xl border border-slate-300 text-slate-700 font-semibold text-xs sm:text-sm hover:bg-slate-50 transition-colors flex items-center justify-center gap-2">
+                        <i class="fa-solid fa-arrow-left"></i> Voltar aos Casos
+                    </button>
+                    <div class="flex flex-col sm:flex-row gap-3 w-full sm:w-auto">
+                        <button onclick="resetSimulator()" class="px-5 py-2.5 rounded-xl border border-juridico-300 text-juridico-800 font-semibold text-xs sm:text-sm hover:bg-juridico-50 transition-colors flex items-center justify-center gap-2">
+                            <i class="fa-solid fa-rotate-right"></i> Refazer Simulação
+                        </button>
+                        <button onclick="switchTab('doutrina')" class="px-5 py-2.5 rounded-xl bg-juridico-800 text-white font-semibold text-xs sm:text-sm hover:bg-juridico-900 transition-colors flex items-center justify-center gap-2">
+                            <i class="fa-solid fa-book-open"></i> Síntese Doutrinária
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+        </section>
+
+        <!-- ========================================================= -->
+        <!-- TELA 2: FUNDAMENTAÇÃO TEÓRICA E DOUTRINÁRIA               -->
+        <!-- ========================================================= -->
+        <section id="view-doutrina" class="hidden space-y-8">
+            
+            <!-- Banner Introdutório -->
+            <div class="bg-gradient-to-r from-juridico-900 to-juridico-800 rounded-2xl p-6 sm:p-8 text-white shadow-md">
+                <span class="text-xs font-bold uppercase tracking-widest text-dourado-400">Sistematização Teórica</span>
+                <h2 class="text-2xl sm:text-3xl font-bold font-serif mt-1 mb-3">A Estrutura Jurídica do Poder Empregaticio</h2>
+                <p class="text-juridico-100 text-sm sm:text-base max-w-3xl leading-relaxed">
+                    O poder empregatício constitui o conjunto de prerrogativas asseguradas pela ordem jurídica ao empregador para organizar, orientar, fiscalizar e sancionar a prestação subordinada de serviços, encontrando fundamento no art. 2º da CLT e limites rígidos na Constituição Federal de 1988.
+                </p>
+            </div>
+
+            <!-- Pilares do Poder Empregatício -->
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-5">
+                <div class="bg-white p-5 rounded-2xl border border-slate-200 shadow-sm space-y-2.5">
+                    <div class="w-10 h-10 rounded-xl bg-blue-50 text-blue-700 flex items-center justify-center text-lg">
+                        <i class="fa-solid fa-sitemap"></i>
+                    </div>
+                    <h3 class="font-bold text-slate-900 text-base">1. Poder Diretivo</h3>
+                    <p class="text-xs text-slate-600 leading-relaxed">
+                        Prerrogativa de determinar como, quando e onde a atividade laboral será executada, concretizando a subordinação jurídica no contrato de trabalho.
+                    </p>
+                </div>
+
+                <div class="bg-white p-5 rounded-2xl border border-slate-200 shadow-sm space-y-2.5">
+                    <div class="w-10 h-10 rounded-xl bg-indigo-50 text-indigo-700 flex items-center justify-center text-lg">
+                        <i class="fa-solid fa-file-signature"></i>
+                    </div>
+                    <h3 class="font-bold text-slate-900 text-base">2. Poder Regulamentar</h3>
+                    <p class="text-xs text-slate-600 leading-relaxed">
+                        Faculdade de fixar normas gerais internas (regulamento empresarial, códigos de conduta, circulares) aplicáveis à comunidade obreira.
+                    </p>
+                </div>
+
+                <div class="bg-white p-5 rounded-2xl border border-slate-200 shadow-sm space-y-2.5">
+                    <div class="w-10 h-10 rounded-xl bg-amber-50 text-amber-700 flex items-center justify-center text-lg">
+                        <i class="fa-solid fa-eye"></i>
+                    </div>
+                    <h3 class="font-bold text-slate-900 text-base">3. Poder Fiscalizatório</h3>
+                    <p class="text-xs text-slate-600 leading-relaxed">
+                        Direito de acompanhar e controlar o cumprimento das obrigações contratuais (controle de ponto, câmeras em áreas comuns, auditoria de ferramentas corporativas).
+                    </p>
+                </div>
+
+                <div class="bg-white p-5 rounded-2xl border border-slate-200 shadow-sm space-y-2.5">
+                    <div class="w-10 h-10 rounded-xl bg-rose-50 text-rose-700 flex items-center justify-center text-lg">
+                        <i class="fa-solid fa-gavel"></i>
+                    </div>
+                    <h3 class="font-bold text-slate-900 text-base">4. Poder Disciplinar</h3>
+                    <p class="text-xs text-slate-600 leading-relaxed">
+                        Prerrogativa de impor sanções (advertência, suspensão de até 30 dias e dispensa por justa causa) diante do descumprimento de deveres contratuais.
+                    </p>
+                </div>
+            </div>
+
+            <!-- Origens e Limites Constitucionais -->
+            <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+                <div class="bg-white p-6 rounded-2xl border border-slate-200 shadow-sm space-y-4">
+                    <h3 class="text-lg font-bold text-slate-900 font-serif flex items-center gap-2">
+                        <i class="fa-solid fa-landmark-dome text-juridico-700"></i>
+                        <span>Origens e Fundamento Jurídico</span>
+                    </h3>
+                    <div class="space-y-3 text-sm text-slate-600 leading-relaxed">
+                        <p>
+                            <strong class="text-slate-800">Teoria Contratualista:</strong> O poder disciplinar decorre do próprio sinalagma contratual. Ao celebrar o contrato de trabalho (art. 442 da CLT), o empregado consente em submeter sua força de trabalho à direção do empregador, que assume os riscos da atividade econômica (art. 2º da CLT).
+                        </p>
+                        <p>
+                            <strong class="text-slate-800">Superação da Teoria da Propriedade:</strong> A doutrina contemporânea rejeita que o poder diretivo derive do direito de propriedade sobre os meios de produção, pois o trabalhador é sujeito de direitos fundamentais e não objeto patrimonial.
+                        </p>
+                    </div>
+                </div>
+
+                <div class="bg-white p-6 rounded-2xl border border-slate-200 shadow-sm space-y-4">
+                    <h3 class="text-lg font-bold text-slate-900 font-serif flex items-center gap-2">
+                        <i class="fa-solid fa-shield-halved text-juridico-700"></i>
+                        <span>Limites Constitucionais (Eficácia Horizontal)</span>
+                    </h3>
+                    <div class="space-y-3 text-sm text-slate-600 leading-relaxed">
+                        <p>
+                            <strong class="text-slate-800">Dignidade da Pessoa Humana (Art. 1º, III, CF/88):</strong> Veda punições vexatórias, revistas íntimas com contato físico ou desnudamento (art. 373-A, VI, CLT), humilhações públicas ou rebaixamento funcional.
+                        </p>
+                        <p>
+                            <strong class="text-slate-800">Intimidade e Vida Privada (Art. 5º, X, CF/88):</strong> A fiscalização não pode invadir esferas estritamente pessoais (como e-mails particulares, conversas privadas em aplicativos pessoais ou sanitários).
+                        </p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Requisitos Doutrinários -->
+            <div class="bg-white p-6 rounded-2xl border border-slate-200 shadow-sm">
+                <h3 class="text-lg font-bold text-slate-900 font-serif mb-4 flex items-center gap-2">
+                    <i class="fa-solid fa-clipboard-check text-juridico-700"></i>
+                    <span>Requisitos Doutrinários de Validade da Punição</span>
+                </h3>
+                <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+                    <div class="p-4 rounded-xl bg-slate-50 border border-slate-200">
+                        <span class="font-bold text-juridico-800 text-sm block mb-1">1. Tipicidade e Legalidade</span>
+                        <p class="text-xs text-slate-600 leading-relaxed">Apenas sanções admitidas pelo ordenamento podem ser aplicadas: advertência, suspensão (máx. 30 dias - art. 474 CLT) e justa causa (art. 482 CLT). Vedadas multas (salvo atletas) e rebaixamentos.</p>
+                    </div>
+                    <div class="p-4 rounded-xl bg-slate-50 border border-slate-200">
+                        <span class="font-bold text-juridico-800 text-sm block mb-1">2. Proporcionalidade e Gradação</span>
+                        <p class="text-xs text-slate-600 leading-relaxed">Adequação entre a gravidade da falta e a intensidade da pena. Faltas leves exigem dosimetria pedagógica antes da ruptura contratual.</p>
+                    </div>
+                    <div class="p-4 rounded-xl bg-slate-50 border border-slate-200">
+                        <span class="font-bold text-juridico-800 text-sm block mb-1">3. Imediatidade (Atualidade)</span>
+                        <p class="text-xs text-slate-600 leading-relaxed">A punição deve ser aplicada logo após a ciência inequívoca da falta e eventual apuração. A demora injustificada configura perdão tácito.</p>
+                    </div>
+                    <div class="p-4 rounded-xl bg-slate-50 border border-slate-200">
+                        <span class="font-bold text-juridico-800 text-sm block mb-1">4. Non Bis in Idem</span>
+                        <p class="text-xs text-slate-600 leading-relaxed">Proibição de dupla punição pelo mesmo ato faltoso. Aplicada uma suspensão, não se pode converter o mesmo fato em justa causa.</p>
+                    </div>
+                    <div class="p-4 rounded-xl bg-slate-50 border border-slate-200">
+                        <span class="font-bold text-juridico-800 text-sm block mb-1">5. Isonomia (Não Discriminação)</span>
+                        <p class="text-xs text-slate-600 leading-relaxed">Empregados que cometem a mesma falta em idênticas circunstâncias não podem receber tratamento punitivo arbitrariamente desigual.</p>
+                    </div>
+                    <div class="p-4 rounded-xl bg-slate-50 border border-slate-200">
+                        <span class="font-bold text-juridico-800 text-sm block mb-1">6. Nexo Causal</span>
+                        <p class="text-xs text-slate-600 leading-relaxed">Deve haver vinculação direta entre a conduta culposa ou dolosa do trabalhador e a penalidade imposta pelo empregador.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+    </main>
+
+    <!-- Rodapé -->
+    <footer class="bg-white border-t border-slate-200 py-4 mt-10">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex flex-col sm:flex-row justify-between items-center gap-2 text-xs text-slate-500">
+            <span>EEB Colombo Machado Salles • Turma: 2ª Série 1 • Simulador Jurídico</span>
+            <span>Base Normativa: CF/88, CLT (Arts. 2º, 474, 482) e Jurisprudência do TST</span>
+        </div>
+    </footer>
+
+    <!-- ========================================================= -->
+    <!-- LÓGICA JAVASCRIPT DO SIMULADOR                            -->
+    <!-- ========================================================= -->
+    <script>
+        // Banco de Dados de Casos Concretos
+        const casesDatabase = [
+            {
+                id: 1,
+                tema: 'requisitos',
+                temaLabel: 'Requisitos das Penas',
+                dificuldade: 'Intermediário',
+                title: 'Dupla Penalidade sobre o Mesmo Ato Faltoso',
+                scenario: 'Carlos, operador de logística, envolveu-se em uma discussão ríspida com um colega no pátio da empresa na terça-feira. No mesmo dia, o gerente de RH aplicou-lhe uma suspensão disciplinar de 3 dias. Na sexta-feira, ao retornar ao trabalho, a diretoria reavaliou o caso e decidiu dispensá-lo por justa causa (art. 482, "j", da CLT) em razão daquela mesma discussão.',
+                question: 'À luz dos limites doutrinários do poder disciplinar, a dispensa por justa causa aplicada na sexta-feira é juridicamente válida?',
+                hint: 'Analise o princípio da singularidade da punição (non bis in idem) no Direito do Trabalho.',
+                options: [
+                    { text: 'Sim, pois a diretoria possui hierarquia superior ao gerente de RH e pode agravar a sanção a qualquer tempo.', correct: false },
+                    { text: 'Não, pois viola o princípio do non bis in idem, segundo o qual um mesmo ato faltoso não pode ser punido duas vezes.', correct: true },
+                    { text: 'Sim, desde que os 3 dias de suspensão sejam descontados como aviso prévio indenizado na rescisão.', correct: false },
+                    { text: 'Não, apenas porque a discussão ocorreu no pátio externo e não dentro da linha de produção.', correct: false }
+                ],
+                explanation: 'O poder disciplinar submete-se ao princípio do non bis in idem (singularidade da punição). Uma vez exercido o poder punitivo mediante a aplicação da suspensão disciplinar, esgota-se a prerrogativa sancionatória quanto àquele fato específico. A posterior conversão em justa causa pelo mesmo episódio torna nula a dispensa motivada.',
+                legalBasis: 'Princípio do Non Bis in Idem; Art. 2º e Art. 482 da CLT; Jurisprudência pacífica do TST.'
+            },
+            {
+                id: 2,
+                tema: 'requisitos',
+                temaLabel: 'Requisitos das Penas',
+                dificuldade: 'Intermediário',
+                title: 'Demora Injustificada e Perdão Tácito',
+                scenario: 'Mariana, analista financeira, cometeu um erro grave por negligência ao efetuar uma transferência bancária duplicada em 10 de março. A diretoria tomou ciência inequívoca do fato e de sua autoria no dia 12 de março, mas permaneceu inerte, mantendo Mariana trabalhando normalmente sem qualquer sindicância. Somente em 28 de maio a empresa aplicou-lhe suspensão de 5 dias pelo ocorrido.',
+                question: 'Como a doutrina e a jurisprudência trabalhista qualificam a atitude da empresa ao punir a empregada mais de dois meses após a ciência do fato?',
+                hint: 'Observe o lapso temporal entre a ciência inequívoca da falta (sem necessidade de apuração complexa) e a aplicação da pena.',
+                options: [
+                    { text: 'Exercício regular do poder diretivo, pois o empregador tem até 2 anos (prescrição bienal) para punir faltas contratuais.', correct: false },
+                    { text: 'Validade plena, desde que a suspensão não ultrapasse o limite legal de 30 dias consecutivos previsto no art. 474 da CLT.', correct: false },
+                    { text: 'Nulidade da sanção por ausência de imediatidade (atualidade), configurando perdão tácito do empregador.', correct: true },
+                    { text: 'Validade condicionada à concordância expressa do sindicato da categoria profissional.', correct: false }
+                ],
+                explanation: 'A imediatidade (ou atualidade) é requisito objetivo indispensável à validade da sanção disciplinar. Quando o empregador toma ciência inequívoca da falta e de sua autoria, não havendo procedimento apuratório complexo em curso, a demora injustificada em punir revela desinteresse sancionatório e caracteriza perdão tácito.',
+                legalBasis: 'Requisito da Imediatidade / Perdão Tácito; Art. 2º da CLT; Doutrina de Maurício Godinho Delgado.'
+            },
+            {
+                id: 3,
+                tema: 'fiscalizacao',
+                temaLabel: 'Fiscalização e Controle',
+                dificuldade: 'Avançado',
+                title: 'Monitoramento de E-mail Corporativo vs. Pessoal',
+                scenario: 'Uma empresa fornece aos seus empregados conta de e-mail institucional (@empresa.com.br) exclusivamente para fins profissionais, com ciência expressa em regulamento interno de que a ferramenta é auditada. Durante auditoria de rotina, descobriu-se que o empregado Lucas utilizava o e-mail corporativo para enviar dados confidenciais de clientes a um concorrente, ensejando sua justa causa.',
+                question: 'Sobre a licitude da prova obtida pelo empregador no exercício do poder fiscalizatório, assinale a conclusão correta:',
+                hint: 'Distinga a natureza jurídica da ferramenta de trabalho corporativa frente à correspondência estritamente privada.',
+                options: [
+                    { text: 'A prova é ilícita, pois viola o sigilo absoluto de correspondência previsto no art. 5º, XII, da Constituição Federal.', correct: false },
+                    { text: 'A prova é ilícita, pois o empregador somente poderia acessar o e-mail corporativo mediante prévia autorização judicial.', correct: false },
+                    { text: 'A prova é lícita, pois o e-mail corporativo é instrumento de trabalho e o empregado tinha ciência prévia do monitoramento.', correct: true },
+                    { text: 'A prova é válida apenas para advertência escrita, sendo vedada sua utilização para fundamentar justa causa.', correct: false }
+                ],
+                explanation: 'Segundo a jurisprudência consolidada do TST, o e-mail corporativo (fornecido pelo empregador como ferramenta de trabalho) não goza da mesma expectativa de privacidade do e-mail pessoal. Havendo ciência prévia dos empregados quanto à possibilidade de fiscalização, o monitoramento constitui exercício regular do poder fiscalizatório e diretivo.',
+                legalBasis: 'Art. 2º da CLT; Art. 5º, X e XII, CF/88; Jurisprudência consolidada da SDI-1 do TST.'
+            },
+            {
+                id: 4,
+                tema: 'limites',
+                temaLabel: 'Limites Constitucionais',
+                dificuldade: 'Básico',
+                title: 'Punição Vexatória e Eficácia Horizontal dos Direitos Fundamentais',
+                scenario: 'Para coibir atrasos recorrentes na equipe de vendas, o supervisor de uma loja instituiu uma regra disciplinar: todo vendedor que chegasse após as 08h10 deveria utilizar, durante todo o expediente, um colete fluorescente com os dizeres "HOJE EU ME ATRASEI" e pagar uma multa de R$ 25,00 descontada diretamente no holerite.',
+                question: 'Analisando a medida sob a ótica constitucional e trabalhista, qual vício invalida a conduta patronal?',
+                hint: 'Verifique tanto a ofensa aos direitos da personalidade quanto a tipicidade das penas admitidas no Direito do Trabalho.',
+                options: [
+                    { text: 'A medida é válida apenas quanto ao colete, sendo ilegal exclusivamente o desconto salarial de R$ 25,00.', correct: false },
+                    { text: 'A medida é integralmente ilícita: o colete viola a dignidade da pessoa humana (art. 1º, III, CF) e a multa pecuniária é vedada.', correct: true },
+                    { text: 'A medida é válida se houver previsão expressa no contrato individual de trabalho assinado na admissão.', correct: false },
+                    { text: 'A medida configura exercício regular do poder regulamentar, pois visa apenas estimular a pontualidade.', correct: false }
+                ],
+                explanation: 'O poder disciplinar encontra limite intransponível na dignidade da pessoa humana (art. 1º, III, CF/88) e na inviolabilidade da honra e imagem (art. 5º, X, CF/88), sendo vedadas punições humilhantes ou vexatórias (abuso de direito - art. 187 do Código Civil). Ademais, o ordenamento trabalhista brasileiro não admite multa pecuniária como sanção disciplinar.',
+                legalBasis: 'Arts. 1º, III, e 5º, X, da CF/88; Art. 187 do Código Civil; Art. 462 da CLT.'
+            },
+            {
+                id: 5,
+                tema: 'requisitos',
+                temaLabel: 'Requisitos das Penas',
+                dificuldade: 'Intermediário',
+                title: 'Gradação Pedagógica nas Faltas Leves (Desídia)',
+                scenario: 'Rafael trabalha há 4 anos na mesma indústria, sempre com histórico exemplar. Em uma segunda-feira, pela primeira vez em todo o contrato, atrasou-se 20 minutos sem justificativa plausível. No dia seguinte, o empregador comunicou-lhe a dispensa por justa causa sob a alegação de desídia no desempenho das funções (art. 482, "e", da CLT).',
+                question: 'Considerando o princípio da proporcionalidade e o caráter pedagógico do poder disciplinar, a justa causa deve ser mantida?',
+                hint: 'A desídia, em regra, caracteriza-se pela reiteração de faltas leves, exigindo dosimetria gradual das penas.',
+                options: [
+                    { text: 'Sim, pois qualquer atraso injustificado quebra a fidúcia contratual e autoriza a rescisão imediata por justa causa.', correct: false },
+                    { text: 'Não, pois um único atraso leve em contrato de 4 anos viola a proporcionalidade, cabendo medida pedagógica (advertência).', correct: true },
+                    { text: 'Sim, porque o empregador possui discricionariedade absoluta para escolher a penalidade sem controle judicial.', correct: false },
+                    { text: 'Não, pois o atraso inferior a 30 minutos nunca pode ser objeto de qualquer sanção disciplinar.', correct: false }
+                ],
+                explanation: 'O poder disciplinar possui finalidade essencialmente pedagógica e corretiva. Diante de falta leve praticada por empregado com bom histórico funcional, exige-se a gradação das penalidades (advertência verbal/escrita, seguida de suspensão, e apenas em caso de contumácia, a justa causa). A ruptura imediata viola a proporcionalidade.',
+                legalBasis: 'Princípio da Proporcionalidade / Gradação das Penas; Art. 482, "e", da CLT.'
+            },
+            {
+                id: 6,
+                tema: 'limites',
+                temaLabel: 'Limites Constitucionais',
+                dificuldade: 'Avançado',
+                title: 'Tipicidade das Sanções: Rebaixamento Funcional',
+                scenario: 'Patrícia exercia o cargo efetivo de Supervisora Administrativa há 3 anos (não se tratando de cargo de confiança provisório). Após cometer uma falha operacional na elaboração de escalas, a empresa, a título de punição disciplinar, determinou seu retorno ao cargo de Auxiliar Administrativa, com redução proporcional de seu salário.',
+                question: 'À luz da tipicidade das sanções disciplinares e do princípio da inalterabilidade contratual lesiva, como se classifica essa punição?',
+                hint: 'Quais são as únicas sanções disciplinares admitidas no Direito do Trabalho brasileiro?',
+                options: [
+                    { text: 'Lícita, pois o rebaixamento funcional é uma sanção intermediária mais benéfica ao empregado do que a suspensão.', correct: false },
+                    { text: 'Nula de pleno direito, pois o rebaixamento punitivo viola a tipicidade das penas e o art. 468 da CLT.', correct: true },
+                    { text: 'Lícita pelo prazo máximo de 30 dias, aplicando-se por analogia o art. 474 da CLT.', correct: false },
+                    { text: 'Válida, desde que a redução salarial não ultrapasse 25% da remuneração mensal.', correct: false }
+                ],
+                explanation: 'No Direito do Trabalho brasileiro vige a tipicidade das sanções disciplinares: apenas advertência, suspensão (até 30 dias) e justa causa são admitidas. O rebaixamento funcional com redução salarial por motivo disciplinar é ilícito, afrontando o art. 468 da CLT (alteração contratual lesiva) e o art. 7º, VI, da CF/88 (irredutibilidade salarial).',
+                legalBasis: 'Art. 7º, VI, da CF/88; Art. 468 e Art. 474 da CLT.'
+            },
+            {
+                id: 7,
+                tema: 'requisitos',
+                temaLabel: 'Requisitos das Penas',
+                dificuldade: 'Intermediário',
+                title: 'Isonomia Punitiva e Discriminação Disciplinar',
+                scenario: 'Dois empregados do mesmo setor, João e Pedro, ausentaram-se injustificadamente do posto de trabalho durante a tarde para assistir a uma partida de futebol. Ambos possuíam histórico funcional idêntico e praticaram exatamente a mesma conduta em coautoria. O empregador aplicou apenas uma advertência escrita a João, mas dispensou Pedro por justa causa.',
+                question: 'Sob a perspectiva dos requisitos doutrinários do poder disciplinar, qual princípio foi violado pela conduta do empregador?',
+                hint: 'Avalie a exigência de tratamento coerente e não discriminatório diante de faltas idênticas.',
+                options: [
+                    { text: 'Princípio da Isonomia (não discriminação punitiva), invalidando a justa causa aplicada exclusivamente a Pedro.', correct: true },
+                    { text: 'Princípio da Inalterabilidade Contratual Objetiva, pois o horário de trabalho não poderia ser fiscalizado.', correct: false },
+                    { text: 'Nenhum princípio foi violado, pois o poder disciplinar permite ao empregador escolher livremente quem punir com mais rigor.', correct: false },
+                    { text: 'Princípio da Tipicidade, uma vez que a ausência injustificada não constitui falta passível de sanção.', correct: false }
+                ],
+                explanation: 'O poder disciplinar submete-se ao princípio constitucional da isonomia (art. 5º, caput, CF/88). Quando dois ou mais empregados cometem a mesma infração em idênticas condições subjetivas e objetivas, o empregador não pode aplicar sanções drasticamente desproporcionais entre eles sem justificativa plausível.',
+                legalBasis: 'Art. 5º, caput, da CF/88; Princípio da Isonomia / Não Discriminação Punitiva.'
+            },
+            {
+                id: 8,
+                tema: 'fiscalizacao',
+                temaLabel: 'Fiscalização e Controle',
+                dificuldade: 'Avançado',
+                title: 'Revista Visual de Bolsas e Pertences (Jurisprudência do TST)',
+                scenario: 'Uma indústria de componentes eletrônicos de alto valor realiza, ao final do expediente, revista meramente visual nas bolsas e mochilas de todos os empregados que saem da fábrica (incluindo gerentes e diretores), sem qualquer contato físico, apalpação ou exposição íntima, e sem apontar suspeitas individuais.',
+                question: 'De acordo com o entendimento atual da SDI-1 do Tribunal Superior do Trabalho (TST), essa modalidade de revista é lícita?',
+                hint: 'Diferencie a revista íntima com contato físico/desnudamento (proibida) da inspeção visual impessoal de bolsas.',
+                options: [
+                    { text: 'Não, pois toda e qualquer revista em bolsas gera dano moral presumido (in re ipsa).', correct: false },
+                    { text: 'Sim, pois a revista meramente visual de pertences, realizada de forma impessoal e sem contato físico, insere-se no poder fiscalizatório.', correct: true },
+                    { text: 'Não, pois o art. 373-A, VI, da CLT proíbe qualquer tipo de inspeção na saída do estabelecimento.', correct: false },
+                    { text: 'Sim, inclusive se houver contato físico e revista corporal, desde que realizada por seguranças do mesmo sexo.', correct: false }
+                ],
+                explanation: 'A jurisprudência atual da Subseção I Especializada em Dissídios Individuais (SDI-1) do TST distingue a revista íntima (com contato físico ou desnudamento, expressamente vedada pelo art. 373-A, VI, da CLT) da revista meramente visual de bolsas e sacolas. Quando realizada em caráter geral, impessoal e sem contato físico, constitui exercício regular do poder fiscalizatório.',
+                legalBasis: 'Art. 2º e Art. 373-A, VI, da CLT; Art. 5º, X e XXII, CF/88; Jurisprudência da SDI-1 do TST.'
+            }
+        ];
+
+        // Estado Global
+        let studentData = {
+            name: '',
+            turma: '2ª Série 1',
+            escola: 'EEB Colombo Machado Salles',
+            number: ''
+        };
+        let filteredCases = [...casesDatabase];
+        let currentIndex = 0;
+        let selectedOptionIndex = null;
+        let answeredCases = {};
+
+        // Foco inicial no campo de nome
+        document.addEventListener('DOMContentLoaded', () => {
+            const nameInput = document.getElementById('student-name');
+            if (nameInput) nameInput.focus();
+        });
+
+        // Iniciar Simulação após Identificação
+        function startSimulation(event) {
+            event.preventDefault();
+            const nameInput = document.getElementById('student-name').value.trim();
+            const numberInput = document.getElementById('student-number').value.trim();
+            const errorBox = document.getElementById('form-error-msg');
+
+            if (nameInput.length < 3) {
+                errorBox.classList.remove('hidden');
+                return;
+            }
+
+            errorBox.classList.add('hidden');
+            studentData.name = nameInput;
+            studentData.number = numberInput || 'Não informado';
+
+            // Atualiza badge no cabeçalho
+            document.getElementById('header-student-name').textContent = studentData.name;
+            document.getElementById('header-student-info').textContent = `${studentData.turma}${numberInput ? ' • ' + numberInput : ''}`;
+            const badge = document.getElementById('student-header-badge');
+            badge.classList.remove('hidden');
+            badge.classList.add('flex');
+
+            // Alterna telas
+            document.getElementById('view-identificacao').classList.add('hidden');
+            document.getElementById('view-simulador').classList.remove('hidden');
+
+            renderCase();
+            updateStats();
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+
+        // Alternar Abas
+        function switchTab(tabName) {
+            const viewIdentificacao = document.getElementById('view-identificacao');
+            const viewSimulador = document.getElementById('view-simulador');
+            const viewDoutrina = document.getElementById('view-doutrina');
+            const btnSimulador = document.getElementById('tab-btn-simulador');
+            const btnDoutrina = document.getElementById('tab-btn-doutrina');
+
+            if (tabName === 'simulador') {
+                viewDoutrina.classList.add('hidden');
+                if (!studentData.name) {
+                    viewIdentificacao.classList.remove('hidden');
+                    viewSimulador.classList.add('hidden');
+                } else {
+                    viewIdentificacao.classList.add('hidden');
+                    viewSimulador.classList.remove('hidden');
+                }
+
+                btnSimulador.classList.add('bg-juridico-700', 'text-white', 'shadow-sm');
+                btnSimulador.classList.remove('text-juridico-300', 'hover:text-white');
+
+                btnDoutrina.classList.remove('bg-juridico-700', 'text-white', 'shadow-sm');
+                btnDoutrina.classList.add('text-juridico-300', 'hover:text-white');
+            } else {
+                viewIdentificacao.classList.add('hidden');
+                viewSimulador.classList.add('hidden');
+                viewDoutrina.classList.remove('hidden');
+
+                btnDoutrina.classList.add('bg-juridico-700', 'text-white', 'shadow-sm');
+                btnDoutrina.classList.remove('text-juridico-300', 'hover:text-white');
+
+                btnSimulador.classList.remove('bg-juridico-700', 'text-white', 'shadow-sm');
+                btnSimulador.classList.add('text-juridico-300', 'hover:text-white');
+            }
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+
+        // Filtrar Casos
+        function filterCases(tema) {
+            document.querySelectorAll('.filter-btn').forEach(btn => {
+                if (btn.dataset.filter === tema) {
+                    btn.classList.add('bg-juridico-800', 'text-white');
+                    btn.classList.remove('bg-slate-100', 'text-slate-600');
+                } else {
+                    btn.classList.remove('bg-juridico-800', 'text-white');
+                    btn.classList.add('bg-slate-100', 'text-slate-600');
+                }
+            });
+
+            filteredCases = tema === 'todos'
+                ? [...casesDatabase]
+                : casesDatabase.filter(c => c.tema === tema);
+
+            currentIndex = 0;
+            selectedOptionIndex = null;
+
+            document.getElementById('summary-modal').classList.add('hidden');
+            document.getElementById('case-container').classList.remove('hidden');
+
+            renderCase();
+            updateStats();
+        }
+
+        // Renderizar Caso Atual
+        function renderCase() {
+            const currentCase = filteredCases[currentIndex];
+            if (!currentCase) return;
+
+            document.getElementById('case-badge-number').textContent = `CASO #${String(currentCase.id).padStart(2, '0')} (${currentIndex + 1}/${filteredCases.length})`;
+            document.getElementById('case-badge-topic').textContent = currentCase.temaLabel;
+            document.getElementById('case-difficulty').innerHTML = `<i class="fa-solid fa-layer-group text-dourado-400"></i> Nível: ${currentCase.dificuldade}`;
+            document.getElementById('case-title').textContent = currentCase.title;
+            document.getElementById('case-scenario').textContent = currentCase.scenario;
+            document.getElementById('case-question').textContent = currentCase.question;
+
+            // Resetar Dica
+            document.getElementById('case-hint-box').classList.add('hidden');
+            document.getElementById('hint-toggle-text').textContent = 'Consultar nota doutrinária orientativa';
+            document.getElementById('case-hint-text').textContent = currentCase.hint;
+
+            // Renderizar Alternativas
+            const optionsList = document.getElementById('options-list');
+            optionsList.innerHTML = '';
+
+            const previousAnswer = answeredCases[currentCase.id];
+            selectedOptionIndex = previousAnswer ? previousAnswer.selected : null;
+
+            const letters = ['A', 'B', 'C', 'D'];
+
+            currentCase.options.forEach((opt, idx) => {
+                const btn = document.createElement('button');
+                btn.type = 'button';
+                btn.className = 'w-full text-left p-4 rounded-xl border-2 transition-all flex items-start gap-3.5 text-sm leading-relaxed ';
+
+                if (previousAnswer) {
+                    btn.disabled = true;
+                    if (opt.correct) {
+                        btn.className += 'border-emerald-500 bg-emerald-50/70 text-emerald-950 font-medium';
+                    } else if (idx === previousAnswer.selected && !opt.correct) {
+                        btn.className += 'border-rose-500 bg-rose-50/70 text-rose-950';
+                    } else {
+                        btn.className += 'border-slate-200 bg-slate-50/50 text-slate-400';
+                    }
+                } else {
+                    btn.className += 'border-slate-200 hover:border-juridico-400 hover:bg-juridico-50/40 text-slate-700 cursor-pointer';
+                    btn.onclick = () => selectOption(idx);
+                }
+
+                let badgeClass = 'w-7 h-7 rounded-lg flex items-center justify-center font-bold text-xs flex-shrink-0 mt-0.5 ';
+                if (previousAnswer) {
+                    if (opt.correct) badgeClass += 'bg-emerald-600 text-white';
+                    else if (idx === previousAnswer.selected) badgeClass += 'bg-rose-600 text-white';
+                    else badgeClass += 'bg-slate-200 text-slate-500';
+                } else {
+                    badgeClass += 'bg-slate-100 text-slate-700 option-letter';
+                }
+
+                btn.innerHTML = `
+                    <span class="${badgeClass}">${letters[idx]}</span>
+                    <span class="flex-grow">${opt.text}</span>
+                `;
+                btn.dataset.index = idx;
+                optionsList.appendChild(btn);
+            });
+
+            // Botões de Navegação e Submissão
+            document.getElementById('btn-prev').disabled = currentIndex === 0;
+            const submitBtn = document.getElementById('btn-submit');
+            if (previousAnswer) {
+                submitBtn.disabled = true;
+                submitBtn.innerHTML = `<i class="fa-solid fa-lock"></i> <span>Decisão Registrada</span>`;
+                showFeedback(currentCase, previousAnswer.isCorrect);
+            } else {
+                submitBtn.disabled = true;
+                submitBtn.innerHTML = `<i class="fa-solid fa-check-double"></i> <span>Proferir Decisão</span>`;
+                document.getElementById('feedback-panel').classList.add('hidden');
+            }
+
+            const nextLabel = document.getElementById('next-action-label');
+            if (nextLabel) {
+                nextLabel.textContent = currentIndex === filteredCases.length - 1
+                    ? 'Concluir e Gerar Relatório'
+                    : 'Avançar para o Próximo Caso';
+            }
+        }
+
+        // Selecionar Alternativa
+        function selectOption(index) {
+            const currentCase = filteredCases[currentIndex];
+            if (answeredCases[currentCase.id]) return;
+
+            selectedOptionIndex = index;
+            document.getElementById('btn-submit').disabled = false;
+
+            const buttons = document.getElementById('options-list').querySelectorAll('button');
+            buttons.forEach((btn, idx) => {
+                const letterSpan = btn.querySelector('.option-letter');
+                if (idx === index) {
+                    btn.classList.remove('border-slate-200', 'text-slate-700');
+                    btn.classList.add('border-juridico-700', 'bg-juridico-50', 'text-juridico-950', 'font-medium');
+                    if (letterSpan) {
+                        letterSpan.classList.remove('bg-slate-100', 'text-slate-700');
+                        letterSpan.classList.add('bg-juridico-800', 'text-white');
+                    }
+                } else {
+                    btn.classList.add('border-slate-200', 'text-slate-700');
+                    btn.classList.remove('border-juridico-700', 'bg-juridico-50', 'text-juridico-950', 'font-medium');
+                    if (letterSpan) {
+                        letterSpan.classList.add('bg-slate-100', 'text-slate-700');
+                        letterSpan.classList.remove('bg-juridico-800', 'text-white');
+                    }
+                }
+            });
+        }
+
+        // Confirmar Resposta
+        function submitAnswer() {
+            if (selectedOptionIndex === null) return;
+            const currentCase = filteredCases[currentIndex];
+            const isCorrect = currentCase.options[selectedOptionIndex].correct;
+
+            answeredCases[currentCase.id] = {
+                selected: selectedOptionIndex,
+                isCorrect: isCorrect
+            };
+
+            renderCase();
+            updateStats();
+        }
+
+        // Mostrar Feedback
+        function showFeedback(caseObj, isCorrect) {
+            const panel = document.getElementById('feedback-panel');
+            const header = document.getElementById('feedback-header');
+            const icon = document.getElementById('feedback-icon');
+            const title = document.getElementById('feedback-title');
+            const subtitle = document.getElementById('feedback-subtitle');
+
+            panel.classList.remove('hidden', 'border-emerald-200', 'border-rose-200');
+            header.classList.remove('bg-emerald-600', 'bg-rose-600', 'text-white');
+            icon.classList.remove('bg-emerald-800', 'bg-rose-800');
+
+            if (isCorrect) {
+                panel.classList.add('border-emerald-200');
+                header.classList.add('bg-emerald-600', 'text-white');
+                icon.classList.add('bg-emerald-800');
+                icon.innerHTML = `<i class="fa-solid fa-check"></i>`;
+                title.textContent = 'Fundamentação Jurídica Correta!';
+                subtitle.textContent = 'Você aplicou adequadamente os limites e requisitos do poder disciplinar.';
+            } else {
+                panel.classList.add('border-rose-200');
+                header.classList.add('bg-rose-600', 'text-white');
+                icon.classList.add('bg-rose-800');
+                icon.innerHTML = `<i class="fa-solid fa-xmark"></i>`;
+                title.textContent = 'Divergência Doutrinária / Legal';
+                subtitle.textContent = 'Observe a alternativa destacada em verde e analise o fundamento abaixo.';
+            }
+
+            document.getElementById('feedback-explanation').textContent = caseObj.explanation;
+            document.getElementById('feedback-legal-basis').textContent = caseObj.legalBasis;
+        }
+
+        // Alternar Dica
+        function toggleHint() {
+            const box = document.getElementById('case-hint-box');
+            const text = document.getElementById('hint-toggle-text');
+            if (box.classList.contains('hidden')) {
+                box.classList.remove('hidden');
+                text.textContent = 'Ocultar nota doutrinária orientativa';
+            } else {
+                box.classList.add('hidden');
+                text.textContent = 'Consultar nota doutrinária orientativa';
+            }
+        }
+
+        // Navegação entre Casos
+        function prevCase() {
+            if (currentIndex > 0) {
+                currentIndex--;
+                renderCase();
+            }
+        }
+
+        function nextCase() {
+            if (currentIndex < filteredCases.length - 1) {
+                currentIndex++;
+                renderCase();
+            } else {
+                showSummary();
+            }
+        }
+
+        // Atualizar Contadores
+        function updateStats() {
+            let answeredCount = 0;
+            let correctCount = 0;
+
+            filteredCases.forEach(c => {
+                if (answeredCases[c.id]) {
+                    answeredCount++;
+                    if (answeredCases[c.id].isCorrect) correctCount++;
+                }
+            });
+
+            document.getElementById('stat-progress').textContent = `${answeredCount}/${filteredCases.length}`;
+            document.getElementById('stat-score').textContent = correctCount;
+        }
+
+        // Gerar e Exibir Relatório Final em Texto
+        function showSummary() {
+            let answeredCount = 0;
+            let correctCount = 0;
+
+            filteredCases.forEach(c => {
+                if (answeredCases[c.id]) {
+                    answeredCount++;
+                    if (answeredCases[c.id].isCorrect) correctCount++;
+                }
+            });
+
+            const total = filteredCases.length;
+            const percent = total > 0 ? Math.round((correctCount / total) * 100) : 0;
+
+            document.getElementById('summary-student-subtitle').textContent = `Aluno(a): ${studentData.name} (${studentData.number})`;
+            document.getElementById('final-total').textContent = `${answeredCount}/${total}`;
+            document.getElementById('final-acertos').textContent = correctCount;
+            document.getElementById('final-percent').textContent = `${percent}%`;
+
+            document.getElementById('report-textarea').value = generateTextReport(answeredCount, correctCount, total, percent);
+
+            document.getElementById('case-container').classList.add('hidden');
+            document.getElementById('summary-modal').classList.remove('hidden');
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+
+        // Formatação Estruturada do Relatório em Texto
+        function generateTextReport(answeredCount, correctCount, total, percent) {
+            const now = new Date();
+            const dataFormatada = now.toLocaleDateString('pt-BR');
+            const horaFormatada = now.toLocaleTimeString('pt-BR', { hour: '2-digit', minute: '2-digit' });
+            const letters = ['A', 'B', 'C', 'D'];
+
+            const linhaDupla = '='.repeat(74);
+            const linhaSimples = '-'.repeat(74);
+
+            let lines = [];
+            lines.push(linhaDupla);
+            lines.push('RELATÓRIO DE RESOLUÇÃO DE PROBLEMAS - DIREITO DO TRABALHO');
+            lines.push('TEMA: PODER DISCIPLINAR DO EMPREGADOR');
+            lines.push(linhaDupla);
+            lines.push(`INSTITUIÇÃO : ${studentData.escola}`);
+            lines.push(`TURMA       : ${studentData.turma}`);
+            lines.push(`ALUNO(A)    : ${studentData.name.toUpperCase()}`);
+            lines.push(`IDENTIF./Nº : ${studentData.number}`);
+            lines.push(`DATA/HORA   : ${dataFormatada} às ${horaFormatada}`);
+            lines.push(linhaSimples);
+            lines.push(`DESEMPENHO GERAL : ${correctCount} acerto(s) em ${total} caso(s) (${percent}%)`);
+            lines.push(`CASOS RESPONDIDOS: ${answeredCount} de ${total}`);
+            lines.push(linhaDupla);
+            lines.push('');
+
+            filteredCases.forEach(c => {
+                const ans = answeredCases[c.id];
+                const correctIdx = c.options.findIndex(o => o.correct);
+
+                lines.push(`CASO #${String(c.id).padStart(2, '0')} - ${c.title.toUpperCase()}`);
+                lines.push(`Eixo Temático: ${c.temaLabel} | Nível: ${c.dificuldade}`);
+                lines.push(`Questão: ${c.question}`);
+
+                if (ans) {
+                    const statusText = ans.isCorrect ? '[CORRETA]' : '[INCORRETA]';
+                    lines.push(`Status da Resposta: ${statusText}`);
+                    lines.push(`Resposta do(a) Aluno(a): (${letters[ans.selected]}) ${c.options[ans.selected].text}`);
+                    if (!ans.isCorrect) {
+                        lines.push(`Gabarito Oficial       : (${letters[correctIdx]}) ${c.options[correctIdx].text}`);
+                    }
+                } else {
+                    lines.push(`Status da Resposta: [NÃO RESPONDIDA]`);
+                    lines.push(`Gabarito Oficial       : (${letters[correctIdx]}) ${c.options[correctIdx].text}`);
+                }
+
+                lines.push(`Fundamentação Jurídica: ${c.explanation}`);
+                lines.push(`Base Legal/Doutrinária: ${c.legalBasis}`);
+                lines.push(linhaSimples);
+                lines.push('');
+            });
+
+            lines.push('Relatório gerado eletronicamente pelo Simulador Jurídico - EEB Colombo Machado Salles.');
+            return lines.join('\n');
+        }
+
+        // Copiar Relatório
+        function copyReportText() {
+            const textarea = document.getElementById('report-textarea');
+            textarea.select();
+            textarea.setSelectionRange(0, 99999);
+            document.execCommand('copy');
+
+            const btn = document.getElementById('btn-copy-report');
+            const originalHTML = btn.innerHTML;
+            btn.innerHTML = `<i class="fa-solid fa-check"></i> <span>Copiado!</span>`;
+            btn.classList.replace('bg-emerald-600', 'bg-emerald-700');
+
+            setTimeout(() => {
+                btn.innerHTML = originalHTML;
+                btn.classList.replace('bg-emerald-700', 'bg-emerald-600');
+            }, 2500);
+        }
+
+        // Baixar Arquivo .TXT
+        function downloadReportTxt() {
+            const text = document.getElementById('report-textarea').value;
+            const safeName = studentData.name.toLowerCase().replace(/[^a-z0-9]/gi, '_').replace(/_+/g, '_');
+            const filename = `relatorio_poder_disciplinar_${safeName}_2serie1.txt`;
+
+            const blob = new Blob([text], { type: 'text/plain;charset=utf-8' });
+            const url = URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = filename;
+            document.body.appendChild(a);
+            a.click();
+            document.body.removeChild(a);
+            URL.revokeObjectURL(url);
+        }
+
+        // Voltar aos Casos
+        function backToCasesFromSummary() {
+            document.getElementById('summary-modal').classList.add('hidden');
+            document.getElementById('case-container').classList.remove('hidden');
+            renderCase();
+        }
+
+        // Refazer Simulação
+        function resetSimulator() {
+            answeredCases = {};
+            currentIndex = 0;
+            selectedOptionIndex = null;
+            document.getElementById('summary-modal').classList.add('hidden');
+            document.getElementById('case-container').classList.remove('hidden');
+            renderCase();
+            updateStats();
+        }
+    </script>
 </body>
 </html>

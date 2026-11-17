@@ -1,0 +1,1008 @@
+<!DOCTYPE html>
+<html lang="pt-BR" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Simulador Jurídico: Poder Disciplinar do Empregador</title>
+    <!-- Carregando Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Carregando Google Fonts: Inter e Merriweather para toque jurídico clássico -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Merriweather:ital,wght@0,400;0,700;1,400&display=swap" rel="stylesheet">
+    <!-- Carregando FontAwesome para ícones -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: {
+                        sans: ['Inter', 'sans-serif'],
+                        serif: ['Merriweather', 'serif'],
+                    },
+                    colors: {
+                        juridico: {
+                            50: '#f4f6f9',
+                            100: '#e5eaf1',
+                            200: '#cbd6e3',
+                            300: '#a3b6ce',
+                            400: '#7490b4',
+                            500: '#51719a',
+                            600: '#3e587d',
+                            700: '#334766',
+                            800: '#2c3d56',
+                            900: '#1e293b',
+                            950: '#0f172a',
+                        },
+                        dourado: {
+                            400: '#fbbf24',
+                            500: '#d97706',
+                            600: '#b45309',
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+</head>
+<body class="bg-slate-50 text-slate-800 antialiased min-h-screen flex flex-col">
+
+    <!-- Cabeçalho Institucional -->
+    <header class="bg-juridico-950 text-white shadow-lg border-b border-juridico-800 sticky top-0 z-40">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4">
+            <div class="flex flex-col md:flex-row md:items-center md:justify-between gap-4">
+                <div class="flex items-center space-x-3">
+                    <div class="bg-dourado-500/20 p-2.5 rounded-xl border border-dourado-500/40 text-dourado-400">
+                        <i class="fa-solid fa-scale-balanced text-2xl"></i>
+                    </div>
+                    <div>
+                        <div class="flex items-center gap-2">
+                            <span class="text-xs font-semibold uppercase tracking-wider text-dourado-400">Direito Individual do Trabalho</span>
+                            <span class="text-juridico-600">•</span>
+                            <span class="text-xs text-juridico-300">Simulador Prático</span>
+                        </div>
+                        <h1 class="text-lg sm:text-xl font-bold tracking-tight text-white">Poder Disciplinar do Empregador</h1>
+                    </div>
+                </div>
+
+                <!-- Navegação por Abas -->
+                <nav class="flex bg-juridico-900/80 p-1 rounded-xl border border-juridico-800 self-start md:self-auto">
+                    <button id="tab-btn-simulador" onclick="switchTab('simulador')" class="px-4 py-2 rounded-lg text-sm font-medium transition-all bg-juridico-700 text-white shadow-sm flex items-center gap-2">
+                        <i class="fa-solid fa-gavel"></i>
+                        <span>Simulador de Casos</span>
+                    </button>
+                    <button id="tab-btn-doutrina" onclick="switchTab('doutrina')" class="px-4 py-2 rounded-lg text-sm font-medium transition-all text-juridico-300 hover:text-white flex items-center gap-2">
+                        <i class="fa-solid fa-book-open"></i>
+                        <span>Fundamentação Teórica</span>
+                    </button>
+                </nav>
+            </div>
+        </div>
+    </header>
+
+    <!-- Conteúdo Principal -->
+    <main class="flex-grow max-w-7xl w-full mx-auto px-4 sm:px-6 lg:px-8 py-8">
+
+        <!-- ========================================================= -->
+        <!-- ABA 1: SIMULADOR DE RESOLUÇÃO DE PROBLEMAS                -->
+        <!-- ========================================================= -->
+        <section id="view-simulador" class="space-y-6">
+            
+            <!-- Painel de Métricas / Progresso do Usuário -->
+            <div class="bg-white rounded-2xl shadow-sm border border-slate-200 p-4 sm:p-6">
+                <div class="flex flex-col lg:flex-row lg:items-center justify-between gap-4">
+                    <div>
+                        <h2 class="text-base font-semibold text-slate-900">Laboratório de Decisão Trabalhista</h2>
+                        <p class="text-sm text-slate-500">Analise os fatos, verifique os limites constitucionais e aplique a medida jurídica adequada.</p>
+                    </div>
+
+                    <div class="flex flex-wrap items-center gap-3 sm:gap-6">
+                        <!-- Filtro de Dificuldade / Tema -->
+                        <div class="flex items-center gap-2">
+                            <label for="filter-tema" class="text-xs font-semibold uppercase text-slate-500">Eixo Temático:</label>
+                            <select id="filter-tema" onchange="filterCases()" class="bg-slate-50 border border-slate-300 text-slate-700 text-sm rounded-xl px-3 py-2 focus:ring-2 focus:ring-juridico-600 focus:border-juridico-600 outline-none">
+                                <option value="todos">Todos os Casos (8)</option>
+                                <option value="requisitos">Requisitos de Validade (Imediatidade / Non Bis In Idem)</option>
+                                <option value="constitucional">Limites Constitucionais e Dignidade</option>
+                                <option value="fiscalizacao">Poder Fiscalizatório e Tecnologia</option>
+                                <option value="gradação">Gradação das Penas e Justa Causa</option>
+                            </select>
+                        </div>
+
+                        <!-- Placar -->
+                        <div class="flex items-center gap-4 bg-slate-50 px-4 py-2 rounded-xl border border-slate-200">
+                            <div class="text-center">
+                                <span class="block text-xs text-slate-500 font-medium">Progresso</span>
+                                <span id="stat-progresso" class="text-sm font-bold text-juridico-800">1 / 8</span>
+                            </div>
+                            <div class="h-6 w-px bg-slate-200"></div>
+                            <div class="text-center">
+                                <span class="block text-xs text-slate-500 font-medium">Acertos</span>
+                                <span id="stat-acertos" class="text-sm font-bold text-emerald-600">0</span>
+                            </div>
+                            <div class="h-6 w-px bg-slate-200"></div>
+                            <div class="text-center">
+                                <span class="block text-xs text-slate-500 font-medium">Aproveitamento</span>
+                                <span id="stat-taxa" class="text-sm font-bold text-slate-700">0%</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Barra de Progresso Visual -->
+                <div class="w-full bg-slate-100 h-2 rounded-full mt-4 overflow-hidden">
+                    <div id="progress-bar" class="bg-juridico-700 h-full transition-all duration-500 rounded-full" style="width: 12.5%"></div>
+                </div>
+            </div>
+
+            <!-- Área Principal do Caso Concreto -->
+            <div id="case-container" class="grid grid-cols-1 lg:grid-cols-12 gap-6">
+                
+                <!-- Coluna Esquerda: Narrativa Fática e Autos do Processo (7 colunas) -->
+                <div class="lg:col-span-7 space-y-6">
+                    <div class="bg-white rounded-2xl shadow-sm border border-slate-200 overflow-hidden">
+                        <!-- Cabeçalho do Caso -->
+                        <div class="bg-juridico-900 px-6 py-4 flex flex-wrap items-center justify-between gap-2 text-white">
+                            <div class="flex items-center gap-2">
+                                <span id="case-badge-num" class="bg-dourado-500 text-juridico-950 text-xs font-bold px-2.5 py-1 rounded-lg">CASO #01</span>
+                                <span id="case-badge-tema" class="bg-juridico-800 text-juridico-200 text-xs font-medium px-2.5 py-1 rounded-lg border border-juridico-700">Requisitos Objetivos</span>
+                            </div>
+                            <span id="case-dificuldade" class="text-xs font-medium text-juridico-300 flex items-center gap-1.5">
+                                <i class="fa-solid fa-layer-group"></i> Nível: Intermediário
+                            </span>
+                        </div>
+
+                        <!-- Corpo do Caso -->
+                        <div class="p-6 space-y-5">
+                            <h3 id="case-title" class="text-xl font-bold text-slate-900 font-serif leading-snug">
+                                Carregando caso...
+                            </h3>
+
+                            <!-- Relatório Fático -->
+                            <div class="bg-slate-50 rounded-xl p-5 border border-slate-200/80 space-y-3">
+                                <div class="flex items-center gap-2 text-xs font-bold uppercase tracking-wider text-juridico-700">
+                                    <i class="fa-solid fa-file-lines"></i>
+                                    <span>Relatório Fático (Autos do Caso)</span>
+                                </div>
+                                <p id="case-narrative" class="text-slate-700 text-sm sm:text-base leading-relaxed font-normal">
+                                    ...
+                                </p>
+                            </div>
+
+                            <!-- Pontos de Atenção / Dados Complementares -->
+                            <div id="case-clues-box" class="bg-amber-50/70 rounded-xl p-4 border border-amber-200/80">
+                                <div class="flex items-start gap-3">
+                                    <i class="fa-solid fa-magnifying-glass text-amber-600 mt-1"></i>
+                                    <div>
+                                        <h4 class="text-xs font-bold uppercase tracking-wider text-amber-800 mb-1">Elementos Probatórios e Contexto Contratual</h4>
+                                        <ul id="case-clues" class="text-xs sm:text-sm text-amber-900/90 space-y-1 list-disc list-inside">
+                                            <!-- Clues injetadas via JS -->
+                                        </ul>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Pergunta Jurídica -->
+                            <div class="pt-2">
+                                <div class="flex items-center gap-2 text-xs font-bold uppercase tracking-wider text-juridico-800 mb-2">
+                                    <i class="fa-solid fa-scale-unbalanced"></i>
+                                    <span>Questão Jurídica Submetida à Análise</span>
+                                </div>
+                                <p id="case-question" class="text-base font-semibold text-slate-900">
+                                    ...
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Coluna Direita: Alternativas e Parecer Doutrinário (5 colunas) -->
+                <div class="lg:col-span-5 space-y-6">
+                    <div class="bg-white rounded-2xl shadow-sm border border-slate-200 p-6">
+                        <h4 class="text-sm font-bold uppercase tracking-wider text-slate-500 mb-4 flex items-center justify-between">
+                            <span>Selecione a Solução Jurídica</span>
+                            <span class="text-xs font-normal lowercase text-slate-400">1 opção correta</span>
+                        </h4>
+
+                        <!-- Lista de Alternativas -->
+                        <div id="options-list" class="space-y-3">
+                            <!-- Botões de opção injetados via JS -->
+                        </div>
+
+                        <!-- Botão Confirmar Resposta -->
+                        <div class="mt-6">
+                            <button id="btn-submit" onclick="submitAnswer()" disabled class="w-full py-3.5 px-4 rounded-xl font-semibold text-sm transition-all flex items-center justify-center gap-2 bg-slate-200 text-slate-400 cursor-not-allowed">
+                                <i class="fa-solid fa-check-double"></i>
+                                <span>Proferir Decisão / Parecer</span>
+                            </button>
+                        </div>
+                    </div>
+
+                    <!-- Card de Feedback / Fundamentação Jurídica (Oculto até responder) -->
+                    <div id="feedback-card" class="hidden rounded-2xl shadow-md border overflow-hidden transition-all duration-300">
+                        <div id="feedback-header" class="px-6 py-4 flex items-center gap-3 text-white font-bold">
+                            <i id="feedback-icon" class="fa-solid fa-circle-check text-xl"></i>
+                            <span id="feedback-status">Decisão Fundamentada</span>
+                        </div>
+                        <div class="p-6 bg-white space-y-4">
+                            <div>
+                                <span class="text-xs font-bold uppercase tracking-wider text-slate-400 block mb-1">Análise Doutrinária e Legal</span>
+                                <p id="feedback-explanation" class="text-sm text-slate-700 leading-relaxed">
+                                    ...
+                                </p>
+                            </div>
+
+                            <div class="bg-slate-50 rounded-xl p-4 border border-slate-200 space-y-2">
+                                <span class="text-xs font-bold uppercase tracking-wider text-juridico-800 flex items-center gap-1.5">
+                                    <i class="fa-solid fa-landmark"></i> Base Normativa e Jurisprudencial
+                                </span>
+                                <p id="feedback-legal-basis" class="text-xs text-slate-600 font-medium leading-relaxed">
+                                    ...
+                                </p>
+                            </div>
+
+                            <!-- Navegação entre casos -->
+                            <div class="pt-2 flex items-center justify-between gap-3">
+                                <button onclick="prevCase()" id="btn-prev" class="px-4 py-2.5 rounded-xl border border-slate-300 text-slate-700 text-sm font-medium hover:bg-slate-50 transition-colors flex items-center gap-2">
+                                    <i class="fa-solid fa-arrow-left"></i> Anterior
+                                </button>
+                                <button onclick="nextCase()" id="btn-next" class="flex-grow px-4 py-2.5 rounded-xl bg-juridico-800 text-white text-sm font-semibold hover:bg-juridico-900 transition-colors flex items-center justify-center gap-2 shadow-sm">
+                                    <span>Próximo Caso</span> <i class="fa-solid fa-arrow-right"></i>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Tela de Conclusão do Simulado (Oculta até finalizar todos) -->
+            <div id="summary-modal" class="hidden bg-white rounded-2xl shadow-lg border border-slate-200 p-8 text-center max-w-2xl mx-auto space-y-6">
+                <div class="w-16 h-16 bg-dourado-500/20 text-dourado-600 rounded-2xl flex items-center justify-center mx-auto text-3xl border border-dourado-500/30">
+                    <i class="fa-solid fa-award"></i>
+                </div>
+                <div class="space-y-2">
+                    <h2 class="text-2xl font-bold text-slate-900 font-serif">Simulação Concluída!</h2>
+                    <p class="text-slate-600 text-sm">Você analisou todos os casos selecionados sobre o Poder Disciplinar do Empregador.</p>
+                </div>
+                <div class="grid grid-cols-3 gap-4 bg-slate-50 p-4 rounded-xl border border-slate-200">
+                    <div>
+                        <span class="text-xs text-slate-500 block">Casos Resolvidos</span>
+                        <span id="final-total" class="text-xl font-bold text-slate-900">8</span>
+                    </div>
+                    <div>
+                        <span class="text-xs text-slate-500 block">Acertos</span>
+                        <span id="final-acertos" class="text-xl font-bold text-emerald-600">0</span>
+                    </div>
+                    <div>
+                        <span class="text-xs text-slate-500 block">Desempenho</span>
+                        <span id="final-percent" class="text-xl font-bold text-juridico-700">0%</span>
+                    </div>
+                </div>
+                <div class="flex flex-col sm:flex-row justify-center gap-3 pt-2">
+                    <button onclick="resetSimulator()" class="px-6 py-3 rounded-xl bg-juridico-800 text-white font-semibold text-sm hover:bg-juridico-900 transition-colors flex items-center justify-center gap-2">
+                        <i class="fa-solid fa-rotate-right"></i> Reiniciar Simulador
+                    </button>
+                    <button onclick="switchTab('doutrina')" class="px-6 py-3 rounded-xl border border-slate-300 text-slate-700 font-semibold text-sm hover:bg-slate-50 transition-colors flex items-center justify-center gap-2">
+                        <i class="fa-solid fa-book-open"></i> Revisar Síntese Doutrinária
+                    </button>
+                </div>
+            </div>
+
+        </section>
+
+        <!-- ========================================================= -->
+        <!-- ABA 2: FUNDAMENTAÇÃO TEÓRICA E DOUTRINÁRIA                -->
+        <!-- ========================================================= -->
+        <section id="view-doutrina" class="hidden space-y-8">
+            
+            <!-- Banner Introdutório -->
+            <div class="bg-gradient-to-r from-juridico-900 to-juridico-800 rounded-2xl p-6 sm:p-8 text-white shadow-md">
+                <span class="inline-block px-3 py-1 rounded-full bg-dourado-500/20 text-dourado-400 text-xs font-bold uppercase tracking-wider mb-3 border border-dourado-500/30">
+                    Sistematização Teórica
+                </span>
+                <h2 class="text-2xl sm:text-3xl font-bold font-serif mb-3">A Estrutura Jurídica do Poder Empregatício</h2>
+                <p class="text-juridico-200 text-sm sm:text-base max-w-3xl leading-relaxed">
+                    O poder empregatício é o conjunto de prerrogativas asseguradas pela ordem jurídica ao empregador para dirigir a prestação pessoal de serviços (art. 2º da CLT). Ele se desdobra em quatro dimensões fundamentais: <strong>regulamentar, diretivo (orientação), fiscalizatório e disciplinar (punição)</strong>.
+                </p>
+            </div>
+
+            <!-- Grid de 4 Pilares Teóricos -->
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                
+                <!-- Card 1: Origens e Natureza -->
+                <div class="bg-white rounded-2xl p-6 shadow-sm border border-slate-200 space-y-4">
+                    <div class="flex items-center gap-3">
+                        <div class="w-10 h-10 rounded-xl bg-juridico-100 text-juridico-800 flex items-center justify-center font-bold">
+                            <i class="fa-solid fa-landmark"></i>
+                        </div>
+                        <h3 class="text-lg font-bold text-slate-900">1. Origens e Natureza Jurídica</h3>
+                    </div>
+                    <p class="text-sm text-slate-600 leading-relaxed">
+                        Historicamente ligado à propriedade privada dos meios de produção e à assunção dos riscos da atividade econômica (<em>alteridade</em> - art. 2º, CLT), o poder disciplinar evoluiu de uma concepção absolutista/institucionalista para uma <strong>teoria contratualista democrática</strong>.
+                    </p>
+                    <ul class="text-sm text-slate-700 space-y-2 border-t border-slate-100 pt-3">
+                        <li class="flex items-start gap-2">
+                            <i class="fa-solid fa-check text-juridico-600 mt-1 text-xs"></i>
+                            <span><strong>Poder de Organização e Orientação:</strong> Definir metas, métodos de trabalho e estrutura hierárquica (<em>jus variandi</em> ordinário).</span>
+                        </li>
+                        <li class="flex items-start gap-2">
+                            <i class="fa-solid fa-check text-juridico-600 mt-1 text-xs"></i>
+                            <span><strong>Poder Fiscalizatório:</strong> Acompanhar e controlar a execução do labor (ponto, metas, segurança), sem violar a intimidade.</span>
+                        </li>
+                        <li class="flex items-start gap-2">
+                            <i class="fa-solid fa-check text-juridico-600 mt-1 text-xs"></i>
+                            <span><strong>Poder Disciplinar:</strong> Prerrogativa de impor sanções pedagógicas ou rescisórias diante do descumprimento de obrigações contratuais.</span>
+                        </li>
+                    </ul>
+                </div>
+
+                <!-- Card 2: Limites Constitucionais -->
+                <div class="bg-white rounded-2xl p-6 shadow-sm border border-slate-200 space-y-4">
+                    <div class="flex items-center gap-3">
+                        <div class="w-10 h-10 rounded-xl bg-amber-100 text-amber-800 flex items-center justify-center font-bold">
+                            <i class="fa-solid fa-shield-halved"></i>
+                        </div>
+                        <h3 class="text-lg font-bold text-slate-900">2. Limites Constitucionais (Eficácia Horizontal)</h3>
+                    </div>
+                    <p class="text-sm text-slate-600 leading-relaxed">
+                        A Constituição Federal de 1988 submete a empresa à sua função social (art. 170) e impõe a <strong>eficácia horizontal dos direitos fundamentais</strong> nas relações privadas de trabalho:
+                    </p>
+                    <ul class="text-sm text-slate-700 space-y-2 border-t border-slate-100 pt-3">
+                        <li class="flex items-start gap-2">
+                            <i class="fa-solid fa-scale-balanced text-amber-600 mt-1 text-xs"></i>
+                            <span><strong>Dignidade da Pessoa Humana (Art. 1º, III, CF):</strong> Veda punições vexatórias, humilhantes, exposição pública de metas ("castigos") ou revistas íntimas (Art. 373-A, VI, CLT).</span>
+                        </li>
+                        <li class="flex items-start gap-2">
+                            <i class="fa-solid fa-scale-balanced text-amber-600 mt-1 text-xs"></i>
+                            <span><strong>Intimidade e Privacidade (Art. 5º, X, CF):</strong> Limita o monitoramento de e-mails pessoais, câmeras em vestiários/banheiros e rastreamento fora da jornada.</span>
+                        </li>
+                        <li class="flex items-start gap-2">
+                            <i class="fa-solid fa-scale-balanced text-amber-600 mt-1 text-xs"></i>
+                            <span><strong>Isonomia e Não Discriminação (Art. 5º, caput e Art. 7º, XXX):</strong> Proíbe punir seletivamente um empregado por falta tolerada a outros nas mesmas condições.</span>
+                        </li>
+                    </ul>
+                </div>
+
+                <!-- Card 3: Requisitos Doutrinários de Validade -->
+                <div class="bg-white rounded-2xl p-6 shadow-sm border border-slate-200 space-y-4 md:col-span-2">
+                    <div class="flex items-center gap-3">
+                        <div class="w-10 h-10 rounded-xl bg-emerald-100 text-emerald-800 flex items-center justify-center font-bold">
+                            <i class="fa-solid fa-list-check"></i>
+                        </div>
+                        <div>
+                            <h3 class="text-lg font-bold text-slate-900">3. Requisitos Doutrinários para Aplicação das Penalidades</h3>
+                            <p class="text-xs text-slate-500">Para que a sanção disciplinar seja validada pela Justiça do Trabalho, deve observar requisitos objetivos, subjetivos e circunstanciais:</p>
+                        </div>
+                    </div>
+
+                    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 pt-2">
+                        <div class="p-4 rounded-xl bg-slate-50 border border-slate-200">
+                            <h4 class="font-bold text-sm text-juridico-900 mb-1">Tipicidade e Taxatividade</h4>
+                            <p class="text-xs text-slate-600 leading-relaxed">A conduta deve configurar violação a dever legal (art. 482, CLT), contratual ou regulamentar previamente conhecido. As sanções admitidas são apenas: <strong>advertência, suspensão (máx. 30 dias - art. 474 CLT) e dispensa por justa causa</strong>. Multas (salvo atletas) e rebaixamento são ilícitos.</p>
+                        </div>
+                        <div class="p-4 rounded-xl bg-slate-50 border border-slate-200">
+                            <h4 class="font-bold text-sm text-juridico-900 mb-1">Imediatidade (Atualidade)</h4>
+                            <p class="text-xs text-slate-600 leading-relaxed">A punição deve ser aplicada logo após o empregador tomar ciência da falta (respeitado o tempo razoável de sindicância interna). A demora injustificada configura <strong>perdão tácito</strong>.</p>
+                        </div>
+                        <div class="p-4 rounded-xl bg-slate-50 border border-slate-200">
+                            <h4 class="font-bold text-sm text-juridico-900 mb-1">Proporcionalidade e Gradação</h4>
+                            <p class="text-xs text-slate-600 leading-relaxed">Adequação entre a gravidade da falta e a intensidade da pena. Faltas leves exigem caráter pedagógico (advertência/suspensão) antes da ruptura contratual, salvo falta gravíssima que quebre de imediato a fidúcia.</p>
+                        </div>
+                        <div class="p-4 rounded-xl bg-slate-50 border border-slate-200">
+                            <h4 class="font-bold text-sm text-juridico-900 mb-1">Singularidade (Non Bis In Idem)</h4>
+                            <p class="text-xs text-slate-600 leading-relaxed">É vedado punir o empregado duas vezes pela mesma falta (ex.: aplicar suspensão disciplinar e, dias depois, converter o mesmo fato em justa causa).</p>
+                        </div>
+                        <div class="p-4 rounded-xl bg-slate-50 border border-slate-200">
+                            <h4 class="font-bold text-sm text-juridico-900 mb-1">Nexo Causal e Autoria</h4>
+                            <p class="text-xs text-slate-600 leading-relaxed">Comprovação inequívoca de que o empregado praticou o ato faltoso e de que a punição decorre diretamente dele (ônus da prova do empregador - art. 818, II, CLT).</p>
+                        </div>
+                        <div class="p-4 rounded-xl bg-slate-50 border border-slate-200">
+                            <h4 class="font-bold text-sm text-juridico-900 mb-1">Caráter Pedagógico e Não Discriminatório</h4>
+                            <p class="text-xs text-slate-600 leading-relaxed">A sanção busca reeducar e preservar o contrato, devendo ser aplicada com isonomia entre empregados que cometeram faltas idênticas.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Botão de Retorno ao Simulador -->
+            <div class="flex justify-center pt-2">
+                <button onclick="switchTab('simulador')" class="px-6 py-3.5 rounded-xl bg-juridico-800 text-white font-semibold text-sm hover:bg-juridico-900 transition-all shadow-md flex items-center gap-2">
+                    <i class="fa-solid fa-gavel"></i>
+                    <span>Voltar ao Simulador de Casos Práticos</span>
+                </button>
+            </div>
+        </section>
+
+    </main>
+
+    <!-- Rodapé -->
+    <footer class="bg-white border-t border-slate-200 py-5 mt-12">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex flex-col sm:flex-row items-center justify-between text-xs text-slate-500 gap-2">
+            <p>Simulador Acadêmico de Direito do Trabalho • Poder Empregatício e Limites Constitucionais</p>
+            <p>Fundamentação: CF/88, CLT (Arts. 2º, 474, 482) e Jurisprudência Consolidada do TST.</p>
+        </div>
+    </footer>
+
+    <!-- Lógica JavaScript do Simulador -->
+    <script>
+        // Banco de Casos Jurídicos Estruturados
+        const casesDatabase = [
+            {
+                id: 1,
+                tema: "requisitos",
+                temaLabel: "Requisitos Objetivos",
+                dificuldade: "Intermediário",
+                title: "A Síndrome do 'Non Bis In Idem' na Reavaliação de Conduta",
+                narrative: "Carlos, analista financeiro há 4 anos sem histórico disciplinar, envolveu-se em uma discussão acalorada com um colega de setor na terça-feira, proferindo palavras de baixo calão. Na quarta-feira pela manhã, seu gestor imediato aplicou-lhe formalmente uma suspensão disciplinar de 3 dias, devidamente assinada. Na sexta-feira, ao tomar ciência do ocorrido por meio de relatório, a Diretoria de Recursos Humanos decidiu que a conduta era inaceitável e comunicou a dispensa de Carlos por justa causa (mau procedimento - art. 482, 'b', CLT), baseada exclusivamente naquele mesmo episódio.",
+                clues: [
+                    "Não houve nenhum fato novo entre quarta-feira e sexta-feira.",
+                    "A suspensão de 3 dias já havia sido formalizada e estava em curso.",
+                    "O histórico funcional anterior de Carlos era exemplar."
+                ],
+                question: "À luz da doutrina trabalhista e da jurisprudência do TST, qual a validade jurídica da dispensa por justa causa aplicada pela Diretoria?",
+                options: [
+                    {
+                        text: "É válida, pois a Diretoria possui hierarquia superior ao gestor imediato e pode rever sanções brandas para adequá-las ao regulamento interno.",
+                        correct: false
+                    },
+                    {
+                        text: "É nula, pois viola o princípio do 'non bis in idem' (singularidade da punição), já que o poder disciplinar se exauriu com a aplicação da suspensão pelo mesmo fato.",
+                        correct: true
+                    },
+                    {
+                        text: "É válida, desde que a empresa pague os dias referentes à suspensão anterior para compensar a conversão em justa causa.",
+                        correct: false
+                    },
+                    {
+                        text: "É anulável apenas se ficar comprovado que o gestor imediato agiu com perseguição pessoal contra o empregado.",
+                        correct: false
+                    }
+                ],
+                explanation: "Um dos requisitos circunstanciais essenciais do poder disciplinar é a singularidade da punição (princípio do 'non bis in idem'). Uma vez exercido o poder punitivo pelo empregador — ainda que por meio de preposto ou gestor com autoridade aparente — mediante a aplicação de suspensão, opera-se a preclusão consumativa quanto àquele ato faltoso. Não é lícito agravar posteriormente a pena pelo mesmo fato.",
+                legalBasis: "Princípio do Non Bis In Idem; Art. 2º da CLT; Jurisprudência pacífica do TST (ex.: RR-1000456-12.2019.5.02.0000 - nulidade de justa causa após suspensão pelo mesmo fato)."
+            },
+            {
+                id: 2,
+                tema: "requisitos",
+                temaLabel: "Imediatidade e Perdão Tácito",
+                dificuldade: "Intermediário",
+                title: "A Demora Injustificada na Apuração de Falta Grave",
+                narrative: "Mariana, supervisora de vendas de uma rede varejista de pequeno porte, deixou de repassar ao caixa central o valor de R$ 450,00 referente a uma venda à vista em 10 de março. O proprietário da loja conferiu o fechamento contábil no dia 12 de março e identificou claramente a divergência e a autoria de Mariana. Contudo, como o movimento da loja estava alto, o empregador nada disse, manteve Mariana na função de supervisora com acesso ao caixa normalmente e, apenas em 28 de maio (mais de dois meses e meio depois), aplicou-lhe dispensa por justa causa por ato de improbidade.",
+                clues: [
+                    "A empresa é de pequeno porte e não instaurou nenhuma sindicância ou auditoria complexa.",
+                    "A ciência inequívoca da autoria ocorreu em 12 de março.",
+                    "Mariana continuou exercendo funções de confiança por 75 dias após a descoberta."
+                ],
+                question: "Como a doutrina e a Justiça do Trabalho qualificam a conduta do empregador neste cenário?",
+                options: [
+                    {
+                        text: "Configura perdão tácito por ausência de imediatidade (atualidade), tornando nula a justa causa e convertendo-a em dispensa imotivada.",
+                        correct: true
+                    },
+                    {
+                        text: "A justa causa é válida, pois o ato de improbidade (art. 482, 'a', CLT) é imprescritível durante a vigência do contrato de trabalho.",
+                        correct: false
+                    },
+                    {
+                        text: "A justa causa é válida, pois o prazo legal para aplicação de qualquer penalidade trabalhista é de 2 anos (prescrição bienal).",
+                        correct: false
+                    },
+                    {
+                        text: "Deve ser mantida a justa causa, mas o empregador deverá indenizar Mariana pelo período em que omitiu a investigação.",
+                        correct: false
+                    }
+                ],
+                explanation: "A imediatidade (ou atualidade) exige que a sanção seja aplicada tão logo o empregador tome ciência da falta e de sua autoria. Embora o prazo seja flexível caso haja necessidade de sindicância interna para apurar fatos complexos, no caso em tela o empregador já detinha ciência inequívoca desde 12 de março e manteve a empregada no cargo de confiança por 75 dias sem justificativa, caracterizando perdão tácito.",
+                legalBasis: "Requisito da Imediatidade / Perdão Tácito; Art. 482, 'a' da CLT; Doutrina de Maurício Godinho Delgado (Curso de Direito do Trabalho)."
+            },
+            {
+                id: 3,
+                tema: "fiscalizacao",
+                temaLabel: "Poder Fiscalizatório e Privacidade",
+                dificuldade: "Avançado",
+                title: "Monitoramento de E-mail Corporativo vs. E-mail Pessoal",
+                narrative: "Uma empresa de tecnologia possui regulamento interno, assinado por todos os empregados na admissão, estabelecendo expressamente que o e-mail corporativo (@empresa.com.br) é ferramenta exclusiva de trabalho, sujeita a auditoria eletrônica periódica. Durante uma auditoria de rotina, o setor de TI identificou que o empregado Roberto utilizava o e-mail corporativo para enviar informações sigilosas de clientes a uma empresa concorrente. Em paralelo, o técnico de TI acessou a conta pessoal do Gmail de Roberto (que havia ficado logada no navegador) e encontrou mensagens confirmando o recebimento de propina.",
+                clues: [
+                    "Havia ciência prévia e inequívoca sobre o monitoramento do e-mail corporativo.",
+                    "A conta pessoal do Gmail foi acessada sem autorização judicial ou do empregado.",
+                    "As provas do e-mail corporativo já demonstravam o vazamento de dados."
+                ],
+                question: "Sobre a licitude das provas obtidas no exercício do poder fiscalizatório do empregador, assinale a análise correta:",
+                options: [
+                    {
+                        text: "Ambas as provas são ilícitas, pois o sigilo de correspondência (art. 5º, XII, CF) é absoluto e impede qualquer leitura de e-mail pelo empregador.",
+                        correct: false
+                    },
+                    {
+                        text: "Ambas as provas são lícitas, pois o computador pertence à empresa e o empregado não possui expectativa de privacidade no ambiente laboral.",
+                        correct: false
+                    },
+                    {
+                        text: "A prova extraída do e-mail corporativo é lícita (exercício regular do poder fiscalizatório com ciência prévia), mas o acesso ao Gmail pessoal é prova ilícita por violação à intimidade.",
+                        correct: true
+                    },
+                    {
+                        text: "A prova do Gmail pessoal é lícita por contaminação inversa, já que o empregado estava cometendo crime de concorrência desleal.",
+                        correct: false
+                    }
+                ],
+                explanation: "A jurisprudência do TST distingue claramente o e-mail corporativo (ferramenta de trabalho fornecida pelo empregador, cujo monitoramento é lícito quando há ciência prévia) do e-mail pessoal (esfera inviolável da intimidade e sigilo de dados do trabalhador, protegido pelo art. 5º, X e XII da CF). Assim, a justa causa pode subsistir apenas se sustentada exclusivamente pela prova lícita do e-mail corporativo.",
+                legalBasis: "Art. 5º, X, XII e LVI da CF/88; Art. 482, 'c' e 'g' da CLT; Jurisprudência do TST (AIRR-1640-72.2012.5.02.0030)."
+            },
+            {
+                id: 4,
+                tema: "constitucional",
+                temaLabel: "Limites Constitucionais",
+                dificuldade: "Básico",
+                title: "Punição Pedagógica ou Assédio Moral Organizacional?",
+                narrative: "Buscando aumentar a produtividade de sua equipe de televendas, uma empresa instituiu uma política disciplinar interna: os operadores que não atingissem a meta diária de vendas deveriam usar, durante todo o expediente do dia seguinte, um colete fluorescente com os dizeres 'Estou em treinamento - Abaixo da Meta' e permanecer em pé durante a reunião matinal da equipe enquanto os colegas batiam palmas irônicas.",
+                clues: [
+                    "A medida foi prevista em regulamento interno da empresa.",
+                    "Não houve redução salarial nem aplicação de suspensão formal.",
+                    "O objetivo declarado era 'estimular a competição saudável'."
+                ],
+                question: "Qual o enquadramento jurídico dessa prática à luz dos limites constitucionais ao poder diretivo e disciplinar?",
+                options: [
+                    {
+                        text: "É exercício regular do poder diretivo e regulamentar, pois não houve desconto salarial nem dispensa do trabalhador.",
+                        correct: false
+                    },
+                    {
+                        text: "Constitui abuso do poder empregatício e assédio moral, violando a dignidade da pessoa humana e os direitos da personalidade, ensejando reparação por danos morais e eventual rescisão indireta.",
+                        correct: true
+                    },
+                    {
+                        text: "É válida apenas se houver concordância expressa do sindicato da categoria em acordo coletivo de trabalho.",
+                        correct: false
+                    },
+                    {
+                        text: "Configura apenas infração administrativa perante o Ministério do Trabalho, sem repercussão na esfera contratual individual.",
+                        correct: false
+                    }
+                ],
+                explanation: "O poder disciplinar e diretivo encontra barreira intransponível nos direitos fundamentais da pessoa humana (eficácia horizontal dos direitos fundamentais). Expor o trabalhador a situações vexatórias, humilhantes ou degradantes para cobrar metas extrapola os limites da subordinação jurídica e viola a dignidade humana (art. 1º, III, CF) e a honra/imagem (art. 5º, X, CF).",
+                legalBasis: "Arts. 1º, III, 5º, V e X, e 170 da CF/88; Art. 483, 'b' e 'e' da CLT (Rigor excessivo e ato lesivo da honra)."
+            },
+            {
+                id: 5,
+                tema: "gradação",
+                temaLabel: "Gradação e Proporcionalidade",
+                dificuldade: "Intermediário",
+                title: "Desídia vs. Falta Leve Isolada no Contrato de Trabalho",
+                narrative: "Fernanda trabalha como auxiliar administrativa há 3 anos, nunca recebeu qualquer advertência ou suspensão e sempre obteve avaliações positivas. Em uma segunda-feira, chegou 25 minutos atrasada devido a uma pane no transporte público e, na mesma tarde, esqueceu de anexar um documento secundário em um relatório interno, o que foi corrigido em 10 minutos sem prejuízo financeiro à empresa. No dia seguinte, o empregador dispensou Fernanda por justa causa alegando desídia (art. 482, 'e', CLT).",
+                clues: [
+                    "Contrato de 3 anos sem qualquer registro disciplinar anterior.",
+                    "Condutas isoladas e de baixa lesividade (atraso pontual e lapso corrigível).",
+                    "Ausência de gradação pedagógica das penalidades."
+                ],
+                question: "A dispensa por justa causa aplicada a Fernanda deve ser mantida pelo Judiciário?",
+                options: [
+                    {
+                        text: "Sim, pois a soma de duas falhas no mesmo dia (atraso + erro técnico) demonstra negligência grave incompatível com a continuidade do vínculo.",
+                        correct: false
+                    },
+                    {
+                        text: "Não, pois a desídia exige reiteração de condutas negligentes e observância da gradação pedagógica das penas (advertência/suspensão), havendo evidente desproporcionalidade.",
+                        correct: true
+                    },
+                    {
+                        text: "Sim, porque o empregador possui discricionariedade absoluta para escolher entre advertência, suspensão ou justa causa em qualquer falta.",
+                        correct: false
+                    },
+                    {
+                        text: "Não, mas o juiz deve converter automaticamente a justa causa em suspensão de 15 dias, mantendo o contrato ativo.",
+                        correct: false
+                    }
+                ],
+                explanation: "A justa causa por desídia (art. 482, 'e', CLT) pressupõe, em regra, a repetição habitual de pequenas faltas (atrasos, faltas injustificadas, baixa produção) que revelam desinteresse do empregado, exigindo a gradação pedagógica (advertências e suspensões). Uma falta leve e isolada em um contrato de 3 anos sem máculas torna a pena máxima desproporcional. Ressalte-se que a Justiça do Trabalho não substitui a pena por outra mais branda, mas anula a justa causa, convertendo-a em dispensa sem justa causa.",
+                legalBasis: "Princípio da Proporcionalidade e Gradação das Penas; Art. 482, 'e' da CLT; Princípio da Continuidade da Relação de Emprego."
+            },
+            {
+                id: 6,
+                tema: "requisitos",
+                temaLabel: "Tipicidade das Sanções",
+                dificuldade: "Intermediário",
+                title: "Multa Disciplinar e Rebaixamento Funcional",
+                narrative: "Diante da quebra acidental, porém culposa, de um equipamento de medição por um técnico de laboratório (sem previsão contratual de desconto por dano culposo), a empresa decidiu aplicar duas medidas disciplinares: (1) descontou R$ 600,00 de seu salário a título de 'multa punitiva educativa' prevista no regimento interno; e (2) rebaixou o empregado do cargo de Técnico Sênior para Técnico Júnior, com redução de 20% em seu salário-base.",
+                clues: [
+                    "O desconto foi aplicado como 'multa punitiva', e não como ressarcimento de dano contratualmente ajustado.",
+                    "Houve rebaixamento de cargo com redução salarial.",
+                    "O empregado não é atleta profissional."
+                ],
+                question: "Qual a validade jurídica das sanções aplicadas pelo empregador?",
+                options: [
+                    {
+                        text: "Ambas são válidas, pois estavam previstas no regimento interno da empresa e visam compensar o prejuízo causado.",
+                        correct: false
+                    },
+                    {
+                        text: "Apenas a multa é válida (até o limite de 50% do salário), mas o rebaixamento é nulo por violar a irredutibilidade salarial.",
+                        correct: false
+                    },
+                    {
+                        text: "Ambas são ilícitas: o ordenamento brasileiro veda multas disciplinares (salvo atletas profissionais) e proíbe o rebaixamento funcional e a redução salarial unilateral.",
+                        correct: true
+                    },
+                    {
+                        text: "O rebaixamento é válido por até 30 dias (limite da suspensão disciplinar), mas a multa punitiva é vedada.",
+                        correct: false
+                    }
+                ],
+                explanation: "Pelo requisito da tipicidade das sanções trabalhistas, o empregador só pode aplicar as penalidades admitidas pelo sistema jurídico: advertência, suspensão disciplinar (limitada a 30 dias - art. 474, CLT) e dispensa por justa causa. A multa disciplinar é ilícita (exceção restrita aos atletas profissionais - Lei Pelé/Lei Geral do Esporte) e viola a intangibilidade salarial (art. 462, CLT). Igualmente, o rebaixamento punitivo viola o art. 468 da CLT e o art. 7º, VI, da CF.",
+                legalBasis: "Art. 7º, VI da CF/88; Arts. 462, 468 e 474 da CLT; Princípio da Intangibilidade Salarial e da Vedação à Alteração Contratual Lesiva."
+            },
+            {
+                id: 7,
+                tema: "constitucional",
+                temaLabel: "Isonomia e Não Discriminação",
+                dificuldade: "Avançado",
+                title: "Punição Seletiva por Uso de Celular no Ambiente Fabril",
+                narrative: "Em uma linha de montagem, uma placa informativa proíbe o uso de aparelhos celulares pessoais durante o expediente por razões de segurança. Durante o turno da tarde, três operadores — João, Pedro e Lucas — foram flagrados pelo supervisor enviando mensagens em seus celulares particulares ao mesmo tempo, parados ao lado da esteira. João e Pedro receberam apenas uma advertência verbal informal. Lucas, que havia se recusado na semana anterior a fazer horas extras não remuneradas em 'banco de horas informal', foi dispensado por justa causa por ato de indisciplina e insubordinação.",
+                clues: [
+                    "Os três empregados praticaram exatamente a mesma conduta infracional no mesmo contexto.",
+                    "Houve tratamento punitivo radicalmente desigual entre eles.",
+                    "Há indício de retaliação pela recusa anterior a horas extras irregulares."
+                ],
+                question: "Qual princípio limitador do poder disciplinar foi frontalmente violado nesta situação?",
+                options: [
+                    {
+                        text: "O princípio da isonomia (não discriminação) e a proibição de desvio de finalidade (retaliação), tornando nula a justa causa de Lucas.",
+                        correct: true
+                    },
+                    {
+                        text: "Nenhum, pois a insubordinação ocorreu e o empregador tem liberdade de escolher quem deseja manter no quadro.",
+                        correct: false
+                    },
+                    {
+                        text: "Apenas o princípio da imediatidade, pois a retaliação se referia a um fato ocorrido na semana anterior.",
+                        correct: false
+                    },
+                    {
+                        text: "O princípio da legalidade estrita, pois placa informativa não tem força de regulamento empresarial.",
+                        correct: false
+                    }
+                ],
+                explanation: "O exercício do poder disciplinar está vinculado ao princípio constitucional da isonomia (art. 5º, caput, CF) e à boa-fé objetiva (art. 422, CC). Quando empregados praticam a mesma falta nas mesmas condições, a aplicação de sanção máxima a apenas um deles — especialmente com viés retaliatório — configura discriminação punitiva e abuso de direito (art. 187, CC), invalidando a justa causa.",
+                legalBasis: "Art. 5º, caput da CF/88; Arts. 187 e 422 do Código Civil; Art. 482, 'h' da CLT; Jurisprudência do TST sobre punição discriminatória."
+            },
+            {
+                id: 8,
+                tema: "fiscalizacao",
+                temaLabel: "Limites da Revista Pessoal",
+                dificuldade: "Avançado",
+                title: "Revista de Pertences vs. Revista Íntima",
+                narrative: "Uma indústria farmacêutica adota, na saída de todos os turnos, procedimento de fiscalização aplicável indistintamente a empregados, gestores e visitantes: todos passam por um detector de metais e abrem suas bolsas e mochilas sobre uma bancada, sem qualquer contato físico por parte dos seguranças e em local reservado, apenas para inspeção visual. Um empregado ajuizou ação alegando violação à sua intimidade e pleiteando indenização por danos morais pelo simples fato de ter sua mochila revistada visualmente.",
+                clues: [
+                    "A fiscalização é impessoal e aplica-se a todos (inclusive gestores).",
+                    "Não há contato físico nem desnudamento (revista apenas visual de bolsas).",
+                    "O procedimento ocorre sem exposição vexatória."
+                ],
+                question: "De acordo com a jurisprudência consolidada da SDI-1 do Tribunal Superior do Trabalho (TST), qual a validade desse procedimento?",
+                options: [
+                    {
+                        text: "É ilícito, pois toda e qualquer revista em bolsas ou mochilas configura revista íntima vedada pelo art. 373-A, VI, da CLT.",
+                        correct: false
+                    },
+                    {
+                        text: "É lícito e inserido no poder fiscalizatório do empregador, pois a inspeção meramente visual de bolsas/mochilas, sem contato físico e de forma generalizada, não configura revista íntima nem gera dano moral por si só.",
+                        correct: true
+                    },
+                    {
+                        text: "É lícito apenas se houver suspeita fundada de furto contra aquele empregado específico.",
+                        correct: false
+                    },
+                    {
+                        text: "É ilícito porque o uso de detector de metais exclui a possibilidade de inspeção visual complementar.",
+                        correct: false
+                    }
+                ],
+                explanation: "A Subseção I Especializada em Dissídios Individuais (SDI-1) do TST pacificou o entendimento de que a revista meramente visual em bolsas, sacolas e mochilas dos empregados, quando realizada de forma impessoal, generalizada e sem contato físico ou exposição vexatória, constitui exercício regular do poder fiscalizatório e diretivo do empregador (proteção ao patrimônio), não se confundindo com a revista íntima proibida pelo art. 373-A, VI, da CLT.",
+                legalBasis: "Art. 2º e Art. 373-A, VI da CLT; Art. 5º, X e XXII da CF/88; Jurisprudência pacífica da SDI-1 do TST (ex.: E-RR-130500-51.2013.5.13.0007)."
+            }
+        ];
+
+        // Estado da Aplicação
+        let filteredCases = [...casesDatabase];
+        let currentIndex = 0;
+        let selectedOptionIndex = null;
+        let answeredCases = {}; // { caseId: { selected: idx, isCorrect: bool } }
+
+        // Inicialização
+        document.addEventListener('DOMContentLoaded', () => {
+            renderCase();
+            updateStats();
+        });
+
+        // Alternar Abas (Simulador vs Doutrina)
+        function switchTab(tabName) {
+            const viewSimulador = document.getElementById('view-simulador');
+            const viewDoutrina = document.getElementById('view-doutrina');
+            const btnSimulador = document.getElementById('tab-btn-simulador');
+            const btnDoutrina = document.getElementById('tab-btn-doutrina');
+
+            if (tabName === 'simulador') {
+                viewSimulador.classList.remove('hidden');
+                viewDoutrina.classList.add('hidden');
+                
+                btnSimulador.classList.add('bg-juridico-700', 'text-white', 'shadow-sm');
+                btnSimulador.classList.remove('text-juridico-300', 'hover:text-white');
+                
+                btnDoutrina.classList.remove('bg-juridico-700', 'text-white', 'shadow-sm');
+                btnDoutrina.classList.add('text-juridico-300', 'hover:text-white');
+            } else {
+                viewSimulador.classList.add('hidden');
+                viewDoutrina.classList.remove('hidden');
+                
+                btnDoutrina.classList.add('bg-juridico-700', 'text-white', 'shadow-sm');
+                btnDoutrina.classList.remove('text-juridico-300', 'hover:text-white');
+                
+                btnSimulador.classList.remove('bg-juridico-700', 'text-white', 'shadow-sm');
+                btnSimulador.classList.add('text-juridico-300', 'hover:text-white');
+            }
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+
+        // Filtrar Casos por Eixo Temático
+        function filterCases() {
+            const filterValue = document.getElementById('filter-tema').value;
+            if (filterValue === 'todos') {
+                filteredCases = [...casesDatabase];
+            } else {
+                filteredCases = casesDatabase.filter(c => c.tema === filterValue);
+            }
+            currentIndex = 0;
+            selectedOptionIndex = null;
+            document.getElementById('summary-modal').classList.add('hidden');
+            document.getElementById('case-container').classList.remove('hidden');
+            renderCase();
+            updateStats();
+        }
+
+        // Renderizar Caso Atual
+        function renderCase() {
+            if (filteredCases.length === 0) return;
+
+            const currentCase = filteredCases[currentIndex];
+            const previousAnswer = answeredCases[currentCase.id];
+
+            // Cabeçalhos e Textos
+            document.getElementById('case-badge-num').textContent = `CASO #${String(currentCase.id).padStart(2, '0')}`;
+            document.getElementById('case-badge-tema').textContent = currentCase.temaLabel;
+            document.getElementById('case-dificuldade').innerHTML = `<i class="fa-solid fa-layer-group"></i> Nível: ${currentCase.dificuldade}`;
+            document.getElementById('case-title').textContent = currentCase.title;
+            document.getElementById('case-narrative').textContent = currentCase.narrative;
+            document.getElementById('case-question').textContent = currentCase.question;
+
+            // Pistas / Elementos Probatórios
+            const cluesList = document.getElementById('case-clues');
+            cluesList.innerHTML = '';
+            currentCase.clues.forEach(clue => {
+                const li = document.createElement('li');
+                li.textContent = clue;
+                cluesList.appendChild(li);
+            });
+
+            // Opções de Resposta
+            const optionsContainer = document.getElementById('options-list');
+            optionsContainer.innerHTML = '';
+            const letters = ['A', 'B', 'C', 'D'];
+
+            currentCase.options.forEach((opt, index) => {
+                const btn = document.createElement('button');
+                btn.type = 'button';
+                btn.onclick = () => selectOption(index);
+
+                let baseClasses = "w-full text-left p-4 rounded-xl border-2 transition-all flex items-start gap-3.5 text-sm leading-relaxed ";
+                let badgeClasses = "w-7 h-7 rounded-lg flex-shrink-0 flex items-center justify-center font-bold text-xs mt-0.5 transition-colors ";
+
+                if (previousAnswer) {
+                    // Caso já respondido: exibir gabarito visual
+                    btn.disabled = true;
+                    if (opt.correct) {
+                        baseClasses += "border-emerald-500 bg-emerald-50/70 text-emerald-950 font-medium";
+                        badgeClasses += "bg-emerald-600 text-white";
+                    } else if (previousAnswer.selected === index && !opt.correct) {
+                        baseClasses += "border-rose-400 bg-rose-50/70 text-rose-950";
+                        badgeClasses += "bg-rose-600 text-white";
+                    } else {
+                        baseClasses += "border-slate-200 bg-slate-50/50 text-slate-400 opacity-75";
+                        badgeClasses += "bg-slate-200 text-slate-500";
+                    }
+                } else {
+                    // Caso pendente de resposta
+                    if (selectedOptionIndex === index) {
+                        baseClasses += "border-juridico-700 bg-juridico-50/60 text-juridico-950 font-medium shadow-sm";
+                        badgeClasses += "bg-juridico-800 text-white";
+                    } else {
+                        baseClasses += "border-slate-200 hover:border-juridico-400 hover:bg-slate-50 text-slate-700";
+                        badgeClasses += "bg-slate-100 text-slate-600";
+                    }
+                }
+
+                btn.className = baseClasses;
+                btn.innerHTML = `
+                    <span class="${badgeClasses}">${letters[index]}</span>
+                    <span class="flex-grow">${opt.text}</span>
+                `;
+                optionsContainer.appendChild(btn);
+            });
+
+            // Controle do Botão de Envio e Card de Feedback
+            const btnSubmit = document.getElementById('btn-submit');
+            const feedbackCard = document.getElementById('feedback-card');
+
+            if (previousAnswer) {
+                btnSubmit.classList.add('hidden');
+                showFeedback(currentCase, previousAnswer.isCorrect);
+            } else {
+                btnSubmit.classList.remove('hidden');
+                feedbackCard.classList.add('hidden');
+                updateSubmitButtonState();
+            }
+
+            // Controle dos botões Anterior/Próximo
+            document.getElementById('btn-prev').disabled = currentIndex === 0;
+            document.getElementById('btn-prev').classList.toggle('opacity-50', currentIndex === 0);
+            document.getElementById('btn-prev').classList.toggle('cursor-not-allowed', currentIndex === 0);
+
+            const isLast = currentIndex === filteredCases.length - 1;
+            document.getElementById('btn-next').innerHTML = isLast 
+                ? `<span>Concluir Simulação</span> <i class="fa-solid fa-flag-checkered"></i>`
+                : `<span>Próximo Caso</span> <i class="fa-solid fa-arrow-right"></i>`;
+
+            updateStats();
+        }
+
+        // Selecionar Alternativa
+        function selectOption(index) {
+            const currentCase = filteredCases[currentIndex];
+            if (answeredCases[currentCase.id]) return;
+
+            selectedOptionIndex = index;
+            renderCase();
+        }
+
+        // Atualizar Estado do Botão Confirmar
+        function updateSubmitButtonState() {
+            const btnSubmit = document.getElementById('btn-submit');
+            if (selectedOptionIndex !== null) {
+                btnSubmit.disabled = false;
+                btnSubmit.className = "w-full py-3.5 px-4 rounded-xl font-semibold text-sm transition-all flex items-center justify-center gap-2 bg-juridico-800 hover:bg-juridico-900 text-white shadow-md cursor-pointer";
+            } else {
+                btnSubmit.disabled = true;
+                btnSubmit.className = "w-full py-3.5 px-4 rounded-xl font-semibold text-sm transition-all flex items-center justify-center gap-2 bg-slate-200 text-slate-400 cursor-not-allowed";
+            }
+        }
+
+        // Submeter Resposta
+        function submitAnswer() {
+            if (selectedOptionIndex === null) return;
+            const currentCase = filteredCases[currentIndex];
+            const isCorrect = currentCase.options[selectedOptionIndex].correct;
+
+            answeredCases[currentCase.id] = {
+                selected: selectedOptionIndex,
+                isCorrect: isCorrect
+            };
+
+            selectedOptionIndex = null;
+            renderCase();
+            
+            // Rolar suavemente até o feedback em telas menores
+            if (window.innerWidth < 1024) {
+                document.getElementById('feedback-card').scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+            }
+        }
+
+        // Exibir Fundamentação Jurídica
+        function showFeedback(caseObj, isCorrect) {
+            const feedbackCard = document.getElementById('feedback-card');
+            const feedbackHeader = document.getElementById('feedback-header');
+            const feedbackIcon = document.getElementById('feedback-icon');
+            const feedbackStatus = document.getElementById('feedback-status');
+
+            feedbackCard.classList.remove('hidden');
+
+            if (isCorrect) {
+                feedbackCard.className = "rounded-2xl shadow-md border border-emerald-200 overflow-hidden transition-all duration-300";
+                feedbackHeader.className = "px-6 py-4 flex items-center gap-3 text-white font-bold bg-emerald-600";
+                feedbackIcon.className = "fa-solid fa-circle-check text-xl";
+                feedbackStatus.textContent = "Tese Jurídica Correta!";
+            } else {
+                feedbackCard.className = "rounded-2xl shadow-md border border-rose-200 overflow-hidden transition-all duration-300";
+                feedbackHeader.className = "px-6 py-4 flex items-center gap-3 text-white font-bold bg-rose-600";
+                feedbackIcon.className = "fa-solid fa-circle-xmark text-xl";
+                feedbackStatus.textContent = "Tese Divergente da Doutrina/Jurisprudência";
+            }
+
+            document.getElementById('feedback-explanation').textContent = caseObj.explanation;
+            document.getElementById('feedback-legal-basis').textContent = caseObj.legalBasis;
+        }
+
+        // Navegação: Próximo Caso
+        function nextCase() {
+            if (currentIndex < filteredCases.length - 1) {
+                currentIndex++;
+                selectedOptionIndex = null;
+                renderCase();
+                window.scrollTo({ top: 0, behavior: 'smooth' });
+            } else {
+                showSummary();
+            }
+        }
+
+        // Navegação: Caso Anterior
+        function prevCase() {
+            if (currentIndex > 0) {
+                currentIndex--;
+                selectedOptionIndex = null;
+                renderCase();
+                window.scrollTo({ top: 0, behavior: 'smooth' });
+            }
+        }
+
+        // Atualizar Estatísticas e Barra de Progresso
+        function updateStats() {
+            const totalFiltered = filteredCases.length;
+            const currentPos = currentIndex + 1;
+
+            // Contar respostas dentro do filtro atual
+            let answeredCount = 0;
+            let correctCount = 0;
+
+            filteredCases.forEach(c => {
+                if (answeredCases[c.id]) {
+                    answeredCount++;
+                    if (answeredCases[c.id].isCorrect) {
+                        correctCount++;
+                    }
+                }
+            });
+
+            const accuracy = answeredCount > 0 ? Math.round((correctCount / answeredCount) * 100) : 0;
+            const progressPercent = (currentPos / totalFiltered) * 100;
+
+            document.getElementById('stat-progresso').textContent = `${currentPos} / ${totalFiltered}`;
+            document.getElementById('stat-acertos').textContent = correctCount;
+            document.getElementById('stat-taxa').textContent = `${accuracy}%`;
+            document.getElementById('progress-bar').style.width = `${progressPercent}%`;
+        }
+
+        // Exibir Tela de Conclusão
+        function showSummary() {
+            let answeredCount = 0;
+            let correctCount = 0;
+
+            filteredCases.forEach(c => {
+                if (answeredCases[c.id]) {
+                    answeredCount++;
+                    if (answeredCases[c.id].isCorrect) correctCount++;
+                }
+            });
+
+            const total = filteredCases.length;
+            const percent = total > 0 ? Math.round((correctCount / total) * 100) : 0;
+
+            document.getElementById('final-total').textContent = `${answeredCount} de ${total}`;
+            document.getElementById('final-acertos').textContent = correctCount;
+            document.getElementById('final-percent').textContent = `${percent}%`;
+
+            document.getElementById('case-container').classList.add('hidden');
+            document.getElementById('summary-modal').classList.remove('hidden');
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+
+        // Reiniciar Simulador
+        function resetSimulator() {
+            answeredCases = {};
+            currentIndex = 0;
+            selectedOptionIndex = null;
+            document.getElementById('summary-modal').classList.add('hidden');
+            document.getElementById('case-container').classList.remove('hidden');
+            renderCase();
+            updateStats();
+        }
+    </script>
+</body>
+</html>
